@@ -1,0 +1,160 @@
+import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { MDBBtn, MDBIcon, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
+import { Portal } from "react-portal";
+import { useNavigate } from "react-router-dom";
+import Break from "../general/Break";
+import { Book } from "../search/Search";
+import LibraryBookModal from "./LibraryBookModal";
+import { Size, useWindowSize } from "../general/useWindowSize";
+
+interface Props {
+    book: Book;
+    timeout: number;
+    bookCategory: string;
+    setProgress: React.Dispatch<React.SetStateAction<number>>;
+}
+
+async function getCover(md5: string) {
+    let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
+    let request;
+    try {
+        request = await axios.get(reqUrl);
+    } catch (e: any) {
+        // 500 errors means Biblioterra couldn't find a cover.
+        return null;
+    }
+    if (request?.data) {
+        sessionStorage.setItem(`${md5}-cover`, request?.data);
+        return request?.data;
+    }
+    return null;
+}
+
+export default function LibraryBookFigure(props: Props) {
+    const size: Size = useWindowSize();
+    const [modalOn, setModalOn] = useState<boolean>(false);
+    const [firstRender, setFirstRender] = useState<boolean>(false);
+
+    const toggleShow = () => setModalOn(!modalOn);
+
+    let navigate = useNavigate();
+    const [cover, setCover] = useState<string>(
+        "https://libgen.rocks/img/blank.png"
+    );
+    const [coverDone, setCoverDone] = useState<boolean>(false);
+
+    useEffect(() => {
+        let coverSetTimeout: number;
+        let cachedCover = sessionStorage.getItem(
+            `${props.book.md5}-cover`
+        ) as string;
+        if (cachedCover) {
+            const lowerCachedCover = cachedCover.toLowerCase();
+            const lowerMD5 = props.book.md5.toLowerCase();
+            if (lowerCachedCover.includes(lowerMD5)) {
+                setCoverDone(true);
+                setCover(cachedCover);
+            }
+        }
+
+        coverSetTimeout = setTimeout(() => {
+            getCover(props.book.md5).then((r) => {
+                if (r == null) {
+                    setCoverDone(true);
+                    return;
+                }
+                setCoverDone(true);
+                setCover(r);
+            });
+        }, props.timeout);
+        return () => {
+            clearTimeout(coverSetTimeout);
+        };
+    }, []);
+
+    return (
+        <div className={"mb-3 pt-2 border-white border-top flex-grow-1"}>
+            <div className="d-flex library-row">
+                {firstRender ? (
+                    <Portal node={document.getElementById("modal-root")}>
+                        <LibraryBookModal
+                            coverUrl={cover}
+                            bookInfo={props.book}
+                            bookCategory={props.bookCategory}
+                            showProp={modalOn}
+                            setShowProp={setModalOn}
+                            setProgress={props.setProgress}
+                        />
+                    </Portal>
+                ) : null}
+
+                <div
+                    id="cover-div"
+                    className="me-2 library-figure-img"
+                    style={size.width! < 600 ? { minWidth: "30%" } : {}}
+                >
+                    {coverDone ? (
+                        <MDBIcon
+                            fas
+                            icon="info-circle"
+                            className="position-absolute ms-1 mt-1"
+                            style={{ zIndex: "5" }}
+                        />
+                    ) : (
+                        <MDBSpinner
+                            style={{
+                                width: "1rem",
+                                height: "1rem",
+                                marginTop: "1vh",
+                                marginLeft: "1vh",
+                                zIndex: "5",
+                            }}
+                            color="dark"
+                            className="position-absolute ms-1 mt-1"
+                        />
+                    )}
+
+                    <MDBRipple
+                        className="bg-image hover-overlay shadow-1-strong w-100"
+                        rippleTag="div"
+                        rippleColor="light"
+                    >
+                        <img
+                            src={cover}
+                            alt="Capa do livro"
+                            className="w-100"
+                        />
+
+                        <a
+                            href={`/book/${props.book.topic}/${props.book.md5}`}
+                            onClick={(evt) => {
+                                evt.preventDefault();
+                                setFirstRender(true);
+                                toggleShow();
+                            }}
+                        >
+                            <div
+                                className="mask"
+                                style={{
+                                    backgroundColor: "rgba(251, 251, 251, 0.2)",
+                                }}
+                            />
+                        </a>
+                    </MDBRipple>
+                </div>
+                <div id="info-div" className="">
+                    <span className="overflow-hidden">
+                        {props.book["title"]}
+                    </span>
+
+                    <Break />
+                    <span className="fst-italic" style={{ fontSize: "0.8rem" }}>
+                        {props.book["authors"]}
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+}

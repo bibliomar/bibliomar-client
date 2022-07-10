@@ -1,0 +1,186 @@
+body {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+abbr[title]:after
+{
+    content: " (" attr(title) ")";
+}
+
+.disabled-page{
+    pointer-events: none;
+}
+
+
+.break {
+    border: 0;
+    margin: 0;
+    height: 0;
+    padding: 0;
+    flex-basis: 100%;
+}
+
+.bg {
+    background: linear-gradient(#231b40, #5948c6) no-repeat fixed center center;
+    background-size: cover;
+}
+
+.bg-alt {
+    background: url("/assets/img/layered-waves-haikei (2).svg") no-repeat fixed center center;
+    background-size: cover;
+}
+
+.like-body {
+    min-height: 100vh;
+    width: inherit;
+}
+
+#newhere {
+    margin-top: 5vh;
+}
+
+.searchfield {
+    width: 75%;
+}
+
+.disclaimer {
+    width: 90vw;
+}
+
+.resultimg {
+    width: 90vw;
+    height: auto;
+    object-fit: cover;
+}
+
+.recommendation{
+    width: 40vw;
+    height: 25vh;
+    margin-right: 5px;
+}
+
+
+
+.recommendation-caption{
+    width: 40vw;
+}
+
+.recommendation-button{
+    width: 35vw;
+    height: auto;
+}
+
+.library-section-div{
+    width: 90vw;
+}
+
+.library-figure-img{
+    width: 25vw;
+    height: auto;
+}
+
+.library-row:hover{
+    background-color: #1266f1;
+}
+
+.library-row:active{
+    background-color: #1266f1;
+}
+
+.bookcaption {
+    width: 90vw;
+}
+
+.book-item{
+    width: 100%;
+}
+
+.dbutton{
+    width: 30vw;
+}
+
+.library-actions-button{
+    width: 40vw;
+}
+
+.cover-img{
+    width: 75vw;
+    height: 50vh;
+}
+
+
+
+@media screen and (min-width: 600px) {
+
+    abbr[title]:after
+    {
+        content: "";
+    }
+
+    .searchfield {
+        width: 50%;
+    }
+
+
+    .resultimg {
+        width: 25vw;
+        height: 70vh;
+        margin-right: 7px;
+    }
+
+    .recommendation{
+        width: 12vw;
+        height: 37vh;
+        margin-right: 5px;
+    }
+
+    .recommendation-caption{
+        width: 12vw;
+    }
+
+    .recommendation-button{
+        width: 11vw;
+        height: auto;
+    }
+
+    .recommendation-div{
+        width: fit-content;
+    }
+
+    .library-section-div{
+        width: 84vw;
+    }
+
+    .library-figure-img{
+        width: 5vw;
+        height: auto;
+    }
+
+    .bookcaption {
+        width: 25vw;
+    }
+
+    .disclaimer {
+        width: 40vw;
+    }
+
+    .bg-alt {
+        background: url("/assets/img/back-lg-2.svg") no-repeat fixed center center;
+        background-size: cover;
+    }
+
+    .cover-img{
+        width: 95%;
+        height: 90vh;
+        margin-bottom: 5vh;
+    }
+
+    .dbutton{
+        width: 12vw;
+    }
+
+    .library-actions-button{
+        width: 15vw;
+    }
+
+}
