@@ -200,7 +200,7 @@ export default function Register() {
                             </Link>
                             <Break />
 
-                            <MDBBtn className="mt-4">logar</MDBBtn>
+                            <MDBBtn className="mt-4">registrar</MDBBtn>
                         </div>
                     </form>
                 </div>
