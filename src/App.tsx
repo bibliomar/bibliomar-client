@@ -14,7 +14,6 @@ import LibraryLanding from "./components/library/main/LibraryLanding";
 import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedScreen";
 
 function App() {
-    console.log = () => {};
     return (
         <div>
             <Routes>

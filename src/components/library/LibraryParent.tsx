@@ -10,6 +10,12 @@ export default function LibraryParent() {
     const [progress, setProgress] = useState<number>(0);
     const navigate = useNavigate();
     const token = localStorage.getItem("jwt-token") as string;
+    let decoded_token = jwt_decode(token) as JwtPayload;
+    let username = undefined;
+    if (decoded_token) {
+        username = decoded_token.sub;
+    }
+
     const getUserInfo = async () => {
         const config = {
             url: "https://biblioterra.herokuapp.com/v1/library/get",
@@ -48,7 +54,6 @@ export default function LibraryParent() {
 
     useEffect(() => {
         let cachedUserInfo: string | null = null;
-        let decoded_token = jwt_decode(token) as JwtPayload;
         if (token && decoded_token) {
             cachedUserInfo = sessionStorage.getItem(
                 `${decoded_token.sub}-user`
@@ -95,6 +100,7 @@ export default function LibraryParent() {
                                 context={{
                                     userInfo: userInfo,
                                     setProgress: setProgress,
+                                    username: username,
                                 }}
                             />
                         ) : (

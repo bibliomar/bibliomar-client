@@ -2,7 +2,7 @@ import { Book } from "../search/Search";
 import Break from "../general/Break";
 import RecommendationBookFigure from "../search/recommendations/RecommendationBookFigure";
 import LibraryBookFigure from "./LibraryBookFigure";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {

@@ -1,4 +1,10 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import React, {
+    MouseEventHandler,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MDBBtn, MDBIcon, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
@@ -8,6 +14,8 @@ import Break from "../general/Break";
 import { Book } from "../search/Search";
 import LibraryBookModal from "./LibraryBookModal";
 import { Size, useWindowSize } from "../general/useWindowSize";
+import LibraryBookIcon from "./LibraryBookIcon";
+import { EditModeContext, SelectedBooksContext } from "./utils/RelevantContext";
 
 interface Props {
     book: Book;
@@ -33,7 +41,10 @@ async function getCover(md5: string) {
 }
 
 export default function LibraryBookFigure(props: Props) {
+    const selectedBooksContext = useContext(SelectedBooksContext);
+    const editMode = useContext(EditModeContext);
     const size: Size = useWindowSize();
+    const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
     const [modalOn, setModalOn] = useState<boolean>(false);
     const [firstRender, setFirstRender] = useState<boolean>(false);
 
@@ -96,13 +107,8 @@ export default function LibraryBookFigure(props: Props) {
                     style={size.width! < 600 ? { minWidth: "30%" } : {}}
                 >
                     {coverDone ? (
-                        <MDBIcon
-                            fas
-                            icon="info-circle"
-                            className="position-absolute ms-1 mt-1"
-                            style={{ zIndex: "5" }}
-                        />
-                    ) : (
+                        <LibraryBookIcon checked={checkboxToggle} />
+                    ) : !editMode ? (
                         <MDBSpinner
                             style={{
                                 width: "1rem",
@@ -114,7 +120,7 @@ export default function LibraryBookFigure(props: Props) {
                             color="dark"
                             className="position-absolute ms-1 mt-1"
                         />
-                    )}
+                    ) : null}
 
                     <MDBRipple
                         className="bg-image hover-overlay shadow-1-strong w-100"
@@ -131,8 +137,34 @@ export default function LibraryBookFigure(props: Props) {
                             href={`/book/${props.book.topic}/${props.book.md5}`}
                             onClick={(evt) => {
                                 evt.preventDefault();
-                                setFirstRender(true);
-                                toggleShow();
+                                if (!editMode) {
+                                    setFirstRender(true);
+                                    toggleShow();
+                                    return;
+                                }
+                                const bookOnArray =
+                                    selectedBooksContext.selectedBooks.indexOf(
+                                        props.book
+                                    );
+
+                                if (bookOnArray !== -1) {
+                                    console.log("runs");
+                                    let arrayCopy =
+                                        selectedBooksContext.selectedBooks;
+                                    arrayCopy.splice(bookOnArray);
+                                    selectedBooksContext.setFunction([
+                                        ...arrayCopy,
+                                    ]);
+                                    setCheckboxToggle(false);
+                                    return;
+                                }
+
+                                selectedBooksContext.setFunction([
+                                    ...selectedBooksContext.selectedBooks,
+                                    props.book,
+                                ]);
+                                setCheckboxToggle(true);
+                                return;
                             }}
                         >
                             <div
