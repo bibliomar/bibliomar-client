@@ -34,7 +34,12 @@ E esse é o frontend, que consome a API e apresenta em uma interface ao usuario 
 
 
 ## Como posso contribuir?
-Basta entrar na aba de "Issues" ou "Project" e procurar algum problema que você queira resolver.  
+
+Recomendamos seguir este tutorial:  
+[Sou novo aqui](https://github.com/Lamarcke/bibliomar-react/blob/main/IMNEW.md)  
+Ele vai te guiar pelos primeiros passos para deixar seu ambiente de desenvolvimento pronto e como trabalhar no seu primeiro issue.  
+
+Em seguida, basta entrar na aba de "Issues" ou "Project" e procurar algum problema que você queira resolver.  
 
 Você pode se familiarizar com o código assumindo issues mais simples, e é altamente recomendado acessar a documentação do [Biblioterra](https://biblioterra.herokuapp.com/v1/docs) caso você queira alterar ou criar alguma solicitação para a API.
 

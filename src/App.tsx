@@ -15,62 +15,60 @@ import LibraryExpandedScreen from "./components/library/expanded/LibraryExpanded
 
 function App() {
     return (
-        <div>
-            <Routes>
-                <Route path="*" element={<Error404 />} />
-                <Route path="error" element={<Error404 />} />
-                <Route path="/" element={<Navigate to="/search" />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/book" element={<BooksParent />}>
+        <Routes>
+            <Route path="*" element={<Error404 />} />
+            <Route path="error" element={<Error404 />} />
+            <Route path="/" element={<Navigate to="/search" />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/book" element={<BooksParent />}>
+                <Route index element={<BookError />} />
+                <Route path="fiction" element={<BookFictionParent />}>
                     <Route index element={<BookError />} />
-                    <Route path="fiction" element={<BookFictionParent />}>
-                        <Route index element={<BookError />} />
-                        <Route path=":md5" element={<BookScreen />} />
-                    </Route>
-                    <Route path="sci-tech" element={<BookScitechParent />}>
-                        <Route index element={<BookError />} />
-                        <Route path=":md5" element={<BookScreen />} />
-                    </Route>
-                    <Route path="error" element={<BookError />} />
+                    <Route path=":md5" element={<BookScreen />} />
                 </Route>
-                <Route path="/library" element={<LibraryParent />}>
-                    <Route index element={<LibraryLanding />} />
-                    <Route
-                        path="reading"
-                        element={
-                            <LibraryExpandedScreen
-                                message={"Lendo"}
-                                bookCategory={"reading"}
-                            />
-                        }
-                    />
-                    <Route
-                        path="to-read"
-                        element={
-                            <LibraryExpandedScreen
-                                message={"Planejando ler"}
-                                bookCategory={"to-read"}
-                            />
-                        }
-                    />
-                    <Route
-                        path="backlog"
-                        element={
-                            <LibraryExpandedScreen
-                                message={"Backlog"}
-                                bookCategory={"backlog"}
-                            />
-                        }
-                    />
+                <Route path="sci-tech" element={<BookScitechParent />}>
+                    <Route index element={<BookError />} />
+                    <Route path=":md5" element={<BookScreen />} />
                 </Route>
-                <Route path="/user">
-                    <Route index element={<Navigate to="/error" />} />
-                    <Route path="login" element={<Login />} />
-                    <Route path="register" element={<Register />} />
-                    <Route path="recover" element={<Recover />} />
-                </Route>
-            </Routes>
-        </div>
+                <Route path="error" element={<BookError />} />
+            </Route>
+            <Route path="/library" element={<LibraryParent />}>
+                <Route index element={<LibraryLanding />} />
+                <Route
+                    path="reading"
+                    element={
+                        <LibraryExpandedScreen
+                            message={"Lendo"}
+                            bookCategory={"reading"}
+                        />
+                    }
+                />
+                <Route
+                    path="to-read"
+                    element={
+                        <LibraryExpandedScreen
+                            message={"Planejando ler"}
+                            bookCategory={"to-read"}
+                        />
+                    }
+                />
+                <Route
+                    path="backlog"
+                    element={
+                        <LibraryExpandedScreen
+                            message={"Backlog"}
+                            bookCategory={"backlog"}
+                        />
+                    }
+                />
+            </Route>
+            <Route path="/user">
+                <Route index element={<Navigate to="/error" />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="recover" element={<Recover />} />
+            </Route>
+        </Routes>
     );
 }
 
