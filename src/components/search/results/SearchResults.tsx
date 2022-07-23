@@ -23,7 +23,7 @@ export default function SearchResults(props: Props) {
             return <></>;
         } else if (props.results.length > 0) {
             return (
-                <div>
+                <>
                     {props.results.map((ele, i) => {
                         let timeout: number;
                         if (i === 0) {
@@ -42,7 +42,7 @@ export default function SearchResults(props: Props) {
                             />
                         );
                     })}
-                </div>
+                </>
             );
         }
     }
