@@ -3,6 +3,8 @@ Primeiramente, muito obrigado pelo interesse em contribuir para esse projeto e l
 
 ## Se preparando para desenvolver  
 
+Você precisa instalar o [NodeJS](https://nodejs.org/en/download/) para poder iniciar.
+
 *Caso você tenha dificuldades, recomendo utilizar o cliente desktop do Github.*
 
 Primeiramente, faça uma cópia desse repositório no seu computador.  
