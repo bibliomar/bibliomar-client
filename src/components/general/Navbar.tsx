@@ -64,6 +64,14 @@ export default function Navbar(props: Props) {
                                     Biblioteca
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
+                            <MDBNavbarItem>
+                                <MDBNavbarLink
+                                    active={props.activeItem === "reader"}
+                                    href="/reader"
+                                >
+                                    Leitor
+                                </MDBNavbarLink>
+                            </MDBNavbarItem>
                             {location.pathname !== "/search" ? (
                                 <>
                                     <form
