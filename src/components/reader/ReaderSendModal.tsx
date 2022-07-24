@@ -22,10 +22,12 @@ interface Props {
 
 export default function ({ modalToggle, setModalToggle }: Props) {
     const [bookFile, setBookFile] = useState<File | null>(null);
+    const [invalidFile, setInvalidFile] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const navigateToBook = async () => {
         if (bookFile != null) {
+            invalidFile ? setInvalidFile(false) : null;
             const arrayBuffer = await fileToArrayBuffer(bookFile);
 
             navigate(`${bookFile?.name}`, {
@@ -59,6 +61,15 @@ export default function ({ modalToggle, setModalToggle }: Props) {
                             onChange={(evt) => {
                                 if (evt.target.files) {
                                     const files: FileList = evt.target.files;
+                                    if (
+                                        files.item(0)!.type !==
+                                        "application/epub+zip"
+                                    ) {
+                                        setInvalidFile(true);
+                                        return;
+                                    }
+
+                                    invalidFile ? setInvalidFile(false) : null;
                                     setBookFile(files.item(0));
                                 }
                             }}

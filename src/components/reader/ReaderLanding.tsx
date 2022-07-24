@@ -1,7 +1,5 @@
 import Navbar from "../general/Navbar";
-import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 import { useEffect, useState } from "react";
-import localforage from "localforage";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MDBBtn, MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
