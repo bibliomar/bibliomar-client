@@ -85,7 +85,7 @@ export default function BookFigure(props: Props) {
     }, []);
 
     return (
-        <figure className="figure d-flex flex-column book-figure">
+        <figure className="figure d-flex flex-column">
             {coverDone ? (
                 <></>
             ) : (
@@ -122,26 +122,29 @@ export default function BookFigure(props: Props) {
 
             <figcaption
                 className="figure-caption text-wrap text-light border rounded-7 rounded-top border-dark
-            border-top-0 bg-black bg-opacity-25 pt-1 bookcaption flex-grow-1 d-flex flex-wrap"
+            border-top-0 bg-black bg-opacity-25 pt-1 bookcaption flex-grow-1 d-flex flex-column"
                 style={{ fontSize: "1rem" }}
             >
-                <span className="mx-2 mb-1">
-                    <strong>Título: </strong>
-                    {book.title}
-                </span>
-                <Break />
-                <span className="text-start mx-2">
-                    <strong>Autor(a)(s): </strong>
-                    {book["author(s)"]}
-                </span>
-                <Break />
-                <p className="mx-2">
-                    <strong>Arquivo: </strong>
-                    {book.extension.toUpperCase()}, {book.size}
-                </p>
-                <Break />
+                <div className="d-flex flex-wrap">
+                    <span className="mx-2 mb-1">
+                        <strong>Título: </strong>
+                        {book.title}
+                    </span>
+                    <Break />
+                    <span className="mx-2 mb-1">
+                        <strong>Autor(a)(s): </strong>
+                        {book["author(s)"]}
+                    </span>
+                    <Break />
+                    <p className="mx-2 mb-2">
+                        <strong>Arquivo: </strong>
+                        {book.extension.toUpperCase()}, {book.size}
+                    </p>
+                    <Break />
+                </div>
+
                 <Link
-                    className="d-flex justify-content-center w-100 mb-2"
+                    className="d-flex justify-content-center w-100 mb-2 mt-auto"
                     to={`/book/${book.topic}/${book.md5}`}
                     onClick={navigateToBook}
                 >
