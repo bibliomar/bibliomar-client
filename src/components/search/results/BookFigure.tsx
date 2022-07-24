@@ -85,7 +85,7 @@ export default function BookFigure(props: Props) {
     }, []);
 
     return (
-        <figure className="figure book-figure">
+        <figure className="figure d-flex flex-column book-figure">
             {coverDone ? (
                 <></>
             ) : (
@@ -102,15 +102,11 @@ export default function BookFigure(props: Props) {
                 />
             )}
             <MDBRipple
-                className="bg-image hover-zoom shadow-1-strong resultimg"
+                className="bg-image hover-zoom shadow-1-strong resultimg figure-img"
                 rippleTag="div"
                 rippleColor="light"
             >
-                <img
-                    className="w-100 h-100 figure-img"
-                    src={cover}
-                    alt="Capa do livro"
-                />
+                <img className="w-100 h-100" src={cover} alt="Capa do livro" />
                 <a
                     href={`/book/${book.topic}/${book.md5}`}
                     onClick={navigateToBook}
@@ -124,29 +120,32 @@ export default function BookFigure(props: Props) {
                 </a>
             </MDBRipple>
 
-            <figcaption className="figure-caption text-wrap text-light border rounded-7 rounded-top border-dark border-top-0 bg-black bg-opacity-25 pt-1 bookcaption">
-                <div style={{ fontSize: "1rem" }} className="d-flex flex-wrap">
-                    <span className="mx-2 mb-1">
-                        <strong>Título: </strong>
-                        {book.title}
-                    </span>
-                    <Break />
-                    <span className="text-start mx-2">
-                        <strong>Autor(a)(s): </strong>
-                        {book["author(s)"]}
-                    </span>
-                    <Break />
-                    <p className="mx-2">
-                        <strong>Arquivo: </strong>
-                        {book.extension.toUpperCase()}, {book.size}
-                    </p>
-                </div>
+            <figcaption
+                className="figure-caption text-wrap text-light border rounded-7 rounded-top border-dark
+            border-top-0 bg-black bg-opacity-25 pt-1 bookcaption flex-grow-1 d-flex flex-wrap"
+                style={{ fontSize: "1rem" }}
+            >
+                <span className="mx-2 mb-1">
+                    <strong>Título: </strong>
+                    {book.title}
+                </span>
+                <Break />
+                <span className="text-start mx-2">
+                    <strong>Autor(a)(s): </strong>
+                    {book["author(s)"]}
+                </span>
+                <Break />
+                <p className="mx-2">
+                    <strong>Arquivo: </strong>
+                    {book.extension.toUpperCase()}, {book.size}
+                </p>
+                <Break />
                 <Link
-                    className="d-flex justify-content-center"
+                    className="d-flex justify-content-center w-100 mb-2"
                     to={`/book/${book.topic}/${book.md5}`}
                     onClick={navigateToBook}
                 >
-                    <MDBBtn className="mb-1 btn btn-secondary btn-rounded">
+                    <MDBBtn className="btn btn-secondary btn-rounded">
                         Mais informações
                     </MDBBtn>
                 </Link>
