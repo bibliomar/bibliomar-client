@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
@@ -16,7 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": [],
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./node_modules/@types", "./typings"],
+
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

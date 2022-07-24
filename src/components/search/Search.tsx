@@ -14,7 +14,7 @@ type Book = {
     [key: string]: string;
 };
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /**
  * It takes a FormData object, and returns a string that can be used to make a request to the API

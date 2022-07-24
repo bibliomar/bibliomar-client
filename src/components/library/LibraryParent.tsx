@@ -82,7 +82,7 @@ export default function LibraryParent() {
                 <div className="">
                     <MDBProgress height={progress === 0 ? "0" : "2"}>
                         <MDBProgressBar
-                            style={{ zIndex: "10" }}
+                            style={{ zIndex: "10000" }}
                             width={progress}
                             valuemin={0}
                             valuemax={100}

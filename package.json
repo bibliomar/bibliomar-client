@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "date-fns": "^2.29.1",
     "eslint": "^8.17.0",
+    "file-to-array-buffer": "^1.0.0",
     "formik": "^2.2.9",
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
+    "localforage": "^1.10.0",
     "mdb-react-ui-kit": "^4.0.0",
     "prettier": "^2.7.0",
     "react": "^18.0.0",

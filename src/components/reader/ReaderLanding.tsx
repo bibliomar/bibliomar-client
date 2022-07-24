@@ -1,89 +1,66 @@
 import Navbar from "../general/Navbar";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 import { useEffect, useState } from "react";
+import localforage from "localforage";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { MDBBtn, MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
-import {
-    MDBBtn,
-    MDBModal,
-    MDBModalBody,
-    MDBModalContent,
-    MDBModalDialog,
-    MDBModalFooter,
-    MDBModalHeader,
-    MDBModalTitle,
-} from "mdb-react-ui-kit";
-import Break from "../general/Break";
-import { useNavigate } from "react-router-dom";
+import ReaderSendModal from "./ReaderSendModal";
+import ReaderDownloader from "./downloader/ReaderDownloader";
+import { Book } from "../search/Search";
+import ReaderSavedBooksScreen from "./saved/ReaderSavedBooksScreen";
+
+export interface PossibleReaderStates {
+    bookInfo: Book | undefined;
+    localInfo: File | undefined;
+    arrayBuffer: ArrayBuffer;
+}
+
+interface PossibleLandingStates {
+    bookInfo: Book | undefined;
+    url: string | undefined;
+}
 
 export default function ReaderLanding() {
-    const navigate = useNavigate();
-    const [modalToggle, setModalToggle] = useState(true);
-    const [bookFile, setBookFile] = useState<File | null>(null);
-    const toggleShow = () => setModalToggle(!modalToggle);
+    const location = useLocation();
 
-    const navigateToBook = () => {
-        if (bookFile != null) {
-            navigate(`${bookFile?.name}`, { state: { book: bookFile } });
-        }
-    };
+    let bookInfo: Book | undefined = undefined;
+    let url = null;
+    let locationState: PossibleLandingStates | any = location.state;
+
+    if (locationState != null) {
+        bookInfo = locationState.bookInfo;
+        url = locationState.url;
+    }
+    console.log(locationState);
+    const [modalToggle, setModalToggle] = useState(false);
+
+    const toggleShow = () => setModalToggle(!modalToggle);
 
     return (
         <div className="like-body bg-alt">
-            <div className="container">
-                <MDBModal
-                    show={modalToggle}
-                    setShow={setModalToggle}
-                    tabIndex="-1"
-                    staticBackdrop
-                >
-                    <MDBModalDialog>
-                        <MDBModalContent>
-                            <MDBModalHeader>
-                                <MDBModalTitle>Envie seu arquivo</MDBModalTitle>
-                            </MDBModalHeader>
-                            <MDBModalBody className="d-flex flex-wrap justify-content-center">
-                                <span className="text-center mb-2">
-                                    Para usar o leitor online do Bibliomar, você
-                                    deve fornecer seu próprio arquivo, em
-                                    formato <strong>epub</strong>.
-                                </span>
-                                <Break />
-                                <span className="text-center mb-4">
-                                    Você também pode arrastar seu arquivo para
-                                    cá.
-                                </span>
-                                <Break />
-
-                                <input
-                                    accept=".epub"
-                                    type="file"
-                                    onChange={(evt) => {
-                                        if (evt.target.files) {
-                                            const files: FileList =
-                                                evt.target.files;
-                                            setBookFile(files.item(0));
-                                        }
-                                    }}
-                                />
-                            </MDBModalBody>
-
-                            <MDBModalFooter>
-                                <MDBBtn
-                                    disabled={
-                                        bookFile == null ||
-                                        bookFile.type !== "application/epub+zip"
-                                    }
-                                    onClick={navigateToBook}
-                                >
-                                    Carregar
-                                </MDBBtn>
-                            </MDBModalFooter>
-                        </MDBModalContent>
-                    </MDBModalDialog>
-                </MDBModal>
+            <div className="container text-light">
+                <Portal node={document.getElementById("modal-root")}>
+                    <ReaderSendModal
+                        modalToggle={modalToggle}
+                        setModalToggle={setModalToggle}
+                    />
+                </Portal>
                 <Navbar />
-                <BlankLoadingSpinner />
-                <div className="d-flex justify-content-center"></div>
+                <div className="d-flex justify-content-end mt-4">
+                    <MDBBtn
+                        type="button"
+                        color="secondary"
+                        onClick={toggleShow}
+                    >
+                        Enviar arquivo
+                    </MDBBtn>
+                </div>
+                {url && bookInfo ? (
+                    <ReaderDownloader url={url} bookInfo={bookInfo} />
+                ) : (
+                    <ReaderSavedBooksScreen />
+                )}
             </div>
         </div>
     );

@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
 import BookDownload from "./BookDownload";
 import BookInfoError from "./BookInfoError";
 import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 type Book = {
     [key: string]: any;
@@ -30,6 +31,7 @@ export async function getMetadata(md5: string, topic: string) {
 
 export default function BookInfo(props: Props) {
     const bookInfo = props.bookInfo;
+    const navigate = useNavigate();
     const [description, setDescription] = useState<string>("Carregando");
     const [downloadLinks, setDownloadLinks] = useState<any>({});
     const [bookError, setBookError] = useState<boolean>(false);
@@ -104,9 +106,38 @@ export default function BookInfo(props: Props) {
             <div className="lead bg-black p-2 rounded-7 bg-opacity-75 text-light text-center mb-2 book-item">
                 <span className="fw-bold">Arquivo: </span>
                 <p>
-                    {bookInfo.extension ? bookInfo.extension.toUpperCase() : ""}
+                    {bookInfo.extension
+                        ? bookInfo.extension.toUpperCase()
+                        : null}
                     , {bookInfo["size"]}
                 </p>
+            </div>
+            <Break />
+            <div className="lead bg-black p-2 rounded-7 bg-opacity-75 text-light text-center mb-4 book-item">
+                <span className="fw-bold">Ler online: </span>
+                <br />
+                <MDBBtn
+                    type="button"
+                    onClick={() => {
+                        navigate("/reader", {
+                            state: {
+                                bookInfo: bookInfo,
+                                url: downloadLinks["IPFS.io"],
+                            },
+                        });
+                    }}
+                    disabled={
+                        bookInfo.extension !== "epub" || downloadLinks == null
+                    }
+                >
+                    Abrir no navegador
+                </MDBBtn>
+                <br />
+                {bookInfo.extension !== "epub" ? (
+                    <span className="text-muted" style={{ fontSize: "0.9rem" }}>
+                        Apenas arquivos EPUB são suportados.
+                    </span>
+                ) : null}
             </div>
             <Break />
             <div className="bg-black ps-3 py-2 bg-opacity-75 rounded-5 mb-2">
@@ -114,17 +145,17 @@ export default function BookInfo(props: Props) {
                     Object.entries(downloadLinks).length > 0 ? (
                         <BookDownload downloadLinks={downloadLinks} />
                     ) : (
-                        <div className="text-light">
-                            <div className="text-center mb-2">
+                        <>
+                            <div className="text-center mb-2 text-light">
                                 <span className="lead fw-bold">
                                     Download desse arquivo:
                                 </span>
                                 <Break />
                             </div>
-                            <span className="lead d-flex justify-content-center">
-                                Carregando...
-                            </span>
-                        </div>
+                            <div className="d-flex flex-row flex-wrap justify-content-center text-light">
+                                <span>Carregando...</span>
+                            </div>
+                        </>
                     )
                 ) : (
                     <BookInfoError mirror={fallbackLink} />
