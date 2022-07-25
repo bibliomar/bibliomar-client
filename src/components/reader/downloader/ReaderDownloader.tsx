@@ -6,8 +6,9 @@ import ReaderDownloaderMessage from "./ReaderDownloaderMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import fileToArrayBuffer from "file-to-array-buffer";
 import localforage from "localforage";
-import { Book } from "../../search/Search";
+import { Book } from "../../../helpers/types";
 import { useNavigate } from "react-router-dom";
+import ReaderBookOnList from "./ReaderBookOnList";
 
 // Files are saved as ArrayBuffer to be used by react-reader.
 export type SavedBooks = {
@@ -22,6 +23,7 @@ export type SavedBooks = {
 interface Props {
     url: string;
     bookInfo: Book;
+    savedBooks?: SavedBooks;
 }
 
 export const saveOnForage = async (
@@ -63,16 +65,35 @@ export const saveOnForage = async (
     await ls.setItem("saved-books", newSavedBooks);
 };
 
-export default function ({ url, bookInfo }: Props) {
+export default function ({ url, bookInfo, savedBooks }: Props) {
     const navigate = useNavigate();
     //Should be in KB.
     const [downloadProgress, setDownloadProgress] = useState<number>(0);
     const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
+    //-1 means that this book is not saved.
+    const [savedBookBufferIndex, setSavedBookBufferIndex] =
+        useState<number>(-1);
+
+    let savedBooksInfoArray: (Book | undefined)[] | any = undefined;
+    let savedBooksBufferArray: (ArrayBuffer | undefined)[] | any = undefined;
+
+    if (savedBooks) {
+        savedBooksBufferArray = [
+            savedBooks.lastBook,
+            savedBooks.secondBook,
+            savedBooks.firstBook,
+        ];
+        savedBooksInfoArray = [
+            savedBooks.lastBookInfo,
+            savedBooks.secondBookInfo,
+            savedBooks.firstBookInfo,
+        ];
+    }
 
     const downloadBook = async () => {
         const config: AxiosRequestConfig = {
-            url: "https://ipfs.infura.io/ipfs/bafykbzacea7vwmm274gk2prre23chcawl3hhhjfwnkfi37x7igjfgf4o42ewg?filename=Rothfuss%2C%20Patrick%20-%20O%20Nome%20do%20Vento.epub",
+            url: url,
             method: "GET",
             responseType: "blob",
             onDownloadProgress: (evt) => {
@@ -113,18 +134,49 @@ export default function ({ url, bookInfo }: Props) {
     };
 
     useEffect(() => {
-        downloadBook().then();
+        //For strict mode double mounting...
+        let ignore = false;
+        if (savedBooks != null) {
+            console.log(savedBooks);
+            console.log(savedBooksInfoArray);
+            if (savedBooksInfoArray.includes(bookInfo)) {
+                console.log("its true");
+                return setSavedBookBufferIndex(
+                    savedBooksInfoArray.indexOf(bookInfo)
+                );
+            }
+        }
+
+        /*
+        if (!ignore) {
+            downloadBook().then();
+        }
+
+         */
+
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            <BlankLoadingSpinner />
-            <Break />
-            <ReaderDownloaderMessage
-                downloadProgress={downloadProgress}
-                downloadStatus={downloadStatus}
-                downloadSize={downloadSize}
-            />
+            {savedBookBufferIndex === -1 ? (
+                <>
+                    <BlankLoadingSpinner />
+                    <Break />
+                    <ReaderDownloaderMessage
+                        downloadProgress={downloadProgress}
+                        downloadStatus={downloadStatus}
+                        downloadSize={downloadSize}
+                    />
+                </>
+            ) : (
+                <ReaderBookOnList
+                    bookInfo={bookInfo}
+                    arrayBuffer={savedBooksBufferArray[savedBookBufferIndex]}
+                />
+            )}
         </div>
     );
 }

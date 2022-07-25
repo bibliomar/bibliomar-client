@@ -13,8 +13,8 @@ export default function ({
     arrayBuffer,
 }: ReaderBookFigureProps) {
     return (
-        <div className={"mb-3 pt-2 border-white border-top flex-grow-1"}>
-            <div className="d-flex library-row">
+        <div className={"mb-3 pt-2 border-white border-top"}>
+            <div className="d-flex">
                 <div id="cover-div" className="me-2 library-figure-img">
                     {coverDone ? (
                         <></>

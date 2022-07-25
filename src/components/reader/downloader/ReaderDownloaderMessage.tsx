@@ -107,6 +107,13 @@ export default function ({
                             tente novamente.
                         </span>
                     );
+                case 504:
+                    return (
+                        <span>
+                            O servidor de download não está respondendo, tente
+                            novamente mais tarde.
+                        </span>
+                    );
             }
         }
     };

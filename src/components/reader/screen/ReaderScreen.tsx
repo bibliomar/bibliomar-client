@@ -3,7 +3,7 @@ import localforage from "localforage";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PossibleReaderStates } from "../ReaderLanding";
-import { Book } from "../../search/Search";
+import { Book } from "../../../helpers/types";
 
 type BookObjectType = {
     onlineIdentifier: string | undefined | null;

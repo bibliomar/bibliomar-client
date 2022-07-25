@@ -1,4 +1,4 @@
-import { Book } from "../../search/Search";
+import { Book } from "../../../helpers/types";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React from "react";
 
@@ -58,9 +58,13 @@ export default function ({
                     <strong>Título: </strong> <br />
                     {book.title}
                 </p>
-                <span className="">
+                <p className="">
                     <strong>Autor(a)(s): </strong> <br />
-                    {book["author(s)"]}
+                    {book.authors}
+                </p>
+                <span className="">
+                    <strong>Tamanho: </strong> <br />
+                    {book.size}
                 </span>
             </figcaption>
         </figure>

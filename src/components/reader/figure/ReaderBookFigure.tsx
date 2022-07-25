@@ -2,17 +2,19 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Book } from "../../search/Search";
+import { Book } from "../../../helpers/types";
 import { SavedBooks } from "../downloader/ReaderDownloader";
 import { Size, useWindowSize } from "../../general/useWindowSize";
 import ReaderBookFigureMobile from "./ReaderBookFigureMobile";
 import ReaderBookFigureDesktop from "./ReaderBookFigureDesktop";
+import ReaderBookFigureSpotlight from "./ReaderBookFigureSpotlight";
 
 interface Props {
     book: Book;
     timeout: number;
     itemNumber: number;
     arrayBuffer: ArrayBuffer;
+    spotlight?: boolean;
 }
 
 async function getCover(md5: string, itemNum: number) {
@@ -78,21 +80,29 @@ export default function (props: Props) {
 
     return (
         <>
-            {size.width! < 600 ? (
+            {props.spotlight ? (
+                <ReaderBookFigureSpotlight
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                    arrayBuffer={props.arrayBuffer}
+                />
+            ) : null}
+            {size.width! < 600 && !props.spotlight ? (
                 <ReaderBookFigureMobile
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
                     arrayBuffer={props.arrayBuffer}
                 />
-            ) : (
+            ) : size.width! > 600 && !props.spotlight ? (
                 <ReaderBookFigureDesktop
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
                     arrayBuffer={props.arrayBuffer}
                 />
-            )}
+            ) : null}
         </>
     );
 }

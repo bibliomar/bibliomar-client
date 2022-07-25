@@ -5,7 +5,7 @@ import { MDBBtn, MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import ReaderSendModal from "./ReaderSendModal";
 import ReaderDownloader, { SavedBooks } from "./downloader/ReaderDownloader";
-import { Book } from "../search/Search";
+import { Book } from "../../helpers/types";
 import ReaderSavedBooksScreen from "./saved/ReaderSavedBooksScreen";
 import localforage from "localforage";
 
@@ -70,7 +70,11 @@ export default function ReaderLanding() {
                     </MDBBtn>
                 </div>
                 {url && bookInfo ? (
-                    <ReaderDownloader url={url} bookInfo={bookInfo} />
+                    <ReaderDownloader
+                        url={url}
+                        bookInfo={bookInfo}
+                        savedBooks={savedBooks}
+                    />
                 ) : (
                     <ReaderSavedBooksScreen savedBooks={savedBooks} />
                 )}

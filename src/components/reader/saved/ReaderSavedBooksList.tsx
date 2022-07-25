@@ -2,9 +2,10 @@ import Break from "../../general/Break";
 import RecommendationBookFigure from "../../search/recommendations/RecommendationBookFigure";
 import BookFigure from "../../search/results/BookFigure";
 import { SavedBooks } from "../downloader/ReaderDownloader";
-import { Book } from "../../search/Search";
+import { Book } from "../../../helpers/types";
 import ReaderBookFigure from "../figure/ReaderBookFigure";
 import React from "react";
+import SmallLine from "../../general/SmallLine";
 
 export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
     const bookInfoArray = [
@@ -19,7 +20,7 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
     ];
 
     return (
-        <div className="bg-black p-2 rounded-3 bg-opacity-25 text-light recommendation-div">
+        <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div">
             <div className="d-flex flex-wrap justify-content-center mb-2">
                 <span className="fw-bold lead">Livros salvos</span>
             </div>
@@ -39,14 +40,14 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
                     }
                 })}
                 <Break />
-                <div className="border-white border-top flex-grow-1 p-1" />
+                <SmallLine flexGrow />
                 <Break />
                 <div
                     id="list-info-div"
                     className="text-muted text-center d-flex flex-wrap mb-2 justify-content-center"
                 >
                     <span>
-                        Nós salvamos três livros para você ler a qualquer
+                        Nós salvamos até três livros para você ler a qualquer
                         momento.
                     </span>
                     <Break />

@@ -96,6 +96,10 @@ abbr[title]:after
     width: 30vw;
 }
 
+.saved-list-div{
+    width: fit-content;
+}
+
 .library-actions-button{
     width: 40vw;
 }
@@ -141,6 +145,8 @@ abbr[title]:after
         width: fit-content;
     }
 
+
+
     .library-section-div{
         width: 84vw;
     }
@@ -175,6 +181,10 @@ abbr[title]:after
 
     .library-actions-button{
         width: 15vw;
+    }
+
+    .saved-list-div{
+        width: 70%;
     }
 
 }
