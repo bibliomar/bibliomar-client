@@ -13,7 +13,6 @@ import LibraryParent from "./components/library/LibraryParent";
 import LibraryLanding from "./components/library/main/LibraryLanding";
 import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedScreen";
 import ReaderLanding from "./components/reader/ReaderLanding";
-import Testing from "./components/Testing";
 import ReaderScreen from "./components/reader/screen/ReaderScreen";
 
 function App() {
@@ -75,7 +74,6 @@ function App() {
                 <Route index element={<ReaderLanding />} />
                 <Route path=":bookname" element={<ReaderScreen />} />
             </Route>
-            <Route path="/testing" element={<Testing />} />
         </Routes>
     );
 }
