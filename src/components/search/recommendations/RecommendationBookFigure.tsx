@@ -124,7 +124,7 @@ export default function RecommendationBookFigure(props: Props) {
                 </p>
                 <span className="">
                     <strong>Autor(a)(s): </strong> <br />
-                    {book["author(s)"]}
+                    {book["authors"]}
                 </span>
             </figcaption>
         </figure>

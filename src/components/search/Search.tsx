@@ -9,10 +9,7 @@ import LoadingScreen from "./loading/LoadingScreen";
 import axios, { AxiosResponse } from "axios";
 import Recommendations from "./recommendations/Recommendations";
 import Navbar from "../general/Navbar";
-
-type Book = {
-    [key: string]: string;
-};
+import { Book } from "../../helpers/types";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -60,6 +57,7 @@ function requestConstructor(form: FormData, category: string) {
  * @param {FormData} form - FormData - The form data from the search form.
  * @returns A list of books that meet the criteria.
  */
+
 function sciTechFiltering(results: Book[], form: FormData) {
     // This is kinda of an excerpt from /filter on Biblioterra API.
     let results_list: Book[] = [];
@@ -290,4 +288,3 @@ function Search() {
 }
 
 export default Search;
-export type { Book };

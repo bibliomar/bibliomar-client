@@ -7,10 +7,8 @@ import BookInfoError from "./BookInfoError";
 import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
 import { MDBBtn } from "mdb-react-ui-kit";
+import { Book } from "../../../helpers/types";
 
-type Book = {
-    [key: string]: any;
-};
 
 interface Props {
     md5: string;
@@ -86,7 +84,7 @@ export default function BookInfo(props: Props) {
             <Break />
             <div className="lead bg-black p-2 rounded-7 bg-opacity-75 text-light text-center mb-2 book-item">
                 <span className="fw-bold">Autor(a): </span>
-                <p>{bookInfo["author(s)"]}</p>
+                <p>{bookInfo["authors"]}</p>
             </div>
             <Break />
             <div className="lead bg-black p-2 rounded-7 bg-opacity-75 text-light text-center mb-2 book-item">

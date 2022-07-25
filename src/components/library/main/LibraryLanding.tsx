@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import LibrarySection from "../LibrarySection";
-import { Book } from "../../search/Search";
 import Break from "../../general/Break";
 import LibraryNavbar from "../LibraryNavbar";
 import {
@@ -15,6 +14,7 @@ import {
     SelectedBooksContext,
     SelectedContext,
 } from "../utils/RelevantContext";
+import { Book } from "../../../helpers/types";
 
 export default function LibraryLanding() {
     const [editMode, setEditMode] = useState<boolean>(false);

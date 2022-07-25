@@ -1,7 +1,7 @@
 import { MDBCheckbox, MDBIcon } from "mdb-react-ui-kit";
 import React, { useContext, useState } from "react";
 import { EditModeContext } from "./utils/RelevantContext";
-import { Book } from "../search/Search";
+import { Book } from "../../helpers/types";
 
 interface Props {
     checked: boolean;
