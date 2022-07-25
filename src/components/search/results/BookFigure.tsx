@@ -133,7 +133,7 @@ export default function BookFigure(props: Props) {
                     <Break />
                     <span className="mx-2 mb-1">
                         <strong>Autor(a)(s): </strong>
-                        {book["author(s)"]}
+                        {book["authors"]}
                     </span>
                     <Break />
                     <p className="mx-2 mb-2">

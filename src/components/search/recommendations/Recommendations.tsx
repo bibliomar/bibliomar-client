@@ -8,7 +8,7 @@ interface Props {
 // Hard-coded stuff, pretty bad haha
 const recommendations = [
     {
-        "author(s)": "Daniel, Keyes",
+        authors: "Daniel, Keyes",
         series: "",
         title: "Flores Para Algernon",
         language: "Portuguese",
@@ -22,7 +22,7 @@ const recommendations = [
         size: "269 Kb",
     },
     {
-        "author(s)": "Rothfuss, Patrick",
+        authors: "Rothfuss, Patrick",
         series: "",
         title: "O Nome do Vento",
         language: "Portuguese",
@@ -36,7 +36,7 @@ const recommendations = [
         size: "1.06 Mb",
     },
     {
-        "author(s)": "Amado, Jorge",
+        authors: "Amado, Jorge",
         series: "",
         title: "Seara vermelha",
         language: "Portuguese",
@@ -50,7 +50,7 @@ const recommendations = [
         size: "780 Kb",
     },
     {
-        "author(s)": "Sanderson, Brandon",
+        authors: "Sanderson, Brandon",
         series: "Mistborn – Nascidos da Bruma 1",
         title: "O Império Final",
         language: "Portuguese",

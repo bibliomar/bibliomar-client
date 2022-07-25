@@ -1,10 +1,10 @@
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Break from "../../../general/Break";
-import { Book } from "../../../search/Search";
 import axios from "axios";
 import { useState } from "react";
 import BookLibraryButton from "./BookLibraryButton";
+import { Book } from "../../../../helpers/types";
 
 interface Props {
     bookInfo: Book;

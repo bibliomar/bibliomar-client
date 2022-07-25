@@ -1,10 +1,10 @@
-import { Book } from "../search/Search";
 import React, { useEffect, useState } from "react";
 import Break from "../general/Break";
 import { getMetadata } from "../book/BookScreen/BookInfo";
 import BookDownload from "../book/BookScreen/BookDownload";
 import BookInfoError from "../book/BookScreen/BookInfoError";
 import { Size, useWindowSize } from "../general/useWindowSize";
+import { Book } from "../../helpers/types";
 
 interface Props {
     coverUrl: string;
