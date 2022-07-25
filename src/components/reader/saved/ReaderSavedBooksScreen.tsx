@@ -5,10 +5,11 @@ import ReaderSavedBooksList from "./ReaderSavedBooksList";
 import ReaderEmptyList from "./ReaderEmptyList";
 import { useEffect, useState } from "react";
 
-export default function () {
-    const location = useLocation();
-    const [savedBooks, setSavedBooks] = useState<SavedBooks | null>(null);
+interface Props {
+    savedBooks?: SavedBooks;
+}
 
+export default function ({ savedBooks }: Props) {
     const renderBasedOnSaved = () => {
         if (savedBooks! != null) {
             // If at least one element is populated on SavedBooks.
@@ -27,14 +28,6 @@ export default function () {
             return <ReaderEmptyList />;
         }
     };
-    useEffect(() => {
-        const ls = localforage.createInstance({
-            driver: localforage.INDEXEDDB,
-        });
-        ls.getItem<SavedBooks | null>("saved-books").then((r) => {
-            setSavedBooks(r);
-        });
-    }, []);
     return (
         <div className="d-flex flex-wrap justify-content-center">
             {renderBasedOnSaved()}

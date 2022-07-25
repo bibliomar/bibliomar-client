@@ -3,7 +3,8 @@ import RecommendationBookFigure from "../../search/recommendations/Recommendatio
 import BookFigure from "../../search/results/BookFigure";
 import { SavedBooks } from "../downloader/ReaderDownloader";
 import { Book } from "../../search/Search";
-import ReaderBookFigure from "../ReaderBookFigure";
+import ReaderBookFigure from "../figure/ReaderBookFigure";
+import React from "react";
 
 export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
     const bookInfoArray = [
@@ -37,6 +38,24 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
                         );
                     }
                 })}
+                <Break />
+                <div className="border-white border-top flex-grow-1 p-1" />
+                <Break />
+                <div
+                    id="list-info-div"
+                    className="text-muted text-center d-flex flex-wrap mb-2 justify-content-center"
+                >
+                    <span>
+                        Nós salvamos três livros para você ler a qualquer
+                        momento.
+                    </span>
+                    <Break />
+                    <span className="mt-2">
+                        <strong>PS:</strong> Esses livros são salvos no{" "}
+                        <strong>seu</strong> dispositivo. Não temos acesso a
+                        seus livros, e nem monetizamos seus dados.
+                    </span>
+                </div>
             </div>
         </div>
     );

@@ -117,6 +117,7 @@ export default function BookInfo(props: Props) {
                 <span className="fw-bold">Ler online: </span>
                 <br />
                 <MDBBtn
+                    className="mb-3"
                     type="button"
                     onClick={() => {
                         navigate("/reader", {

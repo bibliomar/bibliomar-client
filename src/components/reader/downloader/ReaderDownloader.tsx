@@ -9,11 +9,6 @@ import localforage from "localforage";
 import { Book } from "../../search/Search";
 import { useNavigate } from "react-router-dom";
 
-interface Props {
-    url: string;
-    bookInfo: Book;
-}
-
 // Files are saved as ArrayBuffer to be used by react-reader.
 export type SavedBooks = {
     lastBook: ArrayBuffer | null;
@@ -23,6 +18,11 @@ export type SavedBooks = {
     firstBook: ArrayBuffer | null;
     firstBookInfo: Book | null;
 };
+
+interface Props {
+    url: string;
+    bookInfo: Book;
+}
 
 export const saveOnForage = async (
     arrayBuffer: ArrayBuffer,

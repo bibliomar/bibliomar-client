@@ -12,7 +12,6 @@ type BookObjectType = {
 };
 
 export default function () {
-    const navigate = useNavigate();
     const location = useLocation();
     const params = useParams();
     // @ts-ignore
@@ -27,8 +26,6 @@ export default function () {
         bookInfo = readerState.bookInfo;
     }
 
-    console.log(readerState);
-
     const defaultBookObject: BookObjectType = {
         onlineIdentifier: bookInfo ? bookInfo!.title : undefined,
         localIdentifier: localInfo ? localInfo?.name : undefined,
@@ -37,7 +34,11 @@ export default function () {
 
     const [bookObject, setBookObject] =
         useState<BookObjectType>(defaultBookObject);
-    console.log(bookObject);
+    /*
+    This state is pretty important, because of the way that react-reader works, everytime you render the page (components updating, etc.)
+    the handleChange function gets triggered. What this means is that, if you have a epubcifi saved, in say, localStorage, and you define handleChange
+    to change it every time the user changes pages (which is not 100% ideal), you lose everything that was saved before handleChange was called.
+     */
     const [initialLoad, setInitialLoad] = useState<boolean>(false);
 
     const locationBasedOnCache = () => {
@@ -54,6 +55,7 @@ export default function () {
 
     const handleChange = (epubcifi: any) => {
         if (initialLoad) {
+            //After the initial page load, we can save the user's progress normally.
             if (bookObject.onlineIdentifier != null) {
                 localStorage.setItem(
                     `${bookObject.onlineIdentifier}-page`,
@@ -67,22 +69,18 @@ export default function () {
             }
             setCurrentPage(locationBasedOnCache());
         } else {
+            // This function is also called on the very first render, so we just need to set the initial page here.
             setCurrentPage(locationBasedOnCache());
             setInitialLoad(true);
         }
     };
 
-    /*
-    For some reason, using useEffect to change the page on initial render breaks stuff...
-
     useEffect(() => {
-        setCurrentPage(locationBasedOnCache());
-        setInitialLoad(true);
-    }, []);
+        /*
+         This is a function that saves the current book as "last-book", so that the user can resume it's progress when they leave the website
+         and come back at the same URL.
+         */
 
-     */
-
-    useEffect(() => {
         const ls = localforage.createInstance({
             driver: localforage.INDEXEDDB,
         });
@@ -109,6 +107,7 @@ export default function () {
                         localIdentifier: r.localIdentifier,
                         arrayBuffer: r.arrayBuffer,
                     };
+                    //Sets initialLoad to a blank state.
                     setInitialLoad(false);
                     setBookObject(fallbackBookObject);
                 }

@@ -4,9 +4,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MDBBtn, MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import ReaderSendModal from "./ReaderSendModal";
-import ReaderDownloader from "./downloader/ReaderDownloader";
+import ReaderDownloader, { SavedBooks } from "./downloader/ReaderDownloader";
 import { Book } from "../search/Search";
 import ReaderSavedBooksScreen from "./saved/ReaderSavedBooksScreen";
+import localforage from "localforage";
 
 export interface PossibleReaderStates {
     bookInfo: Book | undefined;
@@ -21,6 +22,9 @@ interface PossibleLandingStates {
 
 export default function ReaderLanding() {
     const location = useLocation();
+    const [savedBooks, setSavedBooks] = useState<SavedBooks | undefined>(
+        undefined
+    );
 
     let bookInfo: Book | undefined = undefined;
     let url = null;
@@ -30,7 +34,18 @@ export default function ReaderLanding() {
         bookInfo = locationState.bookInfo;
         url = locationState.url;
     }
-    console.log(locationState);
+
+    useEffect(() => {
+        const ls = localforage.createInstance({
+            driver: localforage.INDEXEDDB,
+        });
+        ls.getItem<SavedBooks | null>("saved-books").then((r) => {
+            if (r != null) {
+                setSavedBooks(r);
+            }
+        });
+    }, []);
+
     const [modalToggle, setModalToggle] = useState(false);
 
     const toggleShow = () => setModalToggle(!modalToggle);
@@ -57,7 +72,7 @@ export default function ReaderLanding() {
                 {url && bookInfo ? (
                     <ReaderDownloader url={url} bookInfo={bookInfo} />
                 ) : (
-                    <ReaderSavedBooksScreen />
+                    <ReaderSavedBooksScreen savedBooks={savedBooks} />
                 )}
             </div>
         </div>

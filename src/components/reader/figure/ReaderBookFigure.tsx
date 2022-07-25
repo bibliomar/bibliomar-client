@@ -2,8 +2,11 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Book } from "../search/Search";
-import { SavedBooks } from "./downloader/ReaderDownloader";
+import { Book } from "../../search/Search";
+import { SavedBooks } from "../downloader/ReaderDownloader";
+import { Size, useWindowSize } from "../../general/useWindowSize";
+import ReaderBookFigureMobile from "./ReaderBookFigureMobile";
+import ReaderBookFigureDesktop from "./ReaderBookFigureDesktop";
 
 interface Props {
     book: Book;
@@ -27,7 +30,10 @@ async function getCover(md5: string, itemNum: number) {
             cover: request?.data,
         };
 
-        localStorage.setItem(`${itemNum}-cover`, JSON.stringify(thisCoverInfo));
+        localStorage.setItem(
+            `${itemNum}-reader-cover`,
+            JSON.stringify(thisCoverInfo)
+        );
         return request?.data;
     }
     return null;
@@ -35,18 +41,17 @@ async function getCover(md5: string, itemNum: number) {
 
 export default function (props: Props) {
     const book: Book = props.book;
-
     let navigate = useNavigate();
+    const size: Size = useWindowSize();
     const [cover, setCover] = useState<string>(
         "https://libgen.rocks/img/blank.png"
     );
-
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
     useEffect(() => {
         let coverSetTimeout: number;
         let possibleCachedCover = localStorage.getItem(
-            `${props.itemNumber}-cover`
+            `${props.itemNumber}-reader-cover`
         ) as string;
 
         if (possibleCachedCover) {
@@ -72,53 +77,22 @@ export default function (props: Props) {
     }, []);
 
     return (
-        <figure className="figure d-flex flex-column">
-            {coverDone ? (
-                <></>
+        <>
+            {size.width! < 600 ? (
+                <ReaderBookFigureMobile
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                    arrayBuffer={props.arrayBuffer}
+                />
             ) : (
-                <MDBSpinner
-                    style={{
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        marginTop: "1vh",
-                        marginLeft: "1vh",
-                        zIndex: "3",
-                    }}
-                    color="dark"
-                    className="position-absolute"
+                <ReaderBookFigureDesktop
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                    arrayBuffer={props.arrayBuffer}
                 />
             )}
-
-            <MDBRipple
-                className="bg-image hover-zoom shadow-1-strong figure-img recommendation"
-                rippleTag="div"
-                rippleColor="light"
-            >
-                <img className="w-100 h-100" src={cover} alt="Capa do livro" />
-
-                <a href={`/search?category=${book.topic}&q=${book.title}`}>
-                    <div
-                        className="mask"
-                        style={{
-                            backgroundColor: "rgba(0,0,0,0.0)",
-                        }}
-                    />
-                </a>
-            </MDBRipple>
-
-            <figcaption
-                className="figure-caption text-wrap text-light border rounded-7
-                rounded-top border-dark border-top-0 bg-black bg-opacity-50 p-2 recommendation-caption flex-grow-1"
-            >
-                <p className="">
-                    <strong>Título: </strong> <br />
-                    {book.title}
-                </p>
-                <span className="">
-                    <strong>Autor(a)(s): </strong> <br />
-                    {book["author(s)"]}
-                </span>
-            </figcaption>
-        </figure>
+        </>
     );
 }
