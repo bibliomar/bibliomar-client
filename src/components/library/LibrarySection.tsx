@@ -1,9 +1,9 @@
-import { Book } from "../search/Search";
 import Break from "../general/Break";
 import RecommendationBookFigure from "../search/recommendations/RecommendationBookFigure";
 import LibraryBookFigure from "./LibraryBookFigure";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Book } from "../../helpers/types";
 
 interface Props {
     expanded?: boolean;

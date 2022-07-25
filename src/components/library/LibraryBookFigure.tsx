@@ -11,11 +11,11 @@ import { MDBBtn, MDBIcon, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import { useNavigate } from "react-router-dom";
 import Break from "../general/Break";
-import { Book } from "../search/Search";
 import LibraryBookModal from "./LibraryBookModal";
 import { Size, useWindowSize } from "../general/useWindowSize";
 import LibraryBookIcon from "./LibraryBookIcon";
 import { EditModeContext, SelectedBooksContext } from "./utils/RelevantContext";
+import { Book } from "../../helpers/types";
 
 interface Props {
     book: Book;

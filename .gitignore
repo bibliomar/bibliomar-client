@@ -26,3 +26,4 @@ dev-dist
 
 # Local Netlify folder
 .netlify
+src/components/Testing.tsx
