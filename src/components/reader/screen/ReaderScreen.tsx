@@ -2,8 +2,8 @@ import { ReactReader } from "react-reader";
 import localforage from "localforage";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { PossibleReaderStates } from "../ReaderLanding";
-import { Book } from "../../../helpers/types";
+import { Book } from "../../../helpers/generalTypes";
+import { PossibleReaderScreenStates } from "../helpers/readerTypes";
 
 type BookObjectType = {
     onlineIdentifier: string | undefined | null;
@@ -15,7 +15,7 @@ export default function () {
     const location = useLocation();
     const params = useParams();
     // @ts-ignore
-    const readerState: PossibleReaderStates = location.state;
+    const readerState: PossibleReaderScreenStates = location.state;
     let arrayBuffer: ArrayBuffer | undefined = undefined;
     let localInfo: File | undefined = undefined;
     let bookInfo: Book | undefined = undefined;

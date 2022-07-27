@@ -14,7 +14,7 @@ import {
     SelectedBooksContext,
     SelectedContext,
 } from "../utils/RelevantContext";
-import { Book } from "../../../helpers/types";
+import { Book } from "../../../helpers/generalTypes";
 
 export default function LibraryLanding() {
     const [editMode, setEditMode] = useState<boolean>(false);

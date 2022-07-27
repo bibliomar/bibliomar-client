@@ -3,7 +3,7 @@ import RecommendationBookFigure from "../search/recommendations/RecommendationBo
 import LibraryBookFigure from "./LibraryBookFigure";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Book } from "../../helpers/types";
+import { Book } from "../../helpers/generalTypes";
 
 interface Props {
     expanded?: boolean;

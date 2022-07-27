@@ -3,16 +3,13 @@ import BookCover from "./BookCover";
 import { useEffect, useRef, useState } from "react";
 import BookInfo from "./BookInfo";
 import BookFooter from "./BookFooter";
-import Navbar from "../../general/Navbar";
+import Navbar from "../../general/Navbar/Navbar";
 import Break from "../../general/Break";
-
-type Book = {
-    [key: string]: string;
-};
+import { Book } from "../../../helpers/generalTypes";
 
 export default function BookScreen() {
     let navigate = useNavigate();
-    const [bookInfo, setBookInfo] = useState<Book>({});
+    const [bookInfo, setBookInfo] = useState<Book | undefined>(undefined);
     const topic = useOutletContext() as string;
     const params = useParams();
     const md5 = params.md5;
@@ -29,24 +26,23 @@ export default function BookScreen() {
         setBookInfo(JSON.parse(bookInfoStr!));
     }, []);
 
-    console.log(topic, params);
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            <section className="ms-lg-5 w-75">
-                <div className="row">
-                    {Object.entries(bookInfo).length > 0 ? (
-                        <>
-                            <BookCover md5={md5!} />
+            {bookInfo != undefined && md5 != null ? (
+                <>
+                    <section className="ms-lg-5 w-75">
+                        <div className="row">
+                            <BookCover md5={md5} />
                             <BookInfo
-                                md5={md5!}
+                                md5={md5}
                                 topic={topic}
                                 bookInfo={bookInfo}
                             />
-                        </>
-                    ) : null}
-                </div>
-            </section>
-            <BookFooter md5={md5!} />
+                        </div>
+                    </section>
+                    <BookFooter md5={md5} />
+                </>
+            ) : null}
         </div>
     );
 }

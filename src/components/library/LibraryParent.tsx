@@ -1,9 +1,9 @@
-import Navbar from "../general/Navbar";
+import Navbar from "../general/Navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import jwt_decode, { JwtPayload } from "jwt-decode";
-import { MDBProgress, MDBProgressBar, MDBSpinner } from "mdb-react-ui-kit";
+import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 
 export default function LibraryParent() {

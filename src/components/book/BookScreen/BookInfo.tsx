@@ -7,8 +7,11 @@ import BookInfoError from "./BookInfoError";
 import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { Book } from "../../../helpers/types";
-
+import { Book, downloadLinks } from "../../../helpers/generalTypes";
+import {
+    PossibleReaderLandingStates,
+    PossibleReaderScreenStates,
+} from "../../reader/helpers/readerTypes";
 
 interface Props {
     md5: string;
@@ -27,13 +30,17 @@ export async function getMetadata(md5: string, topic: string) {
     }
 }
 
+// Here we use MDBootstrap col- classes to make the bookInfo stay in the right half of the screen.
 export default function BookInfo(props: Props) {
     const bookInfo = props.bookInfo;
     const navigate = useNavigate();
     const [description, setDescription] = useState<string>("Carregando");
-    const [downloadLinks, setDownloadLinks] = useState<any>({});
+    const [downloadLinks, setDownloadLinks] = useState<
+        downloadLinks | undefined
+    >(undefined);
     const [bookError, setBookError] = useState<boolean>(false);
     const [userLogged, setUserLogged] = useState<boolean>(false);
+
     let fallbackLink: string | undefined = undefined;
     if (bookInfo.hasOwnProperty("mirror1")) {
         fallbackLink = bookInfo["mirror1"];
@@ -118,15 +125,23 @@ export default function BookInfo(props: Props) {
                     className="mb-3"
                     type="button"
                     onClick={() => {
-                        navigate("/reader", {
-                            state: {
-                                bookInfo: bookInfo,
-                                url: downloadLinks["IPFS.io"],
-                            },
-                        });
+                        if (downloadLinks) {
+                            // State to be used by ReaderLanding on /reader
+                            let readerLandingState: PossibleReaderLandingStates =
+                                {
+                                    bookInfo: bookInfo,
+                                    url: downloadLinks["IPFS.io"],
+                                    secondaryUrl: downloadLinks.Pinata,
+                                };
+
+                            navigate("/reader", {
+                                state: readerLandingState,
+                            });
+                        }
                     }}
                     disabled={
-                        bookInfo.extension !== "epub" || downloadLinks == null
+                        bookInfo.extension !== "epub" ||
+                        downloadLinks == undefined
                     }
                 >
                     Abrir no navegador
@@ -141,7 +156,7 @@ export default function BookInfo(props: Props) {
             <Break />
             <div className="bg-black ps-3 py-2 bg-opacity-75 rounded-5 mb-2">
                 {!bookError ? (
-                    Object.entries(downloadLinks).length > 0 ? (
+                    downloadLinks != undefined ? (
                         <BookDownload downloadLinks={downloadLinks} />
                     ) : (
                         <>

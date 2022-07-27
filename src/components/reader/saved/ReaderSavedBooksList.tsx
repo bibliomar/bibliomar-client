@@ -1,11 +1,11 @@
 import Break from "../../general/Break";
 import RecommendationBookFigure from "../../search/recommendations/RecommendationBookFigure";
 import BookFigure from "../../search/results/BookFigure";
-import { SavedBooks } from "../downloader/ReaderDownloader";
-import { Book } from "../../../helpers/types";
+import { Book } from "../../../helpers/generalTypes";
 import ReaderBookFigure from "../figure/ReaderBookFigure";
 import React from "react";
 import SmallLine from "../../general/SmallLine";
+import { SavedBooks } from "../helpers/readerTypes";
 
 export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
     const bookInfoArray = [

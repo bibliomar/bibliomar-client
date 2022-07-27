@@ -21,6 +21,7 @@ async function getCover(md5: string) {
     return null;
 }
 
+// Here we use MDBootstrap col- classes to make the cover stay in the left half of the screen.
 export default function BookCover(props: Props) {
     const [cover, setCover] = useState<string>(
         "https://libgen.rocks/img/blank.png"

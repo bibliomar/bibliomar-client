@@ -21,7 +21,12 @@ interface Props {
     setIsUserLoggedContext?: any;
 }
 
-export default function Navbar(props: Props) {
+/**
+ * @summary - The default navbar used in all of Bibliomar.
+ * @param activeItem -
+ * @param setIsUserLoggedContext -
+ */
+export default function Navbar({ activeItem, setIsUserLoggedContext }: Props) {
     const [showNav, setShowNav] = useState<boolean>(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -36,7 +41,7 @@ export default function Navbar(props: Props) {
         <div className="bg-black bg-opacity-25">
             <MDBNavbar expand="lg" dark>
                 <MDBContainer fluid>
-                    <MDBNavbarBrand>Bibliomar</MDBNavbarBrand>
+                    <MDBNavbarBrand href="/search">Bibliomar</MDBNavbarBrand>
                     <MDBNavbarToggler
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
@@ -50,7 +55,7 @@ export default function Navbar(props: Props) {
                         <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
                             <MDBNavbarItem>
                                 <MDBNavbarLink
-                                    active={props.activeItem === "home"}
+                                    active={activeItem === "home"}
                                     href="/search"
                                 >
                                     Inicio
@@ -58,7 +63,7 @@ export default function Navbar(props: Props) {
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink
-                                    active={props.activeItem === "library"}
+                                    active={activeItem === "library"}
                                     href="/user/login"
                                 >
                                     Biblioteca
@@ -66,7 +71,7 @@ export default function Navbar(props: Props) {
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink
-                                    active={props.activeItem === "reader"}
+                                    active={activeItem === "reader"}
                                     href="/reader"
                                 >
                                     Leitor
@@ -93,9 +98,7 @@ export default function Navbar(props: Props) {
                                 </>
                             ) : null}
                             <NavbarUser
-                                setIsUserLoggedContext={
-                                    props.setIsUserLoggedContext
-                                }
+                                setIsUserLoggedContext={setIsUserLoggedContext}
                             />
                         </MDBNavbarNav>
                     </MDBCollapse>

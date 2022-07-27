@@ -4,7 +4,7 @@ import { getMetadata } from "../book/BookScreen/BookInfo";
 import BookDownload from "../book/BookScreen/BookDownload";
 import BookInfoError from "../book/BookScreen/BookInfoError";
 import { Size, useWindowSize } from "../general/useWindowSize";
-import { Book } from "../../helpers/types";
+import { Book } from "../../helpers/generalTypes";
 
 interface Props {
     coverUrl: string;

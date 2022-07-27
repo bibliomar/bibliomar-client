@@ -1,9 +1,9 @@
 import localforage from "localforage";
-import { SavedBooks } from "../downloader/ReaderDownloader";
 import { useLocation } from "react-router-dom";
 import ReaderSavedBooksList from "./ReaderSavedBooksList";
 import ReaderEmptyList from "./ReaderEmptyList";
 import { useEffect, useState } from "react";
+import { SavedBooks } from "../helpers/readerTypes";
 
 interface Props {
     savedBooks?: SavedBooks;

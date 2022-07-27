@@ -1,5 +1,5 @@
 import React from "react";
-import { Book } from "../../../helpers/types";
+import { Book } from "../../../helpers/generalTypes";
 
 interface SelectedContext {
     selectedBooks: Book[];

@@ -1,13 +1,12 @@
-import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
-import React, { useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Book } from "../../../helpers/types";
-import { SavedBooks } from "../downloader/ReaderDownloader";
+import { Book } from "../../../helpers/generalTypes";
 import { Size, useWindowSize } from "../../general/useWindowSize";
 import ReaderBookFigureMobile from "./ReaderBookFigureMobile";
 import ReaderBookFigureDesktop from "./ReaderBookFigureDesktop";
 import ReaderBookFigureSpotlight from "./ReaderBookFigureSpotlight";
+import { PossibleReaderScreenStates } from "../helpers/readerTypes";
 
 interface Props {
     book: Book;
@@ -50,6 +49,25 @@ export default function (props: Props) {
     );
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
+    /**
+     * It's a function that takes an event, and then navigates to the reader screen with the book information and the
+     * arrayBuffer
+     * @param evt - The event that triggered the function.
+     */
+    const onClickHandler: MouseEventHandler = (evt) => {
+        evt.preventDefault();
+        // This is the state to be passed to /reader/:bookname, which is the actual reader.
+        const readerScreenState: PossibleReaderScreenStates = {
+            localInfo: undefined,
+            bookInfo: book,
+            arrayBuffer: props.arrayBuffer,
+        };
+
+        navigate(`${book.title}`, {
+            state: readerScreenState,
+        });
+    };
+
     useEffect(() => {
         let coverSetTimeout: number;
         let possibleCachedCover = localStorage.getItem(
@@ -85,7 +103,7 @@ export default function (props: Props) {
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
-                    arrayBuffer={props.arrayBuffer}
+                    onClickFunction={onClickHandler}
                 />
             ) : null}
             {size.width! < 600 && !props.spotlight ? (
@@ -93,14 +111,14 @@ export default function (props: Props) {
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
-                    arrayBuffer={props.arrayBuffer}
+                    onClickFunction={onClickHandler}
                 />
             ) : size.width! > 600 && !props.spotlight ? (
                 <ReaderBookFigureDesktop
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
-                    arrayBuffer={props.arrayBuffer}
+                    onClickFunction={onClickHandler}
                 />
             ) : null}
         </>

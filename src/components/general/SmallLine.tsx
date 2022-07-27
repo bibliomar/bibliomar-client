@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Props {
-    flexGrow: boolean;
+    flexGrow?: boolean;
 }
 
 export default function ({ flexGrow }: Props) {

@@ -1,16 +1,16 @@
-import { ReaderBookFigureProps } from "./ReaderBookFigureDesktop";
 import { Portal } from "react-portal";
 import LibraryBookModal from "../../library/LibraryBookModal";
 import LibraryBookIcon from "../../library/LibraryBookIcon";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import React from "react";
+import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
 export default function ({
     book,
     cover,
     coverDone,
-    arrayBuffer,
+    onClickFunction,
 }: ReaderBookFigureProps) {
     return (
         <div className={"mb-3 pt-2 border-white border-top flex-grow-1"}>
@@ -43,7 +43,7 @@ export default function ({
                             className="w-100"
                         />
 
-                        <a>
+                        <a onClick={onClickFunction}>
                             <div
                                 className="mask"
                                 style={{

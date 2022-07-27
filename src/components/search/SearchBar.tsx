@@ -57,7 +57,7 @@ export default function SearchBar({ categoryContext }) {
 
     async function handleSearch(input: HTMLInputElement) {
         setQuery(input.value);
-        if (query.length > 3) {
+        if (query.length > 2) {
             fuse = new Fuse(indexes, { keys: ["title"] });
             let search = fuse.search(input.value);
             setRelevantIndexes(search);

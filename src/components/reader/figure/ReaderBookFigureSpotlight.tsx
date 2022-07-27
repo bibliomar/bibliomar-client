@@ -1,21 +1,24 @@
-import { ReaderBookFigureProps } from "./ReaderBookFigureDesktop";
 import { Portal } from "react-portal";
 import LibraryBookModal from "../../library/LibraryBookModal";
 import LibraryBookIcon from "../../library/LibraryBookIcon";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import React from "react";
+import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
 export default function ({
     book,
     cover,
     coverDone,
-    arrayBuffer,
+    onClickFunction,
 }: ReaderBookFigureProps) {
     return (
-        <div className={"mb-3 pt-2 border-white border-top"}>
-            <div className="d-flex">
-                <div id="cover-div" className="me-2 library-figure-img">
+        <div className="mb-3 p-3 rounded-5 bg-dark bg-opacity-50">
+            <div className="d-flex w-75">
+                <div
+                    id="cover-div"
+                    className="me-2 reader-spotlight-figure-img"
+                >
                     {coverDone ? (
                         <></>
                     ) : (
@@ -43,7 +46,7 @@ export default function ({
                             className="w-100"
                         />
 
-                        <a>
+                        <a onClick={onClickFunction}>
                             <div
                                 className="mask"
                                 style={{
@@ -53,15 +56,19 @@ export default function ({
                         </a>
                     </MDBRipple>
                 </div>
-                <div id="info-div" className="">
-                    <span className="overflow-hidden">{book.title}</span>
-
-                    <Break />
-                    <span className="fst-italic" style={{ fontSize: "0.8rem" }}>
+                <div id="info-div" className="ms-1">
+                    <p className="">
+                        <strong>Título: </strong> <br />
+                        {book.title}
+                    </p>
+                    <p className="">
+                        <strong>Autor(a): </strong> <br />
                         {book.authors}
+                    </p>
+                    <span className="">
+                        <strong>Tamanho: </strong> <br />
+                        {book.size}
                     </span>
-                    <Break />
-                    <span className="fst-italic text-muted">{book.size}</span>
                 </div>
             </div>
         </div>

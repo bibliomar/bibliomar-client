@@ -4,7 +4,7 @@ import Break from "../../../general/Break";
 import axios from "axios";
 import { useState } from "react";
 import BookLibraryButton from "./BookLibraryButton";
-import { Book } from "../../../../helpers/types";
+import { Book } from "../../../../helpers/generalTypes";
 
 interface Props {
     bookInfo: Book;

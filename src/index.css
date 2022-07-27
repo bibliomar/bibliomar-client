@@ -76,6 +76,10 @@ abbr[title]:after
     height: auto;
 }
 
+.reader-spotlight-figure-img{
+    min-width: 80%;
+}
+
 .library-row:hover{
     background-color: #1266f1;
 }
@@ -154,6 +158,10 @@ abbr[title]:after
     .library-figure-img{
         width: 5vw;
         height: auto;
+    }
+
+    .reader-spotlight-figure-img{
+        min-width: 70%;
     }
 
     .bookcaption {

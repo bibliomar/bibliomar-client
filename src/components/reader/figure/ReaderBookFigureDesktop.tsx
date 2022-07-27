@@ -1,19 +1,12 @@
-import { Book } from "../../../helpers/types";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React from "react";
-
-export interface ReaderBookFigureProps {
-    book: Book;
-    cover: string;
-    coverDone: boolean;
-    arrayBuffer: ArrayBuffer;
-}
+import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
 export default function ({
     book,
     cover,
     coverDone,
-    arrayBuffer,
+    onClickFunction,
 }: ReaderBookFigureProps) {
     return (
         <figure className="figure d-flex flex-column">
@@ -40,7 +33,7 @@ export default function ({
             >
                 <img className="w-100 h-100" src={cover} alt="Capa do livro" />
 
-                <a>
+                <a onClick={onClickFunction}>
                     <div
                         className="mask"
                         style={{

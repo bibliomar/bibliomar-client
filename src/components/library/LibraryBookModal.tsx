@@ -8,16 +8,14 @@ import {
     MDBModalFooter,
     MDBModalHeader,
     MDBModalTitle,
-    MDBSpinner,
 } from "mdb-react-ui-kit";
 
-import BookInfo from "../book/BookScreen/BookInfo";
 import Break from "../general/Break";
 import LibraryBookModalBody from "./LibraryBookModalBody";
 import { useFormik } from "formik";
 import axios from "axios";
-import jwt_decode, { JwtPayload } from "jwt-decode";
-import { Book } from "../../helpers/types";
+import jwt_decode from "jwt-decode";
+import { Book } from "../../helpers/generalTypes";
 
 interface Props {
     coverUrl: string;
