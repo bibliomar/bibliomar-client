@@ -73,8 +73,9 @@ abbr[title]:after
 }
 
 .library-figure-img{
-    min-width: 30%;
-    width: 25vw;
+    min-width: 40%;
+    max-width: 40%;
+
     height: auto;
 }
 
@@ -154,11 +155,11 @@ abbr[title]:after
 
 
     .library-section-div{
-        width: 84vw;
+        width: 70vw;
     }
 
     .library-figure-img{
-        width: 5vw;
+        min-width:  5vw;
         height: auto;
     }
 

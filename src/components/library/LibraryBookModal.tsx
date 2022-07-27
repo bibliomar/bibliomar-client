@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Book } from "../../helpers/generalTypes";
+import { Size } from "../general/useWindowSize";
 
 interface Props {
     coverUrl: string;
@@ -24,6 +25,7 @@ interface Props {
     showProp: boolean;
     setShowProp: React.Dispatch<React.SetStateAction<boolean>>;
     setProgress: React.Dispatch<React.SetStateAction<number>>;
+    size: Size;
 }
 
 export default function (props: Props) {
@@ -98,7 +100,9 @@ export default function (props: Props) {
             className="text-dark"
             tabIndex="-1"
         >
-            <MDBModalDialog size="lg">
+            <MDBModalDialog
+                size={props.size.width! < 600 ? "fullscreen-sm-down" : "lg"}
+            >
                 <MDBModalContent className="bg text-light">
                     <MDBModalHeader>
                         <MDBModalTitle className="d-flex flex-wrap">

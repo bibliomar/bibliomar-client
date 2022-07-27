@@ -5,7 +5,6 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
@@ -97,15 +96,12 @@ export default function LibraryBookFigure(props: Props) {
                             showProp={modalOn}
                             setShowProp={setModalOn}
                             setProgress={props.setProgress}
+                            size={size}
                         />
                     </Portal>
                 ) : null}
 
-                <div
-                    id="cover-div"
-                    className="me-2 library-figure-img"
-                    style={size.width! < 600 ? { minWidth: "30%" } : {}}
-                >
+                <div id="cover-div" className="me-2 library-figure-img">
                     {coverDone ? (
                         <LibraryBookIcon checked={checkboxToggle} />
                     ) : !editMode ? (
