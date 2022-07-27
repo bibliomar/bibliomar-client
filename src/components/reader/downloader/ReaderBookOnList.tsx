@@ -39,6 +39,18 @@ export default function ({
             <Break />
             <div className="d-flex flex-wrap justify-content-center">
                 <MDBBtn
+                    onClick={async () => {
+                        navigate("/reader");
+                    }}
+                    color="info"
+                    size="sm"
+                    className="mb-3"
+                >
+                    Visualizar lista
+                </MDBBtn>
+                <Break />
+                <MDBBtn
+                    size="lg"
                     onClick={() => {
                         const readerScreenState: PossibleReaderScreenStates = {
                             arrayBuffer: arrayBuffer,
@@ -51,27 +63,6 @@ export default function ({
                     }}
                 >
                     Continuar
-                </MDBBtn>
-                <Break />
-                <MDBBtn
-                    onClick={async () => {
-                        await removeSavedBook(savedBookIndex, savedBooks);
-                        navigate("/reader");
-                    }}
-                    color="danger"
-                    size="sm"
-                    className="mt-2"
-                >
-                    Remover livro
-                </MDBBtn>
-                <MDBBtn
-                    onClick={() => {
-                        navigate("/reader");
-                    }}
-                    color="info"
-                    className="mt-3"
-                >
-                    Visualizar lista
                 </MDBBtn>
                 <Break />
                 <span className="text-muted mt-3">

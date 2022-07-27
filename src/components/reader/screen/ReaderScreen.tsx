@@ -14,8 +14,8 @@ type BookObjectType = {
 export default function () {
     const location = useLocation();
     const params = useParams();
-    // @ts-ignore
-    const readerState: PossibleReaderScreenStates = location.state;
+    const locationState: any = location.state;
+    const readerState: PossibleReaderScreenStates = locationState;
     let arrayBuffer: ArrayBuffer | undefined = undefined;
     let localInfo: File | undefined = undefined;
     let bookInfo: Book | undefined = undefined;
@@ -49,9 +49,9 @@ export default function () {
         return onlineCache ? onlineCache : localCache ? localCache : undefined;
     };
 
-    const [currentPage, setCurrentPage] = useState<
-        string | number | undefined | null
-    >(undefined);
+    const [currentPage, setCurrentPage] = useState<string | number | undefined>(
+        undefined
+    );
 
     const handleChange = (epubcifi: any) => {
         if (initialLoad) {
@@ -118,7 +118,7 @@ export default function () {
     return (
         <div style={{ height: "100vh" }}>
             <ReactReader
-                location={currentPage!}
+                location={currentPage}
                 locationChanged={handleChange}
                 url={bookObject.arrayBuffer!}
             />

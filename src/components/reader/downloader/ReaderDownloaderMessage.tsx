@@ -5,6 +5,7 @@ interface Props {
     downloadStatus: number;
     downloadSize: number;
     failedFirstAttempt: boolean;
+    userLoggedIn: boolean;
 }
 
 export default function ({
@@ -12,6 +13,7 @@ export default function ({
     downloadStatus,
     downloadSize,
     failedFirstAttempt,
+    userLoggedIn,
 }: Props) {
     const renderBasedOnStatus = () => {
         if (downloadStatus === 0) {
@@ -28,7 +30,9 @@ export default function ({
             case 103:
                 return (
                     <span>
-                        Entrando em contato com o servidor de download...
+                        {failedFirstAttempt
+                            ? "Entrando em contato com o servidor de download secundário..."
+                            : "Entrando em contato com o servidor de download..."}
                     </span>
                 );
             case 200:
@@ -41,13 +45,15 @@ export default function ({
             case 201:
                 return (
                     <div className="d-flex flex-wrap justify-content-center">
+                        <span className="lead">Baixando: </span>
+                        <Break />
                         <span>
-                            Baixando {downloadProgress}Kb de {downloadSize}
-                            Kb
+                            {downloadProgress}Kb de {downloadSize}Kb
                         </span>
                         <Break />
                         <span>
-                            {downloadProgress / downloadSize} concluído.
+                            {(downloadProgress / downloadSize) * 100}%
+                            concluído.
                         </span>
                     </div>
                 );
@@ -61,22 +67,36 @@ export default function ({
             case 401:
                 return (
                     <div className="d-flex flex-wrap justify-content-center">
-                        <span className="mb-2">
-                            Desculpe, parece que você fez um outro download a
-                            menos de 5 minutos...
-                        </span>
-                        <Break />
-                        <span>
-                            Nós sabemos que essa limitação é irritante. Mas é
-                            ela quem garante que o conteúdo que você consome
-                            continue gratuito, obrigado pela compreensão.
-                        </span>
-                        <Break />
-                        <span>
-                            <strong>PS:</strong> Você pode enviar um arquivo que
-                            você já tenha baixado a qualquer momento, sem
-                            espera.
-                        </span>
+                        {!userLoggedIn ? (
+                            <>
+                                <span className="mb-2">
+                                    Desculpe, parece que você fez um outro
+                                    download a menos de 5 minutos...
+                                </span>
+                                <Break />
+                                <span>
+                                    Nós sabemos que essa limitação é irritante.
+                                    Mas é ela quem garante que o conteúdo que
+                                    você consome continue gratuito, obrigado
+                                    pela compreensão.
+                                </span>
+                                <Break />
+                                <span>
+                                    <strong>PS:</strong> Usuários logados não
+                                    possuem restrição de download.
+                                    <br />
+                                    Criar uma conta é totalmente gratuito ;).
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <span>
+                                    Desculpe, você baixou outro livro a menos de
+                                    15 segundos, por favor, aguarde mais um
+                                    pouco.
+                                </span>
+                            </>
+                        )}
                     </div>
                 );
             case 403:
@@ -101,9 +121,10 @@ export default function ({
                         </span>
                         <Break />
                         <span>
-                            <strong>PS:</strong> Você pode enviar um arquivo que
-                            você já tenha baixado a qualquer momento, sem limite
-                            de tamanho.
+                            <strong>PS:</strong> Usuários logados não possuem
+                            restrição de download.
+                            <br />
+                            Criar uma conta é totalmente gratuito ;).
                         </span>
                     </div>
                 );

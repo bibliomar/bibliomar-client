@@ -13,8 +13,11 @@ export default function ({
     onClickFunction,
 }: ReaderBookFigureProps) {
     return (
-        <div className="mb-3 p-3 rounded-5 bg-dark bg-opacity-50">
-            <div className="d-flex w-75">
+        <div
+            className="mb-3 p-3 rounded-5 bg-dark bg-opacity-50"
+            style={{ width: "fit-content" }}
+        >
+            <div className="d-flex">
                 <div
                     id="cover-div"
                     className="me-2 reader-spotlight-figure-img"
@@ -56,16 +59,20 @@ export default function ({
                         </a>
                     </MDBRipple>
                 </div>
-                <div id="info-div" className="ms-1">
-                    <p className="">
+                <div
+                    id="info-div"
+                    className="d-flex flex-column justify-content-start"
+                >
+                    <span className="mb-2">
                         <strong>Título: </strong> <br />
                         {book.title}
-                    </p>
-                    <p className="">
+                    </span>
+
+                    <span className="mb-2">
                         <strong>Autor(a): </strong> <br />
                         {book.authors}
-                    </p>
-                    <span className="">
+                    </span>
+                    <span className="mb-2">
                         <strong>Tamanho: </strong> <br />
                         {book.size}
                     </span>

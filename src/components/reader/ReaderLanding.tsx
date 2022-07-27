@@ -18,8 +18,9 @@ export default function ReaderLanding() {
     console.log(savedBooks);
     const [savedBooksRetrieved, setSavedBooksRetrieved] =
         useState<boolean>(false);
-
-    let landingState: PossibleReaderLandingStates | any = location.state;
+    const [isUserLogged, setIsUserLogged] = useState<boolean>(false);
+    const locationState: any = location.state;
+    let landingState: PossibleReaderLandingStates = locationState;
 
     useEffect(() => {
         const ls = localforage.createInstance({
@@ -46,7 +47,10 @@ export default function ReaderLanding() {
                         setModalToggle={setModalToggle}
                     />
                 </Portal>
-                <Navbar />
+                <Navbar
+                    activeItem="reader"
+                    setIsUserLoggedContext={setIsUserLogged}
+                />
                 <div className="d-flex justify-content-end mt-4 mb-5 me-2">
                     <MDBBtn
                         type="button"
@@ -57,12 +61,13 @@ export default function ReaderLanding() {
                     </MDBBtn>
                 </div>
                 {savedBooksRetrieved ? (
-                    landingState ? (
+                    landingState != null ? (
                         <ReaderDownloader
                             url={landingState.url}
                             secondaryUrl={landingState.secondaryUrl}
                             bookInfo={landingState.bookInfo}
                             savedBooks={savedBooks}
+                            userLoggedIn={isUserLogged}
                         />
                     ) : (
                         <ReaderSavedBooksScreen savedBooks={savedBooks} />

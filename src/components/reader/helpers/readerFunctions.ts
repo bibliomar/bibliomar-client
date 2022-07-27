@@ -16,12 +16,14 @@ export const saveBooks = async (arrayBuffer: ArrayBuffer, bookInfo: Book) => {
 
     const savedBooksCache: SavedBooks | null = await ls.getItem("saved-books");
     if (savedBooksCache) {
-        // The first book is going to be deleted, so we are removing it's pagination info to save space.
+        /* The first book is going to be deleted, so we are removing it's pagination info to save space.
+        This should only be uncommented after #12 is resolved.
         if (savedBooksCache.firstBookInfo) {
             localStorage.removeItem(
                 `${savedBooksCache.firstBookInfo.title}-page`
             );
         }
+         */
 
         newSavedBooks = {
             lastBook: arrayBuffer,
@@ -68,7 +70,7 @@ export const removeSavedBook = async (
     };
     await ls.setItem("saved-books", newSavedBooks);
 };
-// Use this to create a ordered array where the LAST saved book info is on index 0, and the FIRST is on index 2.
+// Use this to create an ordered array where the LAST saved book info is on index 0, and the FIRST is on index 2.
 export const createBookInfoList = (savedBooks: SavedBooks) => {
     return [savedBooks.lastBook, savedBooks.secondBook, savedBooks.firstBook];
 };

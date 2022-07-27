@@ -25,7 +25,9 @@ abbr[title]:after
     background-size: cover;
 }
 
+/*noinspection ALL*/
 .bg-alt {
+    /*noinspection CssUnknownTarget*/
     background: url("/assets/img/layered-waves-haikei (2).svg") no-repeat fixed center center;
     background-size: cover;
 }
@@ -77,7 +79,7 @@ abbr[title]:after
 }
 
 .reader-spotlight-figure-img{
-    min-width: 80%;
+    min-width: 50%;
 }
 
 .library-row:hover{
@@ -161,7 +163,7 @@ abbr[title]:after
     }
 
     .reader-spotlight-figure-img{
-        min-width: 70%;
+        min-width: 30%;
     }
 
     .bookcaption {
@@ -173,6 +175,7 @@ abbr[title]:after
     }
 
     .bg-alt {
+        /*noinspection CssUnknownTarget*/
         background: url("/assets/img/back-lg-2.svg") no-repeat fixed center center;
         background-size: cover;
     }

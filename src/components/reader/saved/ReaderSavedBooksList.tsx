@@ -22,7 +22,7 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
     return (
         <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div">
             <div className="d-flex flex-wrap justify-content-center mb-2">
-                <span className="fw-bold lead">Livros salvos</span>
+                <span className="fw-bold lead">Prontos para leitura</span>
             </div>
             <Break />
             <div className="d-flex flex-wrap justify-content-center">
@@ -46,15 +46,16 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
                     id="list-info-div"
                     className="text-muted text-center d-flex flex-wrap mb-2 justify-content-center"
                 >
-                    <span>
-                        Nós salvamos até três livros para você ler a qualquer
-                        momento.
+                    <span className="mt-2">
+                        <strong>PS: </strong>Esses livros não estão
+                        necessariamente em sua biblioteca, mas sim salvos para
+                        uso em nosso leitor online.
                     </span>
                     <Break />
-                    <span className="mt-2">
-                        <strong>PS:</strong> Esses livros são salvos no{" "}
-                        <strong>seu</strong> dispositivo. Não temos acesso a
-                        seus livros, e nem monetizamos seus dados.
+                    <span className="mt-2 text-muted">
+                        Esses livros são salvos no <strong>seu</strong>{" "}
+                        dispositivo. Não temos acesso a seus livros, e nem
+                        monetizamos seus dados.
                     </span>
                 </div>
             </div>

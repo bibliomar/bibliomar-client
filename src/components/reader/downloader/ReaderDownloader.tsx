@@ -13,18 +13,28 @@ import {
     createBookInfoList,
     saveBooks,
 } from "../helpers/readerFunctions";
+import localforage from "localforage";
+import differenceInMinutes from "date-fns/differenceInMinutes";
+import differenceInSeconds from "date-fns/differenceInSeconds";
 
-//Primary URL equals to IFPS.io, and the second one to pinata.
+//Primary URL equals to IFPS.io, and the second one to Pinata.
 interface Props {
+    userLoggedIn: boolean;
     url: string;
     secondaryUrl: string;
     bookInfo: Book;
     savedBooks?: SavedBooks;
 }
 
-export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
+export default function ({
+    userLoggedIn,
+    url,
+    secondaryUrl,
+    bookInfo,
+    savedBooks,
+}: Props) {
     const navigate = useNavigate();
-
+    console.log("opens");
     const [failedFirstAttempt, setFailedFirstAttempt] =
         useState<boolean>(false);
 
@@ -34,7 +44,6 @@ export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
     const [downloadSize, setDownloadSize] = useState<number>(0);
     //-1 means that this book is not saved.
     const [savedBookIndex, setSavedBookIndex] = useState<number>(-1);
-    console.log(savedBookIndex);
 
     let savedBooksInfoArray: (Book | null)[] | undefined = undefined;
     let savedBooksBufferArray: (ArrayBuffer | null)[] | undefined = undefined;
@@ -49,27 +58,34 @@ export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
             url: requestUrl,
             method: "GET",
             responseType: "blob",
-            // Equals to 30 seconds.
-            timeout: 30000,
+            // Equals to 120 seconds.
+            timeout: 120000,
 
             onDownloadProgress: (evt) => {
                 //Transforms sizes from bytes to kb.
                 const maxSize = evt.total / 1000;
                 const loadedSize = evt.total / 1000;
-                //Only sets downloadSize on first fired event.
+                //Only sets downloadSize and status on first fired event.
+                if (downloadStatus !== 201) {
+                    setDownloadStatus(201);
+                }
                 if (maxSize !== downloadSize) {
                     setDownloadSize(maxSize);
                 }
+
                 setDownloadProgress(loadedSize);
             },
         };
         try {
             setDownloadStatus(103);
+            console.log(downloadStatus);
             let req: AxiosResponse = await axios.request(config);
-            setDownloadStatus(200);
-            console.log(req);
+
+            //setDownloadStatus(200);
             const arrayBuffer = await fileToArrayBuffer(req.data);
             await saveBooks(arrayBuffer, bookInfo);
+            //Saves current time in last-download, so we can define the last time the user has made a download.
+            await localforage.setItem("last-download", new Date());
             navigate(`${bookInfo.title}`, {
                 state: {
                     arrayBuffer: arrayBuffer,
@@ -91,27 +107,72 @@ export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
         //For strict mode double mounting...
         let ignore = false;
 
-        if (savedBooks != null) {
-            if (savedBooksInfoArray && savedBooksBufferArray) {
-                let isBookSaved = savedBooksInfoArray.map((el, i) => {
-                    if (el != null) {
-                        if (el.md5 === bookInfo.md5) {
-                            setSavedBookIndex(i);
-                            return el;
-                        }
+        if (
+            savedBooks != null &&
+            savedBooksInfoArray &&
+            savedBooksBufferArray
+        ) {
+            let isBookSaved: boolean = false;
+            savedBooksInfoArray.forEach((el, i) => {
+                if (el != null) {
+                    if (el.md5 === bookInfo.md5) {
+                        setSavedBookIndex(i);
+                        isBookSaved = true;
                     }
-                });
-                // Length > 0 means an entry was found in savedBooksInfoArray.
-                if (isBookSaved.length > 0) {
-                    return;
-                } else {
-                    return navigate("/reader");
                 }
+            });
+            if (isBookSaved) {
+                return;
             }
+
             return navigate("/reader");
         }
 
         if (!ignore) {
+            /*
+            In minutes.
+            If the user is logged, no restriction.
+            If it's not, 5 minutes.
+             */
+            const downloadTimeLimit = userLoggedIn ? 0 : 5;
+            /*
+            In seconds.
+            We wait for 15 seconds because otherwise it could result in blocks from the servers.
+             */
+            const minDownloadTimeLimit = 15;
+
+            /*
+            In MB.
+            If the user is logged, he can download up to 15mb.
+            If it's not, 5mb.
+             */
+            const downloadSizeLimit = userLoggedIn ? 15 : 5;
+            const fileSize = Number.parseInt(bookInfo.size);
+            if (fileSize > downloadSizeLimit) {
+                setDownloadStatus(413);
+                return;
+            }
+            localforage
+                .getItem<number | null>("last-download")
+                .then((lastDownloadTime) => {
+                    if (lastDownloadTime != null) {
+                        const differenceMinutes = differenceInMinutes(
+                            new Date(),
+                            lastDownloadTime
+                        );
+                        const differenceSeconds = differenceInSeconds(
+                            new Date(),
+                            lastDownloadTime
+                        );
+                        if (
+                            differenceMinutes < downloadTimeLimit ||
+                            differenceSeconds < minDownloadTimeLimit
+                        ) {
+                            setDownloadStatus(401);
+                            return;
+                        }
+                    }
+                });
             downloadBook(failedFirstAttempt ? secondaryUrl : url).then();
         }
 
@@ -121,7 +182,7 @@ export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
     }, [failedFirstAttempt]);
 
     return (
-        <div className="d-flex flex-wrap justify-content-center">
+        <div className="d-flex flex-wrap justify-content-center w-100">
             {savedBookIndex === -1 ? (
                 <>
                     <BlankLoadingSpinner />
@@ -131,13 +192,13 @@ export default function ({ url, secondaryUrl, bookInfo, savedBooks }: Props) {
                         downloadStatus={downloadStatus}
                         downloadSize={downloadSize}
                         failedFirstAttempt={failedFirstAttempt}
+                        userLoggedIn={userLoggedIn}
                     />
-                    <div className="d-flex justify-content-center mt-3">
-                        <span className="text-muted">
-                            Dica: você pode fazer outras coisas enquanto aguarda
-                            ;)
-                        </span>
-                    </div>
+                    <Break />
+                    <span className="text-center text-muted mt-4">
+                        Dica: você pode fazer outras coisas enquanto aguarda. O
+                        servidor normalmente é lento.
+                    </span>
                 </>
             ) : savedBooks && savedBooksBufferArray ? (
                 <ReaderBookOnList
