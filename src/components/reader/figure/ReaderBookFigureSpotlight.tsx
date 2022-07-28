@@ -76,6 +76,18 @@ export default function ({
                         <strong>Tamanho: </strong> <br />
                         {book.size}
                     </span>
+                    <span className="">
+                        <strong>Status: </strong> <br />
+                        {book.category ? (
+                            <span>Rastreando.</span>
+                        ) : (
+                            <span>
+                                <abbr title="Abra a partir de sua biblioteca para salvar o progresso online.">
+                                    Não rastreado.
+                                </abbr>
+                            </span>
+                        )}
+                    </span>
                 </div>
             </div>
         </div>

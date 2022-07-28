@@ -9,7 +9,6 @@ import axios from "axios";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import { useNavigate } from "react-router-dom";
-import Break from "../general/Break";
 import LibraryBookModal from "./LibraryBookModal";
 import { Size, useWindowSize } from "../general/useWindowSize";
 import LibraryBookIcon from "./LibraryBookIcon";
@@ -173,14 +172,20 @@ export default function LibraryBookFigure(props: Props) {
                     </MDBRipple>
                 </div>
                 <div id="info-div" className="">
-                    <span className="overflow-hidden">
-                        {props.book["title"]}
-                    </span>
-
-                    <Break />
-                    <span className="fst-italic" style={{ fontSize: "0.8rem" }}>
-                        {props.book["authors"]}
-                    </span>
+                    <p className="">
+                        <strong>Título: </strong> <br />
+                        {props.book.title}
+                    </p>
+                    <p className="">
+                        <strong>Autor(a)(s): </strong> <br />
+                        {props.book.authors}
+                    </p>
+                    {props.book.extension === "epub" ? (
+                        <span className="">
+                            <strong>Leitura iniciada: </strong> <br />
+                            {props.book.progress ? "Sim" : "Não"}
+                        </span>
+                    ) : null}
                 </div>
             </div>
         </div>

@@ -4,23 +4,16 @@ import ReaderBookFigure from "../figure/ReaderBookFigure";
 import Break from "../../general/Break";
 import { MDBBtn } from "mdb-react-ui-kit";
 import SmallLine from "../../general/SmallLine";
-import { removeSavedBook } from "../helpers/readerFunctions";
-import { PossibleReaderScreenStates, SavedBooks } from "../helpers/readerTypes";
+import { PossibleReaderScreenStates } from "../helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    savedBookIndex: number;
     bookInfo: Book;
     arrayBuffer: ArrayBuffer;
-    savedBooks: SavedBooks;
+    category?: string;
 }
 
-export default function ({
-    bookInfo,
-    arrayBuffer,
-    savedBooks,
-    savedBookIndex,
-}: Props) {
+export default function ReaderBookOnList({ bookInfo, arrayBuffer }: Props) {
     const navigate = useNavigate();
     return (
         <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div d-flex justify-content-center flex-wrap">
@@ -53,9 +46,9 @@ export default function ({
                     size="lg"
                     onClick={() => {
                         const readerScreenState: PossibleReaderScreenStates = {
+                            onlineFile: bookInfo,
                             arrayBuffer: arrayBuffer,
-                            bookInfo: bookInfo,
-                            localInfo: undefined,
+                            localFile: undefined,
                         };
                         navigate(`${bookInfo.title}`, {
                             state: readerScreenState,
@@ -66,7 +59,8 @@ export default function ({
                 </MDBBtn>
                 <Break />
                 <span className="text-muted mt-3">
-                    Esse livro já está na sua lista de livros salvos.
+                    Esse livro já está na sua lista de livros salvos, e caso
+                    tenha vindo de sua biblioteca, já está sincronizado.
                 </span>
             </div>
         </div>

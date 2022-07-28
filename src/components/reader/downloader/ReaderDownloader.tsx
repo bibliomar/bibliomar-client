@@ -1,38 +1,29 @@
 import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
 import Break from "../../general/Break";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReaderDownloaderMessage from "./ReaderDownloaderMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import fileToArrayBuffer from "file-to-array-buffer";
 import { Book } from "../../../helpers/generalTypes";
 import { useNavigate } from "react-router-dom";
 import ReaderBookOnList from "./ReaderBookOnList";
-import { SavedBooks } from "../helpers/readerTypes";
-import {
-    createArrayBufferList,
-    createBookInfoList,
-    saveBooks,
-} from "../helpers/readerFunctions";
+import { saveBooks, updateBook } from "../helpers/readerFunctions";
 import localforage from "localforage";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
+import {
+    PossibleReaderScreenStates,
+    ReaderDownloaderProps,
+} from "../helpers/readerTypes";
 
-//Primary URL equals to IFPS.io, and the second one to Pinata.
-interface Props {
-    userLoggedIn: boolean;
-    url: string;
-    secondaryUrl: string;
-    bookInfo: Book;
-    savedBooks?: SavedBooks;
-}
-
-export default function ({
+export default function ReaderDownloader({
     userLoggedIn,
     url,
     secondaryUrl,
     bookInfo,
     savedBooks,
-}: Props) {
+    category,
+}: ReaderDownloaderProps) {
     const navigate = useNavigate();
     console.log("opens");
     const [failedFirstAttempt, setFailedFirstAttempt] =
@@ -42,16 +33,10 @@ export default function ({
     const [downloadProgress, setDownloadProgress] = useState<number>(0);
     const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
-    //-1 means that this book is not saved.
-    const [savedBookIndex, setSavedBookIndex] = useState<number>(-1);
 
-    let savedBooksInfoArray: (Book | null)[] | undefined = undefined;
-    let savedBooksBufferArray: (ArrayBuffer | null)[] | undefined = undefined;
-
-    if (savedBooks) {
-        savedBooksBufferArray = createBookInfoList(savedBooks);
-        savedBooksInfoArray = createArrayBufferList(savedBooks);
-    }
+    // These two will determine if a book already exists on savedBooks, and show the user the relevant info regarding it.
+    const [bookAlreadySaved, setBookAlreadySaved] = useState<boolean>(false);
+    let savedBookArrayBuffer = useRef<ArrayBuffer | null>(null);
 
     const downloadBook = async (requestUrl: string) => {
         const config: AxiosRequestConfig = {
@@ -80,24 +65,28 @@ export default function ({
             setDownloadStatus(103);
             console.log(downloadStatus);
             let req: AxiosResponse = await axios.request(config);
+            console.log(req);
 
-            //setDownloadStatus(200);
+            setDownloadStatus(200);
             const arrayBuffer = await fileToArrayBuffer(req.data);
             await saveBooks(arrayBuffer, bookInfo);
-            //Saves current time in last-download, so we can define the last time the user has made a download.
+            // Saves current time in last-download, so we can define the last time the user has made a download.
             await localforage.setItem("last-download", new Date());
+            const readerScreenState: PossibleReaderScreenStates = {
+                arrayBuffer: arrayBuffer,
+                onlineFile: bookInfo,
+                localFile: undefined,
+            };
             navigate(`${bookInfo.title}`, {
-                state: {
-                    arrayBuffer: arrayBuffer,
-                    bookInfo: bookInfo,
-                    localInfo: undefined,
-                },
+                state: readerScreenState,
             });
         } catch (e: any) {
             console.error(e);
             setDownloadStatus(e.response ? e.response.status : 500);
             setTimeout(() => {
-                setFailedFirstAttempt(true);
+                if (!failedFirstAttempt) {
+                    setFailedFirstAttempt(true);
+                }
             }, 2000);
             return;
         }
@@ -107,28 +96,34 @@ export default function ({
         //For strict mode double mounting...
         let ignore = false;
 
-        if (
-            savedBooks != null &&
-            savedBooksInfoArray &&
-            savedBooksBufferArray
-        ) {
-            let isBookSaved: boolean = false;
-            savedBooksInfoArray.forEach((el, i) => {
-                if (el != null) {
-                    if (el.md5 === bookInfo.md5) {
-                        setSavedBookIndex(i);
-                        isBookSaved = true;
+        if (savedBooks) {
+            Object.values(savedBooks).forEach((savedBookEntry, index) => {
+                if (savedBookEntry != null) {
+                    if (savedBookEntry.bookInfo.md5 === bookInfo.md5) {
+                        // It's /library job to be sure that the category inside the bookInfo is always accurate.
+                        // Update the bookInfo on savedBooks to track it online.
+                        if (
+                            category &&
+                            savedBookEntry.bookInfo.category == null
+                        ) {
+                            bookInfo.category = category;
+                            updateBook(bookInfo, index).then((r) => {
+                                savedBookArrayBuffer.current =
+                                    savedBookEntry.arrayBuffer;
+                                setBookAlreadySaved(true);
+                            });
+                            return;
+                        }
+                        savedBookArrayBuffer.current =
+                            savedBookEntry.arrayBuffer;
+                        setBookAlreadySaved(true);
+                        return;
                     }
                 }
             });
-            if (isBookSaved) {
-                return;
-            }
-
-            return navigate("/reader");
         }
 
-        if (!ignore) {
+        if (!ignore && !bookAlreadySaved && url) {
             /*
             In minutes.
             If the user is logged, no restriction.
@@ -137,7 +132,7 @@ export default function ({
             const downloadTimeLimit = userLoggedIn ? 0 : 5;
             /*
             In seconds.
-            We wait for 15 seconds because otherwise it could result in blocks from the servers.
+            We wait for 15 seconds minimum because otherwise it could result in blocks from the servers.
              */
             const minDownloadTimeLimit = 15;
 
@@ -147,13 +142,21 @@ export default function ({
             If it's not, 5mb.
              */
             const downloadSizeLimit = userLoggedIn ? 15 : 5;
+            // If it's more than ~20, it's probably in Kb.
             const fileSize = Number.parseInt(bookInfo.size);
-            if (fileSize > downloadSizeLimit) {
+            const sizeInMb = bookInfo.size.includes("Mb");
+            const sizeInGb = bookInfo.size.includes("Gb");
+
+            if (sizeInGb) {
+                setDownloadStatus(413);
+                return;
+            }
+            if (sizeInMb && fileSize > downloadSizeLimit) {
                 setDownloadStatus(413);
                 return;
             }
             localforage
-                .getItem<number | null>("last-download")
+                .getItem<Date | null>("last-download")
                 .then((lastDownloadTime) => {
                     if (lastDownloadTime != null) {
                         const differenceMinutes = differenceInMinutes(
@@ -170,10 +173,21 @@ export default function ({
                         ) {
                             setDownloadStatus(401);
                             return;
+                        } else {
+                            downloadBook(
+                                failedFirstAttempt && secondaryUrl
+                                    ? secondaryUrl
+                                    : url
+                            ).then();
                         }
+                    } else {
+                        downloadBook(
+                            failedFirstAttempt && secondaryUrl
+                                ? secondaryUrl
+                                : url
+                        ).then();
                     }
                 });
-            downloadBook(failedFirstAttempt ? secondaryUrl : url).then();
         }
 
         return () => {
@@ -183,8 +197,8 @@ export default function ({
 
     return (
         <div className="d-flex flex-wrap justify-content-center w-100">
-            {savedBookIndex === -1 ? (
-                <>
+            {!bookAlreadySaved ? (
+                <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light p-3">
                     <BlankLoadingSpinner />
                     <Break />
                     <ReaderDownloaderMessage
@@ -199,13 +213,12 @@ export default function ({
                         Dica: você pode fazer outras coisas enquanto aguarda. O
                         servidor normalmente é lento.
                     </span>
-                </>
-            ) : savedBooks && savedBooksBufferArray ? (
+                </div>
+            ) : savedBookArrayBuffer.current != null ? (
                 <ReaderBookOnList
-                    savedBookIndex={savedBookIndex}
-                    savedBooks={savedBooks}
+                    category={category}
                     bookInfo={bookInfo}
-                    arrayBuffer={savedBooksBufferArray[savedBookIndex]!}
+                    arrayBuffer={savedBookArrayBuffer.current}
                 />
             ) : null}
         </div>

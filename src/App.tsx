@@ -13,7 +13,7 @@ import LibraryParent from "./components/library/LibraryParent";
 import LibraryLanding from "./components/library/main/LibraryLanding";
 import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedScreen";
 import ReaderLanding from "./components/reader/ReaderLanding";
-import ReaderScreen from "./components/reader/screen/ReaderScreen";
+import ReaderMain from "./components/reader/screen/ReaderMain";
 
 function App() {
     return (
@@ -72,7 +72,7 @@ function App() {
             </Route>
             <Route path="/reader">
                 <Route index element={<ReaderLanding />} />
-                <Route path=":bookname" element={<ReaderScreen />} />
+                <Route path=":bookname" element={<ReaderMain />} />
             </Route>
         </Routes>
     );

@@ -20,6 +20,11 @@ interface Book {
     topic: string;
     extension: string;
     size: string;
+    // This is only valid for library entries, and is only used in reader components. The value is an epubcifi string.
+    progress?: string;
+    // This is only valid for library entries, and is only used in reader components.
+    // The value is a string with the book's category on the user's library.
+    category?: string;
 }
 
 export type { Book, downloadLinks };

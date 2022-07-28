@@ -2,6 +2,10 @@ body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
+abbr[title]{
+    text-decoration: none !important;
+}
+
 abbr[title]:after
 {
     content: " (" attr(title) ")";
@@ -118,7 +122,6 @@ abbr[title]:after
 
 
 @media screen and (min-width: 600px) {
-
     abbr[title]:after
     {
         content: "";

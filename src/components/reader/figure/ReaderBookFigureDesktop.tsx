@@ -2,7 +2,7 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
-export default function ({
+export default function ReaderBookFigureDesktop({
     book,
     cover,
     coverDone,
@@ -55,9 +55,21 @@ export default function ({
                     <strong>Autor(a)(s): </strong> <br />
                     {book.authors}
                 </p>
-                <span className="">
+                <p className="">
                     <strong>Tamanho: </strong> <br />
                     {book.size}
+                </p>
+                <span className="">
+                    <strong>Status: </strong> <br />
+                    {book.category ? (
+                        <span>Rastreando.</span>
+                    ) : (
+                        <span>
+                            <abbr title="Abra a partir de sua biblioteca para salvar o progresso online.">
+                                Não rastreado.
+                            </abbr>
+                        </span>
+                    )}
                 </span>
             </figcaption>
         </figure>

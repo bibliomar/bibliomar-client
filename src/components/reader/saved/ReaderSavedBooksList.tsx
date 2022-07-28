@@ -8,30 +8,21 @@ import SmallLine from "../../general/SmallLine";
 import { SavedBooks } from "../helpers/readerTypes";
 
 export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
-    const bookInfoArray = [
-        savedBooks.lastBookInfo,
-        savedBooks.secondBookInfo,
-        savedBooks.firstBookInfo,
-    ];
-    const bookArrayBuffers = [
-        savedBooks.lastBook,
-        savedBooks.secondBook,
-        savedBooks.firstBook,
-    ];
-
     return (
         <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div">
             <div className="d-flex flex-wrap justify-content-center mb-2">
-                <span className="fw-bold lead">Prontos para leitura</span>
+                <span className="fw-bold lead">Salvos localmente</span>
+                <Break />
+                <SmallLine flexGrow />
             </div>
             <Break />
             <div className="d-flex flex-wrap justify-content-center">
-                {bookInfoArray.map((el, i) => {
-                    if (el != null && bookArrayBuffers[i] != null) {
+                {Object.values(savedBooks).map((el, i) => {
+                    if (el != null) {
                         return (
                             <ReaderBookFigure
-                                arrayBuffer={bookArrayBuffers[i]!}
-                                book={el}
+                                arrayBuffer={el.arrayBuffer}
+                                book={el.bookInfo}
                                 timeout={0}
                                 key={i}
                                 itemNumber={i}

@@ -42,7 +42,7 @@ export default function BookInfo(props: Props) {
     const [userLogged, setUserLogged] = useState<boolean>(false);
 
     let fallbackLink: string | undefined = undefined;
-    if (bookInfo.hasOwnProperty("mirror1")) {
+    if (bookInfo.mirror1) {
         fallbackLink = bookInfo["mirror1"];
     }
     useEffect(() => {
@@ -132,6 +132,7 @@ export default function BookInfo(props: Props) {
                                     bookInfo: bookInfo,
                                     url: downloadLinks["IPFS.io"],
                                     secondaryUrl: downloadLinks.Pinata,
+                                    category: undefined,
                                 };
 
                             navigate("/reader", {

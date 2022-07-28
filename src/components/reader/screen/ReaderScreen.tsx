@@ -1,126 +1,76 @@
-import { ReactReader } from "react-reader";
-import localforage from "localforage";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Book } from "../../../helpers/generalTypes";
-import { PossibleReaderScreenStates } from "../helpers/readerTypes";
+import { ThemeColors } from "../helpers/readerTypes";
+import React from "react";
+import { ReactReader, ReactReaderStyle } from "react-reader";
+import { registerRenditionThemes } from "../helpers/readerFunctions";
 
-type BookObjectType = {
-    onlineIdentifier: string | undefined | null;
-    localIdentifier: string | undefined | null;
-    arrayBuffer: ArrayBuffer | undefined | null;
-};
+interface ReaderScreenProps {
+    arrayBuffer: ArrayBuffer;
+    title: string | undefined;
+    fullscreen: boolean;
+    setFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
+    currentTheme: ThemeColors;
+    renditionRef: React.MutableRefObject<any>;
+    readerStyle: React.MutableRefObject<ReactReaderStyle>;
+    currentPage: string | undefined;
+    handleLocationChange: (epubcifi: string) => void;
+    swipeable: boolean;
+}
 
-export default function () {
-    const location = useLocation();
-    const params = useParams();
-    const locationState: any = location.state;
-    const readerState: PossibleReaderScreenStates = locationState;
-    let arrayBuffer: ArrayBuffer | undefined = undefined;
-    let localInfo: File | undefined = undefined;
-    let bookInfo: Book | undefined = undefined;
-
-    if (readerState) {
-        arrayBuffer = readerState.arrayBuffer;
-        localInfo = readerState.localInfo;
-        bookInfo = readerState.bookInfo;
-    }
-
-    const defaultBookObject: BookObjectType = {
-        onlineIdentifier: bookInfo ? bookInfo!.title : undefined,
-        localIdentifier: localInfo ? localInfo?.name : undefined,
-        arrayBuffer: arrayBuffer ? arrayBuffer : undefined,
-    };
-
-    const [bookObject, setBookObject] =
-        useState<BookObjectType>(defaultBookObject);
-    /*
-    This state is pretty important, because of the way that react-reader works, everytime you render the page (components updating, etc.)
-    the handleChange function gets triggered. What this means is that, if you have a epubcifi saved, in say, localStorage, and you define handleChange
-    to change it every time the user changes pages (which is not 100% ideal), you lose everything that was saved before handleChange was called.
-     */
-    const [initialLoad, setInitialLoad] = useState<boolean>(false);
-
-    const locationBasedOnCache = () => {
-        const onlineID = bookObject.onlineIdentifier;
-        const localID = bookObject.localIdentifier;
-        const onlineCache = localStorage.getItem(`${onlineID}-page`);
-        const localCache = localStorage.getItem(`${localID}-page`);
-        return onlineCache ? onlineCache : localCache ? localCache : undefined;
-    };
-
-    const [currentPage, setCurrentPage] = useState<string | number | undefined>(
-        undefined
-    );
-
-    const handleChange = (epubcifi: any) => {
-        if (initialLoad) {
-            //After the initial page load, we can save the user's progress normally.
-            if (bookObject.onlineIdentifier != null) {
-                localStorage.setItem(
-                    `${bookObject.onlineIdentifier}-page`,
-                    epubcifi
-                );
-            } else if (bookObject.localIdentifier != null) {
-                localStorage.setItem(
-                    `${bookObject.localIdentifier}-page`,
-                    epubcifi
-                );
-            }
-            setCurrentPage(locationBasedOnCache());
-        } else {
-            // This function is also called on the very first render, so we just need to set the initial page here.
-            setCurrentPage(locationBasedOnCache());
-            setInitialLoad(true);
-        }
-    };
-
-    useEffect(() => {
-        /*
-         This is a function that saves the current book as "last-book", so that the user can resume it's progress when they leave the website
-         and come back at the same URL.
-         */
-
-        const ls = localforage.createInstance({
-            driver: localforage.INDEXEDDB,
-        });
-        if (readerState) {
-            const thisBookObject = {
-                onlineIdentifier: bookInfo ? bookInfo.title : undefined,
-                localIdentifier: localInfo ? localInfo.name : undefined,
-                arrayBuffer: arrayBuffer,
-            };
-            if (arrayBuffer != null) {
-                console.log("tries to save");
-                ls.setItem("last-book", thisBookObject)
-                    .then()
-                    .catch((e) => console.error(e));
-            }
-        } else {
-            ls.getItem(`last-book`).then((r: any) => {
-                if (
-                    params.bookname === r.onlineIdentifier ||
-                    params.bookname === r.localIdentifier
-                ) {
-                    const fallbackBookObject: BookObjectType = {
-                        onlineIdentifier: r.onlineIdentifier,
-                        localIdentifier: r.localIdentifier,
-                        arrayBuffer: r.arrayBuffer,
-                    };
-                    //Sets initialLoad to a blank state.
-                    setInitialLoad(false);
-                    setBookObject(fallbackBookObject);
-                }
-            });
-        }
-    }, []);
-
+export default function ReaderScreen({
+    arrayBuffer,
+    title,
+    readerStyle,
+    handleLocationChange,
+    currentPage,
+    currentTheme,
+    renditionRef,
+    fullscreen,
+    setFullscreen,
+    swipeable,
+}: ReaderScreenProps) {
     return (
-        <div style={{ height: "100vh" }}>
+        <div
+            id={"reader-reader-screen"}
+            style={{
+                // Should inherit both to 100%
+                height: "inherit",
+                minHeight: "inherit",
+                width: "100%",
+                top: fullscreen ? "0" : "8vh",
+                position: "absolute",
+                backgroundColor: "black",
+            }}
+        >
+            <div
+                id="title-toggle-fullscreen"
+                style={{
+                    position: "absolute",
+                    top: "20px",
+                    left: "50px",
+                    right: "50px",
+                    height: "5vh",
+                    width: "60%",
+                    cursor: "pointer",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    //Swipe area zIndex is 200.
+                    zIndex: "300",
+                }}
+                onClick={() => setFullscreen(!fullscreen)}
+            ></div>
             <ReactReader
+                styles={renditionRef.current ? readerStyle.current : undefined}
                 location={currentPage}
-                locationChanged={handleChange}
-                url={bookObject.arrayBuffer!}
+                locationChanged={handleLocationChange}
+                url={arrayBuffer}
+                title={title}
+                swipeable={swipeable}
+                getRendition={(rendition) => {
+                    renditionRef.current = rendition;
+                    registerRenditionThemes(rendition);
+                    // 2 is the index of the theme name.
+                    rendition.themes.select(currentTheme[2]);
+                }}
             />
         </div>
     );

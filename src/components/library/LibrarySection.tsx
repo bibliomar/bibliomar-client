@@ -1,7 +1,6 @@
 import Break from "../general/Break";
-import RecommendationBookFigure from "../search/recommendations/RecommendationBookFigure";
 import LibraryBookFigure from "./LibraryBookFigure";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Book } from "../../helpers/generalTypes";
 

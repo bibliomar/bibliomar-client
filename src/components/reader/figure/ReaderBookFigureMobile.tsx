@@ -1,12 +1,9 @@
-import { Portal } from "react-portal";
-import LibraryBookModal from "../../library/LibraryBookModal";
-import LibraryBookIcon from "../../library/LibraryBookIcon";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
-export default function ({
+export default function ReaderBookFigureMobile({
     book,
     cover,
     coverDone,
@@ -54,14 +51,31 @@ export default function ({
                     </MDBRipple>
                 </div>
                 <div id="info-div" className="">
-                    <span className="overflow-hidden">{book.title}</span>
-
-                    <Break />
-                    <span className="fst-italic" style={{ fontSize: "0.8rem" }}>
+                    <p className="">
+                        <strong>Título: </strong> <br />
+                        {book.title}
+                    </p>
+                    <p className="">
+                        <strong>Autor(a)(s): </strong> <br />
                         {book.authors}
+                    </p>
+                    <p className="">
+                        <strong>Tamanho: </strong> <br />
+                        {book.size}
+                    </p>
+                    <span className="">
+                        <strong>Status: </strong> <br />
+                        {book.category ? (
+                            <span>Rastreando.</span>
+                        ) : (
+                            <span>
+                                <abbr title="Abra a partir de sua biblioteca para salvar o progresso online.">
+                                    Não rastreado.
+                                    <br />
+                                </abbr>
+                            </span>
+                        )}
                     </span>
-                    <Break />
-                    <span className="fst-italic text-muted">{book.size}</span>
                 </div>
             </div>
         </div>

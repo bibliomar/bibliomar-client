@@ -45,6 +45,9 @@ Caso você tenha mais experiencia com backend, não exite em dar uma olhada no c
 Esse é um projeto que passou muito tempo no forno, projetado por uma só pessoa. E durante essas noites mal dormidas que passamos juntos, tenho de admitir que algumas partes do código podem ser melhoradas.  
 Se você encontrar alguma função, chamada a API, tipagem errônea, não exite em abrir um issue ou PR para corrigi-la.
 
+#### Temas para o leitor
+Atualmente, possuimos alguns temas simples para o leitor online, e em breve escreverei um guia sobre como contribuir com seu próprio tema.
+
 ### English
 
 ### A bit of thanking
@@ -54,7 +57,7 @@ Thank you, the amazing people at LibraryGenesis, and the amazing people on my co
 I do hope it goes way beyond the scope it has now, because it's a project i've been wanting to see since my first days of reading on a screen.
 
 
-Developers aside, there are three people i couldn't thank enough, and are the reason this was made possible.
+Developers aside, there are three people i couldn't thank enough, and are the reason this was made possible.  
 **My son**  
 How can something so small have this much impact on someone's life?  
 You still don't know what you want, or when you want it, the only thing you do most of the day is sleep.  

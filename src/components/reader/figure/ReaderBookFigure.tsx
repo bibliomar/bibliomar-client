@@ -16,7 +16,7 @@ interface Props {
     spotlight?: boolean;
 }
 
-async function getCover(md5: string, itemNum: number) {
+async function getCover(md5: string) {
     let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
     let request;
     try {
@@ -26,21 +26,13 @@ async function getCover(md5: string, itemNum: number) {
         return null;
     }
     if (request?.data) {
-        const thisCoverInfo = {
-            md5: md5,
-            cover: request?.data,
-        };
-
-        localStorage.setItem(
-            `${itemNum}-reader-cover`,
-            JSON.stringify(thisCoverInfo)
-        );
+        sessionStorage.setItem(`${md5}-cover`, request?.data);
         return request?.data;
     }
     return null;
 }
 
-export default function (props: Props) {
+export default function ReaderBookFigure(props: Props) {
     const book: Book = props.book;
     let navigate = useNavigate();
     const size: Size = useWindowSize();
@@ -58,9 +50,9 @@ export default function (props: Props) {
         evt.preventDefault();
         // This is the state to be passed to /reader/:bookname, which is the actual reader.
         const readerScreenState: PossibleReaderScreenStates = {
-            localInfo: undefined,
-            bookInfo: book,
             arrayBuffer: props.arrayBuffer,
+            onlineFile: props.book,
+            localFile: undefined,
         };
 
         navigate(`${book.title}`, {
@@ -70,20 +62,15 @@ export default function (props: Props) {
 
     useEffect(() => {
         let coverSetTimeout: number;
-        let possibleCachedCover = localStorage.getItem(
-            `${props.itemNumber}-reader-cover`
-        ) as string;
+        let possibleCachedCover = sessionStorage.getItem(`${book.md5}-cover`);
 
         if (possibleCachedCover) {
-            let cachedCoverInfo = JSON.parse(possibleCachedCover);
-            if (cachedCoverInfo.md5 === book.md5) {
-                setCoverDone(true);
-                setCover(cachedCoverInfo.cover);
-                return;
-            }
+            setCover(possibleCachedCover);
+            setCoverDone(true);
+            return;
         } else {
             coverSetTimeout = setTimeout(() => {
-                getCover(book.md5, props.itemNumber).then((r) => {
+                getCover(book.md5).then((r) => {
                     if (r == null) {
                         setCoverDone(true);
                         return;

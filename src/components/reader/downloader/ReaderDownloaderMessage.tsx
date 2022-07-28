@@ -145,5 +145,5 @@ export default function ({
         }
     };
 
-    return <div className="mt-4">{renderBasedOnStatus()}</div>;
+    return <div className="mt-4 text-center">{renderBasedOnStatus()}</div>;
 }
