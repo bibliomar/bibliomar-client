@@ -12,8 +12,6 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
         <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div">
             <div className="d-flex flex-wrap justify-content-center mb-2">
                 <span className="fw-bold lead">Salvos localmente</span>
-                <Break />
-                <SmallLine flexGrow />
             </div>
             <Break />
             <div className="d-flex flex-wrap justify-content-center">
@@ -35,18 +33,17 @@ export default function ({ savedBooks }: { savedBooks: SavedBooks }) {
                 <Break />
                 <div
                     id="list-info-div"
-                    className="text-muted text-center d-flex flex-wrap mb-2 justify-content-center"
+                    className="text-center d-flex flex-wrap mb-2 justify-content-center"
                 >
                     <span className="mt-2">
-                        <strong>PS: </strong>Esses livros não estão
-                        necessariamente em sua biblioteca, mas sim salvos para
-                        uso em nosso leitor online.
+                        Livros não rastreados podem ter seu progresso perdido a
+                        qualquer momento.
                     </span>
                     <Break />
-                    <span className="mt-2 text-muted">
+                    <span className="mt-2">
                         Esses livros são salvos no <strong>seu</strong>{" "}
-                        dispositivo. Não temos acesso a seus livros, e nem
-                        monetizamos seus dados.
+                        dispositivo, apenas o progresso de leitura é salvo em
+                        sua conta.
                     </span>
                 </div>
             </div>

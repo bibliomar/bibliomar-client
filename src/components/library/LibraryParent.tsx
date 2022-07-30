@@ -26,7 +26,7 @@ export default function LibraryParent() {
             },
         };
         try {
-            setProgress(33);
+            setProgress(60);
             let req = await axios.request(config);
             setProgress(100);
             let data = req.data;

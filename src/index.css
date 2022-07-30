@@ -87,13 +87,6 @@ abbr[title]:after
     min-width: 50%;
 }
 
-.library-row:hover{
-    background-color: #1266f1;
-}
-
-.library-row:active{
-    background-color: #1266f1;
-}
 
 .bookcaption {
     width: 90vw;
@@ -155,19 +148,22 @@ abbr[title]:after
         width: fit-content;
     }
 
-
-
     .library-section-div{
         width: 70vw;
     }
 
     .library-figure-img{
-        min-width:  5vw;
+        min-width: 30%;
+        max-width: 30%;
         height: auto;
     }
 
     .reader-spotlight-figure-img{
         min-width: 30%;
+    }
+
+    .reader-figure-container{
+        max-width: 40%;
     }
 
     .bookcaption {

@@ -18,12 +18,8 @@ export default function ReaderMain() {
     const navigate = useNavigate();
     const location = useLocation();
     const locationState: any = location.state;
-    const {
-        arrayBuffer,
-        localFile,
-        onlineFile,
-        category,
-    }: PossibleReaderScreenStates = locationState;
+    const { arrayBuffer, localFile, onlineFile }: PossibleReaderScreenStates =
+        locationState;
 
     const identifier = localFile
         ? localFile.name
@@ -50,7 +46,9 @@ export default function ReaderMain() {
     const [swipeable, setSwipeable] = useState<boolean>(false);
     const [fullscreen, setFullscreen] = useState<boolean>(false);
     const renditionRef = useRef<any>();
-    const userWarnedRef = useRef<boolean>(false);
+    const userWarnedRef = useRef<boolean | null>(
+        sessionStorage.getItem("user-warned") === "true"
+    );
 
     const locationBasedOnIdentifier = async () => {
         // First, tries for local cache...
@@ -91,19 +89,30 @@ export default function ReaderMain() {
             navigate("reader", { replace: true });
             return;
         }
-        if (onlineFile && category && currentPage) {
+
+        if (onlineFile && currentPage) {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = setInterval(() => {
-                saveProgressOnDatabase(category, currentPage, onlineFile).then(
-                    (r) => {
-                        console.log(r);
-                        if (r == null && !userWarnedRef.current) {
-                            alert(
-                                "Sessão de login expirada, seu progresso não está sendo salvo online atualmente."
-                            );
-                        }
+                if (onlineFile.category == null) {
+                    if (!userWarnedRef.current) {
+                        sessionStorage.setItem("user-warned", "true");
+                        userWarnedRef.current = true;
+                        alert(
+                            "Você está lendo um livro que não está na sua biblioteca, " +
+                                "e por isso seu progresso não está sendo salvo online."
+                        );
                     }
-                );
+                    return;
+                }
+                saveProgressOnDatabase(currentPage, onlineFile).then((r) => {
+                    if (r == null && !userWarnedRef.current) {
+                        sessionStorage.setItem("user-warned", "true");
+                        userWarnedRef.current = true;
+                        alert(
+                            "Sessão de login expirada, seu progresso não está sendo salvo online atualmente."
+                        );
+                    }
+                });
             }, 5 * 60000);
         }
         return () => {

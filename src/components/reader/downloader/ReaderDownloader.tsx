@@ -7,7 +7,7 @@ import fileToArrayBuffer from "file-to-array-buffer";
 import { Book } from "../../../helpers/generalTypes";
 import { useNavigate } from "react-router-dom";
 import ReaderBookOnList from "./ReaderBookOnList";
-import { saveBooks, updateBook } from "../helpers/readerFunctions";
+import { saveBookLocally, updateBookLocally } from "../helpers/readerFunctions";
 import localforage from "localforage";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
@@ -17,26 +17,26 @@ import {
 } from "../helpers/readerTypes";
 
 export default function ReaderDownloader({
+    savedBooks,
     userLoggedIn,
     url,
     secondaryUrl,
     bookInfo,
-    savedBooks,
-    category,
 }: ReaderDownloaderProps) {
     const navigate = useNavigate();
-    console.log("opens");
     const [failedFirstAttempt, setFailedFirstAttempt] =
         useState<boolean>(false);
 
     //Should be in KB.
+    //KB = Byte * 1000
     const [downloadProgress, setDownloadProgress] = useState<number>(0);
+
     const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
 
     // These two will determine if a book already exists on savedBooks, and show the user the relevant info regarding it.
-    const [bookAlreadySaved, setBookAlreadySaved] = useState<boolean>(false);
-    let savedBookArrayBuffer = useRef<ArrayBuffer | null>(null);
+    const [bookAlreadySaved, setBookAlreadySaved] =
+        useState<ArrayBuffer | null>(null);
 
     const downloadBook = async (requestUrl: string) => {
         const config: AxiosRequestConfig = {
@@ -61,15 +61,17 @@ export default function ReaderDownloader({
                 setDownloadProgress(loadedSize);
             },
         };
+
         try {
             setDownloadStatus(103);
-            console.log(downloadStatus);
+            let headReq = await axios.head(requestUrl);
+            console.log(headReq);
             let req: AxiosResponse = await axios.request(config);
             console.log(req);
 
             setDownloadStatus(200);
             const arrayBuffer = await fileToArrayBuffer(req.data);
-            await saveBooks(arrayBuffer, bookInfo);
+            await saveBookLocally(arrayBuffer, bookInfo);
             // Saves current time in last-download, so we can define the last time the user has made a download.
             await localforage.setItem("last-download", new Date());
             const readerScreenState: PossibleReaderScreenStates = {
@@ -86,6 +88,8 @@ export default function ReaderDownloader({
             setTimeout(() => {
                 if (!failedFirstAttempt) {
                     setFailedFirstAttempt(true);
+                } else {
+                    location.reload();
                 }
             }, 2000);
             return;
@@ -100,23 +104,8 @@ export default function ReaderDownloader({
             Object.values(savedBooks).forEach((savedBookEntry, index) => {
                 if (savedBookEntry != null) {
                     if (savedBookEntry.bookInfo.md5 === bookInfo.md5) {
-                        // It's /library job to be sure that the category inside the bookInfo is always accurate.
-                        // Update the bookInfo on savedBooks to track it online.
-                        if (
-                            category &&
-                            savedBookEntry.bookInfo.category == null
-                        ) {
-                            bookInfo.category = category;
-                            updateBook(bookInfo, index).then((r) => {
-                                savedBookArrayBuffer.current =
-                                    savedBookEntry.arrayBuffer;
-                                setBookAlreadySaved(true);
-                            });
-                            return;
-                        }
-                        savedBookArrayBuffer.current =
-                            savedBookEntry.arrayBuffer;
-                        setBookAlreadySaved(true);
+                        // Set's this book arrayBuffer as the state if the md5 matches.
+                        setBookAlreadySaved(savedBookEntry.arrayBuffer);
                         return;
                     }
                 }
@@ -214,11 +203,11 @@ export default function ReaderDownloader({
                         servidor normalmente é lento.
                     </span>
                 </div>
-            ) : savedBookArrayBuffer.current != null ? (
+            ) : bookAlreadySaved && savedBooks ? (
                 <ReaderBookOnList
-                    category={category}
+                    savedBooks={savedBooks}
                     bookInfo={bookInfo}
-                    arrayBuffer={savedBookArrayBuffer.current}
+                    arrayBuffer={bookAlreadySaved}
                 />
             ) : null}
         </div>

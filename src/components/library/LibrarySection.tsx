@@ -13,6 +13,14 @@ interface Props {
 }
 
 export default function LibrarySection(props: Props) {
+    // Defines a category property for each book with the correct value.
+    const bookCategorySetter = () => {
+        return props.booksInfo.map((book) => {
+            book.category = props.bookCategory;
+            return book;
+        });
+    };
+    const booksInfo = bookCategorySetter();
     return (
         <div className="d-flex flex-wrap justify-content-center mb-4">
             <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light p-3 library-section-div">
@@ -21,8 +29,8 @@ export default function LibrarySection(props: Props) {
                 </div>
                 <Break />
                 <div className="d-flex flex-wrap justify-content-center">
-                    {props.booksInfo.length > 0 ? (
-                        props.booksInfo.map((el, i) => {
+                    {booksInfo.length > 0 ? (
+                        booksInfo.map((el, i) => {
                             if (!props.expanded) {
                                 if (i < 4) {
                                     let timeout;
@@ -77,10 +85,10 @@ export default function LibrarySection(props: Props) {
                         </>
                     )}
                     {!props.expanded ? (
-                        props.booksInfo.length > 5 ? (
+                        booksInfo.length > 5 ? (
                             <div className="d-flex justify-content-start">
                                 <Link to={props.bookCategory}>
-                                    E mais {props.booksInfo.length - 5}
+                                    E mais {booksInfo.length - 5}
                                 </Link>
                             </div>
                         ) : null

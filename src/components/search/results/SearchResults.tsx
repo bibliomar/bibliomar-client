@@ -1,10 +1,7 @@
 import BookFigure from "./BookFigure";
 import Break from "../../general/Break";
 import React, { useState } from "react";
-
-type Book = {
-    [key: string]: any;
-};
+import { Book } from "../../../helpers/generalTypes";
 
 interface Props {
     results: Book[];

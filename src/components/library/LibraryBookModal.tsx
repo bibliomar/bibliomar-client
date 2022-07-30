@@ -14,7 +14,6 @@ import Break from "../general/Break";
 import LibraryBookModalBody from "./LibraryBookModalBody";
 import { useFormik } from "formik";
 import axios from "axios";
-// eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
 import { Book } from "../../helpers/generalTypes";
 import { Size } from "../general/useWindowSize";
@@ -52,46 +51,20 @@ export default function LibraryBookModal(props: Props) {
                 data: reqBody,
             };
             try {
-                setProgress(50);
-                setRequestStatus(103);
+                // To avoid unecessary re-renders.
+                setRequestStatus(requestStatus !== 0 ? 0 : requestStatus);
+
                 let req = await axios.request(config);
                 console.log(req);
                 sessionStorage.removeItem(`${username}-user`);
-                setProgress(0);
-                setRequestStatus(200);
-                setTimeout(() => setRequestStatus(0), 2000);
+                // This will trigger a re-render in the LibraryParent component.
+                // The LibraryParent component should be responsible for setting this to 0.
+                setProgress(33);
             } catch (e) {
                 setRequestStatus(400);
-                setTimeout(() => setRequestStatus(0), 2000);
             }
         },
     });
-    const colorOnStatus = () => {
-        switch (requestStatus) {
-            case 0:
-                return "primary";
-            case 103:
-                return "info";
-            case 200:
-                return "success";
-            case 400:
-                return "danger";
-        }
-        return "primary";
-    };
-
-    const messageOnStatus = () => {
-        switch (requestStatus) {
-            case 0:
-                return "Salvar";
-            case 103:
-                return "Atualizando";
-            case 200:
-                return "Sucesso";
-            case 400:
-                return "Erro";
-        }
-    };
 
     const toggleShow = () => props.setShowProp(!props.showProp);
     return (
@@ -142,10 +115,10 @@ export default function LibraryBookModal(props: Props) {
                                 formik.values.select === props.bookCategory
                             }
                             type="submit"
-                            color={colorOnStatus()}
+                            color={requestStatus === 400 ? "danger" : "primary"}
                             onClick={formik.submitForm}
                         >
-                            {messageOnStatus()}
+                            {requestStatus === 400 ? "Erro" : "Atualizar"}
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>

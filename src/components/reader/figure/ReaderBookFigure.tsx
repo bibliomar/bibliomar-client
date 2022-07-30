@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Book } from "../../../helpers/generalTypes";
 import { Size, useWindowSize } from "../../general/useWindowSize";
-import ReaderBookFigureMobile from "./ReaderBookFigureMobile";
-import ReaderBookFigureDesktop from "./ReaderBookFigureDesktop";
+import ReaderBookFigureResponsive from "./ReaderBookFigureResponsive";
 import ReaderBookFigureSpotlight from "./ReaderBookFigureSpotlight";
 import { PossibleReaderScreenStates } from "../helpers/readerTypes";
+import { navigateToBook } from "../../../helpers/generalFunctions";
 
 interface Props {
     book: Book;
@@ -92,22 +92,14 @@ export default function ReaderBookFigure(props: Props) {
                     coverDone={coverDone}
                     onClickFunction={onClickHandler}
                 />
-            ) : null}
-            {size.width! < 600 && !props.spotlight ? (
-                <ReaderBookFigureMobile
+            ) : (
+                <ReaderBookFigureResponsive
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
                     onClickFunction={onClickHandler}
                 />
-            ) : size.width! > 600 && !props.spotlight ? (
-                <ReaderBookFigureDesktop
-                    book={book}
-                    cover={cover}
-                    coverDone={coverDone}
-                    onClickFunction={onClickHandler}
-                />
-            ) : null}
+            )}
         </>
     );
 }

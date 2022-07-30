@@ -1,4 +1,4 @@
-// This file exports common functions used by components in /reader.
+// This file exports common functions used by components in /reader or related to its functionality.
 
 import { Book } from "../../../helpers/generalTypes";
 import localforage from "localforage";
@@ -9,7 +9,10 @@ import { ReactReaderStyle } from "react-reader";
 // Saves a new or replaces an existing SavedBooks object in localforage.INDEXEDDB.
 //
 // It will then be used in everything associated with /reader.
-export const saveBooks = async (arrayBuffer: ArrayBuffer, bookInfo: Book) => {
+export const saveBookLocally = async (
+    arrayBuffer: ArrayBuffer,
+    bookInfo: Book
+) => {
     const ls = localforage.createInstance({
         driver: localforage.INDEXEDDB,
     });
@@ -41,8 +44,8 @@ export const saveBooks = async (arrayBuffer: ArrayBuffer, bookInfo: Book) => {
                 arrayBuffer: arrayBuffer,
                 bookInfo: bookInfo,
             },
-            secondBook: undefined,
-            thirdBook: undefined,
+            secondBook: null,
+            thirdBook: null,
         };
     }
     await ls.setItem("saved-books", newSavedBooks);
@@ -52,7 +55,7 @@ export const saveBooks = async (arrayBuffer: ArrayBuffer, bookInfo: Book) => {
 // being tracked before.
 // Can also be used to update a arrayBuffer, if the need ever arises.
 // Should only be used if savedBooks exists and the index of the book you want to update is know.
-export const updateBook = async (
+export const updateBookLocally = async (
     bookInfo: Book,
     toUpdateIndex: number,
     arrayBuffer?: ArrayBuffer | undefined
@@ -72,7 +75,7 @@ export const updateBook = async (
                               ? arrayBuffer
                               : savedBooksCache.firstBook.arrayBuffer,
                       }
-                    : null,
+                    : savedBooksCache.firstBook,
             secondBook:
                 toUpdateIndex === 1 && savedBooksCache.secondBook
                     ? {
@@ -81,7 +84,7 @@ export const updateBook = async (
                               ? arrayBuffer
                               : savedBooksCache.secondBook.arrayBuffer,
                       }
-                    : null,
+                    : savedBooksCache.secondBook,
             thirdBook:
                 toUpdateIndex === 2 && savedBooksCache.thirdBook
                     ? {
@@ -90,7 +93,7 @@ export const updateBook = async (
                               ? arrayBuffer
                               : savedBooksCache.thirdBook.arrayBuffer,
                       }
-                    : null,
+                    : savedBooksCache.thirdBook,
         };
         await ls.setItem("saved-books", updatedSavedBooks);
     } else {
@@ -99,7 +102,7 @@ export const updateBook = async (
 };
 
 //Removes both a book's info and it's ArrayBuffer from the savedBooks on localforage.
-export const removeSavedBook = async (toRemoveIndex: number) => {
+export const removeBookLocally = async (toRemoveIndex: number) => {
     /*
     There's probably a better way to do this.
     Basically, you just need to find the index which you want to remove, and this function set both info and ArrayBuffer to null.
@@ -126,28 +129,53 @@ export const removeSavedBook = async (toRemoveIndex: number) => {
 };
 
 /*
+Returns an index of a savedBook if it matches the md5 specified.
+Returns null if there's no SavedBooks object or no matches.
+This function should be used everytime something is to be added to SavedBooks, to avoid duplicates.
+This index should be used in local books related functions.
+ */
+
+export const findBookLocally = async (md5: string): Promise<number | null> => {
+    const ls = localforage.createInstance({
+        driver: localforage.INDEXEDDB,
+    });
+    const savedBooksCache: SavedBooks | null = await ls.getItem("saved-books");
+    if (savedBooksCache != null) {
+        let savedBookIndex: number | null = null;
+        const savedBooksValuesArray = Object.values(savedBooksCache);
+        savedBooksValuesArray.forEach((el, i) => {
+            if (el && el.bookInfo.md5 === md5) {
+                savedBookIndex = i;
+            }
+        });
+        return savedBookIndex;
+    } else {
+        return null;
+    }
+};
+
+/**
 This function will remove any book with the same md5 as the specified one
 (preferably there should be only one at maximum.) and then re-add it
 in the new category.
 We are basically re-adding a book with new progress info. It's a simple request,
 so it shouldn't be costly network-wise.
-
-Check Biblioterra docs.
+ Check Biblioterra docs.
+@return null if not logged / book has invalid category.
  */
 export const saveProgressOnDatabase = async (
-    category: string,
     currentProgress: string,
     book: Book
 ) => {
     const jwtToken = localStorage.getItem("jwt-token");
-    if (jwtToken == null) {
+    if (jwtToken == null || book.category == null) {
         return null;
     }
     book.progress = currentProgress;
     const reqBody = [book];
 
     const config: AxiosRequestConfig = {
-        url: `https://biblioterra.herokuapp.com/v1/library/add/${category}`,
+        url: `https://biblioterra.herokuapp.com/v1/library/add/${book.category}`,
         headers: {
             Authorization: `Bearer ${jwtToken}`,
         },

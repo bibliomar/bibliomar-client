@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from "react";
-import jwt_decode, { JwtPayload } from "jwt-decode";
-import {
-    useNavigate,
-    useOutletContext,
-    useSearchParams,
-} from "react-router-dom";
-import axios from "axios";
-import LibrarySection from "../LibrarySection";
-import Break from "../../general/Break";
-import LibraryNavbar from "../LibraryNavbar";
-import {
-    EditModeContext,
-    SelectedBooksContext,
-    SelectedContext,
-} from "../utils/RelevantContext";
-import { Book } from "../../../helpers/generalTypes";
+import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import LibrarySection from "./LibrarySection";
+import Break from "../general/Break";
+import LibraryNavbar from "./LibraryNavbar";
+import { EditModeContext, SelectedBooksContext } from "./utils/RelevantContext";
+import { Book } from "../../helpers/generalTypes";
 
 export default function LibraryLanding() {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -28,18 +18,11 @@ export default function LibraryLanding() {
     const setProgress: React.Dispatch<React.SetStateAction<number>> =
         context["setProgress"];
     const username = context["username"];
-    console.log(context);
-    console.log(selectedBooks);
     return (
         <EditModeContext.Provider value={editMode}>
             <SelectedBooksContext.Provider value={selectedContextValue}>
-                <div className="d-flex flex-wrap justify-content-start mt-5 w-100">
-                    {username ? (
-                        <LibraryNavbar
-                            setEditMode={setEditMode}
-                            username={username}
-                        />
-                    ) : null}
+                <div className="d-flex flex-wrap justify-content-start justify-content-md-center mt-5 w-100">
+                    {username ? <LibraryNavbar username={username} /> : null}
                     <LibrarySection
                         message="Lendo"
                         bookCategory={"reading"}

@@ -2,13 +2,13 @@
 
 import { Book } from "../../../helpers/generalTypes";
 import React, { MouseEventHandler } from "react";
+import { NavigateFunction } from "react-router-dom";
 
 // State to be passed to ReaderMain component, making it usable.
 export interface PossibleReaderScreenStates {
     arrayBuffer: ArrayBuffer;
     onlineFile: Book | undefined;
     localFile: File | undefined;
-    category?: string;
 }
 
 // State to be passed to ReaderLanding component, depending on its value, the component will render different subcomponents.
@@ -16,7 +16,6 @@ export interface PossibleReaderLandingStates {
     bookInfo: Book;
     url: string;
     secondaryUrl?: string;
-    category?: string;
 }
 
 /**
@@ -30,7 +29,6 @@ export interface ReaderDownloaderProps {
     secondaryUrl?: string;
     bookInfo: Book;
     savedBooks?: SavedBooks;
-    category?: string;
 }
 
 /* Describes a user savedBooks schema.
@@ -50,9 +48,9 @@ export interface SavedBookEntry {
 
 // Describes a SavedBooks object, which will be used to save up to 3 books in localForage.
 export type SavedBooks = {
-    firstBook: SavedBookEntry | null | undefined;
-    secondBook: SavedBookEntry | null | undefined;
-    thirdBook: SavedBookEntry | null | undefined;
+    firstBook: SavedBookEntry | null;
+    secondBook: SavedBookEntry | null;
+    thirdBook: SavedBookEntry | null;
 };
 
 /* A type definition for the props that the ReaderBookFigure component will receive. */

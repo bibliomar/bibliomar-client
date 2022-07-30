@@ -2,12 +2,12 @@ import { MDBBtn } from "mdb-react-ui-kit";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Break from "../../../general/Break";
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import BookLibraryButton from "./BookLibraryButton";
 import { Book } from "../../../../helpers/generalTypes";
 
 interface Props {
-    bookInfo: Book;
+    bookInfoRef: React.MutableRefObject<Book>;
 }
 
 export default function BookLibraryActions(props: Props) {
@@ -24,7 +24,7 @@ export default function BookLibraryActions(props: Props) {
             navigate(`/user/login?redirect=${redirect}`);
             return;
         }
-        let bookToAdd = props.bookInfo;
+        let bookToAdd = props.bookInfoRef.current;
         bookToAdd.category = category;
         const req_body = [bookToAdd];
         const config = {
@@ -40,9 +40,8 @@ export default function BookLibraryActions(props: Props) {
             setAddStatus(103);
 
             let req = await axios.request(config);
-
+            props.bookInfoRef.current = bookToAdd;
             setAddStatus(200);
-
             setTimeout(() => {
                 setTriedCategory("");
                 setAddStatus(0);

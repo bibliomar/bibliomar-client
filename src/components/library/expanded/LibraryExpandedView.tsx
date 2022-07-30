@@ -13,7 +13,7 @@ export default function (props: Props) {
     return (
         <div className="d-flex flex-wrap justify-content-start mt-5 w-100">
             <LibrarySection
-                expanded={true}
+                expanded
                 message={props.message}
                 bookCategory={props.bookCategory}
                 booksInfo={userInfo[props.bookCategory]}

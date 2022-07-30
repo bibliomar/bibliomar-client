@@ -2,6 +2,7 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
 
+// Deprecated for now. Works fine, but ReaderBookFigureResponsive does it job now.
 export default function ReaderBookFigureDesktop({
     book,
     cover,

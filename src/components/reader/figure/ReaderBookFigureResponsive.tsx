@@ -1,18 +1,38 @@
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
-import Break from "../../general/Break";
 import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
+import { Link, useNavigate } from "react-router-dom";
+import { Size, useWindowSize } from "../../general/useWindowSize";
+import { navigateToBook } from "../../../helpers/generalFunctions";
 
-export default function ReaderBookFigureMobile({
+export default function ReaderBookFigureResponsive({
     book,
     cover,
     coverDone,
     onClickFunction,
 }: ReaderBookFigureProps) {
+    const size: Size = useWindowSize();
+    const navigate = useNavigate();
+    const onMobile = size.width < 600;
     return (
-        <div className={"mb-3 pt-2 border-white border-top flex-grow-1"}>
-            <div className="d-flex library-row">
-                <div id="cover-div" className="me-2 library-figure-img">
+        <div
+            className={
+                onMobile
+                    ? "mb-3 pt-2 border-white border-top flex-grow-1"
+                    : "reader-figure-container me-3"
+            }
+        >
+            <figure
+                className={
+                    onMobile
+                        ? "figure d-flex library-row"
+                        : "figure d-flex flex-column"
+                }
+            >
+                <div
+                    id="cover-div"
+                    className={onMobile ? "me-2 library-figure-img" : "w-100"}
+                >
                     {coverDone ? (
                         <></>
                     ) : (
@@ -50,7 +70,14 @@ export default function ReaderBookFigureMobile({
                         </a>
                     </MDBRipple>
                 </div>
-                <div id="info-div" className="">
+                <figcaption
+                    id="info-div"
+                    className={
+                        onMobile
+                            ? ""
+                            : "w-100 border rounded-7 rounded-top border-dark border-top-0 bg-black bg-opacity-50 p-2 recommendation-caption flex-grow-1"
+                    }
+                >
                     <p className="">
                         <strong>Título: </strong> <br />
                         {book.title}
@@ -63,7 +90,7 @@ export default function ReaderBookFigureMobile({
                         <strong>Tamanho: </strong> <br />
                         {book.size}
                     </p>
-                    <span className="">
+                    <p className="">
                         <strong>Status: </strong> <br />
                         {book.category ? (
                             <span>Rastreando.</span>
@@ -75,9 +102,27 @@ export default function ReaderBookFigureMobile({
                                 </abbr>
                             </span>
                         )}
+                    </p>
+                    <span className="">
+                        <strong>Informações: </strong> <br />
+                        {book.category ? (
+                            <Link to={`/user/login?md5=${book.md5}`}>
+                                Visualizar na biblioteca
+                            </Link>
+                        ) : (
+                            <Link
+                                to={`/book/${book.topic}/${book.md5}`}
+                                onClick={(evt) => {
+                                    evt.preventDefault();
+                                    navigateToBook(book, navigate);
+                                }}
+                            >
+                                Visualizar informações
+                            </Link>
+                        )}
                     </span>
-                </div>
-            </div>
+                </figcaption>
+            </figure>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
 import BookDownload from "./BookDownload";
@@ -8,10 +8,7 @@ import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Book, downloadLinks } from "../../../helpers/generalTypes";
-import {
-    PossibleReaderLandingStates,
-    PossibleReaderScreenStates,
-} from "../../reader/helpers/readerTypes";
+import { PossibleReaderLandingStates } from "../../reader/helpers/readerTypes";
 
 interface Props {
     md5: string;
@@ -30,9 +27,12 @@ export async function getMetadata(md5: string, topic: string) {
     }
 }
 
-// Here we use MDBootstrap col- classes to make the bookInfo stay in the right half of the screen.
+// Here we use MDBootstrap col classes to make the bookInfo stay in the right half of the screen.
 export default function BookInfo(props: Props) {
-    const bookInfo = props.bookInfo;
+    // This is done because when a book is sent to the database via BookLibraryActions, its category property may change.
+    const bookInfoRef = useRef<Book>(props.bookInfo);
+    // This is just a shorthand to avoid writing .current everywhere.
+    const bookInfo = bookInfoRef.current;
     const navigate = useNavigate();
     const [description, setDescription] = useState<string>("Carregando");
     const [downloadLinks, setDownloadLinks] = useState<
@@ -79,7 +79,7 @@ export default function BookInfo(props: Props) {
             <div className="lead bg-black p-2 rounded-7 bg-opacity-75 text-light text-center mb-2 book-item">
                 <span className="fw-bold">Adicionar a minha biblioteca: </span>
                 {userLogged ? (
-                    <BookLibraryActions bookInfo={bookInfo} />
+                    <BookLibraryActions bookInfoRef={bookInfoRef} />
                 ) : (
                     <BookLoginNeeded topic={props.topic} md5={props.md5} />
                 )}
@@ -132,7 +132,6 @@ export default function BookInfo(props: Props) {
                                     bookInfo: bookInfo,
                                     url: downloadLinks["IPFS.io"],
                                     secondaryUrl: downloadLinks.Pinata,
-                                    category: undefined,
                                 };
 
                             navigate("/reader", {

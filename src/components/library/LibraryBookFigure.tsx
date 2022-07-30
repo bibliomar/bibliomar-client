@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import LibraryBookModal from "./LibraryBookModal";
 import { Size, useWindowSize } from "../general/useWindowSize";
 import LibraryBookIcon from "./LibraryBookIcon";
-import { EditModeContext, SelectedBooksContext } from "./utils/RelevantContext";
 import { Book } from "../../helpers/generalTypes";
 
 interface Props {
@@ -39,10 +38,8 @@ async function getCover(md5: string) {
 }
 
 export default function LibraryBookFigure(props: Props) {
-    const selectedBooksContext = useContext(SelectedBooksContext);
-    const editMode = useContext(EditModeContext);
+    let book = props.book;
     const size: Size = useWindowSize();
-    const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
     const [modalOn, setModalOn] = useState<boolean>(false);
     const [firstRender, setFirstRender] = useState<boolean>(false);
 
@@ -102,8 +99,8 @@ export default function LibraryBookFigure(props: Props) {
 
                 <div id="cover-div" className="me-2 library-figure-img">
                     {coverDone ? (
-                        <LibraryBookIcon checked={checkboxToggle} />
-                    ) : !editMode ? (
+                        <LibraryBookIcon />
+                    ) : (
                         <MDBSpinner
                             style={{
                                 width: "1rem",
@@ -115,7 +112,7 @@ export default function LibraryBookFigure(props: Props) {
                             color="dark"
                             className="position-absolute ms-1 mt-1"
                         />
-                    ) : null}
+                    )}
 
                     <MDBRipple
                         className="bg-image hover-overlay shadow-1-strong w-100"
@@ -132,33 +129,9 @@ export default function LibraryBookFigure(props: Props) {
                             href={`/book/${props.book.topic}/${props.book.md5}`}
                             onClick={(evt) => {
                                 evt.preventDefault();
-                                if (!editMode) {
-                                    setFirstRender(true);
-                                    toggleShow();
-                                    return;
-                                }
-                                const bookOnArray =
-                                    selectedBooksContext.selectedBooks.indexOf(
-                                        props.book
-                                    );
 
-                                if (bookOnArray !== -1) {
-                                    console.log("runs");
-                                    let arrayCopy =
-                                        selectedBooksContext.selectedBooks;
-                                    arrayCopy.splice(bookOnArray);
-                                    selectedBooksContext.setFunction([
-                                        ...arrayCopy,
-                                    ]);
-                                    setCheckboxToggle(false);
-                                    return;
-                                }
-
-                                selectedBooksContext.setFunction([
-                                    ...selectedBooksContext.selectedBooks,
-                                    props.book,
-                                ]);
-                                setCheckboxToggle(true);
+                                setFirstRender(true);
+                                toggleShow();
                                 return;
                             }}
                         >

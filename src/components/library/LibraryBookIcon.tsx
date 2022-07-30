@@ -1,14 +1,14 @@
 import { MDBCheckbox, MDBIcon } from "mdb-react-ui-kit";
-import React, { useContext, useState } from "react";
-import { EditModeContext } from "./utils/RelevantContext";
+import React, { useContext } from "react";
 import { Book } from "../../helpers/generalTypes";
 
 interface Props {
-    checked: boolean;
+    checked?: boolean;
 }
 
 export default function ({ checked }: Props) {
-    const editMode = useContext(EditModeContext);
+    // Placeholder, not used right now.
+    const editMode = false;
     return editMode ? (
         <MDBCheckbox
             className="position-absolute ms-1 mt-1"

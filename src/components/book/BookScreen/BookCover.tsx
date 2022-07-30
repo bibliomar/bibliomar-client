@@ -44,7 +44,7 @@ export default function BookCover(props: Props) {
     }, []);
 
     return (
-        <div className="col-lg-6 col d-flex justify-content-center">
+        <div className="col-lg-6 col d-flex flex-column">
             <img
                 src={cover}
                 alt="https://libgen.rocks/img/blank.png"

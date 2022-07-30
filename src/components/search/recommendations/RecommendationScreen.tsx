@@ -5,8 +5,8 @@ import Break from "../../general/Break";
 interface Props {
     disabled: boolean;
 }
-// Hard-coded stuff, pretty bad haha
-const recommendations = [
+// Hard-coded stuff
+const recommendationScreen = [
     {
         authors: "Daniel, Keyes",
         series: "",
@@ -65,10 +65,10 @@ const recommendations = [
     },
 ];
 
-export default function Recommendations(props: Props) {
+export default function RecommendationScreen(props: Props) {
     const renderBasedOnDisabled = () => {
         if (props.disabled) {
-            return <div />;
+            return null;
         }
         return (
             <div className="d-flex flex-wrap justify-content-center">
@@ -80,7 +80,7 @@ export default function Recommendations(props: Props) {
                     </div>
                     <Break />
                     <div className="d-flex flex-wrap justify-content-center">
-                        {recommendations.map((el, i) => {
+                        {recommendationScreen.map((el, i) => {
                             let timeout;
                             i === 0 ? (timeout = 1000) : (timeout = i * 1000);
                             return (

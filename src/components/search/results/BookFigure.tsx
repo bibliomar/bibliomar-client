@@ -1,13 +1,10 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MDBBtn, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
-import { useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
-
-type Book = {
-    [key: string]: any;
-};
+import { Book } from "../../../helpers/generalTypes";
+import { navigateToBook } from "../../../helpers/generalFunctions";
 
 interface Props {
     result: Book;
@@ -40,13 +37,6 @@ export default function BookFigure(props: Props) {
     );
 
     const [coverDone, setCoverDone] = useState<boolean>(false);
-
-    const navigateToBook = (evt: any) => {
-        evt.preventDefault();
-        const bookStr = JSON.stringify(book);
-        sessionStorage.setItem(`${book.md5}-info`, bookStr);
-        navigate(`/book/${book.topic}/${book.md5}`, { replace: false });
-    };
 
     useEffect(() => {
         let coverSetTimeout: number;
@@ -109,7 +99,10 @@ export default function BookFigure(props: Props) {
                 <img className="w-100 h-100" src={cover} alt="Capa do livro" />
                 <a
                     href={`/book/${book.topic}/${book.md5}`}
-                    onClick={navigateToBook}
+                    onClick={(evt) => {
+                        evt.preventDefault();
+                        navigateToBook(book, navigate);
+                    }}
                 >
                     <div
                         className="mask"
@@ -146,7 +139,10 @@ export default function BookFigure(props: Props) {
                 <Link
                     className="d-flex justify-content-center w-100 mb-2 mt-auto"
                     to={`/book/${book.topic}/${book.md5}`}
-                    onClick={navigateToBook}
+                    onClick={(evt) => {
+                        evt.preventDefault();
+                        navigateToBook(book, navigate);
+                    }}
                 >
                     <MDBBtn className="btn btn-secondary btn-rounded">
                         Mais informações

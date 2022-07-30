@@ -12,6 +12,7 @@ import LoginMessage from "./LoginMessage";
 export default function Login() {
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
+    const md5 = searchParameters.get("md5") as string;
     const navigate = useNavigate();
     const [loginStatus, setLoginStatus] = useState<number>(0);
     const [autoLoginStatus, setAutoLoginStatus] = useState<number>(0);
@@ -92,9 +93,16 @@ export default function Login() {
 
                 if (redirect) {
                     navigate(`${redirect}`, { replace: true });
-                } else {
-                    navigate("/library", { replace: true });
+                    return;
                 }
+
+                if (md5) {
+                    navigate(`/library?md5=${md5}`, { replace: true });
+                    return;
+                }
+
+                navigate("/library", { replace: true });
+                return;
             } catch (e: any) {
                 if (e.request) {
                     switch (e.request.status) {
