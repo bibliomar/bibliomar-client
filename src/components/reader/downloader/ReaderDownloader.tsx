@@ -115,10 +115,10 @@ export default function ReaderDownloader({
         if (!ignore && !bookAlreadySaved && url) {
             /*
             In minutes.
-            If the user is logged, no restriction.
+            If the user is logged, 1 minute restriction.
             If it's not, 5 minutes.
              */
-            const downloadTimeLimit = userLoggedIn ? 0 : 5;
+            const downloadTimeLimit = userLoggedIn ? 1 : 5;
             /*
             In seconds.
             We wait for 15 seconds minimum because otherwise it could result in blocks from the servers.

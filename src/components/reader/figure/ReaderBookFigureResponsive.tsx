@@ -95,12 +95,7 @@ export default function ReaderBookFigureResponsive({
                         {book.category ? (
                             <span>Rastreando.</span>
                         ) : (
-                            <span>
-                                <abbr title="Abra a partir de sua biblioteca para salvar o progresso online.">
-                                    Não rastreado.
-                                    <br />
-                                </abbr>
-                            </span>
+                            <span>Não rastreado.</span>
                         )}
                     </p>
                     <span className="">

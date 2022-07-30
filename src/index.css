@@ -77,10 +77,8 @@ abbr[title]:after
 }
 
 .library-figure-img{
-    min-width: 40%;
-    max-width: 40%;
-
-    height: auto;
+    min-width: 50%;
+    max-width: 50%;
 }
 
 .reader-spotlight-figure-img{
