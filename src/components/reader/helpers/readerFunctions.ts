@@ -215,25 +215,25 @@ export const themeColorsObject: ThemeColorsObject = {
 export const registerRenditionThemes = (rendition: any) => {
     rendition.themes.registerThemes({
         default: {
-            body: {
+            "*": {
                 color: "#000",
                 background: "#fff",
             },
         },
         dark: {
-            body: {
+            "*": {
                 color: "#fff",
                 background: "rgba(0,0,0,0.75)",
             },
         },
         amoled: {
-            body: {
-                color: "#fff",
-                background: "#000",
+            "*": {
+                color: "#fcfcfc",
+                background: "#000000",
             },
         },
         huemintEasily: {
-            body: {
+            "*": {
                 color: "#d8f3fd",
                 background: "#33373e",
             },

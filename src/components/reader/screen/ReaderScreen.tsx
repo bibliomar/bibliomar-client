@@ -2,6 +2,7 @@ import { ThemeColors } from "../helpers/readerTypes";
 import React from "react";
 import { ReactReader, ReactReaderStyle } from "react-reader";
 import { registerRenditionThemes } from "../helpers/readerFunctions";
+import { MDBIcon } from "mdb-react-ui-kit";
 
 interface ReaderScreenProps {
     arrayBuffer: ArrayBuffer;
@@ -14,6 +15,7 @@ interface ReaderScreenProps {
     currentPage: string | undefined;
     handleLocationChange: (epubcifi: string) => void;
     swipeable: boolean;
+    tocRef: React.MutableRefObject<any>;
 }
 
 export default function ReaderScreen({
@@ -27,14 +29,14 @@ export default function ReaderScreen({
     fullscreen,
     setFullscreen,
     swipeable,
+    tocRef,
 }: ReaderScreenProps) {
     return (
         <div
             id={"reader-reader-screen"}
             style={{
-                // Should inherit both to 100%
-                height: "inherit",
-                minHeight: "inherit",
+                height: "100%",
+                minHeight: "100%",
                 width: "100%",
                 top: fullscreen ? "0" : "8vh",
                 position: "absolute",
@@ -45,26 +47,29 @@ export default function ReaderScreen({
                 id="title-toggle-fullscreen"
                 style={{
                     position: "absolute",
-                    top: "20px",
-                    left: "50px",
-                    right: "50px",
-                    height: "5vh",
-                    width: "60%",
+                    top: "5px",
+                    left: "90vw",
                     cursor: "pointer",
-                    marginLeft: "auto",
-                    marginRight: "auto",
                     //Swipe area zIndex is 200.
                     zIndex: "300",
                 }}
                 onClick={() => setFullscreen(!fullscreen)}
-            ></div>
+            >
+                {fullscreen ? (
+                    <MDBIcon fas icon="angle-down" size={"3x"} />
+                ) : (
+                    <MDBIcon fas icon="angle-up" size={"3x"} />
+                )}
+            </div>
             <ReactReader
                 styles={renditionRef.current ? readerStyle.current : undefined}
                 location={currentPage}
                 locationChanged={handleLocationChange}
                 url={arrayBuffer}
                 title={title}
-                swipeable={swipeable}
+                tocChanged={(toc) => {
+                    tocRef.current = toc;
+                }}
                 getRendition={(rendition) => {
                     renditionRef.current = rendition;
                     registerRenditionThemes(rendition);

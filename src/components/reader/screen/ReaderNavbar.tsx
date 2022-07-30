@@ -2,6 +2,7 @@ import {
     MDBBtn,
     MDBCollapse,
     MDBContainer,
+    MDBIcon,
     MDBNavbar,
     MDBNavbarBrand,
     MDBNavbarItem,
@@ -29,15 +30,10 @@ export default function ReaderNavbar({
                     <MDBNavbarBrand className="ms-4" href="/reader">
                         Bibliomar
                     </MDBNavbarBrand>
-                    <MDBCollapse show>
-                        <MDBNavbarNav>
-                            <MDBNavbarItem>
-                                <MDBNavbarLink className="me-4">
-                                    <MDBBtn>Aparência</MDBBtn>
-                                </MDBNavbarLink>
-                            </MDBNavbarItem>
-                        </MDBNavbarNav>
-                    </MDBCollapse>
+
+                    <MDBNavbarLink className="ms-auto">
+                        <MDBBtn>Aparência</MDBBtn>
+                    </MDBNavbarLink>
                 </MDBContainer>
             </MDBNavbar>
         </div>

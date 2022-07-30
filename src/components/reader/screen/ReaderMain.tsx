@@ -8,8 +8,8 @@ import {
 } from "../helpers/readerTypes";
 import {
     createReactReaderStyle,
-    themeColorsObject,
     saveProgressOnDatabase,
+    themeColorsObject,
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
@@ -37,6 +37,7 @@ export default function ReaderMain() {
     const [currentPage, setCurrentPage] = useState<string | undefined>(
         undefined
     );
+    console.log(currentPage);
     const [currentTheme, setCurrentTheme] = useState<ThemeColors>(
         themeColorsObject.amoled
     );
@@ -45,7 +46,9 @@ export default function ReaderMain() {
     );
     const [swipeable, setSwipeable] = useState<boolean>(false);
     const [fullscreen, setFullscreen] = useState<boolean>(false);
-    const renditionRef = useRef<any>();
+    const renditionRef = useRef<any>(null);
+    const tocRef = useRef<any>(null);
+    const pageInfoRef = useRef<string | null>(null);
     const userWarnedRef = useRef<boolean | null>(
         sessionStorage.getItem("user-warned") === "true"
     );
@@ -65,6 +68,16 @@ export default function ReaderMain() {
     };
 
     const handleLocationChange = async (epubcifi: any) => {
+        if (tocRef.current && renditionRef.current) {
+            const { displayed, href } = renditionRef.current.location.start;
+            const chapter = tocRef.current.find(
+                (item: any) => item.href === href
+            );
+
+            pageInfoRef.current = `Page ${displayed.page} of ${
+                displayed.total
+            } in chapter ${chapter ? chapter.label : "n/a"}`;
+        }
         if (initialLoadDone) {
             //After the initial page load, we can save the user's progress normally.
             await localforage.setItem(`${identifier}-page`, epubcifi);
@@ -128,43 +141,58 @@ export default function ReaderMain() {
     }, [currentTheme]);
 
     return (
-        <div
-            style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                minHeight: "100vh",
-                overflow: "hidden",
-            }}
-        >
+        <>
             <div
-                className="bg-alt"
                 style={{
-                    maxHeight: fullscreen ? "0" : "8vh",
-                    minHeight: fullscreen ? "0" : "8vh",
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    minHeight: "100vh",
+                    overflow: "hidden",
                 }}
             >
-                <ReaderNavbar
+                <div
+                    className="bg-alt"
+                    style={{
+                        maxHeight: fullscreen ? "0" : "8vh",
+                        minHeight: fullscreen ? "0" : "8vh",
+                    }}
+                >
+                    <ReaderNavbar
+                        currentTheme={currentTheme}
+                        setCurrentTheme={setCurrentTheme}
+                    />
+                </div>
+                <ReaderScreen
+                    arrayBuffer={arrayBuffer}
+                    title={
+                        onlineFile || localFile
+                            ? onlineFile?.title || localFile?.name
+                            : undefined
+                    }
+                    fullscreen={fullscreen}
+                    setFullscreen={setFullscreen}
                     currentTheme={currentTheme}
-                    setCurrentTheme={setCurrentTheme}
+                    tocRef={tocRef}
+                    renditionRef={renditionRef}
+                    readerStyle={readerStyle}
+                    currentPage={currentPage}
+                    handleLocationChange={handleLocationChange}
+                    swipeable={swipeable}
                 />
             </div>
-            <ReaderScreen
-                arrayBuffer={arrayBuffer}
-                title={
-                    onlineFile || localFile
-                        ? onlineFile?.title || localFile?.name
-                        : undefined
-                }
-                fullscreen={fullscreen}
-                setFullscreen={setFullscreen}
-                currentTheme={currentTheme}
-                renditionRef={renditionRef}
-                readerStyle={readerStyle}
-                currentPage={currentPage}
-                handleLocationChange={handleLocationChange}
-                swipeable={swipeable}
-            />
-        </div>
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: "1rem",
+                    right: "1rem",
+                    left: "1rem",
+                    textAlign: "center",
+                    zIndex: 1,
+                }}
+            >
+                {pageInfoRef.current ? pageInfoRef.current : null}
+            </div>
+        </>
     );
 }
