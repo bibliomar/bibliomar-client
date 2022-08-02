@@ -21,8 +21,8 @@ export default function Greeting(props: Props) {
         }
 
         return (
-            <p className="lead text-secondary">
-                Experimente a nova função de biblioteca!
+            <p className="greeting-text mt-2">
+                Pesquise e leia milhares de livros em um só lugar
             </p>
         );
     }

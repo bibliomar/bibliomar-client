@@ -16,6 +16,8 @@ abbr[title]:after
 }
 
 
+
+
 .break {
     border: 0;
     margin: 0;
@@ -45,8 +47,30 @@ abbr[title]:after
     margin-top: 5vh;
 }
 
+
+
 .searchfield {
     width: 75%;
+}
+
+.search-input{
+    height: 7vh !important;
+}
+
+.search-button{
+    min-width: 70px;
+    max-width: 150px;
+    width: 10vw;
+    height: 7vh !important;
+}
+
+.greeting-text{
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+
 }
 
 .disclaimer {

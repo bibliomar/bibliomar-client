@@ -11,10 +11,12 @@ import {
     MDBNavbarNav,
     MDBNavbarToggler,
 } from "mdb-react-ui-kit";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useFormik } from "formik";
 import NavbarUser from "./NavbarUser";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Theme } from "../../../helpers/generalContext";
+import { ThemeOptions } from "../../../helpers/generalTypes";
 
 interface Props {
     activeItem?: string;
@@ -27,6 +29,8 @@ interface Props {
  * @param setIsUserLoggedContext -
  */
 export default function Navbar({ activeItem, setIsUserLoggedContext }: Props) {
+    const themeContext = useContext(Theme);
+    const theme = themeContext.theme;
     const [showNav, setShowNav] = useState<boolean>(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,10 +42,17 @@ export default function Navbar({ activeItem, setIsUserLoggedContext }: Props) {
     });
 
     return (
-        <div className="bg-black bg-opacity-25">
-            <MDBNavbar expand="lg" dark>
+        <div className="bg-light">
+            <MDBNavbar
+                expand="lg"
+                light={theme === ThemeOptions.light}
+                dark={theme === ThemeOptions.dark}
+                className="p-2 pt-4 pb-4"
+            >
                 <MDBContainer fluid>
-                    <MDBNavbarBrand href="/search">Bibliomar</MDBNavbarBrand>
+                    <MDBNavbarBrand href="/search" className="logo">
+                        <img src="/assets/img/BIBLIOMAR.svg" alt="Bibliomar" />
+                    </MDBNavbarBrand>
                     <MDBNavbarToggler
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
@@ -58,7 +69,7 @@ export default function Navbar({ activeItem, setIsUserLoggedContext }: Props) {
                                     active={activeItem === "home"}
                                     href="/search"
                                 >
-                                    Inicio
+                                    Sobre
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>

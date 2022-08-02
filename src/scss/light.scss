@@ -3,7 +3,9 @@
 @import "mdb-ui-kit/src/scss/free/variables";
 
 $text-color: #000000;
+$text-color-accent: #30333A;
 $bg-color: #EBECF8;
+$accent-color: #7663F2;
 
 // bg for light theme
 .bg-alt{
@@ -12,5 +14,9 @@ $bg-color: #EBECF8;
 
 .form-control{
   color: $text-color;
+}
+
+.btn-primary{
+  background-color: $accent-color !important;
 }
 

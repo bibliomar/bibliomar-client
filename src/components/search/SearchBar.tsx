@@ -66,7 +66,7 @@ export default function SearchBar({ categoryContext }) {
 
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
-            <div className="form-outline searchfield">
+            <div className="searchfield">
                 <datalist id="indexes">
                     {relevantIndexes.map((el, i) => {
                         if (i < 5) {
@@ -79,14 +79,14 @@ export default function SearchBar({ categoryContext }) {
                     onChange={(evt) => handleSearch(evt.currentTarget)}
                     list="indexes"
                     type="text"
-                    className=""
+                    className="search-input"
                     label="Pesquisar"
                     labelClass=""
                     name="q"
                     autoComplete="true"
                 />
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary search-button">
                 <i className="fas fa-search"></i>
             </button>
         </div>

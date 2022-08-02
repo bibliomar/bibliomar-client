@@ -1,9 +1,9 @@
 function Bibliologo() {
     return (
         <div className="row">
-            <div className="col d-flex flex-wrap justify-content-center">
+            <div className="col d-flex flex-wrap justify-content-center mt-5">
                 <a href="/search">
-                    <img src="/assets/img/bibliologo.png" alt="Logo do App" />
+                    <img src="/assets/img/BIBLIOMAR.svg" alt="Logo do App" />
                 </a>
             </div>
             <div className="break" />
