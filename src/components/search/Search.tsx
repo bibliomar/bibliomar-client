@@ -247,7 +247,7 @@ function Search() {
     };
 
     return (
-        <div className="like-body bg-alt text-dark">
+        <div className="like-body bg-alt">
             <div className="container-fluid">
                 <div className="row ">
                     <div className="col mt-3">

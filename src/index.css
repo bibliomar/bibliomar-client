@@ -38,6 +38,10 @@ abbr[title]:after
     background-size: cover;
 }
 
+.bg-waves{
+    background: url("/assets/img/bg-waves-test.svg");
+}
+
 .like-body {
     min-height: 100vh;
     width: inherit;

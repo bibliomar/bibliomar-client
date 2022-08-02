@@ -9,7 +9,8 @@ $accent-color: #7663F2;
 
 // bg for light theme
 .bg-alt{
-  background: $bg-color;
+  background: url("/assets/img/img.png") no-repeat fixed center center;
+  background-size: cover;
 }
 
 .form-control{
