@@ -2,7 +2,14 @@
 
 import { Book } from "../../../helpers/generalTypes";
 import localforage from "localforage";
-import { SavedBooks, ThemeColors } from "./readerTypes";
+import {
+    FlowOptions,
+    ManagerOptions,
+    ReaderSettings,
+    SavedBooks,
+    ReaderThemeColors,
+    ReaderThemeOptions,
+} from "./readerTypes";
 import axios, { AxiosRequestConfig } from "axios";
 import { ReactReaderStyle } from "react-reader";
 
@@ -196,194 +203,203 @@ export const saveProgressOnDatabase = async (
     }
 };
 
-interface ThemeColorsObject {
+interface ThemeColorsModel {
+    // This is the model of the tuples describing a reader theme.
     //First item is equivalent to "color" property, and second is to "backgroundColor".
     //The third element is the theme's name.
-    default: ThemeColors;
-    dark: ThemeColors;
-    amoled: ThemeColors;
-    easily: ThemeColors;
+    [key: string]: ReaderThemeColors;
 }
 
-export const themeColorsObject: ThemeColorsObject = {
+// These themes will be used by the outter part of the reader.
+// They must match the inner part for obvious reasons.
+const themeColorsObject: ThemeColorsModel = {
     default: ["#000", "#fff", "default"],
     dark: ["#fff", "rgba(0,0,0,0.75)", "dark"],
     amoled: ["#fff", "#000", "amoled"],
     easily: ["#d8f3fd", "#33373e", "easily"],
 };
 
+// This will automatically register all themes on themeColorsObject as valid Rendition themes.
+// Rendition themes cover the inner part of the reader.
 export const registerRenditionThemes = (rendition: any) => {
-    rendition.themes.registerThemes({
-        default: {
+    Object.values(themeColorsObject).forEach((theme) => {
+        rendition.themes.register(theme[2], {
             "*": {
-                color: "#000",
-                background: "#fff",
+                color: theme[0],
+                background: theme[1],
             },
-        },
-        dark: {
-            "*": {
-                color: "#fff",
-                background: "rgba(0,0,0,0.75)",
-            },
-        },
-        amoled: {
-            "*": {
-                color: "#fcfcfc",
-                background: "#000000",
-            },
-        },
-        huemintEasily: {
-            "*": {
-                color: "#d8f3fd",
-                background: "#33373e",
-            },
-        },
+        });
     });
 };
 
+export const selectRenditionTheme = (
+    theme: ReaderThemeOptions,
+    rendition: any
+) => {
+    rendition.themes.select(theme);
+};
+
+const defaultReactReaderStyle: ReactReaderStyle = {
+    tocButtonBarBottom: {},
+    container: {
+        overflow: "hidden",
+        height: "100%",
+    },
+
+    readerArea: {
+        position: "relative",
+        zIndex: 1,
+        height: "100%",
+        width: "100%",
+        backgroundColor: "#fff",
+        transition: "all .3s ease",
+    },
+    containerExpanded: {
+        transform: "translateX(256px)",
+    },
+    titleArea: {
+        position: "absolute",
+        top: "20px",
+        left: "50px",
+        right: "50px",
+        textAlign: "center",
+        color: "#999",
+    },
+    reader: {
+        position: "absolute",
+        top: "50px",
+        left: "50px",
+        bottom: "20px",
+        right: "50px",
+    },
+    swipeWrapper: {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        bottom: "0",
+        right: "0",
+        zIndex: "50",
+    },
+    prev: {
+        left: "1",
+    },
+    next: {
+        right: "1",
+    },
+    arrow: {
+        outline: "none",
+        border: "none",
+        background: "none",
+        position: "absolute",
+        top: "50%",
+        marginTop: "-32",
+        fontSize: "62",
+        padding: "0 10px",
+        color: "#E2E2E2",
+        fontFamily: "arial, sans-serif",
+        cursor: "pointer",
+        userSelect: "none",
+        appearance: "none",
+        fontWeight: "normal",
+    },
+    arrowHover: {
+        color: "#777",
+    },
+    tocBackground: {
+        position: "absolute",
+        left: "256",
+        top: 0,
+        bottom: 0,
+        right: 0,
+        zIndex: 1,
+    },
+    tocArea: {
+        position: "absolute",
+        left: "0",
+        top: "0",
+        bottom: "0",
+        zIndex: "0",
+        width: "256",
+        overflowY: "auto",
+        WebkitOverflowScrolling: "touch",
+        background: "#f2f2f2",
+        padding: "10px 0",
+    },
+    tocAreaButton: {
+        userSelect: "none",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        display: "block",
+        fontFamily: "sans-serif",
+        width: "100%",
+        fontSize: ".9em",
+        textAlign: "left",
+        padding: ".9em 1em",
+        borderBottom: "1px solid #ddd",
+        color: "#aaa",
+        boxSizing: "border-box",
+        outline: "none",
+        cursor: "pointer",
+    },
+    tocButton: {
+        background: "none",
+        border: "none",
+        width: "32",
+        height: "32",
+        position: "absolute",
+        top: "10",
+        left: "10",
+        borderRadius: "2",
+        outline: "none",
+        cursor: "pointer",
+    },
+    tocButtonExpanded: {
+        background: "#f2f2f2",
+    },
+    tocButtonBar: {
+        position: "absolute",
+        width: "60%",
+        background: "#ccc",
+        height: "2",
+        left: "50%",
+        margin: "-1px -30%",
+        top: "50%",
+        transition: "all .5s ease",
+    },
+    tocButtonBarTop: {
+        top: "35%",
+    },
+
+    loadingView: {
+        position: "absolute",
+        top: "50%",
+        left: "10%",
+        right: "10%",
+        color: "#ccc",
+        textAlign: "center",
+        marginTop: "-.5em",
+    },
+};
+
 export const createReactReaderStyle = (
-    themeColors: ThemeColors
+    themeName: ReaderThemeOptions
 ): ReactReaderStyle => {
+    /*
+    Index 1 equals to backgroundColor.
+    Index 0 equals to color.
+     */
+
     return {
-        tocButtonBarBottom: {},
-        container: {
-            overflow: "hidden",
-            height: "100%",
-        },
-
-        readerArea: {
-            position: "relative",
-            zIndex: 1,
-            height: "100%",
-            width: "100%",
-            backgroundColor: themeColors[1],
-            transition: "all .3s ease",
-        },
-        containerExpanded: {
-            transform: "translateX(256px)",
-        },
-        titleArea: {
-            position: "absolute",
-            top: "20px",
-            left: "50px",
-            right: "50px",
-            textAlign: "center",
-            color: themeColors[0],
-        },
-        reader: {
-            position: "absolute",
-            top: "50px",
-            left: "50px",
-            bottom: "20px",
-            right: "50px",
-        },
-        swipeWrapper: {
-            position: "absolute",
-            top: "0",
-            left: "0",
-            bottom: "0",
-            right: "0",
-            zIndex: "50",
-        },
-        prev: {
-            left: "1",
-        },
-        next: {
-            right: "1",
-        },
-        arrow: {
-            outline: "none",
-            border: "none",
-            background: "none",
-            position: "absolute",
-            top: "50%",
-            marginTop: "-32",
-            fontSize: "62",
-            padding: "0 10px",
-            color: themeColors[0],
-            fontFamily: "arial, sans-serif",
-            cursor: "pointer",
-            userSelect: "none",
-            appearance: "none",
-            fontWeight: "normal",
-        },
-        arrowHover: {
-            color: "#777",
-        },
-        tocBackground: {
-            position: "absolute",
-            left: "256",
-            top: 0,
-            bottom: 0,
-            right: 0,
-            zIndex: 1,
-        },
-        tocArea: {
-            position: "absolute",
-            left: "0",
-            top: "0",
-            bottom: "0",
-            zIndex: "0",
-            width: "256",
-            overflowY: "auto",
-            WebkitOverflowScrolling: "touch",
-            background: "#f2f2f2",
-            padding: "10px 0",
-        },
-        tocAreaButton: {
-            userSelect: "none",
-            appearance: "none",
-            background: "none",
-            border: "none",
-            display: "block",
-            fontFamily: "sans-serif",
-            width: "100%",
-            fontSize: ".9em",
-            textAlign: "left",
-            padding: ".9em 1em",
-            borderBottom: "1px solid #ddd",
-            color: "#aaa",
-            boxSizing: "border-box",
-            outline: "none",
-            cursor: "pointer",
-        },
-        tocButton: {
-            background: "none",
-            border: "none",
-            width: "32",
-            height: "32",
-            position: "absolute",
-            top: "10",
-            left: "10",
-            borderRadius: "2",
-            outline: "none",
-            cursor: "pointer",
-        },
-        tocButtonExpanded: {
-            background: "#f2f2f2",
-        },
-        tocButtonBar: {
-            position: "absolute",
-            width: "60%",
-            background: "#ccc",
-            height: "2",
-            left: "50%",
-            margin: "-1px -30%",
-            top: "50%",
-            transition: "all .5s ease",
-        },
-        tocButtonBarTop: {
-            top: "35%",
-        },
-
-        loadingView: {
-            position: "absolute",
-            top: "50%",
-            left: "10%",
-            right: "10%",
-            color: "#ccc",
-            textAlign: "center",
-            marginTop: "-.5em",
-        },
+        ...defaultReactReaderStyle,
     };
+};
+
+export const defaultReaderSettings: ReaderSettings = {
+    flow: FlowOptions.default,
+    fullscreen: false,
+    manager: ManagerOptions.default,
+    swipe: false,
+    themeName: ReaderThemeOptions.default,
+    readerStyles: createReactReaderStyle(ReaderThemeOptions.default),
 };

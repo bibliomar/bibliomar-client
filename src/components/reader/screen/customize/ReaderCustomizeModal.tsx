@@ -4,6 +4,7 @@ import {
     MDBModalBody,
     MDBModalContent,
     MDBModalDialog,
+    MDBModalFooter,
     MDBModalHeader,
     MDBModalTitle,
 } from "mdb-react-ui-kit";
@@ -12,17 +13,17 @@ import Break from "../../../general/Break";
 import { ReaderNavbarProps } from "../../helpers/readerTypes";
 
 export default function ReaderCustomizeModal({
-    currentTheme,
-    setCurrentTheme,
+    readerSettings,
+    setReaderSettings,
+    modalToggle,
+    setModalToggle,
 }: ReaderNavbarProps) {
-    const [show, setShow] = useState<boolean>(false);
-
     const toggleShow = () => {
-        setShow(!show);
+        setModalToggle!(!modalToggle);
     };
 
     return (
-        <MDBModal show={show} setShow={setShow}>
+        <MDBModal show={modalToggle} setShow={setModalToggle}>
             <MDBModalDialog>
                 <MDBModalContent>
                     <MDBModalHeader>
@@ -38,7 +39,15 @@ export default function ReaderCustomizeModal({
                     <MDBModalBody
                         tag="div"
                         className="d-flex flex-wrap justify-content-center"
-                    ></MDBModalBody>
+                    >
+                        <h4>Corpo...</h4>
+                    </MDBModalBody>
+                    <MDBModalFooter>
+                        <MDBBtn color="secondary" onClick={toggleShow}>
+                            Fechar
+                        </MDBBtn>
+                        <MDBBtn>Salvar</MDBBtn>
+                    </MDBModalFooter>
                 </MDBModalContent>
             </MDBModalDialog>
         </MDBModal>

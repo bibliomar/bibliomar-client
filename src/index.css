@@ -193,7 +193,8 @@ abbr[title]:after
     }
 
     .saved-list-div{
-        width: 70%;
+        min-width: 70%;
+        max-width: fit-content;
     }
 
 }

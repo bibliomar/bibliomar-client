@@ -1,0 +1,14 @@
+// Dark theme specific classes are defined here.
+@import "mdb-ui-kit/src/scss/free/variables";
+
+$accent-color: #7663F2;
+
+
+
+// Fix for white text in selects' options
+.form-select > option{
+  color: $dark
+}
+
+
+

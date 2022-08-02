@@ -3,6 +3,7 @@
 import { Book } from "../../../helpers/generalTypes";
 import React, { MouseEventHandler } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { ReactReaderStyle } from "react-reader";
 
 // State to be passed to ReaderMain component, making it usable.
 export interface PossibleReaderScreenStates {
@@ -61,9 +62,55 @@ export interface ReaderBookFigureProps {
     onClickFunction: MouseEventHandler;
 }
 
-export type ThemeColors = [string, string, string];
+export type ReaderThemeColors = [string, string, string];
 
 export interface ReaderNavbarProps {
-    currentTheme: ThemeColors;
-    setCurrentTheme: React.Dispatch<React.SetStateAction<ThemeColors>>;
+    readerSettings: ReaderSettings;
+    setReaderSettings: React.Dispatch<React.SetStateAction<ReaderSettings>>;
+    modalToggle?: boolean;
+    setModalToggle?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+/**
+ * Avaiable theme names.
+ * Use in createReactReaderStyle and selectRenditionTheme.
+ */
+export enum ReaderThemeOptions {
+    default = "default",
+    dark = "dark",
+    amoled = "amoled",
+    easily = "easily",
+}
+
+export enum ManagerOptions {
+    default = "default",
+    continuous = "continuous",
+}
+
+export enum FlowOptions {
+    default = "auto", // Based on OPF settings, defaults to "paginated"
+    paginated = "paginated", // Left to right, paginated rendering
+    scrolled = "scrolled", // Scrolled viewing, works best with
+}
+
+// This interface defines the settings the reader has, which may be changed in the ReaderNavbar modal.
+export interface ReaderSettings {
+    // Screen
+    // This one is the only one not inside the modal.
+    fullscreen: boolean;
+
+    // Theming
+    // The name of the theme that should be used.
+    themeName: ReaderThemeOptions;
+    readerStyles: ReactReaderStyle;
+
+    // Pagination
+    // If swiping to turn pages is enabled
+    swipe: boolean;
+    // This one should be set based on "flow" below. Set to "default" if flow is "default / paginated", else "continuous"
+    // Two options.
+    manager: ManagerOptions;
+    // Sets the direction of the page.
+    // Three options.
+    flow: FlowOptions;
 }

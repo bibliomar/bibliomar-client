@@ -79,9 +79,9 @@ export default function SearchBar({ categoryContext }) {
                     onChange={(evt) => handleSearch(evt.currentTarget)}
                     list="indexes"
                     type="text"
-                    className="text-light"
+                    className=""
                     label="Pesquisar"
-                    labelClass="text-light"
+                    labelClass=""
                     name="q"
                     autoComplete="true"
                 />

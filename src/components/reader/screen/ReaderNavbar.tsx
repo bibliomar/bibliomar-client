@@ -1,4 +1,5 @@
 import {
+    MDBBadge,
     MDBBtn,
     MDBCollapse,
     MDBContainer,
@@ -12,27 +13,39 @@ import {
 import { Portal } from "react-portal";
 import { ReaderNavbarProps } from "../helpers/readerTypes";
 import ReaderCustomizeModal from "./customize/ReaderCustomizeModal";
+import { useState } from "react";
 
 export default function ReaderNavbar({
-    currentTheme,
-    setCurrentTheme,
+    readerSettings,
+    setReaderSettings,
 }: ReaderNavbarProps) {
+    const [modalToggle, setModalToggle] = useState<boolean>(false);
     return (
         <div className="bg-black bg-opacity-25 w-100 h-100">
             <Portal node={document.getElementById("modal-root")}>
                 <ReaderCustomizeModal
-                    currentTheme={currentTheme}
-                    setCurrentTheme={setCurrentTheme}
+                    modalToggle={modalToggle}
+                    setModalToggle={setModalToggle}
+                    readerSettings={readerSettings}
+                    setReaderSettings={setReaderSettings}
                 />
             </Portal>
             <MDBNavbar expand dark>
                 <MDBContainer fluid>
                     <MDBNavbarBrand className="ms-4" href="/reader">
                         Bibliomar
+                        <MDBBadge
+                            style={{ fontSize: "0.65em" }}
+                            color="secondary"
+                        >
+                            Salvo
+                        </MDBBadge>
                     </MDBNavbarBrand>
 
                     <MDBNavbarLink className="ms-auto">
-                        <MDBBtn>Aparência</MDBBtn>
+                        <MDBBtn onClick={() => setModalToggle(true)}>
+                            Aparência
+                        </MDBBtn>
                     </MDBNavbarLink>
                 </MDBContainer>
             </MDBNavbar>

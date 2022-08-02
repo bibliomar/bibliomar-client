@@ -1,6 +1,4 @@
-import { ReactReaderStyle } from "react-reader";
-
-// Here for reference. Please use createReactReaderStyle instead.
+// Deprecated. Here for reference. Please use createReactReaderStyle instead.
 let reactReaderStyles = {
     tocButtonBarBottom: {},
     container: {
@@ -145,3 +143,5 @@ let reactReaderStyles = {
         margintop: "-.5em",
     },
 };
+
+export {};

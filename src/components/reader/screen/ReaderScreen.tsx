@@ -1,34 +1,28 @@
-import { ThemeColors } from "../helpers/readerTypes";
+import { ReaderSettings, ReaderThemeColors } from "../helpers/readerTypes";
 import React from "react";
 import { ReactReader, ReactReaderStyle } from "react-reader";
 import { registerRenditionThemes } from "../helpers/readerFunctions";
 import { MDBIcon } from "mdb-react-ui-kit";
 
 interface ReaderScreenProps {
+    readerSettings: ReaderSettings;
+    setReaderSettings: React.Dispatch<React.SetStateAction<ReaderSettings>>;
     arrayBuffer: ArrayBuffer;
     title: string | undefined;
-    fullscreen: boolean;
-    setFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
-    currentTheme: ThemeColors;
     renditionRef: React.MutableRefObject<any>;
-    readerStyle: React.MutableRefObject<ReactReaderStyle>;
     currentPage: string | undefined;
     handleLocationChange: (epubcifi: string) => void;
-    swipeable: boolean;
     tocRef: React.MutableRefObject<any>;
 }
 
 export default function ReaderScreen({
+    readerSettings,
+    setReaderSettings,
     arrayBuffer,
     title,
-    readerStyle,
     handleLocationChange,
     currentPage,
-    currentTheme,
     renditionRef,
-    fullscreen,
-    setFullscreen,
-    swipeable,
     tocRef,
 }: ReaderScreenProps) {
     return (
@@ -38,7 +32,7 @@ export default function ReaderScreen({
                 height: "100%",
                 minHeight: "100%",
                 width: "100%",
-                top: fullscreen ? "0" : "8vh",
+                top: readerSettings.fullscreen ? "0" : "8vh",
                 position: "absolute",
                 backgroundColor: "black",
             }}
@@ -53,16 +47,25 @@ export default function ReaderScreen({
                     //Swipe area zIndex is 200.
                     zIndex: "300",
                 }}
-                onClick={() => setFullscreen(!fullscreen)}
+                onClick={() =>
+                    setReaderSettings({
+                        ...readerSettings,
+                        fullscreen: !readerSettings.fullscreen,
+                    })
+                }
             >
-                {fullscreen ? (
+                {readerSettings.fullscreen ? (
                     <MDBIcon fas icon="angle-down" size={"3x"} />
                 ) : (
                     <MDBIcon fas icon="angle-up" size={"3x"} />
                 )}
             </div>
             <ReactReader
-                styles={renditionRef.current ? readerStyle.current : undefined}
+                styles={
+                    readerSettings.readerStyles
+                        ? readerSettings.readerStyles
+                        : undefined
+                }
                 location={currentPage}
                 locationChanged={handleLocationChange}
                 url={arrayBuffer}
@@ -74,7 +77,7 @@ export default function ReaderScreen({
                     renditionRef.current = rendition;
                     registerRenditionThemes(rendition);
                     // 2 is the index of the theme name.
-                    rendition.themes.select(currentTheme[2]);
+                    rendition.themes.select(readerSettings.themeName);
                 }}
             />
         </div>

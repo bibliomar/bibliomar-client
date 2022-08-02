@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 //@ts-ignore
-function SearchOptions({ categoryContext, setCategoryContext, page }) {
+function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
     let [searchParams, setSearchParams] = useSearchParams();
     let [type, setType] = useState("title");
     let [formatSelect, setFormatSelect] = useState("any");
@@ -47,7 +47,7 @@ function SearchOptions({ categoryContext, setCategoryContext, page }) {
     }, [searchParams]);
 
     return (
-        <div>
+        <div className={hidden ? "visually-hidden" : undefined}>
             <div className="row d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
                     <div id="searchcat">
@@ -162,10 +162,18 @@ function SearchOptions({ categoryContext, setCategoryContext, page }) {
                         name="format"
                         id="format"
                     >
-                        <option value="any">TODOS</option>
-                        <option value="epub">EPUB</option>
-                        <option value="pdf">PDF</option>
-                        <option value="mobi">MOBI</option>
+                        <option className="text-dark" value="any">
+                            TODOS
+                        </option>
+                        <option value="epub" className="text-dark">
+                            EPUB
+                        </option>
+                        <option value="pdf" className="text-dark">
+                            PDF
+                        </option>
+                        <option value="mobi" className="text-dark">
+                            MOBI
+                        </option>
                     </select>
                 </div>
 

@@ -1,5 +1,7 @@
 // This file is to be used for storing types and interfaces common to the whole application.
 
+import React from "react";
+
 type downloadLinks = {
     GET: string;
     Cloudflare: string;
@@ -27,4 +29,15 @@ interface Book {
     category?: string;
 }
 
-export type { Book, downloadLinks };
+enum ThemeOptions {
+    light = "light",
+    dark = "dark",
+}
+
+interface ThemeContext {
+    theme: ThemeOptions;
+    setTheme: React.Dispatch<React.SetStateAction<ThemeOptions>>;
+}
+
+export { ThemeOptions };
+export type { Book, downloadLinks, ThemeContext };

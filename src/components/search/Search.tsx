@@ -247,8 +247,8 @@ function Search() {
     };
 
     return (
-        <div className="like-body bg-alt">
-            <div className="container text-light">
+        <div className="like-body bg-alt text-dark">
+            <div className="container-fluid">
                 <div className="row ">
                     <div className="col mt-3">
                         <Navbar
@@ -268,6 +268,7 @@ function Search() {
                     }}
                 >
                     <SearchOptions
+                        hidden={true}
                         categoryContext={categoryContext}
                         setCategoryContext={setCategoryContext}
                         page={page}

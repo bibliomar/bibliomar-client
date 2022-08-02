@@ -53,6 +53,11 @@ export default function ({ modalToggle, setModalToggle }: Props) {
                             próprio dispositivo.
                         </span>
                         <Break />
+                        <span className="mb-3">
+                            Esse arquivo não tem o progresso salvo online,
+                            apenas no seu dispositivo.
+                        </span>
+                        <Break />
 
                         <input
                             accept=".epub"

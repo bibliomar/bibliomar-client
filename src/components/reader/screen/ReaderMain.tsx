@@ -4,12 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     PossibleReaderScreenStates,
-    ThemeColors,
+    ReaderSettings,
+    ReaderThemeColors,
+    ReaderThemeOptions,
 } from "../helpers/readerTypes";
 import {
     createReactReaderStyle,
+    defaultReaderSettings,
     saveProgressOnDatabase,
-    themeColorsObject,
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
@@ -37,15 +39,11 @@ export default function ReaderMain() {
     const [currentPage, setCurrentPage] = useState<string | undefined>(
         undefined
     );
-    console.log(currentPage);
-    const [currentTheme, setCurrentTheme] = useState<ThemeColors>(
-        themeColorsObject.amoled
+    // This should contain all settings relevant to the reader, including themes, fullscreen toggle, etc.
+    // The component should only render if it's not null.
+    const [readerSettings, setReaderSettings] = useState<ReaderSettings>(
+        defaultReaderSettings
     );
-    const readerStyle = useRef<ReactReaderStyle>(
-        createReactReaderStyle(currentTheme)
-    );
-    const [swipeable, setSwipeable] = useState<boolean>(false);
-    const [fullscreen, setFullscreen] = useState<boolean>(false);
     const renditionRef = useRef<any>(null);
     const tocRef = useRef<any>(null);
     const pageInfoRef = useRef<string | null>(null);
@@ -74,9 +72,7 @@ export default function ReaderMain() {
                 (item: any) => item.href === href
             );
 
-            pageInfoRef.current = `Page ${displayed.page} of ${
-                displayed.total
-            } in chapter ${chapter ? chapter.label : "n/a"}`;
+            pageInfoRef.current = `Página ${displayed.page} de ${displayed.total} neste capítulo.`;
         }
         if (initialLoadDone) {
             //After the initial page load, we can save the user's progress normally.
@@ -84,12 +80,7 @@ export default function ReaderMain() {
             setCurrentPage(epubcifi);
         } else {
             // This function is also called on the very first render, so we just need to set the initial page here.
-            const cachedTheme = await localforage.getItem<ThemeColors>(
-                "reader-theme"
-            );
-            if (cachedTheme) {
-                setCurrentTheme(cachedTheme);
-            }
+
             setCurrentPage(await locationBasedOnIdentifier());
             setInitialLoadDone(true);
         }
@@ -122,7 +113,7 @@ export default function ReaderMain() {
                         sessionStorage.setItem("user-warned", "true");
                         userWarnedRef.current = true;
                         alert(
-                            "Sessão de login expirada, seu progresso não está sendo salvo online atualmente."
+                            "Sessão de login expirada, seu progresso não está sendo salvo online."
                         );
                     }
                 });
@@ -136,10 +127,9 @@ export default function ReaderMain() {
     }, []);
 
     // Theming side effects
-    useEffect(() => {
-        localforage.setItem<ThemeColors>("reader-theme", currentTheme).then();
-    }, [currentTheme]);
+    useEffect(() => {}, []);
 
+    // @ts-ignore
     return (
         <>
             <div
@@ -154,32 +144,32 @@ export default function ReaderMain() {
                 <div
                     className="bg-alt"
                     style={{
-                        maxHeight: fullscreen ? "0" : "8vh",
-                        minHeight: fullscreen ? "0" : "8vh",
+                        maxHeight: readerSettings.fullscreen ? "0" : "8vh",
+                        minHeight: readerSettings.fullscreen ? "0" : "8vh",
                     }}
                 >
                     <ReaderNavbar
-                        currentTheme={currentTheme}
-                        setCurrentTheme={setCurrentTheme}
+                        readerSettings={readerSettings}
+                        setReaderSettings={setReaderSettings}
                     />
                 </div>
-                <ReaderScreen
-                    arrayBuffer={arrayBuffer}
-                    title={
-                        onlineFile || localFile
-                            ? onlineFile?.title || localFile?.name
-                            : undefined
-                    }
-                    fullscreen={fullscreen}
-                    setFullscreen={setFullscreen}
-                    currentTheme={currentTheme}
-                    tocRef={tocRef}
-                    renditionRef={renditionRef}
-                    readerStyle={readerStyle}
-                    currentPage={currentPage}
-                    handleLocationChange={handleLocationChange}
-                    swipeable={swipeable}
-                />
+                {readerSettings.readerStyles != null ? (
+                    <ReaderScreen
+                        readerSettings={readerSettings}
+                        setReaderSettings={setReaderSettings}
+                        arrayBuffer={arrayBuffer}
+                        title={
+                            onlineFile || localFile
+                                ? onlineFile?.title || localFile?.name
+                                : undefined
+                        }
+                        tocRef={tocRef}
+                        renditionRef={renditionRef}
+                        //@ts-ignore
+                        currentPage={currentPage}
+                        handleLocationChange={handleLocationChange}
+                    />
+                ) : null}
             </div>
             <div
                 style={{
