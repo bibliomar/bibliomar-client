@@ -4,7 +4,7 @@ import Break from "../../../general/Break";
 import axios from "axios";
 import React, { useState } from "react";
 import BookLibraryButton from "./BookLibraryButton";
-import { Book } from "../../../../helpers/generalTypes";
+import { Book } from "../../../general/helpers/generalTypes";
 
 interface Props {
     bookInfoRef: React.MutableRefObject<Book>;

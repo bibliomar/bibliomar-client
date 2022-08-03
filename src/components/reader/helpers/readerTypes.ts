@@ -1,19 +1,19 @@
 // This file exports common types used by /reader components.
 
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 import React, { MouseEventHandler } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { ReactReaderStyle } from "react-reader";
 
 // State to be passed to ReaderMain component, making it usable.
-export interface PossibleReaderScreenStates {
+export interface PossibleReaderScreenState {
     arrayBuffer: ArrayBuffer;
     onlineFile: Book | undefined;
     localFile: File | undefined;
 }
 
 // State to be passed to ReaderLanding component, depending on its value, the component will render different subcomponents.
-export interface PossibleReaderLandingStates {
+export interface PossibleReaderLandingState {
     bookInfo: Book;
     url: string;
     secondaryUrl?: string;

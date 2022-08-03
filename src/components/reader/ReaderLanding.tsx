@@ -1,4 +1,4 @@
-import Navbar from "../general/Navbar/Navbar";
+import Navbar from "../general/navbar/Navbar";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
@@ -8,7 +8,7 @@ import ReaderDownloader from "./downloader/ReaderDownloader";
 import ReaderSavedBooksScreen from "./saved/ReaderSavedBooksScreen";
 import localforage from "localforage";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
-import { PossibleReaderLandingStates, SavedBooks } from "./helpers/readerTypes";
+import { PossibleReaderLandingState, SavedBooks } from "./helpers/readerTypes";
 
 export default function ReaderLanding() {
     const location = useLocation();
@@ -20,7 +20,7 @@ export default function ReaderLanding() {
         useState<boolean>(false);
     const [isUserLogged, setIsUserLogged] = useState<boolean>(false);
     const locationState: any = location.state;
-    let landingState: PossibleReaderLandingStates = locationState;
+    let landingState: PossibleReaderLandingState = locationState;
 
     useEffect(() => {
         const ls = localforage.createInstance({

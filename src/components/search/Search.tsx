@@ -7,8 +7,8 @@ import Greeting from "./Greeting";
 import ResultScreen from "./results/ResultScreen";
 import LoadingScreen from "./loading/LoadingScreen";
 import axios, { AxiosResponse } from "axios";
-import Navbar from "../general/Navbar/Navbar";
-import { Book } from "../../helpers/generalTypes";
+import Navbar from "../general/navbar/Navbar";
+import { Book } from "../general/helpers/generalTypes";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -268,7 +268,7 @@ function Search() {
                     }}
                 >
                     <SearchOptions
-                        hidden={true}
+                        hidden={false}
                         categoryContext={categoryContext}
                         setCategoryContext={setCategoryContext}
                         page={page}

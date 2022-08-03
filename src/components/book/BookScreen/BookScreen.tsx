@@ -3,9 +3,9 @@ import BookCover from "./BookCover";
 import { useEffect, useRef, useState } from "react";
 import BookInfo from "./BookInfo";
 import BookFooter from "./BookFooter";
-import Navbar from "../../general/Navbar/Navbar";
+import Navbar from "../../general/navbar/Navbar";
 import Break from "../../general/Break";
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 
 export default function BookScreen() {
     let navigate = useNavigate();

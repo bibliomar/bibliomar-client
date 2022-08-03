@@ -2,7 +2,7 @@ import Break from "../general/Break";
 import LibraryBookFigure from "./LibraryBookFigure";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Book } from "../../helpers/generalTypes";
+import { Book } from "../general/helpers/generalTypes";
 
 interface Props {
     expanded?: boolean;

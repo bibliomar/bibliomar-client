@@ -1,10 +1,10 @@
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 import React, { useEffect, useState } from "react";
 import ReaderBookFigure from "../figure/ReaderBookFigure";
 import Break from "../../general/Break";
 import { MDBBtn } from "mdb-react-ui-kit";
 import SmallLine from "../../general/SmallLine";
-import { PossibleReaderScreenStates, SavedBooks } from "../helpers/readerTypes";
+import { PossibleReaderScreenState, SavedBooks } from "../helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 import { findBookLocally, updateBookLocally } from "../helpers/readerFunctions";
 
@@ -63,7 +63,7 @@ export default function ReaderBookOnList({ bookInfo, arrayBuffer }: Props) {
                     disabled={!bookUpdated}
                     size="lg"
                     onClick={() => {
-                        const readerScreenState: PossibleReaderScreenStates = {
+                        const readerScreenState: PossibleReaderScreenState = {
                             onlineFile: bookInfo,
                             arrayBuffer: arrayBuffer,
                             localFile: undefined,

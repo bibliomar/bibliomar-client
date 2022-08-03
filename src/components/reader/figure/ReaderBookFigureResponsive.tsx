@@ -2,8 +2,8 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
 import { Link, useNavigate } from "react-router-dom";
-import { Size, useWindowSize } from "../../general/useWindowSize";
-import { navigateToBook } from "../../../helpers/generalFunctions";
+import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
+import { navigateToBook } from "../../general/helpers/generalFunctions";
 
 export default function ReaderBookFigureResponsive({
     book,

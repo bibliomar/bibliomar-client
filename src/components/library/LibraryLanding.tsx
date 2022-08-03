@@ -4,7 +4,7 @@ import LibrarySection from "./LibrarySection";
 import Break from "../general/Break";
 import LibraryNavbar from "./LibraryNavbar";
 import { EditModeContext, SelectedBooksContext } from "./utils/RelevantContext";
-import { Book } from "../../helpers/generalTypes";
+import { Book } from "../general/helpers/generalTypes";
 
 export default function LibraryLanding() {
     const [editMode, setEditMode] = useState<boolean>(false);

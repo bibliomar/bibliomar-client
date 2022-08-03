@@ -3,10 +3,10 @@ import Break from "../general/Break";
 import { getMetadata } from "../book/BookScreen/BookInfo";
 import BookDownload from "../book/BookScreen/BookDownload";
 import BookInfoError from "../book/BookScreen/BookInfoError";
-import { Size, useWindowSize } from "../general/useWindowSize";
-import { Book } from "../../helpers/generalTypes";
+import { Size, useWindowSize } from "../general/helpers/useWindowSize";
+import { Book } from "../general/helpers/generalTypes";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { PossibleReaderLandingStates } from "../reader/helpers/readerTypes";
+import { PossibleReaderLandingState } from "../reader/helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -128,7 +128,7 @@ export default function (props: Props) {
                             onClick={() => {
                                 if (downloadLinks) {
                                     // State to be used by ReaderLanding on /reader
-                                    let readerLandingState: PossibleReaderLandingStates =
+                                    let readerLandingState: PossibleReaderLandingState =
                                         {
                                             bookInfo: bookInfo,
                                             url: downloadLinks["IPFS.io"],

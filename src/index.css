@@ -25,21 +25,16 @@ abbr[title]:after
     padding: 0;
     flex-basis: 100%;
 }
-
+/* Mainly used in old Bibliomar, here because reasons. */
 .bg {
     background: linear-gradient(#231b40, #5948c6) no-repeat fixed center center;
     background-size: cover;
 }
 
-/*noinspection ALL*/
 .bg-alt {
     /*noinspection CssUnknownTarget*/
-    background: url("/assets/img/layered-waves-haikei (2).svg") no-repeat fixed center center;
+    background: url("/assets/img/newBGLight.png") no-repeat fixed center center;
     background-size: cover;
-}
-
-.bg-waves{
-    background: url("/assets/img/bg-waves-test.svg");
 }
 
 .like-body {
@@ -69,12 +64,11 @@ abbr[title]:after
 }
 
 .greeting-text{
-    font-family: 'Nunito Sans';
+    font-family: 'Nunito Sans', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 27px;
-
 }
 
 .disclaimer {
@@ -83,6 +77,7 @@ abbr[title]:after
 
 .resultimg {
     width: 90vw;
+    max-height: 100%;
     min-height: fit-content;
 }
 
@@ -111,6 +106,14 @@ abbr[title]:after
 
 .reader-spotlight-figure-img{
     min-width: 50%;
+}
+
+.brand-img{
+    max-width: 90%;
+}
+
+.navbar-badge{
+    font-size: 0.75rem !important;
 }
 
 
@@ -202,8 +205,7 @@ abbr[title]:after
 
     .bg-alt {
         /*noinspection CssUnknownTarget*/
-        background: url("/assets/img/back-lg-2.svg") no-repeat fixed center center;
-        background-size: cover;
+        
     }
 
     .cover-img{

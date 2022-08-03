@@ -3,7 +3,7 @@ import localforage from "localforage";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-    PossibleReaderScreenStates,
+    PossibleReaderScreenState,
     ReaderSettings,
     ReaderThemeColors,
     ReaderThemeOptions,
@@ -20,7 +20,7 @@ export default function ReaderMain() {
     const navigate = useNavigate();
     const location = useLocation();
     const locationState: any = location.state;
-    const { arrayBuffer, localFile, onlineFile }: PossibleReaderScreenStates =
+    const { arrayBuffer, localFile, onlineFile }: PossibleReaderScreenState =
         locationState;
 
     const identifier = localFile

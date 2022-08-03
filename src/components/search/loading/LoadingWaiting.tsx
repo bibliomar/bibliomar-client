@@ -6,10 +6,6 @@ export default function LoadingWaiting() {
             <MDBTypography note noteColor="primary">
                 Estamos carregando seus arquivos, isso pode demorar um pouco...
             </MDBTypography>
-            <Break />
-            <MDBSpinner role="status" color="light">
-                <span className="visually-hidden">Carregando...</span>
-            </MDBSpinner>
         </div>
     );
 }

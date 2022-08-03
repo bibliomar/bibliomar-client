@@ -22,7 +22,8 @@ export default function Greeting(props: Props) {
 
         return (
             <p className="greeting-text mt-2">
-                Pesquise e leia milhares de livros em um só lugar
+                Sua suíte de leitura: pesquise, baixe e leia livros
+                gratuitamente.
             </p>
         );
     }

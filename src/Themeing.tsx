@@ -4,22 +4,18 @@ import Break from "./components/general/Break";
 export default function Themeing() {
     return (
         <div className="like-body bg-alt">
-            <MDBContainer
-                fluid
-                className="d-flex justify-content-center flex-wrap"
+            <p
+                style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    fontSize: "2rem",
+                    textAlign: "center",
+                }}
             >
-                <MDBSpinner
-                    size="lg"
-                    color="white"
-                    style={{
-                        marginTop: "40vh",
-                        width: "5rem",
-                        height: "5rem",
-                    }}
-                />
-                <Break />
-                <span className="text-info mt-4">Carregando tema...</span>
-            </MDBContainer>
+                Carregando tema...
+            </p>
         </div>
     );
 }

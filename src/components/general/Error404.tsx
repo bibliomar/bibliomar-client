@@ -1,4 +1,4 @@
-import Navbar from "./Navbar/Navbar";
+import Navbar from "./navbar/Navbar";
 import Message from "./Message";
 import Break from "./Break";
 

@@ -7,8 +7,8 @@ import BookInfoError from "./BookInfoError";
 import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { Book, downloadLinks } from "../../../helpers/generalTypes";
-import { PossibleReaderLandingStates } from "../../reader/helpers/readerTypes";
+import { Book, downloadLinks } from "../../general/helpers/generalTypes";
+import { PossibleReaderLandingState } from "../../reader/helpers/readerTypes";
 
 interface Props {
     md5: string;
@@ -127,7 +127,7 @@ export default function BookInfo(props: Props) {
                     onClick={() => {
                         if (downloadLinks) {
                             // State to be used by ReaderLanding on /reader
-                            let readerLandingState: PossibleReaderLandingStates =
+                            let readerLandingState: PossibleReaderLandingState =
                                 {
                                     bookInfo: bookInfo,
                                     url: downloadLinks["IPFS.io"],

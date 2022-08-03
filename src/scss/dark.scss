@@ -3,12 +3,16 @@
 
 $accent-color: #7663F2;
 
-
-
 // Fix for white text in selects' options
 .form-select > option{
   color: $dark
 }
 
+.bg-alt{
+  background-image: url("/assets/img/back-lg-2.svg");
+}
 
+.navbar-bg{
+  background-color: #252525;
+}
 

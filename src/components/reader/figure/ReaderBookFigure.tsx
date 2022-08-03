@@ -1,12 +1,15 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Book } from "../../../helpers/generalTypes";
-import { Size, useWindowSize } from "../../general/useWindowSize";
+import { Book } from "../../general/helpers/generalTypes";
+import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
 import ReaderBookFigureResponsive from "./ReaderBookFigureResponsive";
 import ReaderBookFigureSpotlight from "./ReaderBookFigureSpotlight";
-import { PossibleReaderScreenStates } from "../helpers/readerTypes";
-import { navigateToBook } from "../../../helpers/generalFunctions";
+import { PossibleReaderScreenState } from "../helpers/readerTypes";
+import {
+    getCover,
+    navigateToBook,
+} from "../../general/helpers/generalFunctions";
 
 interface Props {
     book: Book;
@@ -14,22 +17,6 @@ interface Props {
     itemNumber: number;
     arrayBuffer: ArrayBuffer;
     spotlight?: boolean;
-}
-
-async function getCover(md5: string) {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
-    let request;
-    try {
-        request = await axios.get(reqUrl);
-    } catch (e: any) {
-        // 500 errors means Biblioterra couldn't find a cover.
-        return null;
-    }
-    if (request?.data) {
-        sessionStorage.setItem(`${md5}-cover`, request?.data);
-        return request?.data;
-    }
-    return null;
 }
 
 export default function ReaderBookFigure(props: Props) {
@@ -49,7 +36,7 @@ export default function ReaderBookFigure(props: Props) {
     const onClickHandler: MouseEventHandler = (evt) => {
         evt.preventDefault();
         // This is the state to be passed to /reader/:bookname, which is the actual reader.
-        const readerScreenState: PossibleReaderScreenStates = {
+        const readerScreenState: PossibleReaderScreenState = {
             arrayBuffer: props.arrayBuffer,
             onlineFile: props.book,
             localFile: undefined,
@@ -61,26 +48,13 @@ export default function ReaderBookFigure(props: Props) {
     };
 
     useEffect(() => {
-        let coverSetTimeout: number;
-        let possibleCachedCover = sessionStorage.getItem(`${book.md5}-cover`);
-
-        if (possibleCachedCover) {
-            setCover(possibleCachedCover);
-            setCoverDone(true);
-            return;
-        } else {
-            coverSetTimeout = setTimeout(() => {
-                getCover(book.md5).then((r) => {
-                    if (r == null) {
-                        setCoverDone(true);
-                        return;
-                    }
-                    setCoverDone(true);
-                    setCover(r);
-                });
-            }, props.timeout);
-            return () => clearTimeout(coverSetTimeout);
-        }
+        let coverSetTimeout: number | undefined;
+        getCover(book.md5, setCover, setCoverDone, props.timeout).then(
+            (r) => (coverSetTimeout = r)
+        );
+        return () => {
+            clearTimeout(coverSetTimeout);
+        };
     }, []);
 
     return (

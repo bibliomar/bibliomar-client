@@ -10,31 +10,16 @@ import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import { useNavigate } from "react-router-dom";
 import LibraryBookModal from "./LibraryBookModal";
-import { Size, useWindowSize } from "../general/useWindowSize";
+import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import LibraryBookIcon from "./LibraryBookIcon";
-import { Book } from "../../helpers/generalTypes";
+import { Book } from "../general/helpers/generalTypes";
+import { getCover } from "../general/helpers/generalFunctions";
 
 interface Props {
     book: Book;
     timeout: number;
     bookCategory: string;
     setProgress: React.Dispatch<React.SetStateAction<number>>;
-}
-
-async function getCover(md5: string) {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
-    let request;
-    try {
-        request = await axios.get(reqUrl);
-    } catch (e: any) {
-        // 500 errors means Biblioterra couldn't find a cover.
-        return null;
-    }
-    if (request?.data) {
-        sessionStorage.setItem(`${md5}-cover`, request?.data);
-        return request?.data;
-    }
-    return null;
 }
 
 export default function LibraryBookFigure(props: Props) {
@@ -52,29 +37,10 @@ export default function LibraryBookFigure(props: Props) {
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
     useEffect(() => {
-        let coverSetTimeout: number;
-        let cachedCover = sessionStorage.getItem(
-            `${props.book.md5}-cover`
-        ) as string;
-        if (cachedCover) {
-            const lowerCachedCover = cachedCover.toLowerCase();
-            const lowerMD5 = props.book.md5.toLowerCase();
-            if (lowerCachedCover.includes(lowerMD5)) {
-                setCoverDone(true);
-                setCover(cachedCover);
-            }
-        }
-
-        coverSetTimeout = setTimeout(() => {
-            getCover(props.book.md5).then((r) => {
-                if (r == null) {
-                    setCoverDone(true);
-                    return;
-                }
-                setCoverDone(true);
-                setCover(r);
-            });
-        }, props.timeout);
+        let coverSetTimeout: number | undefined;
+        getCover(book.md5, setCover, setCoverDone, props.timeout).then(
+            (r) => (coverSetTimeout = r)
+        );
         return () => {
             clearTimeout(coverSetTimeout);
         };

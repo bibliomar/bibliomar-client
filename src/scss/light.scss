@@ -7,11 +7,7 @@ $text-color-accent: #30333A;
 $bg-color: #EBECF8;
 $accent-color: #7663F2;
 
-// bg for light theme
-.bg-alt{
-  background: url("/assets/img/img.png") no-repeat fixed center center;
-  background-size: cover;
-}
+// bg for light theme is the default one
 
 .form-control{
   color: $text-color;
@@ -21,3 +17,20 @@ $accent-color: #7663F2;
   background-color: $accent-color !important;
 }
 
+.recommendation-title{
+  font-family: 'Nunito Sans', serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 27px;
+
+  color: #585858;
+}
+
+.navbar-badge{
+  background-color: #7663F2 !important;
+}
+
+.navbar-bg{
+  background-color: #FAFAFA;
+}

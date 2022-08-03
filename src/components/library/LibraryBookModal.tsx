@@ -15,8 +15,8 @@ import LibraryBookModalBody from "./LibraryBookModalBody";
 import { useFormik } from "formik";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { Book } from "../../helpers/generalTypes";
-import { Size } from "../general/useWindowSize";
+import { Book } from "../general/helpers/generalTypes";
+import { Size } from "../general/helpers/useWindowSize";
 
 interface Props {
     coverUrl: string;

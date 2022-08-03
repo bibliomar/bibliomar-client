@@ -1,7 +1,7 @@
 import BookFigure from "./BookFigure";
 import Break from "../../general/Break";
 import React, { useState } from "react";
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 
 interface Props {
     results: Book[];

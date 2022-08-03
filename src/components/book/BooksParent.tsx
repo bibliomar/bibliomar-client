@@ -1,7 +1,7 @@
 import Bibliologo from "../general/Bibliologo";
 import { Outlet } from "react-router-dom";
 import Message from "../general/Message";
-import Navbar from "../general/Navbar/Navbar";
+import Navbar from "../general/navbar/Navbar";
 import Break from "../general/Break";
 
 export default function BooksParent() {

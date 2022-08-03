@@ -1,6 +1,6 @@
 // This file exports common functions used by components in /reader or related to its functionality.
 
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 import localforage from "localforage";
 import {
     FlowOptions,

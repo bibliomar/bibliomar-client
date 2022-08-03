@@ -7,9 +7,6 @@ export default function LoadingSending() {
                 Estamos enviando sua solicitação ao servidor...
             </MDBTypography>
             <Break />
-            <MDBSpinner role="status" color="light">
-                <span className="visually-hidden">Carregando...</span>
-            </MDBSpinner>
         </div>
     );
 }

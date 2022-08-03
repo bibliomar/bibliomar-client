@@ -13,7 +13,7 @@ import localforage from "localforage";
 import fileToArrayBuffer from "file-to-array-buffer";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { PossibleReaderScreenStates } from "./helpers/readerTypes";
+import { PossibleReaderScreenState } from "./helpers/readerTypes";
 
 interface Props {
     modalToggle: boolean;
@@ -30,7 +30,7 @@ export default function ({ modalToggle, setModalToggle }: Props) {
             invalidFile ? setInvalidFile(false) : null;
             const arrayBuffer = await fileToArrayBuffer(bookFile);
 
-            const readerState: PossibleReaderScreenStates = {
+            const readerState: PossibleReaderScreenState = {
                 arrayBuffer: arrayBuffer,
                 localFile: bookFile,
                 onlineFile: undefined,

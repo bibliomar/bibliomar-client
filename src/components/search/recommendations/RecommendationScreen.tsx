@@ -72,9 +72,9 @@ export default function RecommendationScreen(props: Props) {
         }
         return (
             <div className="d-flex flex-wrap justify-content-center">
-                <div className="bg-black p-2 rounded-3 bg-opacity-25 text-light recommendation-div">
+                <div className="p-2 rounded-3 text-dark recommendation-div">
                     <div className="d-flex flex-wrap justify-content-center mb-2">
-                        <span className="fw-bold lead">
+                        <span className="recommendation-title">
                             Recomendações do editor
                         </span>
                     </div>

@@ -3,30 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MDBBtn, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
-import { Book } from "../../../helpers/generalTypes";
-import { navigateToBook } from "../../../helpers/generalFunctions";
+import { Book } from "../../general/helpers/generalTypes";
+import {
+    getCover,
+    navigateToBook,
+} from "../../general/helpers/generalFunctions";
+import FigureCoverSkeleton from "../../general/FigureCoverSkeleton";
 
 interface Props {
     result: Book;
     timeout: number;
     lastElement: boolean;
     setAjaxStatus: React.Dispatch<React.SetStateAction<string>>;
-}
-
-async function getCover(md5: string) {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
-    let request;
-    try {
-        request = await axios.get(reqUrl);
-    } catch (e: any) {
-        // 500 errors means Biblioterra couldn't find a cover.
-        return null;
-    }
-    if (request?.data) {
-        sessionStorage.setItem(`${md5}-cover`, request?.data);
-        return request?.data;
-    }
-    return null;
 }
 
 export default function BookFigure(props: Props) {
@@ -39,60 +27,28 @@ export default function BookFigure(props: Props) {
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
     useEffect(() => {
-        let coverSetTimeout: number;
-        let ajaxStatusTimeout: number;
-        let cachedCover = sessionStorage.getItem(`${book.md5}-cover`) as string;
-        if (cachedCover) {
-            setCoverDone(true);
-            setCover(cachedCover);
-            if (props.lastElement) {
-                ajaxStatusTimeout = setTimeout(() => {
-                    props.setAjaxStatus("done");
-                }, 1000);
-            }
-            return;
-        } else {
-            if (props.lastElement) {
-                ajaxStatusTimeout = setTimeout(() => {
-                    props.setAjaxStatus("done");
-                }, props.timeout);
-            }
-            coverSetTimeout = setTimeout(() => {
-                getCover(book.md5).then((r) => {
-                    if (r == null) {
-                        setCoverDone(true);
-                        return;
-                    }
-                    setCoverDone(true);
-                    setCover(r);
-                });
-            }, props.timeout);
-            return () => {
-                clearTimeout(coverSetTimeout);
-                clearTimeout(ajaxStatusTimeout);
-            };
+        let coverSetTimeout: number | undefined;
+        let ajaxStatusTimeout: number | undefined;
+        if (props.lastElement) {
+            ajaxStatusTimeout = setTimeout(() => {
+                props.setAjaxStatus("done");
+            }, 1000);
         }
+
+        getCover(book.md5, setCover, setCoverDone, props.timeout).then(
+            (r) => (coverSetTimeout = r)
+        );
+
+        return () => {
+            clearTimeout(ajaxStatusTimeout);
+            clearTimeout(coverSetTimeout);
+        };
     }, []);
 
     return (
         <figure className="figure d-flex flex-column">
-            {coverDone ? (
-                <></>
-            ) : (
-                <MDBSpinner
-                    style={{
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        marginTop: "1vh",
-                        marginLeft: "1vh",
-                        zIndex: "3",
-                    }}
-                    color="dark"
-                    className="position-absolute"
-                />
-            )}
             <MDBRipple
-                className="bg-image hover-zoom shadow-1-strong resultimg figure-img"
+                className="bg-image hover-overlay shadow-1-strong resultimg figure-img"
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -104,12 +60,7 @@ export default function BookFigure(props: Props) {
                         navigateToBook(book, navigate);
                     }}
                 >
-                    <div
-                        className="mask"
-                        style={{
-                            backgroundColor: "rgba(0,0,0,0.0)",
-                        }}
-                    />
+                    <FigureCoverSkeleton coverDone={coverDone} />
                 </a>
             </MDBRipple>
 

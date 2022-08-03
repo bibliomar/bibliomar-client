@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReaderDownloaderMessage from "./ReaderDownloaderMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import fileToArrayBuffer from "file-to-array-buffer";
-import { Book } from "../../../helpers/generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 import { useNavigate } from "react-router-dom";
 import ReaderBookOnList from "./ReaderBookOnList";
 import { saveBookLocally, updateBookLocally } from "../helpers/readerFunctions";
@@ -12,7 +12,7 @@ import localforage from "localforage";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
 import {
-    PossibleReaderScreenStates,
+    PossibleReaderScreenState,
     ReaderDownloaderProps,
 } from "../helpers/readerTypes";
 
@@ -74,7 +74,7 @@ export default function ReaderDownloader({
             await saveBookLocally(arrayBuffer, bookInfo);
             // Saves current time in last-download, so we can define the last time the user has made a download.
             await localforage.setItem("last-download", new Date());
-            const readerScreenState: PossibleReaderScreenStates = {
+            const readerScreenState: PossibleReaderScreenState = {
                 arrayBuffer: arrayBuffer,
                 onlineFile: bookInfo,
                 localFile: undefined,
