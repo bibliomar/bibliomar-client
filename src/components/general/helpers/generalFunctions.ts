@@ -10,7 +10,7 @@ import axios from "axios";
 export const navigateToBook = (book: Book, navigate: NavigateFunction) => {
     const bookStr = JSON.stringify(book);
     sessionStorage.setItem(`${book.md5}-info`, bookStr);
-    navigate(`/book/${book.topic}/${book.md5}`, { replace: false });
+    navigate(`/book/${book.md5}`, { replace: false });
 };
 
 // Navigates to /reader route, where a given book may be downloaded or opened.
@@ -59,12 +59,12 @@ const getOnlineCover = async (md5: string) => {
 export const getCover = async (
     md5: string,
     setCover: React.Dispatch<React.SetStateAction<string>>,
-    setCoverDone: React.Dispatch<React.SetStateAction<boolean>>,
+    setCoverDone?: React.Dispatch<React.SetStateAction<boolean>>,
     timeout?: number
 ) => {
     let possibleCachedCover = sessionStorage.getItem(`${md5}-cover`) as string;
     if (possibleCachedCover) {
-        setCoverDone(true);
+        setCoverDone ? setCoverDone(true) : null;
         setCover(possibleCachedCover);
         return undefined;
     } else {
@@ -72,11 +72,11 @@ export const getCover = async (
             async () => {
                 const onlineCover = await getOnlineCover(md5);
                 if (onlineCover == null) {
-                    setCoverDone(true);
+                    setCoverDone ? setCoverDone(true) : null;
                     return;
                 }
                 setCover(onlineCover);
-                setCoverDone(true);
+                setCoverDone ? setCoverDone(true) : null;
             },
             timeout ? timeout : 0
         );

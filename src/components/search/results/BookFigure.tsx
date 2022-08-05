@@ -29,15 +29,15 @@ export default function BookFigure(props: Props) {
     useEffect(() => {
         let coverSetTimeout: number | undefined;
         let ajaxStatusTimeout: number | undefined;
-        if (props.lastElement) {
-            ajaxStatusTimeout = setTimeout(() => {
-                props.setAjaxStatus("done");
-            }, 1000);
-        }
 
-        getCover(book.md5, setCover, setCoverDone, props.timeout).then(
-            (r) => (coverSetTimeout = r)
-        );
+        getCover(book.md5, setCover, setCoverDone, props.timeout).then((r) => {
+            coverSetTimeout = r;
+            if (props.lastElement) {
+                ajaxStatusTimeout = setTimeout(() => {
+                    props.setAjaxStatus("done");
+                }, 1000);
+            }
+        });
 
         return () => {
             clearTimeout(ajaxStatusTimeout);
@@ -48,7 +48,7 @@ export default function BookFigure(props: Props) {
     return (
         <figure className="figure d-flex flex-column">
             <MDBRipple
-                className="bg-image hover-overlay shadow-1-strong resultimg figure-img"
+                className="bg-image shadow-1-strong resultimg figure-img"
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -89,7 +89,7 @@ export default function BookFigure(props: Props) {
 
                 <Link
                     className="d-flex justify-content-center w-100 mb-2 mt-auto"
-                    to={`/book/${book.topic}/${book.md5}`}
+                    to={`/book/${book.md5}`}
                     onClick={(evt) => {
                         evt.preventDefault();
                         navigateToBook(book, navigate);

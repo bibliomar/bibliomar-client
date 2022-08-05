@@ -4,7 +4,7 @@ import BookFigure from "../../search/results/BookFigure";
 import { Book } from "../../general/helpers/generalTypes";
 import ReaderBookFigure from "../figure/ReaderBookFigure";
 import React from "react";
-import SmallLine from "../../general/SmallLine";
+import SmallLine from "../../general/MediumLine";
 import { SavedBooks } from "../helpers/readerTypes";
 
 export default function ({ savedBooks }: { savedBooks: SavedBooks }) {

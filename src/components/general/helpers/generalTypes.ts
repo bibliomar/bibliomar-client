@@ -2,7 +2,7 @@
 
 import React from "react";
 
-type downloadLinks = {
+type DownloadLinks = {
     GET: string;
     Cloudflare: string;
     "IPFS.io": string;
@@ -40,4 +40,4 @@ interface ThemeContext {
 }
 
 export { ThemeOptions };
-export type { Book, downloadLinks, ThemeContext };
+export type { Book, DownloadLinks, ThemeContext };

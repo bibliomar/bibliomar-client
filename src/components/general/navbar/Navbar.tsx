@@ -53,7 +53,7 @@ export default function Navbar({
             >
                 <MDBContainer fluid>
                     <MDBNavbarBrand href="/search">
-                        <BibliomarBrand badgeText={"search"} />
+                        <BibliomarBrand badgeText={badgeText} />
                     </MDBNavbarBrand>
                     <MDBNavbarToggler
                         aria-controls="navbarSupportedContent"

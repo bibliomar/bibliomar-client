@@ -1,6 +1,6 @@
 import Break from "../../general/Break";
 import React from "react";
-import SmallLine from "../../general/SmallLine";
+import SmallLine from "../../general/MediumLine";
 
 export default function () {
     return (

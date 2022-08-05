@@ -15,6 +15,8 @@ import LibraryLanding from "./components/library/LibraryLanding";
 import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedView";
 import ReaderLanding from "./components/reader/ReaderLanding";
 import ReaderMain from "./components/reader/screen/ReaderMain";
+import BookInfoParent from "./components/bookinfo/BookInfoParent";
+import BookInfoScreen from "./components/bookinfo/BookInfoScreen";
 
 function App() {
     return (
@@ -23,16 +25,9 @@ function App() {
             <Route path="error" element={<Error404 />} />
             <Route path="/" element={<Navigate to="/search" />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/book" element={<BooksParent />}>
-                <Route index element={<BookError />} />
-                <Route path="fiction" element={<BookFictionParent />}>
-                    <Route index element={<BookError />} />
-                    <Route path=":md5" element={<BookScreen />} />
-                </Route>
-                <Route path="sci-tech" element={<BookScitechParent />}>
-                    <Route index element={<BookError />} />
-                    <Route path=":md5" element={<BookScreen />} />
-                </Route>
+            <Route path="/book" element={<BookInfoParent />}>
+                <Route index element={<></>} />
+                <Route path=":md5" element={<BookInfoScreen />} />
                 <Route path="error" element={<BookError />} />
             </Route>
             <Route path="/library" element={<LibraryParent />}>

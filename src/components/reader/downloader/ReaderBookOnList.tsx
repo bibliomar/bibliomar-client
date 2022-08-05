@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ReaderBookFigure from "../figure/ReaderBookFigure";
 import Break from "../../general/Break";
 import { MDBBtn } from "mdb-react-ui-kit";
-import SmallLine from "../../general/SmallLine";
+import SmallLine from "../../general/MediumLine";
 import { PossibleReaderScreenState, SavedBooks } from "../helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 import { findBookLocally, updateBookLocally } from "../helpers/readerFunctions";

@@ -14,6 +14,7 @@ $accent-color: #7663F2;
 }
 
 .btn-primary{
+  color: #FFFFFF;
   background-color: $accent-color !important;
 }
 
@@ -21,10 +22,15 @@ $accent-color: #7663F2;
   font-family: 'Nunito Sans', serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
   line-height: 27px;
 
   color: #585858;
+}
+
+.book-info-container{
+  background-color: #FAFAFA;
+  box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
+  border-radius: 0 5px 5px 0;
 }
 
 .navbar-badge{

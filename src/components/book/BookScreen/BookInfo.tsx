@@ -7,7 +7,7 @@ import BookInfoError from "./BookInfoError";
 import BookLibraryActions from "./BookLibraryActions/BookLibraryActions";
 import BookLoginNeeded from "./BookLibraryActions/BookLoginNeeded";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { Book, downloadLinks } from "../../general/helpers/generalTypes";
+import { Book, DownloadLinks } from "../../general/helpers/generalTypes";
 import { PossibleReaderLandingState } from "../../reader/helpers/readerTypes";
 
 interface Props {
@@ -36,7 +36,7 @@ export default function BookInfo(props: Props) {
     const navigate = useNavigate();
     const [description, setDescription] = useState<string>("Carregando");
     const [downloadLinks, setDownloadLinks] = useState<
-        downloadLinks | undefined
+        DownloadLinks | undefined
     >(undefined);
     const [bookError, setBookError] = useState<boolean>(false);
     const [userLogged, setUserLogged] = useState<boolean>(false);

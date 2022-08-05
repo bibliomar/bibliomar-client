@@ -4,12 +4,6 @@ interface Props {
     flexGrow?: boolean;
 }
 
-export default function ({ flexGrow }: Props) {
-    return (
-        <div
-            className={`border-white border-top p-1 ${
-                flexGrow ? "flex-grow-1" : ""
-            }`}
-        />
-    );
+export default function SmallLine({ flexGrow }: Props) {
+    return <div className={`small-line ${flexGrow ? "flex-grow-1" : ""}`} />;
 }
