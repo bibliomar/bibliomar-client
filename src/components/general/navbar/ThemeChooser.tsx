@@ -15,10 +15,18 @@ export default function ThemeChooser() {
         });
     };
     return (
-        <MDBNavbarItem className="ms-auto mt-3 mt-lg-0">
+        <MDBNavbarItem className="ms-auto mt-3 mt-lg-0 me-2">
             <MDBNavbarLink>
                 <div onClick={changeTheme}>
-                    <MDBIcon fas icon="adjust" size={"lg"} />
+                    <MDBIcon
+                        fas
+                        icon={
+                            themeContext.theme === ThemeOptions.light
+                                ? "sun"
+                                : "moon"
+                        }
+                        size={"lg"}
+                    />
                 </div>
             </MDBNavbarLink>
         </MDBNavbarItem>

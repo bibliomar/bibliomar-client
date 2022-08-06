@@ -5,23 +5,35 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
     PossibleReaderScreenState,
     ReaderSettings,
+    ReaderThemeAccentOptions,
     ReaderThemeColors,
     ReaderThemeOptions,
 } from "../helpers/readerTypes";
 import {
+    chooseThemeAccent,
     createReactReaderStyle,
     defaultReaderSettings,
     saveProgressOnDatabase,
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
+import { Book } from "../../general/helpers/generalTypes";
 
 export default function ReaderMain() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const locationState: any = location.state;
-    const { arrayBuffer, localFile, onlineFile }: PossibleReaderScreenState =
-        locationState;
+    const location: any = useLocation();
+    const locationState: PossibleReaderScreenState | undefined | null =
+        location.state;
+
+    let arrayBuffer: ArrayBuffer | undefined;
+    let onlineFile: Book | undefined;
+    let localFile: File | undefined;
+
+    if (locationState != null) {
+        arrayBuffer = locationState.arrayBuffer;
+        onlineFile = locationState.onlineFile;
+        localFile = locationState.localFile;
+    }
 
     const identifier = localFile
         ? localFile.name
@@ -44,12 +56,16 @@ export default function ReaderMain() {
     const [readerSettings, setReaderSettings] = useState<ReaderSettings>(
         defaultReaderSettings
     );
+    // Not to be confused with ReaderTheme on ReaderSettings.
+    const [readerStyle, setReaderStyle] = useState<ReactReaderStyle>(
+        createReactReaderStyle(readerSettings.themeName)
+    );
+    const [readerAccent, setReaderAccent] = useState<ReaderThemeAccentOptions>(
+        chooseThemeAccent(readerSettings.themeName)
+    );
     const renditionRef = useRef<any>(null);
     const tocRef = useRef<any>(null);
     const pageInfoRef = useRef<string | null>(null);
-    const userWarnedRef = useRef<boolean | null>(
-        sessionStorage.getItem("user-warned") === "true"
-    );
 
     const locationBasedOnIdentifier = async () => {
         // First, tries for local cache...
@@ -97,10 +113,9 @@ export default function ReaderMain() {
         if (onlineFile && currentPage) {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = setInterval(() => {
-                if (onlineFile.category == null) {
-                    if (!userWarnedRef.current) {
-                        sessionStorage.setItem("user-warned", "true");
-                        userWarnedRef.current = true;
+                if (onlineFile!.category == null) {
+                    if (sessionStorage.getItem("reader-user-warned")) {
+                        sessionStorage.setItem("reader-user-warned", "true");
                         alert(
                             "Você está lendo um livro que não está na sua biblioteca, " +
                                 "e por isso seu progresso não está sendo salvo online."
@@ -108,10 +123,12 @@ export default function ReaderMain() {
                     }
                     return;
                 }
-                saveProgressOnDatabase(currentPage, onlineFile).then((r) => {
-                    if (r == null && !userWarnedRef.current) {
-                        sessionStorage.setItem("user-warned", "true");
-                        userWarnedRef.current = true;
+                saveProgressOnDatabase(currentPage, onlineFile!).then((r) => {
+                    if (
+                        r == null &&
+                        !sessionStorage.getItem("reader-user-warned")
+                    ) {
+                        sessionStorage.setItem("reader-user-warned", "true");
                         alert(
                             "Sessão de login expirada, seu progresso não está sendo salvo online."
                         );
@@ -151,10 +168,12 @@ export default function ReaderMain() {
                     <ReaderNavbar
                         readerSettings={readerSettings}
                         setReaderSettings={setReaderSettings}
+                        readerAccent={readerAccent}
                     />
                 </div>
-                {readerSettings.readerStyles != null ? (
+                {arrayBuffer ? (
                     <ReaderScreen
+                        readerStyle={readerStyle}
                         readerSettings={readerSettings}
                         setReaderSettings={setReaderSettings}
                         arrayBuffer={arrayBuffer}
@@ -165,7 +184,6 @@ export default function ReaderMain() {
                         }
                         tocRef={tocRef}
                         renditionRef={renditionRef}
-                        //@ts-ignore
                         currentPage={currentPage}
                         handleLocationChange={handleLocationChange}
                     />

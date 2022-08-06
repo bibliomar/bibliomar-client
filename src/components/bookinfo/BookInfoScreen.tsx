@@ -5,6 +5,7 @@ import { MDBContainer } from "mdb-react-ui-kit";
 import BookInfoDesktop from "./BookInfoDesktop";
 import axios from "axios";
 import { DownloadLinks } from "../general/helpers/generalTypes";
+import BookFooter from "./bookInfoSub/BookFooter";
 
 export interface BookInfoSubProps {
     book: Book;
@@ -93,16 +94,19 @@ export default function BookInfoScreen() {
 
     useEffect(() => {}, []);
     return (
-        <>
-            {bookInfo ? (
-                <BookInfoDesktop
-                    book={bookInfo}
-                    description={description}
-                    downloadLinks={downloadLinks}
-                    error={bookError}
-                    userLogged={userLogged}
-                />
-            ) : null}
-        </>
+        <div className="d-flex flex-column align-items-center">
+            <div className="book-info-container">
+                {bookInfo ? (
+                    <BookInfoDesktop
+                        book={bookInfo}
+                        description={description}
+                        downloadLinks={downloadLinks}
+                        error={bookError}
+                        userLogged={userLogged}
+                    />
+                ) : null}
+            </div>
+            {bookInfo ? <BookFooter md5={bookInfo.md5} /> : null}
+        </div>
     );
 }

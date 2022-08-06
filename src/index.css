@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;700&display=swap');
 
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -111,11 +111,20 @@ abbr[title]:after
 }
 
 .brand-img{
-    max-width: 90%;
+    max-width: 100%;
+}
+
+.reader-navbar-img{
+    max-width: 30%;
 }
 
 .navbar-badge{
     font-size: 0.75rem !important;
+}
+
+.book-info-badge{
+    font-size: .9rem !important;
+    background: #8B7CF1 !important;
 }
 
 
@@ -162,6 +171,14 @@ abbr[title]:after
     font-style: normal;
     font-weight: 600;
     line-height: 1.5rem;
+}
+
+.book-info-description{
+    font-family: 'Nunito Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5rem;
+    text-align: justify;
 }
 
 .small-line{
@@ -230,7 +247,8 @@ abbr[title]:after
     }
 
     .dbutton{
-        width: 12vw;
+        max-width: 80%;
+        width: 20vw;
     }
 
     .library-actions-button{
@@ -243,8 +261,9 @@ abbr[title]:after
     }
 
     .book-info-container{
-        min-width: fit-content;
-        max-width: 75%;
+        min-width: 70%;
+        max-width: 70%;
+
     }
 
 }

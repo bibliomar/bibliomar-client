@@ -18,7 +18,7 @@ export default function BookInfoTitle({ book }: Props) {
             <Break />
             <span
                 className="book-info-title mb-2"
-                style={{ fontSize: "1.1rem" }}
+                style={{ fontSize: "1.2rem" }}
             >
                 {book.authors}
             </span>

@@ -1,10 +1,14 @@
 import { ReaderSettings, ReaderThemeColors } from "../helpers/readerTypes";
 import React from "react";
 import { ReactReader, ReactReaderStyle } from "react-reader";
-import { registerRenditionThemes } from "../helpers/readerFunctions";
+import {
+    registerRenditionThemes,
+    createReactReaderStyle,
+} from "../helpers/readerFunctions";
 import { MDBIcon } from "mdb-react-ui-kit";
 
 interface ReaderScreenProps {
+    readerStyle: ReactReaderStyle;
     readerSettings: ReaderSettings;
     setReaderSettings: React.Dispatch<React.SetStateAction<ReaderSettings>>;
     arrayBuffer: ArrayBuffer;
@@ -16,6 +20,7 @@ interface ReaderScreenProps {
 }
 
 export default function ReaderScreen({
+    readerStyle,
     readerSettings,
     setReaderSettings,
     arrayBuffer,
@@ -61,11 +66,7 @@ export default function ReaderScreen({
                 )}
             </div>
             <ReactReader
-                styles={
-                    readerSettings.readerStyles
-                        ? readerSettings.readerStyles
-                        : undefined
-                }
+                styles={renditionRef.current ? readerStyle : undefined}
                 location={currentPage}
                 locationChanged={handleLocationChange}
                 url={arrayBuffer}

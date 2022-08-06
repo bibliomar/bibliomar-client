@@ -13,9 +13,7 @@ export default function BookInfoParent() {
                 </div>
                 <Break />
                 <div className="d-flex justify-content-center">
-                    <div className="book-info-container">
-                        <Outlet />
-                    </div>
+                    <Outlet />
                 </div>
             </div>
         </div>

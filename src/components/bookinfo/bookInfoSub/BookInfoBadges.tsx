@@ -1,5 +1,6 @@
 import { Book } from "../../general/helpers/generalTypes";
 import { MDBBadge } from "mdb-react-ui-kit";
+import Break from "../../general/Break";
 
 interface Props {
     book: Book;
@@ -7,8 +8,11 @@ interface Props {
 
 export default function BookInfoBadges({ book }: Props) {
     return (
-        <div className="d-flex flex-wrap">
-            <MDBBadge className="navbar-badge">AAAAA</MDBBadge>
-        </div>
+        <>
+            <div className="badge book-info-badge me-1">
+                {book.topic === "fiction" ? "Ficção" : "Não-ficção"}
+            </div>
+            <div className="badge book-info-badge">{book.series}</div>
+        </>
     );
 }

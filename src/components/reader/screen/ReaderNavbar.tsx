@@ -1,27 +1,28 @@
 import {
-    MDBBadge,
     MDBBtn,
-    MDBCollapse,
     MDBContainer,
-    MDBIcon,
     MDBNavbar,
     MDBNavbarBrand,
-    MDBNavbarItem,
     MDBNavbarLink,
-    MDBNavbarNav,
 } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
-import { ReaderNavbarProps } from "../helpers/readerTypes";
+import {
+    ReaderNavbarProps,
+    ReaderThemeAccentOptions,
+} from "../helpers/readerTypes";
 import ReaderCustomizeModal from "./customize/ReaderCustomizeModal";
 import { useState } from "react";
+import BibliomarBrand from "../../general/navbar/BibliomarBrand";
 
 export default function ReaderNavbar({
     readerSettings,
     setReaderSettings,
+    readerAccent,
 }: ReaderNavbarProps) {
     const [modalToggle, setModalToggle] = useState<boolean>(false);
+
     return (
-        <div className="bg-black bg-opacity-25 w-100 h-100">
+        <div className={`w-100 h-100`}>
             <Portal node={document.getElementById("modal-root")}>
                 <ReaderCustomizeModal
                     modalToggle={modalToggle}
@@ -30,16 +31,27 @@ export default function ReaderNavbar({
                     setReaderSettings={setReaderSettings}
                 />
             </Portal>
-            <MDBNavbar expand dark>
+            <MDBNavbar
+                expand
+                className=""
+                style={{
+                    background:
+                        readerAccent === ReaderThemeAccentOptions.light
+                            ? "#FAFAFA"
+                            : "#252525",
+                    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.03)",
+                    borderBottom:
+                        readerAccent === ReaderThemeAccentOptions.light
+                            ? "4px solid #EEEEEE"
+                            : "4px solid #383838",
+                }}
+            >
                 <MDBContainer fluid>
                     <MDBNavbarBrand className="ms-4" href="/reader">
-                        Bibliomar
-                        <MDBBadge
-                            style={{ fontSize: "0.65em" }}
-                            color="secondary"
-                        >
-                            Salvo
-                        </MDBBadge>
+                        <BibliomarBrand
+                            readerAccent={readerAccent}
+                            badgeText={"reader"}
+                        />
                     </MDBNavbarBrand>
 
                     <MDBNavbarLink className="ms-auto">

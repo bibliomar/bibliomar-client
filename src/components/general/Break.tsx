@@ -1,7 +1,27 @@
+import { Size, useWindowSize } from "./helpers/useWindowSize";
+
 interface Breaking {
     className?: string;
+    mobile?: boolean;
+    desktop?: boolean;
 }
 
-export default function Break({ className }: Breaking) {
-    return <div className={`break ${className ? className : null}`} />;
+// Talk about code golfing...
+export default function Break({ className, mobile, desktop }: Breaking) {
+    const size: Size = useWindowSize();
+    return (
+        <>
+            {(!mobile && !desktop) || (mobile && desktop) ? (
+                <div className={`break ${className ? className : null}`} />
+            ) : mobile && !desktop ? (
+                size.width < 600 ? (
+                    <div className={`break ${className ? className : null}`} />
+                ) : null
+            ) : !mobile && desktop ? (
+                size.width > 600 ? (
+                    <div className={`break ${className ? className : null}`} />
+                ) : null
+            ) : null}
+        </>
+    );
 }

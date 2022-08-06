@@ -62,11 +62,12 @@ export interface ReaderBookFigureProps {
     onClickFunction: MouseEventHandler;
 }
 
-export type ReaderThemeColors = [string, string, string];
+export type ReaderThemeColors = [string, string, string, string];
 
 export interface ReaderNavbarProps {
     readerSettings: ReaderSettings;
     setReaderSettings: React.Dispatch<React.SetStateAction<ReaderSettings>>;
+    readerAccent?: ReaderThemeAccentOptions;
     modalToggle?: boolean;
     setModalToggle?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -80,6 +81,11 @@ export enum ReaderThemeOptions {
     dark = "dark",
     amoled = "amoled",
     easily = "easily",
+}
+
+export enum ReaderThemeAccentOptions {
+    light = "light",
+    dark = "dark",
 }
 
 export enum ManagerOptions {
@@ -102,7 +108,6 @@ export interface ReaderSettings {
     // Theming
     // The name of the theme that should be used.
     themeName: ReaderThemeOptions;
-    readerStyles: ReactReaderStyle;
 
     // Pagination
     // If swiping to turn pages is enabled

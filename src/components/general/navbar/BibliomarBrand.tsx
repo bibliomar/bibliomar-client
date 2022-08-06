@@ -2,14 +2,27 @@ import { MDBBadge } from "mdb-react-ui-kit";
 import { useContext } from "react";
 import { Theme } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
+import {
+    ReaderSettings,
+    ReaderThemeAccentOptions,
+} from "../../reader/helpers/readerTypes";
 
-export default function BibliomarBrand({ badgeText }: { badgeText?: string }) {
+interface Props {
+    badgeText?: string;
+    readerAccent?: ReaderThemeAccentOptions;
+}
+
+export default function BibliomarBrand({ badgeText, readerAccent }: Props) {
     const theme = useContext(Theme).theme;
     return (
-        <div>
+        <div className={readerAccent ? "position-absolute" : undefined}>
             <img
                 src={
-                    theme === ThemeOptions.light
+                    readerAccent
+                        ? readerAccent === ReaderThemeAccentOptions.light
+                            ? "/assets/img/BIBLIOMAR-light-theme.svg"
+                            : "/assets/img/BIBLIOMAR-dark-theme.svg"
+                        : theme === ThemeOptions.light
                         ? "/assets/img/BIBLIOMAR-light-theme.svg"
                         : "/assets/img/BIBLIOMAR-dark-theme.svg"
                 }

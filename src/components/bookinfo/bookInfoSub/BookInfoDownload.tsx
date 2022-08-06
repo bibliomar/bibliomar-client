@@ -10,7 +10,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
     return (
         <div className="d-flex flex-wrap justify-content-center">
             <span className="recommendation-title">Download</span>
-            <Break />
+            <Break desktop />
             <button
                 className={
                     !error
@@ -29,7 +29,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     Cloudflare
                 </a>
             </button>
-            <Break />
+            <Break desktop />
 
             <button
                 className={
@@ -47,7 +47,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     IPFS.io
                 </a>
             </button>
-            <Break />
+            <Break desktop />
             <button
                 className={
                     !error
@@ -64,7 +64,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     Pinata
                 </a>
             </button>
-            <Break />
+            <Break desktop />
             <button
                 className={
                     !error
@@ -81,7 +81,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     Infura
                 </a>
             </button>
-            <Break />
+            <Break desktop />
         </div>
     );
 }
