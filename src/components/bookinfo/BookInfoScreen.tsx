@@ -5,10 +5,11 @@ import { MDBContainer } from "mdb-react-ui-kit";
 import BookInfoDesktop from "./BookInfoDesktop";
 import axios from "axios";
 import { DownloadLinks } from "../general/helpers/generalTypes";
-import BookFooter from "./bookInfoSub/BookFooter";
+import { Size, useWindowSize } from "../general/helpers/useWindowSize";
+import BookInfoMobile from "./BookInfoMobile";
 
 export interface BookInfoSubProps {
-    book: Book;
+    bookInfo: Book;
     description: string;
     downloadLinks: DownloadLinks | undefined;
     error: boolean;
@@ -28,6 +29,7 @@ export async function getMetadata(md5: string, topic: string) {
 
 export default function BookInfoScreen() {
     let navigate = useNavigate();
+    const size: Size = useWindowSize();
     const [bookInfo, setBookInfo] = useState<Book | undefined>(undefined);
     // This is done because when a book is sent to the database via BookLibraryActions, its category property may change.
     const bookInfoRef = useRef<Book | undefined>(bookInfo);
@@ -90,23 +92,32 @@ export default function BookInfoScreen() {
         return () => {
             ignore = true;
         };
-    }, []);
+    }, [bookInfo]);
 
     useEffect(() => {}, []);
     return (
         <div className="d-flex flex-column align-items-center">
-            <div className="book-info-container">
+            <div className="book-info-container mb-5">
                 {bookInfo ? (
-                    <BookInfoDesktop
-                        book={bookInfo}
-                        description={description}
-                        downloadLinks={downloadLinks}
-                        error={bookError}
-                        userLogged={userLogged}
-                    />
+                    size.width > 600 ? (
+                        <BookInfoDesktop
+                            bookInfo={bookInfo}
+                            description={description}
+                            downloadLinks={downloadLinks}
+                            error={bookError}
+                            userLogged={userLogged}
+                        />
+                    ) : (
+                        <BookInfoMobile
+                            bookInfo={bookInfo}
+                            description={description}
+                            downloadLinks={downloadLinks}
+                            error={bookError}
+                            userLogged={userLogged}
+                        />
+                    )
                 ) : null}
             </div>
-            {bookInfo ? <BookFooter md5={bookInfo.md5} /> : null}
         </div>
     );
 }

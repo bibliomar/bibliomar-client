@@ -64,6 +64,7 @@ export interface ReaderBookFigureProps {
 
 export type ReaderThemeColors = [string, string, string, string];
 
+// Some optional values because this is used in the reader navbar and its children.
 export interface ReaderNavbarProps {
     readerSettings: ReaderSettings;
     setReaderSettings: React.Dispatch<React.SetStateAction<ReaderSettings>>;
@@ -83,14 +84,16 @@ export enum ReaderThemeOptions {
     easily = "easily",
 }
 
+// Helps define the colors of components which don't inherently use ReaderThemeOptions, like the reader navbar.
+// This should be present in all themes.
 export enum ReaderThemeAccentOptions {
     light = "light",
     dark = "dark",
 }
 
 export enum ManagerOptions {
-    default = "default",
-    continuous = "continuous",
+    default = "default", // Default setting, use when flow is set to auto/paginated.
+    continuous = "continuous", // Renders stuff offscreen, use when flow is set to "scrolled".
 }
 
 export enum FlowOptions {
@@ -108,6 +111,12 @@ export interface ReaderSettings {
     // Theming
     // The name of the theme that should be used.
     themeName: ReaderThemeOptions;
+
+    // Fonts
+    // How the reader fonts should look.
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: number;
 
     // Pagination
     // If swiping to turn pages is enabled

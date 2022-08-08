@@ -12,7 +12,13 @@ export default function BookInfoBadges({ book }: Props) {
             <div className="badge book-info-badge me-1">
                 {book.topic === "fiction" ? "Ficção" : "Não-ficção"}
             </div>
+
             <div className="badge book-info-badge">{book.series}</div>
+            <div className="badge book-info-badge">
+                {book["language"] === "Portuguese"
+                    ? "Português"
+                    : book["language"]}
+            </div>
         </>
     );
 }

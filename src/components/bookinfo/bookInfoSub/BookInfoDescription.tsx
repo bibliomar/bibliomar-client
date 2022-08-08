@@ -1,3 +1,5 @@
+import Break from "../../general/Break";
+
 interface Props {
     description: string;
 }
@@ -11,6 +13,7 @@ export default function BookInfoDescription({ description }: Props) {
             >
                 Descrição
             </h4>
+            <Break />
             <p className="book-info-description">{description}</p>
         </div>
     );

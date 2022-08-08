@@ -29,6 +29,12 @@ interface Book {
     category?: string;
 }
 
+enum LibraryCategories {
+    reading = "reading",
+    toRead = "to-read",
+    backlog = "backlog",
+}
+
 enum ThemeOptions {
     light = "light",
     dark = "dark",
@@ -39,5 +45,5 @@ interface ThemeContext {
     setTheme: React.Dispatch<React.SetStateAction<ThemeOptions>>;
 }
 
-export { ThemeOptions };
+export { ThemeOptions, LibraryCategories };
 export type { Book, DownloadLinks, ThemeContext };

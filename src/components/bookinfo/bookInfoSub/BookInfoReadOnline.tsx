@@ -14,7 +14,7 @@ export default function BookInfoReadOnline({ downloadLinks, book }: Props) {
 
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            {book.extension == "epub" ? (
+            {book.extension !== "epub" ? (
                 <span
                     className="mb-1 book-info-title"
                     style={{ fontSize: "0.9rem" }}
@@ -27,6 +27,7 @@ export default function BookInfoReadOnline({ downloadLinks, book }: Props) {
             <MDBBtn
                 className="dbutton mb-3"
                 type="button"
+                size="lg"
                 onClick={() => {
                     if (downloadLinks) {
                         // State to be used by ReaderLanding on /reader

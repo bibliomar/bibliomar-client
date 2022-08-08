@@ -114,7 +114,7 @@ export default function ReaderMain() {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = setInterval(() => {
                 if (onlineFile!.category == null) {
-                    if (sessionStorage.getItem("reader-user-warned")) {
+                    if (sessionStorage.getItem("reader-user-warned") == null) {
                         sessionStorage.setItem("reader-user-warned", "true");
                         alert(
                             "Você está lendo um livro que não está na sua biblioteca, " +
@@ -126,7 +126,7 @@ export default function ReaderMain() {
                 saveProgressOnDatabase(currentPage, onlineFile!).then((r) => {
                     if (
                         r == null &&
-                        !sessionStorage.getItem("reader-user-warned")
+                        sessionStorage.getItem("reader-user-warned") == null
                     ) {
                         sessionStorage.setItem("reader-user-warned", "true");
                         alert(

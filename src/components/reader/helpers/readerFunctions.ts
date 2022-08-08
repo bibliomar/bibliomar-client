@@ -223,19 +223,27 @@ const themeColorsObject: ThemeColorsModel = {
 
 // This will automatically register all themes on themeColorsObject as valid Rendition themes.
 // Rendition themes cover the inner part of the reader.
-export const registerRenditionThemes = (rendition: any) => {
+// Be sure to keep the outter reader theme in sync.
+// Use readerSettings values to define font styles.
+export const registerRenditionThemes = (
+    rendition: any,
+    fontName: string,
+    fontWeight: number,
+    fontSize: number
+) => {
     Object.values(themeColorsObject).forEach((theme) => {
         rendition.themes.register(theme[3], {
             "*": {
                 color: theme[0],
                 background: theme[1],
             },
+
             p: {
-                "font-family": "Nunito Sans, sans-serif",
-                "font-weight": "600",
-                "line-height": "27px",
+                "font-family": fontName ? fontName : "Nunito Sans",
+                "font-weight": fontWeight ? `${fontWeight}` : "400",
+                "font-size": fontSize ? `${fontSize}px` : undefined,
+                "line-height": "20px",
                 "text-align": "justify",
-                color: "#FAFAFA;",
             },
         });
     });
@@ -408,10 +416,14 @@ const possibleTheme: ReaderThemeOptions | undefined = possibleThemeStr
     ? JSON.parse(possibleThemeStr)
     : undefined;
 
+// Use these settings as base when changing reader settings.
 export const defaultReaderSettings: ReaderSettings = {
     flow: FlowOptions.default,
     fullscreen: false,
     manager: ManagerOptions.default,
     swipe: false,
     themeName: possibleTheme ? possibleTheme : ReaderThemeOptions.dark,
+    fontFamily: "Nunito Sans",
+    fontWeight: 400,
+    fontSize: 16,
 };

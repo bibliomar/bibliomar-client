@@ -6,14 +6,14 @@ interface Props {
     book: Book;
 }
 
-export default function BookInfoTitle({ book }: Props) {
+export default function BookInfoAuthors({ book }: Props) {
     return (
         <>
             <span
-                className="book-info-title mb-3"
-                style={{ fontSize: "1.7rem" }}
+                className="book-info-title mb-2"
+                style={{ fontSize: "1.2rem" }}
             >
-                {book.title}
+                {book.authors}
             </span>
         </>
     );

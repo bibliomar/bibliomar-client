@@ -9,13 +9,13 @@ interface Props {
 export default function BookInfoDownload({ downloadLinks, error }: Props) {
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            <span className="recommendation-title">Download</span>
-            <Break desktop />
+            <span className="recommendation-title mb-2">Download</span>
+            <Break />
             <button
                 className={
                     !error
-                        ? "dbutton btn btn-primary btn-rounded mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded mb-1 me-1"
+                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
                 }
                 disabled={!downloadLinks || error}
             >
@@ -34,8 +34,8 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
             <button
                 className={
                     !error
-                        ? "dbutton btn btn-primary btn-rounded mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded mb-1 me-1"
+                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
                 }
                 disabled={!downloadLinks || error}
             >
@@ -47,12 +47,12 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     IPFS.io
                 </a>
             </button>
-            <Break desktop />
+            <Break />
             <button
                 className={
                     !error
-                        ? "dbutton btn btn-primary btn-rounded mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded mb-1 me-1"
+                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
                 }
                 disabled={!downloadLinks || error}
             >
@@ -68,8 +68,8 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
             <button
                 className={
                     !error
-                        ? "dbutton btn btn-primary btn-rounded mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded mb-1 me-1"
+                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
                 }
                 disabled={!downloadLinks || error}
             >
@@ -82,6 +82,9 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                 </a>
             </button>
             <Break desktop />
+            <span className="text-muted mt-1 text-center w-75">
+                O download pode demorar para iniciar.
+            </span>
         </div>
     );
 }

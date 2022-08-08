@@ -1,11 +1,17 @@
 // Dark theme specific classes are defined here.
-@import "mdb-ui-kit/src/scss/free/variables";
+@import "src/mdb-ui-kit/src/scss/free/variables";
+
 
 $accent-color: #7663F2;
 
 // Fix for white text in selects' options
 .form-select > option{
   color: $dark
+}
+
+.btn-primary{
+  color: #FFFFFF;
+  background-color: $accent-color !important;
 }
 
 .bg-alt{
@@ -16,4 +22,9 @@ $accent-color: #7663F2;
   background-color: #252525;
 }
 
+.book-info-container{
+  background-color: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 4px 7px 4px rgb(0 0 0 / 4%);
+  border-radius: 0 5px 5px 0;
+}
 

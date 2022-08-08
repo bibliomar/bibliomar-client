@@ -66,6 +66,7 @@ export default function ReaderScreen({
                 )}
             </div>
             <ReactReader
+                // Be sure to only set this after the rendition is loaded.
                 styles={renditionRef.current ? readerStyle : undefined}
                 location={currentPage}
                 locationChanged={handleLocationChange}
@@ -76,8 +77,12 @@ export default function ReaderScreen({
                 }}
                 getRendition={(rendition) => {
                     renditionRef.current = rendition;
-                    registerRenditionThemes(rendition);
-                    // 2 is the index of the theme name.
+                    registerRenditionThemes(
+                        rendition,
+                        readerSettings.fontFamily,
+                        readerSettings.fontWeight,
+                        readerSettings.fontSize
+                    );
                     rendition.themes.select(readerSettings.themeName);
                 }}
             />

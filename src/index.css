@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -17,7 +17,12 @@ abbr[title]:after
     pointer-events: none;
 }
 
-
+.library-add-button{
+    background: url("/assets/img/button-ellipse.svg") no-repeat;
+    background-size: contain;
+    width: 15%;
+    height: auto;
+}
 
 
 .break {
@@ -137,7 +142,7 @@ abbr[title]:after
 }
 
 .dbutton{
-    width: 30vw;
+    width: 35vw;
 }
 
 .saved-list-div{
@@ -159,10 +164,11 @@ abbr[title]:after
 }
 
 .book-info-cover-section{
-    width: 25%;
+    width: 80%;
 }
+
 .book-info-section{
-    width: 75%;
+    width: 80%;
 }
 
 /*Be sure to define font-size manually. */
@@ -260,10 +266,17 @@ abbr[title]:after
         max-width: fit-content;
     }
 
-    .book-info-container{
-        min-width: 70%;
-        max-width: 70%;
+    .book-info-cover-section{
+        width: 25%;
+    }
 
+    .book-info-section{
+    width: 75%;
+    }
+
+    .book-info-container{
+        min-width: 85%;
+        max-width: 85%;
     }
 
 }

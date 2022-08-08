@@ -2,7 +2,6 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import BookCover from "./BookCover";
 import { useEffect, useRef, useState } from "react";
 import BookInfo from "./BookInfo";
-import BookFooter from "../../bookinfo/bookInfoSub/BookFooter";
 import Navbar from "../../general/navbar/Navbar";
 import Break from "../../general/Break";
 import { Book } from "../../general/helpers/generalTypes";
@@ -40,7 +39,6 @@ export default function BookScreen() {
                             />
                         </div>
                     </section>
-                    <BookFooter md5={md5} />
                 </>
             ) : null}
         </div>
