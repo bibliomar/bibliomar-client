@@ -36,8 +36,8 @@ enum LibraryCategories {
 }
 
 enum ThemeOptions {
-    light = "light",
-    dark = "dark",
+    "light" = "light",
+    "dark" = "dark",
 }
 
 interface ThemeContext {

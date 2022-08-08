@@ -49,15 +49,18 @@ export default function BookInfoDesktop({
                     className="ms-3 mt-4 mb-4 me-3 book-info-section"
                 >
                     <div className="d-flex flex-wrap justify-content-start">
-                        <BookInfoLibraryButtons
-                            bookRef={bookRef}
-                            className="ms-auto mb-3"
-                        />
-                        <Break />
-                        <div className="position-absolute d-flex flex-wrap">
-                            <BookInfoTitle book={book} />
-                            <Break />
-                            <BookInfoAuthors book={book} />
+                        <div className="d-flex">
+                            <div className="d-flex flex-wrap w-50">
+                                <BookInfoTitle book={book} />
+                                <Break />
+                                <BookInfoAuthors book={book} />
+                            </div>
+                            <div className="d-flex flex-wrap w-50">
+                                <BookInfoLibraryButtons
+                                    bookRef={bookRef}
+                                    className="ms-auto mb-3"
+                                />
+                            </div>
                         </div>
 
                         <Break />

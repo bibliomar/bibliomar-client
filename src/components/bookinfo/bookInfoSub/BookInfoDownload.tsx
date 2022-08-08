@@ -75,7 +75,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
             >
                 <a
                     style={{ color: "#FFFFFF" }}
-                    className=""
+                    className="w-100"
                     href={downloadLinks ? downloadLinks!["Infura"] : undefined}
                 >
                     Infura

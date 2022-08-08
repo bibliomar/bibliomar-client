@@ -1,5 +1,10 @@
-import { LibraryCategories } from "../../../general/helpers/generalTypes";
+import {
+    LibraryCategories,
+    ThemeOptions,
+} from "../../../general/helpers/generalTypes";
 import Break from "../../../general/Break";
+import { useContext } from "react";
+import { Theme } from "../../../general/helpers/generalContext";
 
 interface LibraryAddProps {
     category: LibraryCategories;
@@ -16,6 +21,7 @@ export default function BookInfoLibraryAdd({
     triedCategory,
     onclickHandler,
 }: LibraryAddProps) {
+    const theme = useContext(Theme).theme;
     return (
         <div
             className="d-flex flex-wrap justify-content-center"
@@ -40,7 +46,11 @@ export default function BookInfoLibraryAdd({
                 disabled={requestStatus !== 0}
             >
                 <img
-                    src="/assets/img/button-ellipse.svg"
+                    src={
+                        theme === ThemeOptions.light
+                            ? "/assets/img/button-ellipse.svg"
+                            : "/assets/img/button-ellipse-dark.svg"
+                    }
                     alt="Adicionar a biblioteca"
                 />
                 <i

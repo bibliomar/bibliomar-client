@@ -13,11 +13,18 @@ import Themeing from "./Themeing";
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
 export default function Bibliomar() {
-    const savedTheme: ThemeOptions | null = localStorage.getItem("theme")
-        ? JSON.parse(localStorage.getItem("theme")!)
+    const savedThemeStr: string | null = localStorage.getItem("theme")
+        ? localStorage.getItem("theme")
         : null;
+
+    const savedTheme = savedThemeStr
+        ? savedThemeStr === ThemeOptions.light
+            ? ThemeOptions.light
+            : ThemeOptions.dark
+        : null;
+
     const [theme, setTheme] = useState<ThemeOptions>(
-        savedTheme || ThemeOptions.light
+        savedTheme ? savedTheme : ThemeOptions.light
     );
     const [themeing, setThemeing] = useState<boolean>(true);
     const themeContext: ThemeContext = {

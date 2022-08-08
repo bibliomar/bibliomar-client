@@ -8,8 +8,10 @@ export default function ThemeChooser() {
     const changeTheme = () => {
         themeContext.setTheme((prevState) => {
             if (prevState === ThemeOptions.light) {
+                localStorage.setItem("theme", ThemeOptions.dark);
                 return ThemeOptions.dark;
             } else {
+                localStorage.setItem("theme", ThemeOptions.light);
                 return ThemeOptions.light;
             }
         });
