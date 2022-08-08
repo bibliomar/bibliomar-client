@@ -102,7 +102,7 @@ export default function Navbar({
                                             type="search"
                                             value={formik.values.query}
                                             onChange={formik.handleChange}
-                                            className="text-light"
+                                            className=""
                                         />
                                         <MDBBtn color="primary" type="submit">
                                             Pesquisar

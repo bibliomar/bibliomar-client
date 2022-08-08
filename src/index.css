@@ -102,7 +102,7 @@ abbr[title]:after
     height: auto;
 }
 
-.library-section-div{
+.library-section-container{
     width: 90vw;
 }
 
@@ -226,7 +226,7 @@ abbr[title]:after
         width: fit-content;
     }
 
-    .library-section-div{
+    .library-section-container{
         width: 70vw;
     }
 

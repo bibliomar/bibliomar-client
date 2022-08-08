@@ -23,7 +23,7 @@ export default function LibrarySection(props: Props) {
     const booksInfo = bookCategorySetter();
     return (
         <div className="d-flex flex-wrap justify-content-center mb-4">
-            <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light p-3 library-section-div">
+            <div className="bg-black p-2 rounded-3 bg-opacity-75 text-light p-3 library-section-container">
                 <div className="d-flex flex-wrap justify-content-center mb-2">
                     <span className="fw-bold lead">{props.message}</span>
                 </div>
