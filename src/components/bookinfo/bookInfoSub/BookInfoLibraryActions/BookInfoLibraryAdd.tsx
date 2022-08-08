@@ -5,6 +5,8 @@ import {
 import Break from "../../../general/Break";
 import { useContext } from "react";
 import { Theme } from "../../../general/helpers/generalContext";
+import { MDBSpinner } from "mdb-react-ui-kit";
+import BookInfoLibraryAddIcon from "./BookInfoLibraryAddIcon";
 
 interface LibraryAddProps {
     category: LibraryCategories;
@@ -45,36 +47,19 @@ export default function BookInfoLibraryAdd({
                 }}
                 disabled={requestStatus !== 0}
             >
-                <img
-                    src={
-                        theme === ThemeOptions.light
-                            ? "/assets/img/button-ellipse.svg"
-                            : "/assets/img/button-ellipse-dark.svg"
-                    }
-                    alt="Adicionar a biblioteca"
-                />
-                <i
-                    // "fas fa-ellipsis-h"
-                    // "fas fa-plus"
-                    className={
-                        // Code, to golf or not to golf?
-                        triedCategory
-                            ? triedCategory === category
-                                ? requestStatus === 200
-                                    ? "fas fa-check"
-                                    : "fas fa-ellipsis-h"
-                                : "fas fa-plus"
-                            : "fas fa-plus"
-                    }
-                    style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        fontSize: "2rem",
-                        textAlign: "center",
-                    }}
-                ></i>
+                {triedCategory ? (
+                    triedCategory === category ? (
+                        requestStatus === 200 ? (
+                            <i className="fas fa-check fa-lg"></i>
+                        ) : (
+                            <MDBSpinner />
+                        )
+                    ) : (
+                        <BookInfoLibraryAddIcon category={category} />
+                    )
+                ) : (
+                    <BookInfoLibraryAddIcon category={category} />
+                )}
             </button>
             <Break />
             <span>{message}</span>

@@ -259,7 +259,7 @@ function Search() {
                 </div>
 
                 <Bibliologo />
-                <Greeting isUserLoggedContext={isUserLoggedContext} />
+                <Greeting />
                 <form
                     ref={formRef}
                     onSubmit={async (evt) => {

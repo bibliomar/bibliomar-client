@@ -97,7 +97,7 @@ export default function BookInfoScreen() {
     useEffect(() => {}, []);
     return (
         <div className="d-flex flex-column align-items-center">
-            <div className="book-info-container mb-5">
+            <div className="basic-container book-info-container mb-5">
                 {bookInfo ? (
                     size.width > 600 ? (
                         <BookInfoDesktop

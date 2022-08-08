@@ -22,9 +22,18 @@ $accent-color: #7663F2;
   background-color: #252525;
 }
 
-.book-info-container{
+.recommendation-title{
+  font-family: 'Nunito Sans', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 27px;
+
+  color: #CACACA;
+}
+
+.basic-container{
   background-color: rgba(0, 0, 0, 0.65);
-  box-shadow: 0 4px 7px 4px rgb(0 0 0 / 4%);
+  box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
   border-radius: 0 5px 5px 0;
 }
 
