@@ -11,79 +11,76 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
         <div className="d-flex flex-wrap justify-content-center">
             <span className="recommendation-title mb-2">Download</span>
             <Break />
-            <button
-                className={
-                    !error
-                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
-                }
-                disabled={!downloadLinks || error}
+            <a
+                className="d-flex justify-content-center"
+                href={downloadLinks ? downloadLinks!["Cloudflare"] : undefined}
             >
-                <a
-                    className=""
-                    href={
-                        downloadLinks ? downloadLinks!["Cloudflare"] : undefined
+                <button
+                    className={
+                        !error
+                            ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                            : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
                     }
-                    style={{ color: "#FFFFFF" }}
+                    disabled={!downloadLinks || error}
                 >
                     Cloudflare
-                </a>
-            </button>
-            <Break desktop />
+                </button>
+            </a>
 
-            <button
-                className={
-                    !error
-                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
-                }
-                disabled={!downloadLinks || error}
+            <Break desktop />
+            <a
+                className="d-flex justify-content-center"
+                href={downloadLinks ? downloadLinks!["IPFS.io"] : undefined}
             >
-                <a
-                    style={{ color: "#FFFFFF" }}
-                    className=""
-                    href={downloadLinks ? downloadLinks!["IPFS.io"] : undefined}
+                <button
+                    className={
+                        !error
+                            ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                            : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
+                    }
+                    disabled={!downloadLinks || error}
                 >
                     IPFS.io
-                </a>
-            </button>
+                </button>
+            </a>
+
             <Break />
-            <button
-                className={
-                    !error
-                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
-                }
-                disabled={!downloadLinks || error}
+            <a
+                className="d-flex justify-content-center"
+                href={downloadLinks ? downloadLinks!["Pinata"] : undefined}
             >
-                <a
-                    style={{ color: "#FFFFFF" }}
-                    className=""
-                    href={downloadLinks ? downloadLinks!["Pinata"] : undefined}
+                <button
+                    className={
+                        !error
+                            ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                            : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
+                    }
+                    disabled={!downloadLinks || error}
                 >
                     Pinata
-                </a>
-            </button>
+                </button>
+            </a>
             <Break desktop />
-            <button
-                className={
-                    !error
-                        ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                        : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
-                }
-                disabled={!downloadLinks || error}
+            <a
+                className="d-flex justify-content-center"
+                href={downloadLinks ? downloadLinks!["Infura"] : undefined}
             >
-                <a
-                    style={{ color: "#FFFFFF" }}
-                    className="w-100"
-                    href={downloadLinks ? downloadLinks!["Infura"] : undefined}
+                <button
+                    className={
+                        !error
+                            ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                            : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
+                    }
+                    disabled={!downloadLinks || error}
                 >
                     Infura
-                </a>
-            </button>
+                </button>
+            </a>
             <Break desktop />
             <span className="text-muted mt-1 text-center w-75">
-                O download pode demorar para iniciar.
+                {!error
+                    ? "O download pode demorar para iniciar."
+                    : "Erro ao receber as informações de download."}
             </span>
         </div>
     );

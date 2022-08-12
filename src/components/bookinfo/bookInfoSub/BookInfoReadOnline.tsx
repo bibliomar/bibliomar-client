@@ -1,15 +1,24 @@
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Book, DownloadLinks } from "../../general/helpers/generalTypes";
-import { PossibleReaderLandingState } from "../../reader/helpers/readerTypes";
+import {
+    PossibleReaderLandingState,
+    SavedBookEntry,
+    SavedBooks,
+} from "../../reader/helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
 
 interface Props {
     book: Book;
     downloadLinks?: DownloadLinks;
+    savedBook: SavedBookEntry | null;
 }
 
-export default function BookInfoReadOnline({ downloadLinks, book }: Props) {
+export default function BookInfoReadOnline({
+    downloadLinks,
+    book,
+    savedBook,
+}: Props) {
     const navigate = useNavigate();
 
     return (

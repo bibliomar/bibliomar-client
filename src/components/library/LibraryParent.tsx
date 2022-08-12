@@ -1,10 +1,10 @@
 import Navbar from "../general/navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
+import { getUserInfo } from "../general/helpers/generalFunctions";
 
 export default function LibraryParent() {
     const [userInfo, setUserInfo] = useState<any>(undefined);
@@ -16,35 +16,6 @@ export default function LibraryParent() {
     if (decoded_token) {
         username = decoded_token.sub;
     }
-
-    const getUserInfo = async () => {
-        const config = {
-            url: "https://biblioterra.herokuapp.com/v1/library/get",
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-        try {
-            setProgress(60);
-            let req = await axios.request(config);
-            setProgress(100);
-            let data = req.data;
-            return {
-                reading: data["reading"].reverse(),
-                "to-read": data["to-read"].reverse(),
-                backlog: data["backlog"].reverse(),
-            };
-        } catch (e: any) {
-            if (e.request) {
-                if (e.request.status === 401) {
-                    localStorage.removeItem("jwt-token");
-                    navigate("/user/login");
-                }
-            }
-            navigate("/book/error");
-        }
-    };
 
     useEffect(() => {
         let decoded_token = jwt_decode(token) as JwtPayload;
@@ -65,12 +36,14 @@ export default function LibraryParent() {
         }
         if (token && decoded_token && cachedUserInfo == null) {
             setUserInfo(undefined);
-            getUserInfo().then((r) => {
+            setProgress(60);
+            getUserInfo(token, navigate).then((r) => {
                 sessionStorage.setItem(
                     `${decoded_token.sub}-user`,
                     JSON.stringify(r)
                 );
                 setProgress(0);
+                console.log(r);
                 setUserInfo(r);
             });
         }

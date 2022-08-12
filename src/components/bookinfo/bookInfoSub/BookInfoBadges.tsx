@@ -1,9 +1,9 @@
 import { Book } from "../../general/helpers/generalTypes";
-import { MDBBadge } from "mdb-react-ui-kit";
-import Break from "../../general/Break";
+import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
 
 interface Props {
     book: Book;
+    savedBook: SavedBookEntry | null;
 }
 
 export default function BookInfoBadges({ book }: Props) {
@@ -14,11 +14,6 @@ export default function BookInfoBadges({ book }: Props) {
             </div>
 
             <div className="badge book-info-badge">{book.series}</div>
-            <div className="badge book-info-badge">
-                {book["language"] === "Portuguese"
-                    ? "Português"
-                    : book["language"]}
-            </div>
         </>
     );
 }

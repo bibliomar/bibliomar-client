@@ -9,6 +9,7 @@ import LoadingScreen from "./loading/LoadingScreen";
 import axios, { AxiosResponse } from "axios";
 import Navbar from "../general/navbar/Navbar";
 import { Book } from "../general/helpers/generalTypes";
+import { Auth } from "../general/helpers/generalContext";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -251,10 +252,7 @@ function Search() {
             <div className="container-fluid">
                 <div className="row ">
                     <div className="col mt-3">
-                        <Navbar
-                            activeItem="home"
-                            setIsUserLoggedContext={setIsUserLoggedContext}
-                        />
+                        <Navbar activeItem="home" />
                     </div>
                 </div>
 

@@ -47,10 +47,7 @@ export default function ReaderLanding() {
                         setModalToggle={setModalToggle}
                     />
                 </Portal>
-                <Navbar
-                    activeItem="reader"
-                    setIsUserLoggedContext={setIsUserLogged}
-                />
+                <Navbar activeItem="reader" />
                 <div className="d-flex justify-content-end mt-4 mb-5 me-2">
                     <MDBBtn
                         type="button"

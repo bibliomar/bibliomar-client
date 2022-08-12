@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import {
+    AuthContext,
     ThemeContext,
     ThemeOptions,
 } from "./components/general/helpers/generalTypes";
-import { Theme } from "./components/general/helpers/generalContext";
+import { Theme, Auth } from "./components/general/helpers/generalContext";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import App from "./App";
@@ -30,6 +31,14 @@ export default function Bibliomar() {
     const themeContext: ThemeContext = {
         theme: theme,
         setTheme: setTheme,
+    };
+
+    const [userLogged, setUserLogged] = useState<boolean>(
+        !!localStorage.getItem("jwt-token")
+    );
+    const authContext: AuthContext = {
+        userLogged: userLogged,
+        setUserLogged: setUserLogged,
     };
 
     useEffect(() => {
@@ -73,9 +82,11 @@ export default function Bibliomar() {
 
     return (
         <BrowserRouter>
-            <Theme.Provider value={themeContext}>
-                {themeing ? <Themeing /> : <App />}
-            </Theme.Provider>
+            <Auth.Provider value={authContext}>
+                <Theme.Provider value={themeContext}>
+                    {themeing ? <Themeing /> : <App />}
+                </Theme.Provider>
+            </Auth.Provider>
         </BrowserRouter>
     );
 }

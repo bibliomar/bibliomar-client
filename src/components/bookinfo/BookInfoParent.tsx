@@ -1,6 +1,7 @@
 import Navbar from "../general/navbar/Navbar";
 import Break from "../general/Break";
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function BookInfoParent() {
     return (

@@ -11,21 +11,16 @@ import BookInfoBadges from "./bookInfoSub/BookInfoBadges";
 import BookInfoDescription from "./bookInfoSub/BookInfoDescription";
 import BookInfoFile from "./bookInfoSub/BookInfoFile";
 import BookInfoReadOnline from "./bookInfoSub/BookInfoReadOnline";
-import BookInfoLibraryAdd from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryAdd";
 import BookInfoLibraryButtons from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryButtons";
 import BookInfoAuthors from "./bookInfoSub/BookInfoAuthors";
 
 export default function BookInfoDesktop({
     bookInfo,
-    userLogged,
+    setBookInfo,
     downloadLinks,
     error,
-    description,
+    savedBook,
 }: BookInfoSubProps) {
-    const bookRef = useRef<Book>(bookInfo);
-    // Shorthand to avoid writing .current everywhere.
-    const book = bookRef.current;
-    console.log(book);
     return (
         // Two flex containers because we want one to wrap and the other one not to.
         <div className="d-flex flex-wrap justify-content-center">
@@ -35,7 +30,7 @@ export default function BookInfoDesktop({
                     className="ms-3 mt-4 mb-4 book-info-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
-                        <BookInfoCover md5={book.md5} />
+                        <BookInfoCover md5={bookInfo.md5} />
                         <Break />
                         <BookInfoDownload
                             downloadLinks={downloadLinks}
@@ -51,13 +46,17 @@ export default function BookInfoDesktop({
                     <div className="d-flex flex-wrap justify-content-start">
                         <div className="d-flex w-100">
                             <div className="d-flex flex-wrap w-50">
-                                <BookInfoTitle book={book} />
+                                <BookInfoTitle book={bookInfo} />
                                 <Break />
-                                <BookInfoAuthors book={book} />
+                                <BookInfoAuthors book={bookInfo} />
                             </div>
-                            <div className="d-flex flex-wrap ms-auto w-50">
+                            <div
+                                className="d-flex flex-wrap ms-auto w-50"
+                                style={{ height: "fit-content" }}
+                            >
                                 <BookInfoLibraryButtons
-                                    bookRef={bookRef}
+                                    book={bookInfo}
+                                    setBookInfo={setBookInfo}
                                     className="ms-auto mb-3"
                                 />
                             </div>
@@ -68,18 +67,24 @@ export default function BookInfoDesktop({
                         <Break />
                         <SmallLine flexGrow />
                         <Break className="mb-2" />
-                        <BookInfoFile book={book} />
+                        <BookInfoFile book={bookInfo} />
                         <Break className="mb-2" />
-                        <BookInfoBadges book={book} />
+                        <BookInfoBadges savedBook={savedBook} book={bookInfo} />
                         <Break className="mb-4" />
-                        <BookInfoDescription description={description} />
+                        <BookInfoDescription
+                            description={bookInfo.description!}
+                        />
                     </div>
                 </div>
             </div>
             <Break />
             <SmallLine flexGrow className="me-4 ms-4" />
             <Break className="mt-2" />
-            <BookInfoReadOnline book={book} downloadLinks={downloadLinks} />
+            <BookInfoReadOnline
+                savedBook={savedBook}
+                book={bookInfo}
+                downloadLinks={downloadLinks}
+            />
         </div>
     );
 }

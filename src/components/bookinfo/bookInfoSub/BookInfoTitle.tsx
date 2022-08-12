@@ -10,7 +10,7 @@ export default function BookInfoTitle({ book }: Props) {
     return (
         <>
             <span
-                className="book-info-title mb-3"
+                className="book-info-title"
                 style={{ fontSize: "1.7rem", overflowWrap: "anywhere" }}
             >
                 {book.title}

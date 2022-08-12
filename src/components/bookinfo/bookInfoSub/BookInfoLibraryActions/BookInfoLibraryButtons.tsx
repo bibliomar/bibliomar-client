@@ -1,15 +1,20 @@
 import BookInfoLibraryAdd from "./BookInfoLibraryAdd";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { Book, LibraryCategories } from "../../../general/helpers/generalTypes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    bookRef: React.MutableRefObject<Book>;
+    book: Book;
+    setBookInfo: React.Dispatch<SetStateAction<Book | undefined>>;
     className?: string;
 }
 
-export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
+export default function BookInfoLibraryButtons({
+    book,
+    setBookInfo,
+    className,
+}: Props) {
     const navigate = useNavigate();
     const [triedCategory, setTriedCategory] = useState<
         LibraryCategories | undefined
@@ -27,7 +32,7 @@ export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
             navigate(`/user/login?redirect=${redirect}`);
             return;
         }
-        let bookToAdd = bookRef.current;
+        let bookToAdd = book;
         bookToAdd.category = category;
         const req_body = [bookToAdd];
         const config = {
@@ -43,7 +48,7 @@ export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
             setRequestStatus(103);
 
             let req = await axios.request(config);
-            bookRef.current = bookToAdd;
+            setBookInfo(bookToAdd);
             setRequestStatus(200);
             setTimeout(() => {
                 setTriedCategory(undefined);
@@ -68,6 +73,7 @@ export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
     return (
         <div className={`d-flex ${className}`}>
             <BookInfoLibraryAdd
+                book={book}
                 category={LibraryCategories.reading}
                 message={"Lendo"}
                 requestStatus={requestStatus}
@@ -75,6 +81,7 @@ export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
                 onclickHandler={addBook}
             />
             <BookInfoLibraryAdd
+                book={book}
                 category={LibraryCategories.toRead}
                 message={"Lista de leitura"}
                 requestStatus={requestStatus}
@@ -82,6 +89,7 @@ export default function BookInfoLibraryButtons({ bookRef, className }: Props) {
                 onclickHandler={addBook}
             />
             <BookInfoLibraryAdd
+                book={book}
                 category={LibraryCategories.backlog}
                 message={"Backlog"}
                 requestStatus={requestStatus}

@@ -1,14 +1,9 @@
 import { MDBTypography } from "mdb-react-ui-kit";
 import Break from "../general/Break";
-import Message from "../general/Message";
 
 export default function BookInfoError() {
     return (
         <>
-            <Message
-                color="text-light"
-                message="Opa! Encontramos um problema."
-            />
             <div className="d-flex flex-wrap justify-content-center text-dark">
                 <MDBTypography
                     className="fw-bold mb-3"

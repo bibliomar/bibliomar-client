@@ -204,6 +204,8 @@ export const saveProgressOnDatabase = async (
     }
 };
 
+// Below are functions used only in the actual reader screen
+
 interface ThemeColorsModel {
     // This is the model of the tuples describing a reader theme.
     //First item is equivalent to "color" property, and second is to "backgroundColor".

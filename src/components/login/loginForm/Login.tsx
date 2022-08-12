@@ -4,12 +4,14 @@ import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import Message from "../../general/Message";
 import Break from "../../general/Break";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AutoLoginMessage from "./AutoLoginMessage";
 import LoginMessage from "./LoginMessage";
+import { Auth } from "../../general/helpers/generalContext";
 
 export default function Login() {
+    const authContext = useContext(Auth);
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
     const md5 = searchParameters.get("md5") as string;
@@ -30,6 +32,7 @@ export default function Login() {
             let req = await axios.request(config);
             setAutoLoginStatus(200);
             localStorage.setItem("jwt-token", req.data["access_token"]);
+            authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
 
             if (redirect) {
                 navigate(`${redirect}`, { replace: true });
@@ -40,11 +43,14 @@ export default function Login() {
             if (e.request) {
                 if (e.request.status === 401) {
                     localStorage.removeItem("jwt-token");
-                    setTimeout(() => {
-                        setAutoLoginStatus(0);
-                    }, 3000);
+                    authContext.setUserLogged(
+                        !!localStorage.getItem("jwt-token")
+                    );
                 }
                 setAutoLoginStatus(e.request.status);
+                setTimeout(() => {
+                    setAutoLoginStatus(0);
+                }, 4000);
             }
         }
     };

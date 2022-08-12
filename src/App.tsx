@@ -1,11 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Search from "./components/search/Search";
-import BookError from "./components/book/BookError";
-import BookFictionParent from "./components/book/BookFictionParent";
-import BooksParent from "./components/book/BooksParent";
-import BookScitechParent from "./components/book/BookScitechParent";
-import BookScreen from "./components/book/BookScreen/BookScreen";
+import BookInfoError from "./components/bookinfo/BookInfoError";
 import Login from "./components/login/loginForm/Login";
 import Register from "./components/login/registerForm/Register";
 import Recover from "./components/login/recoverForm/Recover";
@@ -17,6 +13,7 @@ import ReaderLanding from "./components/reader/ReaderLanding";
 import ReaderMain from "./components/reader/screen/ReaderMain";
 import BookInfoParent from "./components/bookinfo/BookInfoParent";
 import BookInfoScreen from "./components/bookinfo/BookInfoScreen";
+import BookInfoTopicParent from "./components/bookinfo/BookInfoTopicParent";
 
 function App() {
     return (
@@ -26,9 +23,10 @@ function App() {
             <Route path="/" element={<Navigate to="/search" />} />
             <Route path="/search" element={<Search />} />
             <Route path="/book" element={<BookInfoParent />}>
-                <Route index element={<></>} />
-                <Route path=":md5" element={<BookInfoScreen />} />
-                <Route path="error" element={<BookError />} />
+                <Route path=":topic" element={<BookInfoTopicParent />}>
+                    <Route path=":md5" element={<BookInfoScreen />} />
+                </Route>
+                <Route path="error" element={<BookInfoError />} />
             </Route>
             <Route path="/library" element={<LibraryParent />}>
                 <Route index element={<LibraryLanding />} />

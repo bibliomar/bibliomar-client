@@ -3,7 +3,6 @@ import React from "react";
 import { ReaderBookFigureProps } from "../helpers/readerTypes";
 import { Link, useNavigate } from "react-router-dom";
 import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
-import { navigateToBook } from "../../general/helpers/generalFunctions";
 
 export default function ReaderBookFigureResponsive({
     book,
@@ -105,13 +104,7 @@ export default function ReaderBookFigureResponsive({
                                 Visualizar na biblioteca
                             </Link>
                         ) : (
-                            <Link
-                                to={`/book/${book.topic}/${book.md5}`}
-                                onClick={(evt) => {
-                                    evt.preventDefault();
-                                    navigateToBook(book, navigate);
-                                }}
-                            >
+                            <Link to={`/book/${book.topic}/${book.md5}`}>
                                 Visualizar informações
                             </Link>
                         )}

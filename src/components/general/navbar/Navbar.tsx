@@ -22,15 +22,10 @@ import ThemeChooser from "./ThemeChooser";
 
 interface Props {
     activeItem?: string;
-    setIsUserLoggedContext?: any;
     badgeText?: string;
 }
 
-export default function Navbar({
-    activeItem,
-    setIsUserLoggedContext,
-    badgeText,
-}: Props) {
+export default function Navbar({ activeItem, badgeText }: Props) {
     const themeContext = useContext(Theme);
     const theme = themeContext.theme;
     const [showNav, setShowNav] = useState<boolean>(false);
@@ -111,9 +106,7 @@ export default function Navbar({
                                 </>
                             ) : null}
                             <ThemeChooser />
-                            <NavbarUser
-                                setIsUserLoggedContext={setIsUserLoggedContext}
-                            />
+                            <NavbarUser />
                         </MDBNavbarNav>
                     </MDBCollapse>
                 </MDBContainer>

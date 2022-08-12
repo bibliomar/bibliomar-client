@@ -1,4 +1,5 @@
 import {
+    Book,
     LibraryCategories,
     ThemeOptions,
 } from "../../../general/helpers/generalTypes";
@@ -9,6 +10,7 @@ import { MDBSpinner } from "mdb-react-ui-kit";
 import BookInfoLibraryAddIcon from "./BookInfoLibraryAddIcon";
 
 interface LibraryAddProps {
+    book: Book;
     category: LibraryCategories;
     message: string;
     triedCategory: LibraryCategories | undefined;
@@ -17,6 +19,7 @@ interface LibraryAddProps {
 }
 
 export default function BookInfoLibraryAdd({
+    book,
     category,
     message,
     requestStatus,
@@ -45,7 +48,7 @@ export default function BookInfoLibraryAdd({
                     console.log(onclickHandler);
                     await onclickHandler(evt, category);
                 }}
-                disabled={requestStatus !== 0}
+                disabled={requestStatus !== 0 || book.category === category}
             >
                 {triedCategory ? (
                     triedCategory === category ? (
@@ -62,7 +65,14 @@ export default function BookInfoLibraryAdd({
                 )}
             </button>
             <Break />
-            <span>{message}</span>
+
+            <span>
+                {book.category === category ? (
+                    <strong>{message}</strong>
+                ) : (
+                    message
+                )}
+            </span>
         </div>
     );
 }

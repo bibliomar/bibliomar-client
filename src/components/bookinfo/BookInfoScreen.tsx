@@ -1,23 +1,37 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import { Book } from "../general/helpers/generalTypes";
-import { MDBContainer } from "mdb-react-ui-kit";
 import BookInfoDesktop from "./BookInfoDesktop";
 import axios from "axios";
 import { DownloadLinks } from "../general/helpers/generalTypes";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import BookInfoMobile from "./BookInfoMobile";
+import { findBookInLibrary } from "../general/helpers/generalFunctions";
+import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
+import localforage from "localforage";
+import { findBookLocally } from "../reader/helpers/readerFunctions";
 
 export interface BookInfoSubProps {
     bookInfo: Book;
-    description: string;
+    setBookInfo: React.Dispatch<SetStateAction<Book | undefined>>;
     downloadLinks: DownloadLinks | undefined;
+    savedBook: SavedBookEntry | null;
     error: boolean;
-    userLogged: boolean;
 }
 
-export async function getMetadata(md5: string, topic: string) {
+async function getMetadata(md5: string, topic: string): Promise<Book | null> {
     let reqUrl = `https://biblioterra.herokuapp.com/v1/metadata/${topic}/${md5}`;
+    try {
+        let req = await axios.get(reqUrl);
+        return req.data;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+}
+
+async function getDownloadLinks(md5: string, topic: string) {
+    let reqUrl = `https://biblioterra.herokuapp.com/v1/downloads/${topic}/${md5}`;
     try {
         let req = await axios.get(reqUrl);
         return req.data;
@@ -30,71 +44,86 @@ export async function getMetadata(md5: string, topic: string) {
 export default function BookInfoScreen() {
     let navigate = useNavigate();
     const size: Size = useWindowSize();
+    const topicContext = useOutletContext() as string;
     const [bookInfo, setBookInfo] = useState<Book | undefined>(undefined);
-    // This is done because when a book is sent to the database via BookLibraryActions, its category property may change.
-    const bookInfoRef = useRef<Book | undefined>(bookInfo);
-    const [description, setDescription] = useState<string>("Carregando");
     const [downloadLinks, setDownloadLinks] = useState<
         DownloadLinks | undefined
     >(undefined);
     const [bookError, setBookError] = useState<boolean>(false);
-    const [userLogged, setUserLogged] = useState<boolean>(
-        !!localStorage.getItem("jwt-token")
-    );
+    const [savedBook, setSavedBook] = useState<SavedBookEntry | null>(null);
 
     const params = useParams();
     const md5 = params.md5;
 
+    const getBookInfo = async () => {
+        if (!md5) {
+            return;
+        }
+        const metadata = await getMetadata(md5, topicContext);
+        if (metadata !== null) {
+            setBookInfo(metadata);
+            const libraryBook = await findBookInLibrary(md5);
+            if (libraryBook !== null) {
+                setBookInfo({
+                    ...metadata,
+                    progress: libraryBook.progress
+                        ? libraryBook.progress
+                        : undefined,
+                    category: libraryBook.category,
+                });
+            }
+        } else {
+            navigate("/book/error", { replace: true });
+            return;
+        }
+    };
+
+    const getBookDownloads = async () => {
+        if (!md5) {
+            return;
+        }
+        const dlinks = await getDownloadLinks(md5, topicContext);
+        if (dlinks) {
+            setDownloadLinks(dlinks);
+        } else {
+            setBookError(true);
+            return;
+        }
+    };
+
+    const getSavedBooks = async () => {
+        const ls = localforage.createInstance({
+            driver: localforage.INDEXEDDB,
+        });
+        const possibleSavedBooks = await ls.getItem<SavedBooks | null>(
+            "saved-books"
+        );
+        if (possibleSavedBooks && md5) {
+            const savedBooksArray = Object.values(possibleSavedBooks);
+            const savedBookIndex = await findBookLocally(md5);
+            if (savedBookIndex != null && savedBooksArray != null) {
+                setSavedBook(savedBooksArray[savedBookIndex]);
+            }
+        }
+    };
+
     useEffect(() => {
-        let ignore = false;
         if (md5 == null) {
-            navigate("/book/error");
+            navigate("/book/error", { replace: true });
             return;
         }
         const md5Match = md5.match("^[0-9a-fA-F]{32}$");
-        const bookInfoStr = sessionStorage.getItem(`${md5}-info`);
-        if (md5Match == null || bookInfoStr == null) {
-            navigate("/book/error");
+        if (md5Match == null) {
+            navigate("/book/error", { replace: true });
             return;
         }
-        const bookInfoParsed: Book = JSON.parse(bookInfoStr);
-        setBookInfo(JSON.parse(bookInfoStr));
-
-        getMetadata(md5, bookInfoParsed.topic).then((r) => {
-            if (!ignore) {
-                if (r == null || r["download_links"] == null) {
-                    setBookError(true);
-                    return;
-                }
-                if (r["description"] == null) {
-                    setDescription("Sem descrição.");
-                } else {
-                    setDescription(r["description"]);
-                }
-                setDownloadLinks(r["download_links"]);
-                return;
-            }
-        });
-
-        return () => {
-            ignore = true;
-        };
+        // The functions that actually does the heavy working.
+        // Done this way because i prefer working with async/await syntax.
+        getBookInfo().then();
+        getBookDownloads().then();
+        getSavedBooks().then();
     }, []);
 
-    useEffect(() => {
-        // This is because of useEffect double mounting.
-        let ignore = false;
-
-        const jwtToken = localStorage.getItem("jwt-token");
-        if (jwtToken) {
-            setUserLogged(true);
-        }
-        return () => {
-            ignore = true;
-        };
-    }, [bookInfo]);
-
-    useEffect(() => {}, []);
     return (
         <div className="d-flex flex-column align-items-center">
             <div className="basic-container book-info-container mb-5">
@@ -102,18 +131,18 @@ export default function BookInfoScreen() {
                     size.width > 600 ? (
                         <BookInfoDesktop
                             bookInfo={bookInfo}
-                            description={description}
+                            setBookInfo={setBookInfo}
                             downloadLinks={downloadLinks}
+                            savedBook={savedBook}
                             error={bookError}
-                            userLogged={userLogged}
                         />
                     ) : (
                         <BookInfoMobile
                             bookInfo={bookInfo}
-                            description={description}
+                            setBookInfo={setBookInfo}
                             downloadLinks={downloadLinks}
+                            savedBook={savedBook}
                             error={bookError}
-                            userLogged={userLogged}
                         />
                     )
                 ) : null}

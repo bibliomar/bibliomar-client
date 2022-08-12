@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     MDBDropdown,
     MDBDropdownItem,
@@ -8,45 +8,29 @@ import {
     MDBNavbarItem,
 } from "mdb-react-ui-kit";
 import { useLocation } from "react-router-dom";
+import { Auth } from "../helpers/generalContext";
 
-interface Props {
-    setIsUserLoggedContext?: any;
-}
-
-export default function NavbarUser(props: Props) {
-    const [userLogged, setUserLogged] = useState<boolean>(false);
+export default function NavbarUser() {
+    const authContext = useContext(Auth);
     const location = useLocation();
     const logout = (evt: any) => {
         evt.preventDefault();
         localStorage.removeItem("jwt-token");
-        setUserLogged(false);
-        if (props.setIsUserLoggedContext) {
-            props.setIsUserLoggedContext(false);
-        }
+        authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
     };
-
-    useEffect(() => {
-        const jwtToken = localStorage.getItem("jwt-token");
-        if (jwtToken) {
-            setUserLogged(true);
-            if (props.setIsUserLoggedContext) {
-                props.setIsUserLoggedContext(true);
-            }
-        }
-    }, []);
 
     return (
         <MDBNavbarItem className="ms-auto ms-lg-0 mt-3 mt-lg-0">
             <MDBDropdown>
                 <MDBDropdownToggle tag="a" className="nav-link">
-                    {userLogged ? (
+                    {authContext.userLogged ? (
                         <i className="fas fa-user-cog fa-lg" />
                     ) : (
                         <i className="fas fa-user fa-lg" />
                     )}
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
-                    {!userLogged ? (
+                    {!authContext.userLogged ? (
                         <MDBDropdownItem>
                             <MDBDropdownLink
                                 href={`/user/login?redirect=${location.pathname}`}

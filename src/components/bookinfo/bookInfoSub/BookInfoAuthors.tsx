@@ -10,7 +10,7 @@ export default function BookInfoAuthors({ book }: Props) {
     return (
         <>
             <span
-                className="book-info-title mb-2"
+                className="book-info-title mb-2 mt-3"
                 style={{ fontSize: "1.2rem" }}
             >
                 {book.authors}

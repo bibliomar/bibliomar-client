@@ -1,46 +1,7 @@
-import { Book } from "./generalTypes";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import {
-    PossibleReaderLandingState,
-    PossibleReaderScreenState,
-} from "../../reader/helpers/readerTypes";
-import React, { SetStateAction } from "react";
+import { Book, UserLibrary } from "./generalTypes";
+import { NavigateFunction } from "react-router-dom";
+import React from "react";
 import axios from "axios";
-
-export const navigateToBook = (book: Book, navigate: NavigateFunction) => {
-    const bookStr = JSON.stringify(book);
-    sessionStorage.setItem(`${book.md5}-info`, bookStr);
-    navigate(`/book/${book.md5}`, { replace: false });
-};
-
-// Navigates to /reader route, where a given book may be downloaded or opened.
-export const navigateToReaderLanding = (
-    readerLandingState: PossibleReaderLandingState,
-    navigate: NavigateFunction
-) => {
-    navigate("/reader", { state: readerLandingState });
-};
-
-// Navigates to Bibliomar Reader screen.
-export const navigateToReaderScreen = (
-    readerScreenState: PossibleReaderScreenState,
-    navigate: NavigateFunction
-) => {
-    const title = readerScreenState.onlineFile
-        ? readerScreenState.onlineFile.title
-        : readerScreenState.localFile?.name;
-    if (readerScreenState.arrayBuffer == null) {
-        return navigate("/error");
-    }
-    if (
-        title == null ||
-        (readerScreenState.onlineFile == null &&
-            readerScreenState.localFile == null)
-    ) {
-        return navigate("/error");
-    }
-    return navigate(`/reader/${title}`, { state: readerScreenState });
-};
 
 const getOnlineCover = async (md5: string) => {
     let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
@@ -82,4 +43,65 @@ export const getCover = async (
         );
         return coverTimeout;
     }
+};
+
+// Retrieves the books in a user's library.
+export const getUserInfo = async (
+    jwtToken: string,
+    navigate?: NavigateFunction
+) => {
+    const config = {
+        url: "https://biblioterra.herokuapp.com/v1/library/get",
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${jwtToken}`,
+        },
+    };
+    try {
+        let req = await axios.request(config);
+        let data = req.data;
+        return {
+            reading: data["reading"].reverse(),
+            "to-read": data["to-read"].reverse(),
+            backlog: data["backlog"].reverse(),
+        };
+    } catch (e: any) {
+        if (e.request) {
+            if (e.request.status === 401) {
+                localStorage.removeItem("jwt-token");
+                if (navigate) {
+                    navigate("/user/login");
+                }
+            }
+        }
+        if (navigate) {
+            navigate("/book/error");
+        }
+        return null;
+    }
+};
+
+// A shorthand function that calls getUserInfo and tries to find a book based on md5.
+// Automatically uses stored jwt-token, if it exists.
+export const findBookInLibrary = async (md5: string) => {
+    const jwtToken = localStorage.getItem("jwt-token");
+    if (jwtToken == null) {
+        return null;
+    }
+    const userInfo: UserLibrary | null = await getUserInfo(jwtToken);
+    let foundBook: Book | null = null;
+    if (userInfo == null) {
+        return null;
+    }
+    // This will iterate over all values in bookList, which are 3 lists, in every list, iterates over every entry checking
+    // for it's md5.
+    Object.values(userInfo).forEach((bookList: Book[]) => {
+        bookList.forEach((book: Book) => {
+            if (book.md5 === md5) {
+                foundBook = book;
+            }
+        });
+    });
+
+    return foundBook as Book | null;
 };

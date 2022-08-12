@@ -4,10 +4,7 @@ import axios from "axios";
 import { MDBBtn, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import { Book } from "../../general/helpers/generalTypes";
-import {
-    getCover,
-    navigateToBook,
-} from "../../general/helpers/generalFunctions";
+import { getCover } from "../../general/helpers/generalFunctions";
 import FigureCoverSkeleton from "../../general/FigureCoverSkeleton";
 
 interface Props {
@@ -53,13 +50,7 @@ export default function BookFigure(props: Props) {
                 rippleColor="light"
             >
                 <img className="w-100 h-100" src={cover} alt="Capa do livro" />
-                <a
-                    href={`/book/${book.topic}/${book.md5}`}
-                    onClick={(evt) => {
-                        evt.preventDefault();
-                        navigateToBook(book, navigate);
-                    }}
-                >
+                <a href={`/book/${book.topic}/${book.md5}`}>
                     <FigureCoverSkeleton coverDone={coverDone} />
                 </a>
             </MDBRipple>
@@ -89,11 +80,7 @@ export default function BookFigure(props: Props) {
 
                 <Link
                     className="d-flex justify-content-center w-100 mb-2 mt-auto"
-                    to={`/book/${book.md5}`}
-                    onClick={(evt) => {
-                        evt.preventDefault();
-                        navigateToBook(book, navigate);
-                    }}
+                    to={`/book/${book.topic}/${book.md5}`}
                 >
                     <MDBBtn className="btn btn-secondary btn-rounded">
                         Mais informações

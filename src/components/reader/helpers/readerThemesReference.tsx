@@ -1,4 +1,5 @@
 // Deprecated. Here for reference. Please use createReactReaderStyle instead.
+
 let reactReaderStyles = {
     tocButtonBarBottom: {},
     container: {
