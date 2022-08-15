@@ -1,6 +1,6 @@
 import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
 import Break from "../../general/Break";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ReaderDownloaderMessage from "./ReaderDownloaderMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import fileToArrayBuffer from "file-to-array-buffer";
@@ -23,7 +23,9 @@ export default function ReaderDownloader({
     secondaryUrl,
     bookInfo,
 }: ReaderDownloaderProps) {
+    console.log("downloader");
     const navigate = useNavigate();
+
     const [failedFirstAttempt, setFailedFirstAttempt] =
         useState<boolean>(false);
 
@@ -33,10 +35,6 @@ export default function ReaderDownloader({
 
     const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
-
-    // These two will determine if a book already exists on savedBooks, and show the user the relevant info regarding it.
-    const [bookAlreadySaved, setBookAlreadySaved] =
-        useState<ArrayBuffer | null>(null);
 
     const downloadBook = async (requestUrl: string) => {
         const config: AxiosRequestConfig = {
@@ -64,8 +62,6 @@ export default function ReaderDownloader({
 
         try {
             setDownloadStatus(103);
-            let headReq = await axios.head(requestUrl);
-            console.log(headReq);
             let req: AxiosResponse = await axios.request(config);
             console.log(req);
 
@@ -79,8 +75,9 @@ export default function ReaderDownloader({
                 onlineFile: bookInfo,
                 localFile: undefined,
             };
-            navigate(`${bookInfo.title}`, {
+            navigate(`/reader/${bookInfo.md5}`, {
                 state: readerScreenState,
+                replace: true,
             });
         } catch (e: any) {
             console.error(e);
@@ -100,19 +97,7 @@ export default function ReaderDownloader({
         //For strict mode double mounting...
         let ignore = false;
 
-        if (savedBooks) {
-            Object.values(savedBooks).forEach((savedBookEntry, index) => {
-                if (savedBookEntry != null) {
-                    if (savedBookEntry.bookInfo.md5 === bookInfo.md5) {
-                        // Set's this book arrayBuffer as the state if the md5 matches.
-                        setBookAlreadySaved(savedBookEntry.arrayBuffer);
-                        return;
-                    }
-                }
-            });
-        }
-
-        if (!ignore && !bookAlreadySaved && url) {
+        if (!ignore && url) {
             /*
             In minutes.
             If the user is logged, 1 minute restriction.
@@ -186,30 +171,23 @@ export default function ReaderDownloader({
 
     return (
         <div className="d-flex flex-wrap justify-content-center w-100">
-            {!bookAlreadySaved ? (
-                <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light p-3">
-                    <BlankLoadingSpinner />
-                    <Break />
-                    <ReaderDownloaderMessage
-                        downloadProgress={downloadProgress}
-                        downloadStatus={downloadStatus}
-                        downloadSize={downloadSize}
-                        failedFirstAttempt={failedFirstAttempt}
-                        userLoggedIn={userLoggedIn}
-                    />
-                    <Break />
-                    <span className="text-center text-muted mt-4">
-                        Dica: você pode fazer outras coisas enquanto aguarda. O
-                        servidor normalmente é lento.
-                    </span>
-                </div>
-            ) : bookAlreadySaved && savedBooks ? (
-                <ReaderBookOnList
-                    savedBooks={savedBooks}
-                    bookInfo={bookInfo}
-                    arrayBuffer={bookAlreadySaved}
+            <div className="basic-container p-3">
+                <BlankLoadingSpinner />
+                <Break />
+                <ReaderDownloaderMessage
+                    downloadProgress={downloadProgress}
+                    downloadStatus={downloadStatus}
+                    downloadSize={downloadSize}
+                    failedFirstAttempt={failedFirstAttempt}
+                    userLoggedIn={userLoggedIn}
                 />
-            ) : null}
+                <Break />
+                <span className="text-center text-muted mt-4">
+                    Dica: você pode fazer outras coisas enquanto aguarda. O
+                    servidor normalmente é lento. O download é reiniciado
+                    automaticamente em caso de erro.
+                </span>
+            </div>
         </div>
     );
 }

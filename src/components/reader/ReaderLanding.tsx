@@ -1,24 +1,30 @@
 import Navbar from "../general/navbar/Navbar";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import ReaderSendModal from "./ReaderSendModal";
 import ReaderDownloader from "./downloader/ReaderDownloader";
-import ReaderSavedBooksScreen from "./saved/ReaderSavedBooksScreen";
+import ReaderSavedBooksScreen from "./saved-deprecated/ReaderSavedBooksScreen";
 import localforage from "localforage";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
-import { PossibleReaderLandingState, SavedBooks } from "./helpers/readerTypes";
+import {
+    PossibleReaderLandingState,
+    PossibleReaderScreenState,
+    SavedBooks,
+} from "./helpers/readerTypes";
+import { Auth } from "../general/helpers/generalContext";
+import ReaderGreeting from "./ReaderGreeting";
 
 export default function ReaderLanding() {
     const location = useLocation();
+    const navigate = useNavigate();
+    const authContext = useContext(Auth);
     const [savedBooks, setSavedBooks] = useState<SavedBooks | undefined>(
         undefined
     );
-    console.log(savedBooks);
-    const [savedBooksRetrieved, setSavedBooksRetrieved] =
+    const [bookOnListRetrieved, setBookOnListRetrieved] =
         useState<boolean>(false);
-    const [isUserLogged, setIsUserLogged] = useState<boolean>(false);
     const locationState: any = location.state;
     let landingState: PossibleReaderLandingState = locationState;
 
@@ -26,11 +32,38 @@ export default function ReaderLanding() {
         const ls = localforage.createInstance({
             driver: localforage.INDEXEDDB,
         });
-        ls.getItem<SavedBooks | null>("saved-books").then((r) => {
-            if (r != null) {
-                setSavedBooks(r);
+        ls.getItem<SavedBooks | null>("saved-books").then((savedBooks) => {
+            if (savedBooks != null) {
+                setSavedBooks(savedBooks);
+                if (landingState) {
+                    Object.values(savedBooks).forEach(
+                        (savedBookEntry, index) => {
+                            if (savedBookEntry != null) {
+                                if (
+                                    savedBookEntry.bookInfo.md5 ===
+                                    landingState.bookInfo.md5
+                                ) {
+                                    // Set's this book arrayBuffer as the state if the md5 matches.
+                                    const readerScreenState: PossibleReaderScreenState =
+                                        {
+                                            arrayBuffer:
+                                                savedBookEntry.arrayBuffer,
+                                            onlineFile: savedBookEntry.bookInfo,
+                                            localFile: undefined,
+                                        };
+
+                                    navigate(`${savedBookEntry.bookInfo.md5}`, {
+                                        state: readerScreenState,
+                                        replace: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                    );
+                    setBookOnListRetrieved(true);
+                }
             }
-            setSavedBooksRetrieved(true);
         });
     }, []);
 
@@ -40,7 +73,7 @@ export default function ReaderLanding() {
 
     return (
         <div className="like-body bg-alt">
-            <div className="container text-light">
+            <div className="container">
                 <Portal node={document.getElementById("modal-root")}>
                     <ReaderSendModal
                         modalToggle={modalToggle}
@@ -57,20 +90,24 @@ export default function ReaderLanding() {
                         Enviar arquivo
                     </MDBBtn>
                 </div>
-                {savedBooksRetrieved ? (
-                    landingState != null ? (
+                {landingState ? (
+                    bookOnListRetrieved ? (
                         <ReaderDownloader
+                            userLoggedIn={authContext.userLogged}
                             url={landingState.url}
-                            secondaryUrl={landingState.secondaryUrl}
+                            secondaryUrl={
+                                landingState.secondaryUrl
+                                    ? landingState.secondaryUrl
+                                    : undefined
+                            }
                             bookInfo={landingState.bookInfo}
                             savedBooks={savedBooks}
-                            userLoggedIn={isUserLogged}
                         />
                     ) : (
-                        <ReaderSavedBooksScreen savedBooks={savedBooks} />
+                        <BlankLoadingSpinner />
                     )
                 ) : (
-                    <BlankLoadingSpinner />
+                    <ReaderGreeting />
                 )}
             </div>
         </div>

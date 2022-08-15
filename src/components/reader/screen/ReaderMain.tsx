@@ -1,18 +1,20 @@
 import { ReactReaderStyle } from "react-reader";
 import localforage from "localforage";
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
     PossibleReaderScreenState,
     ReaderSettings,
     ReaderThemeAccentOptions,
     ReaderThemeColors,
     ReaderThemeOptions,
+    SavedBooks,
 } from "../helpers/readerTypes";
 import {
     chooseThemeAccent,
     createReactReaderStyle,
     defaultReaderSettings,
+    findBookLocally,
     saveProgressOnDatabase,
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
@@ -22,6 +24,7 @@ import { Book } from "../../general/helpers/generalTypes";
 export default function ReaderMain() {
     const navigate = useNavigate();
     const location: any = useLocation();
+    const params = useParams();
     const locationState: PossibleReaderScreenState | undefined | null =
         location.state;
 
@@ -41,6 +44,12 @@ export default function ReaderMain() {
         ? onlineFile.md5
         : undefined;
 
+    const possibleReaderSettingsStr = localStorage.getItem("reader-theme");
+    const possibleReaderSettings: ReaderSettings | undefined =
+        possibleReaderSettingsStr
+            ? JSON.parse(possibleReaderSettingsStr)
+            : undefined;
+
     /*
     This state is pretty important, because of the way that react-reader works, everytime you render the page (components updating, etc.)
     the handleChange function gets triggered. What this means is that, if you have an epubcifi saved, in say, localStorage, and you define handleChange
@@ -51,10 +60,11 @@ export default function ReaderMain() {
     const [currentPage, setCurrentPage] = useState<string | undefined>(
         undefined
     );
+    const savedProgressRef = useRef<string | undefined>(undefined);
     // This should contain all settings relevant to the reader, including themes, fullscreen toggle, etc.
     // The component should only render if it's not null.
     const [readerSettings, setReaderSettings] = useState<ReaderSettings>(
-        defaultReaderSettings
+        possibleReaderSettings ? possibleReaderSettings : defaultReaderSettings
     );
     // Not to be confused with ReaderTheme on ReaderSettings.
     const [readerStyle, setReaderStyle] = useState<ReactReaderStyle>(
@@ -101,13 +111,70 @@ export default function ReaderMain() {
             setInitialLoadDone(true);
         }
     };
+    // Title side effect
+
+    useEffect(() => {
+        if (onlineFile || localFile) {
+            document.title = `${
+                onlineFile?.title || localFile?.name
+            } - Bibliomar Reader`;
+        }
+    }, []);
 
     // Functional side effects
     useEffect(() => {
         let saveInterval: number | undefined = undefined;
-        if (arrayBuffer == null || identifier == null) {
-            navigate("reader", { replace: true });
-            return;
+
+        if (
+            arrayBuffer == null ||
+            identifier == null ||
+            locationState == null
+        ) {
+            const ls = localforage.createInstance({
+                driver: localforage.INDEXEDDB,
+            });
+            if (
+                Object.hasOwn(params, "bookidentifier") &&
+                params.bookidentifier !== "local"
+            ) {
+                findBookLocally(params.bookidentifier!).then(
+                    (savedBookIndex) => {
+                        ls.getItem<SavedBooks | null>("saved-books").then(
+                            (savedBooks) => {
+                                if (
+                                    savedBookIndex == null ||
+                                    savedBooks == null
+                                ) {
+                                    navigate("/reader", { replace: true });
+                                    return;
+                                } else {
+                                    const savedBook =
+                                        Object.values(savedBooks)[
+                                            savedBookIndex
+                                        ];
+                                    if (savedBook == null) {
+                                        navigate("/reader", { replace: true });
+                                        return;
+                                    }
+                                    const newReaderScreenState: PossibleReaderScreenState =
+                                        {
+                                            arrayBuffer: savedBook.arrayBuffer,
+                                            onlineFile: savedBook.bookInfo,
+                                            localFile: undefined,
+                                        };
+                                    navigate(
+                                        `/reader/${params.bookidentifier}`,
+                                        {
+                                            replace: true,
+                                            state: newReaderScreenState,
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+            }
         }
 
         if (onlineFile && currentPage) {
@@ -123,6 +190,12 @@ export default function ReaderMain() {
                     }
                     return;
                 }
+                if (
+                    savedProgressRef != null &&
+                    savedProgressRef.current === currentPage
+                ) {
+                    return;
+                }
                 saveProgressOnDatabase(currentPage, onlineFile!).then((r) => {
                     if (
                         r == null &&
@@ -132,6 +205,10 @@ export default function ReaderMain() {
                         alert(
                             "Sessão de login expirada, seu progresso não está sendo salvo online."
                         );
+                    }
+                    if (r != null) {
+                        savedProgressRef.current = currentPage;
+                        console.log("Progress saved online.");
                     }
                 });
             }, 5 * 60000);
@@ -171,7 +248,7 @@ export default function ReaderMain() {
                         readerAccent={readerAccent}
                     />
                 </div>
-                {arrayBuffer ? (
+                {arrayBuffer && readerSettings ? (
                     <ReaderScreen
                         readerStyle={readerStyle}
                         readerSettings={readerSettings}
@@ -199,7 +276,11 @@ export default function ReaderMain() {
                     zIndex: 1,
                 }}
             >
-                {pageInfoRef.current ? pageInfoRef.current : null}
+                {initialLoadDone
+                    ? pageInfoRef.current
+                        ? pageInfoRef.current
+                        : null
+                    : "Livro carregado."}
             </div>
         </>
     );

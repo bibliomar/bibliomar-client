@@ -46,18 +46,18 @@ export default function ReaderScreen({
                 id="title-toggle-fullscreen"
                 style={{
                     position: "absolute",
-                    top: "5px",
-                    left: "90vw",
+                    top: "12px",
+                    left: "96vw",
                     cursor: "pointer",
                     //Swipe area zIndex is 200.
                     zIndex: "300",
                 }}
-                onClick={() =>
+                onClick={(evt) => {
                     setReaderSettings({
                         ...readerSettings,
                         fullscreen: !readerSettings.fullscreen,
-                    })
-                }
+                    });
+                }}
             >
                 {readerSettings.fullscreen ? (
                     <MDBIcon fas icon="angle-down" size={"3x"} />

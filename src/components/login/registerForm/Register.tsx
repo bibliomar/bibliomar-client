@@ -5,9 +5,11 @@ import Break from "../../general/Break";
 import Message from "../../general/Message";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import axios, { Axios, AxiosError, AxiosResponse } from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Auth } from "../../general/helpers/generalContext";
 
 export default function Register() {
+    const authContext = useContext(Auth);
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
     const navigate = useNavigate();
@@ -66,6 +68,7 @@ export default function Register() {
                 let req = await axios.request(config);
                 setRegisterStatus(200);
                 localStorage.setItem("jwt-token", req.data["access_token"]);
+                authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
                 setTimeout(() => {
                     if (redirect) {
                         navigate(redirect);
@@ -89,12 +92,10 @@ export default function Register() {
 
     return (
         <div className="like-body bg-alt">
-            <div className="d-flex flex-wrap justify-content-center text-white">
+            <div className="d-flex flex-wrap justify-content-center">
                 <Bibliologo />
-                <Break />
-                <Message color="text-secondary" message="Registro" />
-                <Break />
-                <div className="bg-black p-3 rounded-3 bg-opacity-25 w-75">
+                <Break className="mb-6" />
+                <div className="basic-container rounded-3 p-3 w-75">
                     {registerStatus !== 0 ? (
                         <div>
                             {registerStatus === 103 ? (
@@ -132,7 +133,7 @@ export default function Register() {
                     <form onSubmit={formik.handleSubmit}>
                         <label htmlFor="username">Nome de usuario</label>
                         <MDBInput
-                            className="text-white"
+                            className="book-info-description"
                             name="username"
                             id="username"
                             type="text"
@@ -151,7 +152,7 @@ export default function Register() {
                         ) : null}
                         <label htmlFor="password">Email</label>
                         <MDBInput
-                            className="text-white"
+                            className="book-info-description"
                             name="email"
                             id="email"
                             type="text"
@@ -170,7 +171,7 @@ export default function Register() {
                         ) : null}
                         <label htmlFor="password">Senha</label>
                         <MDBInput
-                            className="text-white"
+                            className="book-info-description"
                             name="password"
                             id="password"
                             type="text"

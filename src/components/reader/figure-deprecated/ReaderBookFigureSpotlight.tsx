@@ -1,5 +1,5 @@
 import { Portal } from "react-portal";
-import LibraryBookModal from "../../library/LibraryBookModal";
+import LibraryBookModal from "../../library/LibraryBookModalDeprecated";
 import LibraryBookIcon from "../../library/LibraryBookIcon";
 import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "../../general/Break";

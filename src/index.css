@@ -132,7 +132,6 @@ abbr[title]:after
     background: #8B7CF1 !important;
 }
 
-
 .bookcaption {
     width: 90vw;
 }
@@ -153,6 +152,14 @@ abbr[title]:after
     width: 40vw;
 }
 
+.reader-modal-light-bg{
+    background: #FAFAFA !important;
+
+}
+.reader-modal-dark-bg{
+    background: #252525 !important;
+}
+
 .cover-img{
     width: 100%;
     height: auto;
@@ -170,6 +177,16 @@ abbr[title]:after
 .book-info-section{
     width: 80%;
 }
+
+/* Be sure to set the background color, otherwise it's an empty element.*/
+.ellipse{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 1px solid #E3E3E3;
+}
+
+
 
 /*Be sure to define font-size manually. */
 .book-info-title{

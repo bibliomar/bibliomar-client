@@ -216,11 +216,13 @@ interface ThemeColorsModel {
 
 // These themes will be used by the outter part of the reader.
 // They must match the inner part for obvious reasons.
-const themeColorsObject: ThemeColorsModel = {
+// Be sure to also set on ReaderThemeOptions enum.
+export const themeColorsObject: ThemeColorsModel = {
     default: ["#000", "#fff", "light", "default"],
     dark: ["#FAFAFA", "#252525", "dark", "dark"],
     amoled: ["#fff", "#000", "dark", "amoled"],
-    easily: ["#d8f3fd", "#33373e", "dark", "easily"],
+    paste: ["#231f1f", "#dbd0bf", "light", "paste"],
+    mono: ["#343532", "#f2efea", "light", "mono"],
 };
 
 // This will automatically register all themes on themeColorsObject as valid Rendition themes.
@@ -241,10 +243,11 @@ export const registerRenditionThemes = (
             },
 
             p: {
-                "font-family": fontName ? fontName : "Nunito Sans",
-                "font-weight": fontWeight ? `${fontWeight}` : "400",
-                "font-size": fontSize ? `${fontSize}px` : undefined,
-                "line-height": "20px",
+                "font-family": fontName ? fontName : "Nunito Sans, sans-serif",
+                "font-weight": fontWeight ? `${fontWeight}` : "600",
+                "font-size": fontSize ? `${fontSize}px` : "20px",
+                "line-height":
+                    fontName === "Nunito Sans, sans-serif" ? "27px" : "unset",
                 "text-align": "justify",
             },
         });
@@ -260,7 +263,9 @@ export const createReactReaderStyle = (
      */
 
     return {
-        tocButtonBarBottom: {},
+        tocButtonBarBottom: {
+            top: "66%",
+        },
         container: {
             overflow: "hidden",
             height: "100%",
@@ -354,11 +359,11 @@ export const createReactReaderStyle = (
             display: "block",
             fontFamily: "sans-serif",
             width: "100%",
-            fontSize: ".9em",
+            fontSize: "1.1em",
             textAlign: "left",
             padding: ".9em 1em",
             borderBottom: "1px solid #ddd",
-            color: "#aaa",
+            color: themeColorsObject[themeName][0],
             boxSizing: "border-box",
             outline: "none",
             cursor: "pointer",
@@ -366,8 +371,8 @@ export const createReactReaderStyle = (
         tocButton: {
             background: "none",
             border: "none",
-            width: "32",
-            height: "32",
+            width: "32px",
+            height: "62px",
             position: "absolute",
             top: "10",
             left: "10",
@@ -381,7 +386,7 @@ export const createReactReaderStyle = (
         tocButtonBar: {
             position: "absolute",
             width: "60%",
-            background: "#ccc",
+            background: themeColorsObject[themeName][0],
             height: "2",
             left: "50%",
             margin: "-1px -30%",
@@ -405,6 +410,7 @@ export const createReactReaderStyle = (
 };
 
 // This defines the accent used by the navbar.
+// Should be called inside the navbar or in relevant components.
 export const chooseThemeAccent = (themeName: ReaderThemeOptions) => {
     if (themeColorsObject[themeName][2] === ReaderThemeAccentOptions.light) {
         return ReaderThemeAccentOptions.light;
@@ -413,19 +419,22 @@ export const chooseThemeAccent = (themeName: ReaderThemeOptions) => {
     }
 };
 
-const possibleThemeStr = localStorage.getItem("reader-theme");
-const possibleTheme: ReaderThemeOptions | undefined = possibleThemeStr
-    ? JSON.parse(possibleThemeStr)
-    : undefined;
+// Always call this when changing the reader flow.
+// Weird stuff will happen otherwise.
+export const managerBasedOnFlow = (flow: FlowOptions) => {
+    return flow === FlowOptions.default || flow === FlowOptions.paginated
+        ? ManagerOptions.default
+        : ManagerOptions.continuous;
+};
 
 // Use these settings as base when changing reader settings.
 export const defaultReaderSettings: ReaderSettings = {
-    flow: FlowOptions.default,
+    flow: FlowOptions.paginated,
     fullscreen: false,
-    manager: ManagerOptions.default,
+    manager: managerBasedOnFlow(FlowOptions.paginated),
     swipe: false,
-    themeName: possibleTheme ? possibleTheme : ReaderThemeOptions.dark,
-    fontFamily: "Nunito Sans",
+    themeName: ReaderThemeOptions.dark,
+    fontFamily: "Helvetica, sans-serif",
     fontWeight: 400,
     fontSize: 16,
 };

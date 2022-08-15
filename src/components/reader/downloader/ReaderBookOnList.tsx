@@ -1,6 +1,6 @@
 import { Book } from "../../general/helpers/generalTypes";
 import React, { useEffect, useState } from "react";
-import ReaderBookFigure from "../figure/ReaderBookFigure";
+import ReaderBookFigure from "../figure-deprecated/ReaderBookFigure";
 import Break from "../../general/Break";
 import { MDBBtn } from "mdb-react-ui-kit";
 import SmallLine from "../../general/MediumLine";
@@ -32,7 +32,7 @@ export default function ReaderBookOnList({ bookInfo, arrayBuffer }: Props) {
         updateBookIfOutdated().then(() => setBookUpdated(true));
     }, []);
     return (
-        <div className="bg-black p-2 rounded-3 bg-opacity-50 text-light saved-list-div d-flex justify-content-center flex-wrap">
+        <div className="basic-container saved-list-div d-flex justify-content-center flex-wrap">
             <span className="fw-bold lead">Continuar leitura?</span>
             <Break />
             <SmallLine flexGrow />

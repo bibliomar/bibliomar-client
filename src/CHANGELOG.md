@@ -12,9 +12,16 @@ Essa versão só pode ser visualizada em preview, já que o leitor não se encon
 
 ##### Versão 2.0 - Em andamento:  
 
-- Temas, agora o aplicativo possui temas claros e escuros, assim como leitor, ‘design’ por [placeholder].  
-- Tela de informações dos livros completamente refeita, agradecimentos ao [placeholder]  
-- Agora o usuario logado pode retornar a uma URL de um livro que já tenha acessado e esteja em sua biblioteca.  
-Antes, quando o Bibliomar não encontrava as informações dentro do `sessionStorage`, o usuario era redirecionado a uma página de erro.  
-Isso só vale para usuarios logados que tem o livro em questão na sua biblioteca.  
-- 
+- Temas, agora o aplicativo possui temas claros e escuros, assim como leitor, ‘design’ por [Mateus Prado].  
+- Tela de informações dos livros completamente refeita, agradecimentos ao [Mateus Prado]
+- Agora a tela de mais informações dos livros é totalmente independente da biblioteca e da pesquisa, ou seja, você pode
+compartilhar o link de um livro diretamente, e novas informações exclusivas serão carregadas pra ele.
+
+- Além disso, a tela de informações dos livros se tornou o hub central do aplicativo: todas as ações relacionadas ao leitor e a biblioteca podem ser realizadas nela.
+- O componente figure da biblioteca agora redireciona a este hub.
+- Além disso, novas informações adicionadas a essa tela, baseadas na lista de livros salvos localmente do usuario.
+- Muitos componentes se tornaram obsoletos:
+Componente de mais informações antigo, alguns figures de livros que eram usados em outras partes do site, o componente `ReaderSavedBooksList`, o componente de modal dos livros da biblioteca, dentre outros.
+Isso é bom, pois agora o código está mais sucinto.
+- Agora, ao entrar na URL de um livro no Bibliomar Reader, caso o leitor não encontre um arrayBuffer salvo (nos casos em que o usuario fecha o navegador e retorna a mesma URL) o leitor automaticamente irá tentar
+recuperar o livro da lista de livros salvos do usuario.

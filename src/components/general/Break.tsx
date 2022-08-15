@@ -1,7 +1,8 @@
 import { Size, useWindowSize } from "./helpers/useWindowSize";
+import React from "react";
 
 interface Breaking {
-    className?: string;
+    className?: string | undefined;
     mobile?: boolean;
     desktop?: boolean;
 }
@@ -12,14 +13,14 @@ export default function Break({ className, mobile, desktop }: Breaking) {
     return (
         <>
             {(!mobile && !desktop) || (mobile && desktop) ? (
-                <div className={`break ${className ? className : null}`} />
+                <div className={`break ${className}`} />
             ) : mobile && !desktop ? (
                 size.width < 600 ? (
-                    <div className={`break ${className ? className : null}`} />
+                    <div className={`break ${className}`} />
                 ) : null
             ) : !mobile && desktop ? (
                 size.width > 600 ? (
-                    <div className={`break ${className ? className : null}`} />
+                    <div className={`break ${className}`} />
                 ) : null
             ) : null}
         </>

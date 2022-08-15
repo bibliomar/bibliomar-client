@@ -6,10 +6,7 @@ import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
 import ReaderBookFigureResponsive from "./ReaderBookFigureResponsive";
 import ReaderBookFigureSpotlight from "./ReaderBookFigureSpotlight";
 import { PossibleReaderScreenState } from "../helpers/readerTypes";
-import {
-    getCover,
-    navigateToBook,
-} from "../../general/helpers/generalFunctions";
+import { getCover } from "../../general/helpers/generalFunctions";
 
 interface Props {
     book: Book;
@@ -22,7 +19,6 @@ interface Props {
 export default function ReaderBookFigure(props: Props) {
     const book: Book = props.book;
     let navigate = useNavigate();
-    const size: Size = useWindowSize();
     const [cover, setCover] = useState<string>(
         "https://libgen.rocks/img/blank.png"
     );
@@ -59,21 +55,12 @@ export default function ReaderBookFigure(props: Props) {
 
     return (
         <>
-            {props.spotlight ? (
-                <ReaderBookFigureSpotlight
-                    book={book}
-                    cover={cover}
-                    coverDone={coverDone}
-                    onClickFunction={onClickHandler}
-                />
-            ) : (
-                <ReaderBookFigureResponsive
-                    book={book}
-                    cover={cover}
-                    coverDone={coverDone}
-                    onClickFunction={onClickHandler}
-                />
-            )}
+            <ReaderBookFigureSpotlight
+                book={book}
+                cover={cover}
+                coverDone={coverDone}
+                onClickFunction={onClickHandler}
+            />
         </>
     );
 }

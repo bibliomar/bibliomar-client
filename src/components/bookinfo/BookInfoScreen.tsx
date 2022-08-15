@@ -91,7 +91,7 @@ export default function BookInfoScreen() {
         }
     };
 
-    const getSavedBooks = async () => {
+    const getSavedBook = async () => {
         const ls = localforage.createInstance({
             driver: localforage.INDEXEDDB,
         });
@@ -121,7 +121,7 @@ export default function BookInfoScreen() {
         // Done this way because i prefer working with async/await syntax.
         getBookInfo().then();
         getBookDownloads().then();
-        getSavedBooks().then();
+        getSavedBook().then();
     }, []);
 
     return (

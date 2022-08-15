@@ -2,7 +2,7 @@ import Break from "../../general/Break";
 import RecommendationBookFigure from "../../search/recommendations/RecommendationBookFigure";
 import BookFigure from "../../search/results/BookFigure";
 import { Book } from "../../general/helpers/generalTypes";
-import ReaderBookFigure from "../figure/ReaderBookFigure";
+import ReaderBookFigure from "../figure-deprecated/ReaderBookFigure";
 import React from "react";
 import SmallLine from "../../general/MediumLine";
 import { SavedBooks } from "../helpers/readerTypes";

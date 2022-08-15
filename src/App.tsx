@@ -66,7 +66,7 @@ function App() {
             </Route>
             <Route path="/reader">
                 <Route index element={<ReaderLanding />} />
-                <Route path=":bookname" element={<ReaderMain />} />
+                <Route path=":bookidentifier" element={<ReaderMain />} />
             </Route>
         </Routes>
     );

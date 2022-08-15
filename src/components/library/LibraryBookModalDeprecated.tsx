@@ -11,7 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 
 import Break from "../general/Break";
-import LibraryBookModalBody from "./LibraryBookModalBody";
+import LibraryBookModalBody from "./LibraryBookModalBodyDeprecated";
 import { useFormik } from "formik";
 import axios from "axios";
 import jwt_decode from "jwt-decode";

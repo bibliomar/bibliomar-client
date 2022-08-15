@@ -96,6 +96,7 @@ export default function Login() {
                 let req = await axios.request(config);
                 setLoginStatus(200);
                 localStorage.setItem("jwt-token", req.data["access_token"]);
+                authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
 
                 if (redirect) {
                     navigate(`${redirect}`, { replace: true });
@@ -124,12 +125,10 @@ export default function Login() {
     });
     return (
         <div className="like-body bg-alt">
-            <div className="d-flex flex-wrap justify-content-center text-white">
+            <div className="d-flex flex-wrap justify-content-center">
                 <Bibliologo />
-                <Break />
-                <Message color="text-secondary" message="Log in" />
-                <Break />
-                <div className="bg-black p-3 rounded-3 bg-opacity-25 w-75">
+                <Break className="mb-6" />
+                <div className="basic-container rounded-3 p-3 w-75">
                     <AutoLoginMessage
                         autoLoginStatus={autoLoginStatus}
                         disabled={autoLoginStatus === 0}
@@ -141,7 +140,7 @@ export default function Login() {
                     <form onSubmit={formik.handleSubmit}>
                         <label htmlFor="username">Nome de usuario</label>
                         <MDBInput
-                            className="text-white"
+                            className="book-info-description"
                             name="username"
                             id="username"
                             type="text"
@@ -160,7 +159,7 @@ export default function Login() {
                         ) : null}
                         <label htmlFor="password">Senha</label>
                         <MDBInput
-                            className="text-white"
+                            className="book-info-description"
                             name="password"
                             id="password"
                             type="password"
@@ -194,7 +193,7 @@ export default function Login() {
                                         : "/user/register"
                                 }
                             >
-                                Criar uma conta
+                                Não possui uma conta? Crie uma gratuitamente.
                             </Link>
                             <Break />
 

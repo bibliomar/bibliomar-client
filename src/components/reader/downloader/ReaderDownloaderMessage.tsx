@@ -55,6 +55,12 @@ export default function ({
                             {(downloadProgress / downloadSize) * 100}%
                             concluído.
                         </span>
+                        <Break className="mb-2" />
+                        <span>
+                            {downloadProgress === downloadSize
+                                ? "Finalizando..."
+                                : null}
+                        </span>
                     </div>
                 );
             case 400:

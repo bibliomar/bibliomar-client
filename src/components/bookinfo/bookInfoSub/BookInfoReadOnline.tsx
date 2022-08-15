@@ -55,7 +55,9 @@ export default function BookInfoReadOnline({
                     book.extension !== "epub" || downloadLinks == undefined
                 }
             >
-                Ler online
+                {book.progress && book.category
+                    ? "Continuar leitura"
+                    : "Ler online"}
             </MDBBtn>
         </div>
     );

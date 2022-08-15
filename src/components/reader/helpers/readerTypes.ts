@@ -81,7 +81,8 @@ export enum ReaderThemeOptions {
     default = "default",
     dark = "dark",
     amoled = "amoled",
-    easily = "easily",
+    paste = "paste",
+    mono = "mono",
 }
 
 // Helps define the colors of components which don't inherently use ReaderThemeOptions, like the reader navbar.

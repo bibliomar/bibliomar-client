@@ -8,9 +8,15 @@ import {
     MDBModalHeader,
     MDBModalTitle,
 } from "mdb-react-ui-kit";
-import React, { useState } from "react";
-import Break from "../../../general/Break";
-import { ReaderNavbarProps } from "../../helpers/readerTypes";
+import React, { useRef } from "react";
+import {
+    ReaderNavbarProps,
+    ReaderSettings,
+    ReaderThemeAccentOptions,
+} from "../../helpers/readerTypes";
+import { chooseThemeAccent } from "../../helpers/readerFunctions";
+import ReaderCustomizeModalBody from "./ReaderCustomizeModalBody";
+import { Size, useWindowSize } from "../../../general/helpers/useWindowSize";
 
 export default function ReaderCustomizeModal({
     readerSettings,
@@ -21,33 +27,32 @@ export default function ReaderCustomizeModal({
     const toggleShow = () => {
         setModalToggle!(!modalToggle);
     };
+    const themeAccent = chooseThemeAccent(readerSettings.themeName);
+    const size: Size = useWindowSize();
 
     return (
         <MDBModal show={modalToggle} setShow={setModalToggle}>
-            <MDBModalDialog>
-                <MDBModalContent>
-                    <MDBModalHeader>
-                        <MDBModalTitle className="">
-                            Alterar aparência do leitor
-                        </MDBModalTitle>
-                        <MDBBtn
-                            className="btn-close btn-close-white"
-                            color="none"
-                            onClick={toggleShow}
-                        ></MDBBtn>
-                    </MDBModalHeader>
+            <MDBModalDialog size={"fullscreen-sm-down"}>
+                <MDBModalContent
+                    className={
+                        themeAccent === ReaderThemeAccentOptions.light
+                            ? "reader-modal-light-bg"
+                            : "reader-modal-dark-bg"
+                    }
+                >
                     <MDBModalBody
                         tag="div"
-                        className="d-flex flex-wrap justify-content-center"
+                        className={
+                            themeAccent === ReaderThemeAccentOptions.light
+                                ? "text-dark"
+                                : "text-light"
+                        }
                     >
-                        <h4>Corpo...</h4>
+                        <ReaderCustomizeModalBody
+                            readerSettings={readerSettings}
+                            setReaderSettings={setReaderSettings}
+                        />
                     </MDBModalBody>
-                    <MDBModalFooter>
-                        <MDBBtn color="secondary" onClick={toggleShow}>
-                            Fechar
-                        </MDBBtn>
-                        <MDBBtn>Salvar</MDBBtn>
-                    </MDBModalFooter>
                 </MDBModalContent>
             </MDBModalDialog>
         </MDBModal>

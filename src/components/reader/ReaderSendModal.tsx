@@ -35,7 +35,7 @@ export default function ({ modalToggle, setModalToggle }: Props) {
                 localFile: bookFile,
                 onlineFile: undefined,
             };
-            navigate(`/reader/${bookFile.name}`, { state: readerState });
+            navigate(`/reader/local`, { state: readerState });
         }
     };
     return (
