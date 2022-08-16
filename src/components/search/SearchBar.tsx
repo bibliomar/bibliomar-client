@@ -109,15 +109,8 @@ export default function SearchBar({
                         className="fas fa-bars fa-lg"
                         style={{
                             position: "absolute",
-                            top: "40%",
-                            marginLeft:
-                                fieldOnFocus && query.length > 2
-                                    ? width < 600
-                                        ? "81%"
-                                        : "91%"
-                                    : width < 600
-                                    ? "88%"
-                                    : "94%",
+                            top: "38%",
+                            marginLeft: width < 600 ? "88%" : "94%",
                             cursor: "pointer",
                             zIndex: "30",
                         }}
