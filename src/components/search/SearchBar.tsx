@@ -123,6 +123,10 @@ export default function SearchBar({
                         }}
                         onClick={() => {
                             setOptionsHidden((prev) => {
+                                localStorage.setItem(
+                                    "options-hidden",
+                                    !prev ? "true" : "false"
+                                );
                                 return !prev;
                             });
                         }}

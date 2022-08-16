@@ -39,7 +39,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
     });
 
     return (
-        <div className="navbar-bg">
+        <div className="navbar-bg p-0">
             <MDBNavbar
                 expand="lg"
                 light={theme === ThemeOptions.light}

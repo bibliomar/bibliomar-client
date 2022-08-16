@@ -95,10 +95,13 @@ function sciTechFiltering(results: Book[], form: FormData) {
 }
 
 function Search() {
+    const optionsHiddenSetting = localStorage.getItem("options-hidden");
     const [isUserLoggedContext, setIsUserLoggedContext] =
         useState<boolean>(false);
     let [searchResults, setSearchResults] = useState<Book[]>([]);
-    const [optionsHidden, setOptionsHidden] = useState<boolean>(true);
+    const [optionsHidden, setOptionsHidden] = useState<boolean>(
+        optionsHiddenSetting ? optionsHiddenSetting === "true" : true
+    );
     let [page, setPage] = useState(1);
     let [ajaxStatus, setAjaxStatus] = useState("");
     let [errorType, setErrorType] = useState<string | undefined>(undefined);
