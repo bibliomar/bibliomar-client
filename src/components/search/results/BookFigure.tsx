@@ -57,7 +57,7 @@ export default function BookFigure(props: Props) {
 
             <figcaption
                 className="figure-caption text-wrap text-light border rounded-7 rounded-top border-dark
-            border-top-0 bg-black bg-opacity-25 pt-1 bookcaption flex-grow-1 d-flex flex-column"
+            border-top-0 bg-black bg-opacity-50 pt-1 bookcaption flex-grow-1 d-flex flex-column"
                 style={{ fontSize: "1rem" }}
             >
                 <div className="d-flex flex-wrap">

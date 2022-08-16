@@ -178,6 +178,10 @@ abbr[title]:after
     width: 80%;
 }
 
+.footer-container{
+    min-height: 10vh;
+}
+
 /* Be sure to set the background color, otherwise it's an empty element.*/
 .ellipse{
     width: 4rem;
@@ -186,10 +190,8 @@ abbr[title]:after
     border: 1px solid #E3E3E3;
 }
 
-
-
 /*Be sure to define font-size manually. */
-.book-info-title{
+.book-info-title, .basic-text{
     font-family: 'Nunito Sans', sans-serif;
     font-style: normal;
     font-weight: 600;

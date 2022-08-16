@@ -1,12 +1,17 @@
 import { MDBInput } from "mdb-react-ui-kit";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import Fuse from "fuse.js";
 
 type IndexesResponse = {
     indexes: string[];
 };
+
+interface Props {
+    categoryContext: string;
+    setOptionsHidden: React.Dispatch<SetStateAction<boolean>>;
+}
 
 async function getIndexes(category: string) {
     if (sessionStorage.getItem(`${category}-indexes`)) {
@@ -29,7 +34,10 @@ async function getIndexes(category: string) {
 }
 
 //@ts-ignore
-export default function SearchBar({ categoryContext }) {
+export default function SearchBar({
+    categoryContext,
+    setOptionsHidden,
+}: Props) {
     let [searchParameters, _] = useSearchParams();
     let [query, setQuery] = useState("");
     let [indexes, setIndexes] = useState([]);
@@ -74,6 +82,7 @@ export default function SearchBar({ categoryContext }) {
                         }
                     })}
                 </datalist>
+
                 <MDBInput
                     value={query}
                     onChange={(evt) => handleSearch(evt.currentTarget)}
@@ -84,8 +93,24 @@ export default function SearchBar({ categoryContext }) {
                     labelClass=""
                     name="q"
                     autoComplete="true"
-                />
+                >
+                    <i
+                        className="fas fa-bars fa-lg"
+                        style={{
+                            position: "absolute",
+                            top: "40%",
+                            marginLeft: "94%",
+                            cursor: "pointer",
+                        }}
+                        onClick={() => {
+                            setOptionsHidden((prev) => {
+                                return !prev;
+                            });
+                        }}
+                    ></i>
+                </MDBInput>
             </div>
+
             <button type="submit" className="btn btn-primary search-button">
                 <i className="fas fa-search"></i>
             </button>

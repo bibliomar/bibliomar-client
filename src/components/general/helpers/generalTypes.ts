@@ -25,7 +25,7 @@ interface MetadataProperties {
     // These extra infos are mostly used in the BookInfo component.
     edition?: string | null;
     year?: string | null;
-    publisher: string | null;
+    publisher?: string | null;
     isbn?: string | null;
     description?: string | null;
 }

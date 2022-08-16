@@ -11,6 +11,7 @@ import Navbar from "../general/navbar/Navbar";
 import { Book } from "../general/helpers/generalTypes";
 import { Auth } from "../general/helpers/generalContext";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
+import Footer from "../general/Footer";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -97,6 +98,7 @@ function Search() {
     const [isUserLoggedContext, setIsUserLoggedContext] =
         useState<boolean>(false);
     let [searchResults, setSearchResults] = useState<Book[]>([]);
+    const [optionsHidden, setOptionsHidden] = useState<boolean>(true);
     let [page, setPage] = useState(1);
     let [ajaxStatus, setAjaxStatus] = useState("");
     let [errorType, setErrorType] = useState<string | undefined>(undefined);
@@ -266,12 +268,15 @@ function Search() {
                     }}
                 >
                     <SearchOptions
-                        hidden={false}
+                        hidden={optionsHidden}
                         categoryContext={categoryContext}
                         setCategoryContext={setCategoryContext}
                         page={page}
                     />
-                    <SearchBar categoryContext={categoryContext} />
+                    <SearchBar
+                        setOptionsHidden={setOptionsHidden}
+                        categoryContext={categoryContext}
+                    />
                 </form>
                 <LoadingScreen status={ajaxStatus} errorType={errorType} />
                 <ResultScreen
@@ -281,6 +286,7 @@ function Search() {
                     setPage={setPage}
                 />
                 <RecommendationScreen disabled={searchResults.length !== 0} />
+                <Footer />
             </div>
         </div>
     );
