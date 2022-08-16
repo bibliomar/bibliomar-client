@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import React, { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import Fuse from "fuse.js";
+import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 
 type IndexesResponse = {
     indexes: string[];
@@ -38,7 +39,9 @@ export default function SearchBar({
     categoryContext,
     setOptionsHidden,
 }: Props) {
+    const width = useWindowSize().width;
     let [searchParameters, _] = useSearchParams();
+    const [fieldOnFocus, setFieldOnFocus] = useState<boolean>(false);
     let [query, setQuery] = useState("");
     let [indexes, setIndexes] = useState([]);
     let [relevantIndexes, setRelevantIndexes] = useState<any[]>([]);
@@ -75,13 +78,15 @@ export default function SearchBar({
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
             <div className="searchfield">
-                <datalist id="indexes">
-                    {relevantIndexes.map((el, i) => {
-                        if (i < 5) {
-                            return <option value={el.item.title} key={i} />;
-                        }
-                    })}
-                </datalist>
+                {query.length > 2 ? (
+                    <datalist id="indexes">
+                        {relevantIndexes.map((el, i) => {
+                            if (i < 5) {
+                                return <option value={el.item.title} key={i} />;
+                            }
+                        })}
+                    </datalist>
+                ) : null}
 
                 <MDBInput
                     value={query}
@@ -90,17 +95,31 @@ export default function SearchBar({
                     type="text"
                     className="search-input"
                     label="Pesquisar"
-                    labelClass=""
+                    labelStyle={{ position: "absolute", top: "20%" }}
                     name="q"
                     autoComplete="true"
+                    onFocus={() => {
+                        setFieldOnFocus(true);
+                    }}
+                    onBlur={() => {
+                        setFieldOnFocus(false);
+                    }}
                 >
                     <i
                         className="fas fa-bars fa-lg"
                         style={{
                             position: "absolute",
                             top: "40%",
-                            marginLeft: "94%",
+                            marginLeft:
+                                fieldOnFocus && query.length > 2
+                                    ? width < 600
+                                        ? "81%"
+                                        : "91%"
+                                    : width < 600
+                                    ? "88%"
+                                    : "94%",
                             cursor: "pointer",
+                            zIndex: "30",
                         }}
                         onClick={() => {
                             setOptionsHidden((prev) => {
