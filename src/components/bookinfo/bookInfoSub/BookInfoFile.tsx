@@ -19,7 +19,7 @@ export default function BookInfoFile({ book }: Props) {
             </span>
             <Break mobile className="mb-2" />
             <span className="me-3">
-                <strong>Linguagem:</strong>:{" "}
+                <strong>Linguagem</strong>:{" "}
                 {book.language
                     ? book["language"] === "Portuguese"
                         ? "Português"

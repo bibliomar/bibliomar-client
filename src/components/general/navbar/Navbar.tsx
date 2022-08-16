@@ -32,9 +32,9 @@ export default function Navbar({ activeItem, badgeText }: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const formik = useFormik({
-        initialValues: { query: "", category: "any" },
+        initialValues: { query: "" },
         onSubmit: (values) => {
-            navigate(`/search?category=${values.category}&q=${values.query}`);
+            navigate(`/search?category=any&q=${values.query}`);
         },
     });
 
@@ -47,7 +47,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                 className="p-2 pt-4 pb-4"
             >
                 <MDBContainer fluid>
-                    <MDBNavbarBrand href="/search">
+                    <MDBNavbarBrand href="/search" style={{ maxWidth: "50%" }}>
                         <BibliomarBrand badgeText={badgeText} />
                     </MDBNavbarBrand>
                     <MDBNavbarToggler

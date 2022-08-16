@@ -13,7 +13,7 @@ export default function BookInfoBadges({ book, savedBook }: Props) {
                 {book.topic === "fiction" ? "Ficção" : "Não-ficção"}
             </div>
             <div className="badge book-info-badge me-1">
-                {book.category ? "Na sua biblioteca" : null}
+                {book.category ? "Salvo na biblioteca" : null}
             </div>
             <div className="badge book-info-badge me-1">
                 {savedBook ? "Salvo localmente" : null}
