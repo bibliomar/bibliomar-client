@@ -24,7 +24,7 @@ export default function Footer() {
                 </span>
                 <Link
                     to={"/"}
-                    className="ms-auto me-4"
+                    className="me-4"
                     style={{ color: "unset" }}
                 >
                     <img

@@ -11,18 +11,22 @@ type DownloadLinks = {
 };
 
 interface LibraryProperties {
-    // This is only valid for library entries, and is only used in reader components. The value is an epubcifi string.
-    progress?: string;
-    // This is only valid for library entries.
+    // All properties here are only valid for library entries. (e.g. book you get from a user's library.)
+    // Make sure to check if they exist before using them.
+
+    rating?: number | null;
+    // The value is an epubcifi string.
+    progress?: string | null;
     // The value is a string with the book's category on the user's library.
     // Not to be confused with "topic"
-    category?: string;
+    category?: string | null;
 }
 
 interface MetadataProperties {
     // Describes properties which are exclusive to metadata results.
     // Make sure to check if they exist before using them.
     // These extra infos are mostly used in the BookInfo component.
+
     edition?: string | null;
     year?: string | null;
     publisher?: string | null;
@@ -37,14 +41,15 @@ interface Book extends LibraryProperties, MetadataProperties {
     title: string;
     authors: string;
     language: string;
-    // These three are not saved to a user's library.
-    file?: string;
-    mirror1?: string;
-    mirror2?: string;
     md5: string;
     topic: string;
     extension: string;
     size: string;
+    // These values are not saved to a user's library.
+    file?: string;
+    mirror1?: string;
+    mirror2?: string;
+
 }
 
 interface UserLibrary {
