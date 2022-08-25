@@ -183,9 +183,9 @@ export default function ReaderDownloader({
                 />
                 <Break />
                 <span className="text-center text-muted mt-4">
-                    Dica: você pode fazer outras coisas enquanto aguarda. O
-                    servidor normalmente é lento. O download é reiniciado
-                    automaticamente em caso de erro.
+                    Dica: Isso pode demorar um pouco, você pode trocar de aba
+                    enquanto aguarda. Nós reiniciamos o download automaticamente
+                    em caso de erro.
                 </span>
             </div>
         </div>

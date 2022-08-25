@@ -48,7 +48,7 @@ export default function BookInfoMobile({
                         />
                         <Break className="mb-2" />
                         <BookInfoFile book={bookInfo} />
-                        <Break className="mb-2" />
+                        <Break className="mb-3" />
                         <BookInfoBadges savedBook={savedBook} book={bookInfo} />
                         <Break className="mb-4" />
                         <BookInfoDescription

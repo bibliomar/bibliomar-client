@@ -1,8 +1,9 @@
 import BookInfoLibraryAdd from "./BookInfoLibraryAdd";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useContext, useState } from "react";
 import { Book, LibraryCategories } from "../../../general/helpers/generalTypes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Auth } from "../../../general/helpers/generalContext";
 
 interface Props {
     book: Book;
@@ -16,6 +17,8 @@ export default function BookInfoLibraryButtons({
     className,
 }: Props) {
     const navigate = useNavigate();
+    const authContext = useContext(Auth);
+
     const [triedCategory, setTriedCategory] = useState<
         LibraryCategories | undefined
     >(undefined);
@@ -27,27 +30,19 @@ export default function BookInfoLibraryButtons({
         // This function automatically adds a category to a bookRef if the user adds it in their library.
         // Useful for when the user adds a book, and then tries to read it online.
         evt.preventDefault();
-        if (jwtToken == null) {
+        if (!authContext.userLogged || jwtToken == null) {
             const redirect = location.pathname;
             navigate(`/user/login?redirect=${redirect}`);
             return;
         }
+
         let bookToAdd = book;
         bookToAdd.category = category;
-        const req_body = [bookToAdd];
-        const config = {
-            url: `https://biblioterra.herokuapp.com/v1/library/add/${category}`,
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            },
-            data: req_body,
-        };
+
         try {
             setTriedCategory(category);
             setRequestStatus(103);
 
-            let req = await axios.request(config);
             setBookInfo(bookToAdd);
             setRequestStatus(200);
             setTimeout(() => {

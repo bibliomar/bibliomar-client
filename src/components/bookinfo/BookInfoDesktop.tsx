@@ -13,7 +13,6 @@ import BookInfoFile from "./bookInfoSub/BookInfoFile";
 import BookInfoReadOnline from "./bookInfoSub/BookInfoReadOnline";
 import BookInfoLibraryButtons from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryButtons";
 import BookInfoAuthors from "./bookInfoSub/BookInfoAuthors";
-import BookInfoRating from "./bookInfoSub/BookInfoRating";
 
 export default function BookInfoDesktop({
     bookInfo,
@@ -32,8 +31,6 @@ export default function BookInfoDesktop({
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
                         <BookInfoCover md5={bookInfo.md5} />
-                        <Break />
-                        <BookInfoRating book={bookInfo} />
                         <Break />
                         <BookInfoDownload
                             downloadLinks={downloadLinks}
@@ -71,7 +68,7 @@ export default function BookInfoDesktop({
                         <SmallLine flexGrow />
                         <Break className="mb-2" />
                         <BookInfoFile book={bookInfo} />
-                        <Break className="mb-2" />
+                        <Break className="mb-3" />
                         <BookInfoBadges savedBook={savedBook} book={bookInfo} />
                         <Break className="mb-4" />
                         <BookInfoDescription

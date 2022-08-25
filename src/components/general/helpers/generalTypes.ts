@@ -10,6 +10,12 @@ type DownloadLinks = {
     Pinata: string;
 };
 
+interface AnyProperties {
+    // Makes so that the Book type actually accepts any property with any value.
+    // Useful for creating new parameters when you don't know their names.
+    [key: string]: any;
+}
+
 interface LibraryProperties {
     // All properties here are only valid for library entries. (e.g. book you get from a user's library.)
     // Make sure to check if they exist before using them.
@@ -34,7 +40,7 @@ interface MetadataProperties {
     description?: string | null;
 }
 
-interface Book extends LibraryProperties, MetadataProperties {
+interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
     // This is the basic schema of a book. It may include extra properties if it has metadata or if it's from a user's library.
     // Be sure to check if a property exists before using it.
     series: string | null;
@@ -49,7 +55,6 @@ interface Book extends LibraryProperties, MetadataProperties {
     file?: string;
     mirror1?: string;
     mirror2?: string;
-
 }
 
 interface UserLibrary {
