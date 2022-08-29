@@ -5,6 +5,7 @@ import Message from "../../general/Message";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import { useState } from "react";
 import axios from "axios";
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 export default function Recovering() {
     const [emailSent, setEmailSent] = useState<boolean>(false);
@@ -29,7 +30,7 @@ export default function Recovering() {
             const formData = new FormData();
             formData.set("email", values.email);
             const config = {
-                url: "https://biblioterra.herokuapp.com/v1/user/recover",
+                url: `${backendUrl}/v1/user/recover`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",

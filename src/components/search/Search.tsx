@@ -12,6 +12,7 @@ import { Book } from "../general/helpers/generalTypes";
 import { Auth } from "../general/helpers/generalContext";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
 import Footer from "../general/Footer";
+import { backendUrl } from "../general/helpers/generalFunctions";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -167,7 +168,7 @@ function Search() {
         let req: AxiosResponse;
         try {
             req = await axios.get(
-                `https://biblioterra.herokuapp.com/v1/search/${requestParameters}`
+                `${backendUrl}/v1/search/${requestParameters}`
             );
         } catch (e: any) {
             if (page !== 1) {
@@ -203,53 +204,59 @@ function Search() {
         }
 
         if (sessionStorage.getItem(formDataString)) {
-            let resultsListString = sessionStorage.getItem(
-                formDataString
-            ) as string;
-            resultsList = JSON.parse(resultsListString);
+            let resultsListString = sessionStorage.getItem(formDataString);
+            if (resultsListString) {
+                resultsList = JSON.parse(resultsListString);
+            }
         }
 
         setSearchParameters(URLParameters, { replace: false });
         setAjaxStatus("sending");
 
-        if (categoryContext !== "any") {
-            let request = await getSearchResults(formData, categoryContext);
-            if (Number.isInteger(request)) {
-                errorHandler(request);
-                return;
-            }
-            resultsList = request;
-        } else {
-            // Means categoryContext === "any", so we are doing a dual request.
-            let request1 = await getSearchResults(formData, "fiction");
-            // Waits 4 seconds so libgen doesn't get mad at us.
-            await sleep(3000);
-            let request2 = await getSearchResults(formData, "sci-tech");
-            if (Number.isInteger(request1) && Number.isInteger(request2)) {
-                errorHandler(request2);
-                return;
-            } else if (
-                !Number.isInteger(request1) &&
-                !Number.isInteger(request2)
-            ) {
-                resultsList = [...request1, ...request2];
-            } else if (
-                !Number.isInteger(request1) &&
-                Number.isInteger(request2)
-            ) {
-                resultsList = request1;
-            } else if (
-                Number.isInteger(request1) &&
-                !Number.isInteger(request2)
-            ) {
-                resultsList = request2;
+        if (resultsList != null) {
+            if (categoryContext !== "any") {
+                let request = await getSearchResults(formData, categoryContext);
+                if (Number.isInteger(request)) {
+                    errorHandler(request);
+                    return;
+                }
+                resultsList = request;
+            } else {
+                // Means categoryContext === "any", so we are doing a dual request.
+                let request1 = await getSearchResults(formData, "fiction");
+                // Waits 4 seconds so libgen doesn't get mad at us.
+                await sleep(3000);
+                let request2 = await getSearchResults(formData, "sci-tech");
+                if (Number.isInteger(request1) && Number.isInteger(request2)) {
+                    errorHandler(request2);
+                    return;
+                } else if (
+                    !Number.isInteger(request1) &&
+                    !Number.isInteger(request2)
+                ) {
+                    resultsList = [...request1, ...request2];
+                } else if (
+                    !Number.isInteger(request1) &&
+                    Number.isInteger(request2)
+                ) {
+                    resultsList = request1;
+                } else if (
+                    Number.isInteger(request1) &&
+                    !Number.isInteger(request2)
+                ) {
+                    resultsList = request2;
+                }
             }
         }
+
         console.log(resultsList);
-        setAjaxStatus("waiting");
-        setSearchResults(resultsList);
         let resultsListString = JSON.stringify(resultsList);
         sessionStorage.setItem(formDataString, resultsListString);
+        setAjaxStatus("waiting");
+        setSearchResults(resultsList);
+        setTimeout(() => {
+            setAjaxStatus("done");
+        }, 2000);
     };
 
     return (

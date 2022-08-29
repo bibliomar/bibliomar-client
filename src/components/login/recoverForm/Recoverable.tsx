@@ -8,6 +8,7 @@ import jwt_decode, { JwtPayload } from "jwt-decode";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 interface Props {
     token: string;
@@ -40,7 +41,7 @@ export default function Recoverable(props: Props) {
             let formData = new FormData();
             formData.set("new_pass", values.password);
             const config = {
-                url: "https://biblioterra.herokuapp.com/v1/user/change",
+                url: `${backendUrl}/v1/user/change`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",

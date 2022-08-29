@@ -3,7 +3,8 @@ import {
     MDBPaginationItem,
     MDBPaginationLink,
 } from "mdb-react-ui-kit";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { Theme } from "../../general/helpers/generalContext";
 
 interface Props {
     page: number;
@@ -12,10 +13,11 @@ interface Props {
 }
 
 export default function Pagination(props: Props) {
+    const theme = useContext(Theme).theme;
     return (
-        <div>
+        <div className="mt-3">
             <nav>
-                <ul className="pagination bg-black p-2 rounded-7 bg-opacity-50">
+                <ul className="pagination p-2 rounded-7 basic-container">
                     <MDBPagination>
                         <MDBPaginationItem>
                             <MDBPaginationLink
@@ -39,7 +41,7 @@ export default function Pagination(props: Props) {
                         <MDBPaginationItem>
                             <MDBPaginationLink
                                 style={{ pointerEvents: "none" }}
-                                className="text-info"
+                                className="text-color"
                                 href="#"
                             >
                                 {props.page}

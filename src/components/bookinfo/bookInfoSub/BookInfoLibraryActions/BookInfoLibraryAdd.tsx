@@ -28,10 +28,7 @@ export default function BookInfoLibraryAdd({
 }: LibraryAddProps) {
     const theme = useContext(Theme).theme;
     return (
-        <div
-            className="d-flex flex-wrap justify-content-center"
-            style={{ position: "relative" }}
-        >
+        <div className="" style={{ position: "relative" }}>
             <button
                 style={{
                     // This removes the button default styling.
@@ -43,7 +40,7 @@ export default function BookInfoLibraryAdd({
                     font: "inherit",
                     outline: "inherit",
                 }}
-                className=""
+                className="d-flex flex-wrap justify-content-center"
                 onClick={async (evt) => {
                     console.log(onclickHandler);
                     await onclickHandler(evt, category);
@@ -63,16 +60,16 @@ export default function BookInfoLibraryAdd({
                 ) : (
                     <BookInfoLibraryAddIcon category={category} />
                 )}
+                <Break className={"mb-1"} />
+                <span>
+                    {book.category === category ? (
+                        <strong>{message}</strong>
+                    ) : (
+                        message
+                    )}
+                </span>
             </button>
             <Break />
-
-            <span>
-                {book.category === category ? (
-                    <strong>{message}</strong>
-                ) : (
-                    message
-                )}
-            </span>
         </div>
     );
 }

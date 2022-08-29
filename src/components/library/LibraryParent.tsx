@@ -51,7 +51,7 @@ export default function LibraryParent() {
 
     return (
         <div className="like-body bg-alt">
-            <div className="container text-white">
+            <div className="container-fluid">
                 <div className="">
                     <MDBProgress height={progress === 0 ? "0" : "2"}>
                         <MDBProgressBar

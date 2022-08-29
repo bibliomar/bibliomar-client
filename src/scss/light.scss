@@ -33,6 +33,12 @@ $accent-color: #7663F2;
   border-radius: 0 5px 5px 0;
 }
 
+.basic-container-alt{
+  background-color: #F0F0F0;
+  box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
+  border-radius: 0 5px 5px 0;
+}
+
 .navbar-badge{
   background-color: #7663F2 !important;
 }
@@ -44,4 +50,8 @@ $accent-color: #7663F2;
 
 .reader-navbar-title{
 
+}
+
+.text-color{
+  color: $dark
 }

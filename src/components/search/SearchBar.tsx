@@ -4,6 +4,7 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import Fuse from "fuse.js";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
+import { backendUrl } from "../general/helpers/generalFunctions";
 
 type IndexesResponse = {
     indexes: string[];
@@ -23,7 +24,7 @@ async function getIndexes(category: string) {
     }
     try {
         let indexRequest = await axios.get(
-            `https://biblioterra.herokuapp.com/v1/indexes/${category}`
+            `${backendUrl}/v1/indexes/${category}`
         );
         let indexesObject: IndexesResponse = indexRequest.data;
         let indexes = indexesObject.indexes;
@@ -34,14 +35,12 @@ async function getIndexes(category: string) {
     }
 }
 
-//@ts-ignore
 export default function SearchBar({
     categoryContext,
     setOptionsHidden,
 }: Props) {
     const width = useWindowSize().width;
     let [searchParameters, _] = useSearchParams();
-    const [fieldOnFocus, setFieldOnFocus] = useState<boolean>(false);
     let [query, setQuery] = useState("");
     let [indexes, setIndexes] = useState([]);
     let [relevantIndexes, setRelevantIndexes] = useState<any[]>([]);
@@ -66,7 +65,7 @@ export default function SearchBar({
         }
     }, [categoryContext]);
 
-    async function handleSearch(input: HTMLInputElement) {
+    async function handleInput(input: HTMLInputElement) {
         setQuery(input.value);
         if (query.length > 2) {
             fuse = new Fuse(indexes, { keys: ["title"] });
@@ -90,7 +89,7 @@ export default function SearchBar({
 
                 <MDBInput
                     value={query}
-                    onChange={(evt) => handleSearch(evt.currentTarget)}
+                    onChange={(evt) => handleInput(evt.currentTarget)}
                     list="indexes"
                     type="text"
                     className="search-input"
@@ -98,12 +97,6 @@ export default function SearchBar({
                     labelStyle={{ position: "absolute", top: "20%" }}
                     name="q"
                     autoComplete="true"
-                    onFocus={() => {
-                        setFieldOnFocus(true);
-                    }}
-                    onBlur={() => {
-                        setFieldOnFocus(false);
-                    }}
                 >
                     <i
                         className="fas fa-bars fa-lg"

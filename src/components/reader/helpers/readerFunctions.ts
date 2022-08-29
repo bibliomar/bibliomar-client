@@ -13,6 +13,7 @@ import {
 } from "./readerTypes";
 import axios, { AxiosRequestConfig } from "axios";
 import { ReactReaderStyle } from "react-reader";
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 // Saves a new or replaces an existing SavedBooks object in localforage.INDEXEDDB.
 //
@@ -183,7 +184,7 @@ export const saveProgressOnDatabase = async (
     const reqBody = [book];
 
     const config: AxiosRequestConfig = {
-        url: `https://biblioterra.herokuapp.com/v1/library/add/${book.category}`,
+        url: `${backendUrl}/v1/library/add/${book.category}`,
         headers: {
             Authorization: `Bearer ${jwtToken}`,
         },

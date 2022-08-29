@@ -1,4 +1,7 @@
 # Bibliomar
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bd4c5d37-8033-4b0f-abc4-7f8203e957a5/deploy-status)](https://app.netlify.com/sites/bibliomar/deploys)
+
+
 Sua suíte completa de leitura: pesquise, baixe e leia livros gratuitamente.
 
 

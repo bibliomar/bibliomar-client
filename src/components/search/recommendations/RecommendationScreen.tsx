@@ -1,12 +1,14 @@
 import BookFigure from "../results/BookFigure";
 import RecommendationBookFigure from "./RecommendationBookFigure";
 import Break from "../../general/Break";
+import LibraryBookFigure from "../../library/LibraryBookFigure";
+import { Book } from "../../general/helpers/generalTypes";
 
 interface Props {
     disabled: boolean;
 }
 // Hard-coded stuff
-const recommendationScreen = [
+const recommendationOptions: Book[] = [
     {
         authors: "Daniel, Keyes",
         series: "",
@@ -80,15 +82,15 @@ export default function RecommendationScreen(props: Props) {
                     </div>
                     <Break />
                     <div className="d-flex flex-wrap justify-content-center">
-                        {recommendationScreen.map((el, i) => {
+                        {recommendationOptions.map((el, i) => {
                             let timeout;
                             i === 0 ? (timeout = 1000) : (timeout = i * 1000);
                             return (
-                                <RecommendationBookFigure
+                                <LibraryBookFigure
                                     book={el}
                                     timeout={timeout}
-                                    itemNumber={i}
                                     key={i}
+                                    expanded
                                 />
                             );
                         })}

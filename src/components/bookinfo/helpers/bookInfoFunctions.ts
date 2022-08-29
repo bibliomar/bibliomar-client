@@ -1,9 +1,6 @@
 import { Book, LibraryCategories } from "../../general/helpers/generalTypes";
 import axios from "axios";
-
-interface ParametersModel {
-    [key: string]: string | number;
-}
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 export async function addBookToLibrary(
     bookToAdd: Book,
@@ -16,7 +13,7 @@ export async function addBookToLibrary(
 
     const req_body = [bookToAdd];
     const config = {
-        url: `https://biblioterra.herokuapp.com/v1/library/add/${category}`,
+        url: `${backendUrl}/v1/library/add/${category}`,
         method: "POST",
         headers: {
             Authorization: `Bearer ${jwtToken}`,

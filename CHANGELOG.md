@@ -25,3 +25,5 @@ Componente de mais informações antigo, alguns figures de livros que eram usado
 Isso é bom, pois agora o código está mais sucinto.
 - Agora, ao entrar na URL de um livro no Bibliomar Reader, caso o leitor não encontre um arrayBuffer salvo (nos casos em que o usuario fecha o navegador e retorna a mesma URL) o leitor automaticamente irá tentar
 recuperar o livro da lista de livros salvos do usuario.
+- Bibliomar (o backend) agora é hospedado na [fly.io](https://fly.io)
+- 

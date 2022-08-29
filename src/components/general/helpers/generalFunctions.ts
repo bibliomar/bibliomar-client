@@ -4,7 +4,7 @@ import React from "react";
 import axios from "axios";
 
 const getOnlineCover = async (md5: string) => {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/cover/${md5}`;
+    let reqUrl = `${backendUrl}/v1/cover/${md5}`;
     let request;
     try {
         request = await axios.get(reqUrl);
@@ -51,7 +51,7 @@ export const getUserInfo = async (
     navigate?: NavigateFunction
 ) => {
     const config = {
-        url: "https://biblioterra.herokuapp.com/v1/library/get",
+        url: `${backendUrl}/v1/library/get`,
         method: "GET",
         headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -105,3 +105,5 @@ export const findBookInLibrary = async (md5: string) => {
 
     return foundBook as Book | null;
 };
+
+export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;

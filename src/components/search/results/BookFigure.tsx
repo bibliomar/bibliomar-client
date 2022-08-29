@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { MDBBtn, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { MDBBtn, MDBRipple } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
-import { Book } from "../../general/helpers/generalTypes";
+import { Book, ThemeOptions } from "../../general/helpers/generalTypes";
 import { getCover } from "../../general/helpers/generalFunctions";
 import FigureCoverSkeleton from "../../general/FigureCoverSkeleton";
+import { Theme } from "../../general/helpers/generalContext";
 
 interface Props {
     result: Book;
     timeout: number;
     lastElement: boolean;
-    setAjaxStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function BookFigure(props: Props) {
+    const theme = useContext(Theme).theme;
     const book: Book = props.result;
-    let navigate = useNavigate();
     const [cover, setCover] = useState<string>(
         "https://libgen.rocks/img/blank.png"
     );
@@ -25,19 +24,12 @@ export default function BookFigure(props: Props) {
 
     useEffect(() => {
         let coverSetTimeout: number | undefined;
-        let ajaxStatusTimeout: number | undefined;
 
         getCover(book.md5, setCover, setCoverDone, props.timeout).then((r) => {
             coverSetTimeout = r;
-            if (props.lastElement) {
-                ajaxStatusTimeout = setTimeout(() => {
-                    props.setAjaxStatus("done");
-                }, 1000);
-            }
         });
 
         return () => {
-            clearTimeout(ajaxStatusTimeout);
             clearTimeout(coverSetTimeout);
         };
     }, []);
@@ -45,7 +37,9 @@ export default function BookFigure(props: Props) {
     return (
         <figure className="figure d-flex flex-column">
             <MDBRipple
-                className="bg-image shadow-1-strong resultimg figure-img"
+                className={`bg-image ${
+                    coverDone ? "hover-overlay" : undefined
+                } shadow-1-strong resultimg figure-img`}
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -56,8 +50,8 @@ export default function BookFigure(props: Props) {
             </MDBRipple>
 
             <figcaption
-                className="figure-caption text-wrap text-light border rounded-7 rounded-top border-dark
-            border-top-0 bg-black bg-opacity-50 pt-1 bookcaption flex-grow-1 d-flex flex-column"
+                className={`figure-caption text-wrap border rounded-7 rounded-top border-dark
+            border-top-0 basic-container-alt pt-1 bookcaption flex-grow-1 d-flex flex-column text-color`}
                 style={{ fontSize: "1rem" }}
             >
                 <div className="d-flex flex-wrap">

@@ -4,6 +4,7 @@ import { Book, LibraryCategories } from "../../../general/helpers/generalTypes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "../../../general/helpers/generalContext";
+import { addBookToLibrary } from "../../helpers/bookInfoFunctions";
 
 interface Props {
     book: Book;
@@ -42,7 +43,7 @@ export default function BookInfoLibraryButtons({
         try {
             setTriedCategory(category);
             setRequestStatus(103);
-
+            await addBookToLibrary(bookToAdd, jwtToken, category);
             setBookInfo(bookToAdd);
             setRequestStatus(200);
             setTimeout(() => {

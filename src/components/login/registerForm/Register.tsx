@@ -7,6 +7,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 import { useContext, useState } from "react";
 import { Auth } from "../../general/helpers/generalContext";
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 export default function Register() {
     const authContext = useContext(Auth);
@@ -56,7 +57,7 @@ export default function Register() {
                 formData.append(key, value);
             }
             const config = {
-                url: "https://biblioterra.herokuapp.com/v1/user/signup",
+                url: `${backendUrl}/v1/user/signup`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",

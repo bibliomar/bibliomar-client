@@ -9,6 +9,7 @@ import axios from "axios";
 import AutoLoginMessage from "./AutoLoginMessage";
 import LoginMessage from "./LoginMessage";
 import { Auth } from "../../general/helpers/generalContext";
+import { backendUrl } from "../../general/helpers/generalFunctions";
 
 export default function Login() {
     const authContext = useContext(Auth);
@@ -22,7 +23,7 @@ export default function Login() {
     const autoLogin = async (jwt: string) => {
         try {
             const config = {
-                url: "https://biblioterra.herokuapp.com/v1/user/validate",
+                url: `${backendUrl}/v1/user/validate`,
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${jwt}`,
@@ -84,7 +85,7 @@ export default function Login() {
                 formData.append(key, value);
             }
             const config = {
-                url: "https://biblioterra.herokuapp.com/v1/user/login",
+                url: `${backendUrl}/v1/user/login`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",

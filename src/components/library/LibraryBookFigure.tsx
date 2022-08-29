@@ -1,17 +1,7 @@
-import React, {
-    MouseEventHandler,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
-import axios from "axios";
-import { MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
-import { Portal } from "react-portal";
-import { useNavigate } from "react-router-dom";
-import LibraryBookModal from "./LibraryBookModalDeprecated";
-import { Size, useWindowSize } from "../general/helpers/useWindowSize";
-import LibraryBookIcon from "./LibraryBookIcon";
+import React, { useEffect, useState } from "react";
+
+import { MDBRipple } from "mdb-react-ui-kit";
+
 import { Book } from "../general/helpers/generalTypes";
 import { getCover } from "../general/helpers/generalFunctions";
 import FigureCoverSkeleton from "../general/FigureCoverSkeleton";
@@ -19,19 +9,12 @@ import FigureCoverSkeleton from "../general/FigureCoverSkeleton";
 interface Props {
     book: Book;
     timeout: number;
-    bookCategory: string;
-    setProgress: React.Dispatch<React.SetStateAction<number>>;
+    setProgress?: React.Dispatch<React.SetStateAction<number>>;
+    expanded?: boolean;
 }
 
 export default function LibraryBookFigure(props: Props) {
     let book = props.book;
-    const size: Size = useWindowSize();
-    const [modalOn, setModalOn] = useState<boolean>(false);
-    const [firstRender, setFirstRender] = useState<boolean>(false);
-
-    const toggleShow = () => setModalOn(!modalOn);
-
-    let navigate = useNavigate();
     const [cover, setCover] = useState<string>(
         "https://libgen.rocks/img/blank.png"
     );
@@ -48,42 +31,46 @@ export default function LibraryBookFigure(props: Props) {
     }, []);
 
     return (
-        <div className={"mb-3 pt-2 border-white border-top flex-grow-1"}>
-            <div className="d-flex library-row">
-                <div id="cover-div" className="me-2 library-figure-img">
-                    <MDBRipple
-                        className="bg-image hover-overlay shadow-1-strong w-100"
-                        rippleTag="div"
-                        rippleColor="light"
-                    >
-                        <img
-                            src={cover}
-                            alt="Capa do livro"
-                            className="w-100"
-                        />
-
-                        <a href={`/book/${props.book.topic}/${props.book.md5}`}>
-                            <FigureCoverSkeleton coverDone={coverDone} />
-                        </a>
-                    </MDBRipple>
-                </div>
-                <div id="info-div" className="">
-                    <p className="">
-                        <strong>Título: </strong> <br />
-                        {props.book.title}
-                    </p>
-                    <p className="">
-                        <strong>Autor(a)(s): </strong> <br />
-                        {props.book.authors}
-                    </p>
-                    {props.book.extension === "epub" ? (
-                        <span className="">
-                            <strong>Leitura iniciada: </strong> <br />
-                            {props.book.progress ? "Sim" : "Não"}
-                        </span>
-                    ) : null}
-                </div>
+        <div
+            id="library-book-div"
+            className={`${
+                !props.expanded
+                    ? "library-figure-row-img"
+                    : "library-figure-img"
+            } position-relative me-2 mb-3`}
+        >
+            <div className="library-info-background text-light">
+                <span
+                    className="ms-2 text-nowrap library-info-text"
+                    style={{ fontSize: "1.1em" }}
+                >
+                    {book.title}
+                </span>
+                <br />
+                <span
+                    className="ms-2 text-nowrap library-info-text"
+                    style={{ fontSize: "0.85em" }}
+                >
+                    {book.authors}
+                </span>
             </div>
+            <MDBRipple
+                className={`bg-image ${
+                    coverDone ? "hover-overlay" : undefined
+                } shadow-1-strong rounded w-100 h-100`}
+                rippleTag="div"
+                rippleColor="light"
+            >
+                <img
+                    alt={"Capa do livro"}
+                    src={cover}
+                    className="w-100 h-100"
+                    style={{ minHeight: "100%" }}
+                />
+                <a href={`/book/${book.topic}/${book.md5}`}>
+                    <FigureCoverSkeleton coverDone={coverDone} />
+                </a>
+            </MDBRipple>
         </div>
     );
 }

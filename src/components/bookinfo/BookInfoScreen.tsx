@@ -6,7 +6,10 @@ import axios from "axios";
 import { DownloadLinks } from "../general/helpers/generalTypes";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import BookInfoMobile from "./BookInfoMobile";
-import { findBookInLibrary } from "../general/helpers/generalFunctions";
+import {
+    backendUrl,
+    findBookInLibrary,
+} from "../general/helpers/generalFunctions";
 import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
 import localforage from "localforage";
 import { findBookLocally } from "../reader/helpers/readerFunctions";
@@ -20,7 +23,7 @@ export interface BookInfoSubProps {
 }
 
 async function getMetadata(md5: string, topic: string): Promise<Book | null> {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/metadata/${topic}/${md5}`;
+    let reqUrl = `${backendUrl}/v1/metadata/${topic}/${md5}`;
     try {
         let req = await axios.get(reqUrl);
         return req.data;
@@ -31,7 +34,7 @@ async function getMetadata(md5: string, topic: string): Promise<Book | null> {
 }
 
 async function getDownloadLinks(md5: string, topic: string) {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/downloads/${topic}/${md5}`;
+    let reqUrl = `${backendUrl}/v1/downloads/${topic}/${md5}`;
     try {
         let req = await axios.get(reqUrl);
         return req.data;

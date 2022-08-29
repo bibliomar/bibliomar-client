@@ -8,7 +8,7 @@ import Recover from "./components/login/recoverForm/Recover";
 import Error404 from "./components/general/Error404";
 import LibraryParent from "./components/library/LibraryParent";
 import LibraryLanding from "./components/library/LibraryLanding";
-import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedView";
+import LibraryExpandedScreen from "./components/library/LibraryExpandedView";
 import ReaderLanding from "./components/reader/ReaderLanding";
 import ReaderMain from "./components/reader/screen/ReaderMain";
 import BookInfoParent from "./components/bookinfo/BookInfoParent";
