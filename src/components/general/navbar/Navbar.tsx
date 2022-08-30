@@ -61,10 +61,10 @@ export default function Navbar({ activeItem, badgeText }: Props) {
 
                     <MDBCollapse navbar show={showNav}>
                         <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                            <MDBNavbarItem>
+                            <MDBNavbarItem className="mt-2 mt-md-0">
                                 <MDBNavbarLink
-                                    active={activeItem === "home"}
-                                    href="/search"
+                                    active={activeItem === "about"}
+                                    href="/about"
                                 >
                                     Sobre
                                 </MDBNavbarLink>

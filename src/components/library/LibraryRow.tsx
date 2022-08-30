@@ -9,14 +9,12 @@ interface Props {
     message: string;
     bookCategory: string;
     booksInfo: Book[];
-    setProgress: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function LibraryRow({
     message,
     bookCategory,
     booksInfo,
-    setProgress,
 }: Props) {
     const bookCategorySetter = () => {
         return booksInfo.map((book) => {
@@ -41,19 +39,25 @@ export default function LibraryRow({
                 </span>
             </div>
             <Break />
-            <div className="d-flex flex-wrap justify-content-lg-start justify-content-center">
-                {books.map((book, index) => {
-                    if (index < 8) {
-                        return (
-                            <LibraryBookFigure
-                                book={book}
-                                timeout={index * 1500}
-                                setProgress={setProgress}
-                                expanded
-                            />
-                        );
-                    }
-                })}
+            <div className="d-flex flex-wrap justify-content-lg-start justify-content-center w-100">
+                {books.length > 0
+                    ? books.map((book, index) => {
+                          if (index < 8) {
+                              return (
+                                  <LibraryBookFigure
+                                      book={book}
+                                      timeout={index * 1500}
+                                  />
+                              );
+                          }
+                      })
+                    : null}
+                <Break />
+                {books.length === 0 ? (
+                    <div className="d-flex justify-content-center w-100">
+                        <span>Vazio, que tal adicionar mais livros?</span>
+                    </div>
+                ) : null}
             </div>
         </div>
     );

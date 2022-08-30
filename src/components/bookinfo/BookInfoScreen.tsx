@@ -13,6 +13,7 @@ import {
 import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
 import localforage from "localforage";
 import { findBookLocally } from "../reader/helpers/readerFunctions";
+import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 
 export interface BookInfoSubProps {
     bookInfo: Book;
@@ -129,9 +130,9 @@ export default function BookInfoScreen() {
 
     return (
         <div className="d-flex flex-column align-items-center">
-            <div className="basic-container book-info-container mb-5">
-                {bookInfo ? (
-                    size.width > 600 ? (
+            {bookInfo ? (
+                <div className="basic-container book-info-container mb-5">
+                    {size.width > 600 ? (
                         <BookInfoDesktop
                             bookInfo={bookInfo}
                             setBookInfo={setBookInfo}
@@ -147,9 +148,11 @@ export default function BookInfoScreen() {
                             savedBook={savedBook}
                             error={bookError}
                         />
-                    )
-                ) : null}
-            </div>
+                    )}
+                </div>
+            ) : (
+                <BlankLoadingSpinner />
+            )}
         </div>
     );
 }

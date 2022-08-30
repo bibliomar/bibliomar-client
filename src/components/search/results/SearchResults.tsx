@@ -34,7 +34,6 @@ export default function SearchResults(props: Props) {
                                 result={ele}
                                 timeout={timeout}
                                 lastElement={i + 1 === props.results.length}
-                                setAjaxStatus={props.setAjaxStatus}
                                 key={i}
                             />
                         );

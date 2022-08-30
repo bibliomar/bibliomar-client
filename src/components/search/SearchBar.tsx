@@ -94,7 +94,7 @@ export default function SearchBar({
                     type="text"
                     className="search-input"
                     label="Pesquisar"
-                    labelStyle={{ position: "absolute", top: "20%" }}
+                    labelStyle={{ position: "absolute", top: "8%" }}
                     name="q"
                     autoComplete="true"
                 >

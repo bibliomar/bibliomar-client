@@ -25,22 +25,20 @@ export default function LibrarySection(props: Props) {
     return (
         <div className="d-flex flex-wrap justify-content-center mb-4 w-100">
             <div className="bg-black p-2 rounded-3 bg-opacity-75 text-light p-3 w-100">
-                <div className="d-flex flex-wrap justify-content-center mb-2">
+                <div className="d-flex flex-wrap justify-content-start mb-2">
                     <span className="fw-bold lead">{props.message}</span>
                 </div>
                 <Break />
-                <div className="d-flex flex-wrap justify-content-center">
+                <div className="d-flex flex-wrap justify-content-start">
                     {booksInfo.length > 0 ? (
                         booksInfo.map((el, i) => {
                             let timeout;
                             i === 0 ? (timeout = 1000) : (timeout = i * 1500);
                             return (
                                 <LibraryBookFigure
-                                    key={i * Math.random() * 100}
+                                    key={i * Math.random()}
                                     book={el}
                                     timeout={timeout}
-                                    bookCategory={props.bookCategory}
-                                    setProgress={props.setProgress}
                                 />
                             );
                         })

@@ -35,11 +35,11 @@ export default function BookFigure(props: Props) {
     }, []);
 
     return (
-        <figure className="figure d-flex flex-column">
+        <figure className="figure d-flex flex-column result-div me-3">
             <MDBRipple
                 className={`bg-image ${
                     coverDone ? "hover-overlay" : undefined
-                } shadow-1-strong resultimg figure-img`}
+                } shadow-1-strong w-100 figure-img mb-1`}
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -51,7 +51,7 @@ export default function BookFigure(props: Props) {
 
             <figcaption
                 className={`figure-caption text-wrap border rounded-7 rounded-top border-dark
-            border-top-0 basic-container-alt pt-1 bookcaption flex-grow-1 d-flex flex-column text-color`}
+            border-top-0 basic-container-alt pt-1 w-100 flex-grow-1 d-flex flex-column text-color`}
                 style={{ fontSize: "1rem" }}
             >
                 <div className="d-flex flex-wrap">
@@ -67,7 +67,9 @@ export default function BookFigure(props: Props) {
                     <Break />
                     <p className="mx-2 mb-2">
                         <strong>Arquivo: </strong>
-                        {book.extension.toUpperCase()}, {book.size}
+                        {book.extension
+                            ? book.extension.toUpperCase()
+                            : null}, {book.size}
                     </p>
                     <Break />
                 </div>

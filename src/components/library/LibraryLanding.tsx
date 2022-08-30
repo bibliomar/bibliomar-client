@@ -15,8 +15,6 @@ export default function LibraryLanding() {
     };
     const context: any = useOutletContext();
     const user = context["userInfo"];
-    const setProgress: React.Dispatch<React.SetStateAction<number>> =
-        context["setProgress"];
     const username = context["username"];
     return (
         <div className="d-flex flex-wrap justify-content-start justify-content-md-center mt-5 w-100">
@@ -25,7 +23,6 @@ export default function LibraryLanding() {
                 message="Para ler"
                 bookCategory={"to-read"}
                 booksInfo={user["to-read"]}
-                setProgress={setProgress}
             />
             <Break />
         </div>

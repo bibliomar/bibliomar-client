@@ -43,7 +43,6 @@ export default function LibraryParent() {
                     JSON.stringify(r)
                 );
                 setProgress(0);
-                console.log(r);
                 setUserInfo(r);
             });
         }
@@ -64,7 +63,7 @@ export default function LibraryParent() {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <Navbar activeItem="library" />
+                        <Navbar activeItem="library" badgeText="library" />
                     </div>
                 </div>
                 <div className="row">
@@ -73,7 +72,6 @@ export default function LibraryParent() {
                             <Outlet
                                 context={{
                                     userInfo: userInfo,
-                                    setProgress: setProgress,
                                     username: username,
                                 }}
                             />

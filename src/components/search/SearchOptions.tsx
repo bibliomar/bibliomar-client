@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { MDBCol, MDBCollapse, MDBTooltip } from "mdb-react-ui-kit";
 
 //@ts-ignore
 function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
@@ -47,7 +48,7 @@ function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
     }, [searchParams]);
 
     return (
-        <div className={hidden ? "visually-hidden" : undefined}>
+        <MDBCollapse show={!hidden}>
             <div className="row d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
                     <div id="searchcat">
@@ -66,11 +67,11 @@ function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
                                     setCategoryContext("any");
                                 }}
                             />
-                            <label htmlFor="searchcatany" className="mb-1">
-                                <abbr title="Mais lento">
+                            <MDBTooltip tag={"a"} title="Mais lento">
+                                <label htmlFor="searchcatany" className="mb-1">
                                     Todas <br />
-                                </abbr>
-                            </label>
+                                </label>
+                            </MDBTooltip>
                         </div>
                         <div className="form-check form-check">
                             <input
@@ -204,7 +205,7 @@ function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
                     />
                 </div>
             </div>
-        </div>
+        </MDBCollapse>
     );
 }
 

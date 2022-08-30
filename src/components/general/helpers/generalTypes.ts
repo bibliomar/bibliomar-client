@@ -43,14 +43,18 @@ interface MetadataProperties {
 interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
     // This is the basic schema of a book. It may include extra properties if it has metadata or if it's from a user's library.
     // Be sure to check if a property exists before using it.
-    series: string | null;
+    series?: string | null;
+
     title: string;
     authors: string;
-    language: string;
     md5: string;
     topic: string;
-    extension: string;
-    size: string;
+
+    language?: string | null;
+
+    extension?: string;
+    size?: string;
+
     // These values are not saved to a user's library.
     file?: string;
     mirror1?: string;

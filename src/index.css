@@ -24,7 +24,7 @@ abbr[title]:after
     height: auto;
 }
 
-.library-info-background{
+.simple-figure-bg{
     cursor: text;
     position: absolute;
     bottom: 0;
@@ -37,13 +37,7 @@ abbr[title]:after
 
 }
 
-.library-info-text-container{
-
-
-
-}
-
-.library-info-text{
+.simple-figure-text{
     font-family: 'Nunito Sans', sans-serif;
 }
 
@@ -105,24 +99,16 @@ abbr[title]:after
     width: 90vw;
 }
 
-.resultimg {
+.result-div{
     width: 90vw;
     max-height: 100%;
     min-height: fit-content;
 }
 
-.recommendation{
-    width: 40vw;
-    margin-right: 5px;
-}
 
-.recommendation-caption{
-    width: 40vw;
-}
 
-.recommendation-button{
-    width: 35vw;
-    height: auto;
+.recommendation-figure{
+    width: 45%;
 }
 
 .library-section-container{
@@ -157,10 +143,6 @@ abbr[title]:after
 .book-info-badge{
     font-size: .9rem !important;
     background: #8B7CF1 !important;
-}
-
-.bookcaption {
-    width: 90vw;
 }
 
 .book-item{
@@ -248,24 +230,12 @@ abbr[title]:after
         width: 50%;
     }
 
-
-    .resultimg {
-        width: 23vw;
-        margin-right: 7px;
+    .result-div{
+        width: 20vw;
     }
 
-    .recommendation{
-        width: 12vw;
-        margin-right: 5px;
-    }
-
-    .recommendation-caption{
-        width: 12vw;
-    }
-
-    .recommendation-button{
-        width: 11vw;
-        height: auto;
+    .recommendation-figure{
+        width: 20%;
     }
 
     .recommendation-div{

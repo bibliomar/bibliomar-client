@@ -60,8 +60,8 @@ export default function Bibliomar() {
 
         import(
             theme === ThemeOptions.light
-                ? "./mdb-ui-kit/css/mdb.min.css?inline"
-                : "./mdb-ui-kit/css/mdb.dark.min.css?inline"
+                ? "mdb-ui-kit/css/mdb.min.css?inline"
+                : "mdb-ui-kit/css/mdb.dark.min.css?inline"
         ).then((mdbCss) => {
             import(
                 theme === ThemeOptions.light
