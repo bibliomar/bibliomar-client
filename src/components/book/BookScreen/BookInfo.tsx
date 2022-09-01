@@ -15,7 +15,7 @@ interface Props {
 }
 
 export async function getMetadata(md5: string, topic: string) {
-    let reqUrl = `https://biblioterra.herokuapp.com/v1/metadata/${topic}/${md5}`;
+    let reqUrl = `https://biblioterra.herokuapp.com/v1/downloads/${topic}/${md5}`;
     try {
         let req = await axios.get(reqUrl);
         return req.data;
