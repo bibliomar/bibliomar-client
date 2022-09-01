@@ -132,7 +132,7 @@ export default function BookInfoScreen() {
         <div className="d-flex flex-column align-items-center">
             {bookInfo ? (
                 <div className="basic-container book-info-container mb-5">
-                    {size.width > 600 ? (
+                    {size.width > 768 ? (
                         <BookInfoDesktop
                             bookInfo={bookInfo}
                             setBookInfo={setBookInfo}

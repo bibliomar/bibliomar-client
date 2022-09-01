@@ -28,7 +28,6 @@ export default function ReaderCustomizeModal({
         setModalToggle!(!modalToggle);
     };
     const themeAccent = chooseThemeAccent(readerSettings.themeName);
-    const size: Size = useWindowSize();
 
     return (
         <MDBModal show={modalToggle} setShow={setModalToggle}>

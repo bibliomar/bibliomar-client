@@ -9,6 +9,8 @@ $accent-color: #7663F2;
 
 // bg for light theme is the default one
 
+
+
 .form-control{
   color: $text-color;
 }
@@ -16,6 +18,11 @@ $accent-color: #7663F2;
 .btn-primary{
   color: #FFFFFF;
   background-color: $accent-color !important;
+}
+
+.btn-outline-primary{
+  color: $accent-color !important;
+  border-color: $accent-color !important;
 }
 
 .recommendation-title{

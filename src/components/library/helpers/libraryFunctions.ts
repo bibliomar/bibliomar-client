@@ -1,37 +1,47 @@
-import { Book } from "../../general/helpers/generalTypes";
+import { Book, LibraryCategories } from "../../general/helpers/generalTypes";
 import { PossibleFilters } from "./libraryTypes";
 import Fuse from "fuse.js";
+import equal from "fast-deep-equal/es6";
 
 export const defaultFilters: PossibleFilters = {
-    format: undefined,
+    format: "any",
     isReading: false,
-    title: undefined,
-    authors: undefined,
+    title: "",
+    authors: "",
 };
-
+/* This function is responsible for filtering the books based on the filterContext.
+ *
+ *
+ * It should be run everytime a list of book is to be show to a user in the library. */
 export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
+    if (equal(filters, defaultFilters)) {
+        return books;
+    }
+
     let resultSet: Book[] = [];
 
-    if (filters.title || filters.authors) {
-        let fuseKeys = [];
-        if (filters.title) {
-            fuseKeys.push(filters.title);
-        }
-        if (filters.authors) {
-            fuseKeys.push(filters.authors);
-        }
-
-        const fuseOptions = {
-            keys: fuseKeys,
-        };
-
-        const fuse = new Fuse(books, fuseOptions);
+    if (filters.title !== "" || filters.authors !== "") {
+        const fuseKey = filters.title !== "" ? ["title"] : ["authors"];
+        const fuse = new Fuse(books, { keys: fuseKey });
         let searchResults: any[] = [];
-        if (filters.title) {
-            searchResults = [...searchResults, ...fuse.search(filters.title)];
+        if (filters.title !== "") {
+            const fuseSearch = fuse.search(filters.title);
+            let fuseResults: any[] = [];
+            fuseSearch.forEach((el) => {
+                fuseResults.push(el.item);
+            });
+
+            searchResults = [...searchResults, ...fuseResults];
         }
-        if (filters.authors) {
-            searchResults = [...searchResults, ...fuse.search(filters.authors)];
+
+        if (filters.authors !== "") {
+            const fuseSearch = fuse.search(filters.authors);
+            let fuseResults: any[] = [];
+            fuseSearch.forEach((el) => {
+                fuseResults.push(el.item);
+            });
+
+            searchResults = [...searchResults, ...fuseResults];
         }
 
         resultSet = searchResults;
@@ -48,7 +58,8 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
             ),
         ];
     }
-    if (filters.format) {
+
+    if (filters.format !== "any") {
         resultSet = [
             ...resultSet,
             ...books.filter(
@@ -60,5 +71,21 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
         ];
     }
 
+    console.log(resultSet);
+
     return resultSet;
+}
+
+/* This function is responsible for adding the relevant category property on the books in a book list.
+ *
+ *
+ * It should be run everytime a list of book is to be show to a user in the library. */
+export function bookCategorySetter(
+    books: Book[],
+    bookCategory: LibraryCategories
+) {
+    return books.map((book) => {
+        book.category = bookCategory;
+        return book;
+    });
 }

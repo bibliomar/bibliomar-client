@@ -28,7 +28,7 @@ export default function LibraryBookFigure(props: Props) {
         return () => {
             clearTimeout(coverSetTimeout);
         };
-    }, []);
+    }, [props.book]);
 
     return (
         <div

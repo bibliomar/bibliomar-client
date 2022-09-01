@@ -10,7 +10,6 @@ import { Theme } from "../../general/helpers/generalContext";
 interface Props {
     result: Book;
     timeout: number;
-    lastElement: boolean;
 }
 
 export default function BookFigure(props: Props) {

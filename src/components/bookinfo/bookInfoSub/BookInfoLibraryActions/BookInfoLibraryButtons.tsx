@@ -4,7 +4,7 @@ import { Book, LibraryCategories } from "../../../general/helpers/generalTypes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "../../../general/helpers/generalContext";
-import { addBookToLibrary } from "../../helpers/bookInfoFunctions";
+import { addBookToLibrary } from "../../../general/helpers/generalFunctions";
 
 interface Props {
     book: Book;

@@ -11,7 +11,7 @@ interface Props {
 export default function SearchResults(props: Props) {
     function addBreak(i: number) {
         if (i % 3 === 0) {
-            return <Break key={i + 1} />;
+            return <Break key={i * Math.random() * 100} />;
         }
     }
 
@@ -33,8 +33,7 @@ export default function SearchResults(props: Props) {
                             <BookFigure
                                 result={ele}
                                 timeout={timeout}
-                                lastElement={i + 1 === props.results.length}
-                                key={i}
+                                key={i * Math.random() * 100}
                             />
                         );
                     })}

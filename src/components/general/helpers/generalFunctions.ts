@@ -1,13 +1,12 @@
-import { Book, UserLibrary } from "./generalTypes";
+import { Book, LibraryCategories, UserLibrary } from "./generalTypes";
 import { NavigateFunction } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 
 const getOnlineCover = async (md5: string) => {
     let reqUrl = `${backendUrl}/v1/cover/${md5}`;
-    let request;
     try {
-        request = await axios.get(reqUrl);
+        const request = await axios.get(reqUrl);
         sessionStorage.setItem(`${md5}-cover`, request?.data);
         return request?.data;
     } catch (e: any) {
@@ -106,4 +105,60 @@ export const findBookInLibrary = async (md5: string) => {
     return foundBook as Book | null;
 };
 
+export async function removeBookFromLibrary(
+    bookToRemove: Book | Book[],
+    jwtToken: string
+) {
+    let md5List = [];
+
+    if (Array.isArray(bookToRemove)) {
+        bookToRemove.forEach((book) => md5List.push(book.md5));
+    } else {
+        md5List.push(bookToRemove.md5);
+    }
+
+    const config = {
+        url: `${backendUrl}/v1/library/remove`,
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${jwtToken}`,
+        },
+        data: md5List,
+    };
+    const req = await axios.request(config);
+    console.log(req);
+}
+
+export async function addBookToLibrary(
+    bookToAdd: Book | Book[],
+    jwtToken: string,
+    category: LibraryCategories
+) {
+    if (Array.isArray(bookToAdd)) {
+        bookToAdd = bookToAdd.map((book) => {
+            if (Object.hasOwn(book, "category")) {
+                book.category = category;
+            }
+            return book;
+        });
+    } else {
+        if (Object.hasOwn(bookToAdd, "category")) {
+            bookToAdd.category = category;
+        }
+    }
+
+    const req_body = Array.isArray(bookToAdd) ? bookToAdd : [bookToAdd];
+    const config = {
+        url: `${backendUrl}/v1/library/add/${category}`,
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${jwtToken}`,
+        },
+        data: req_body,
+    };
+    const req = await axios.request(config);
+    console.log(req);
+}
+
+// @ts-ignore
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;

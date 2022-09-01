@@ -13,7 +13,7 @@ Essa versão só pode ser visualizada em preview, já que o leitor não se encon
 ##### Versão 2.0 - Em andamento:  
 
 - Temas, agora o aplicativo possui temas claros e escuros, assim como leitor, ‘design’ por [Mateus Prado].  
-- Tela de informações dos livros completamente refeita, agradecimentos ao [Mateus Prado]
+- Tela de informações dos livros completamente refeita, agradecimentos ao [Mateus Prado].  
 - Agora a tela de mais informações dos livros é totalmente independente da biblioteca e da pesquisa, ou seja, você pode
 compartilhar o link de um livro diretamente, e novas informações exclusivas serão carregadas pra ele.
 
@@ -26,4 +26,5 @@ Isso é bom, pois agora o código está mais sucinto.
 - Agora, ao entrar na URL de um livro no Bibliomar Reader, caso o leitor não encontre um arrayBuffer salvo (nos casos em que o usuario fecha o navegador e retorna a mesma URL) o leitor automaticamente irá tentar
 recuperar o livro da lista de livros salvos do usuario.
 - Bibliomar (o backend) agora é hospedado na [fly.io](https://fly.io)
-- 
+- Agora é possível filtrar os livros na biblioteca.
+- Agora é possível mover e remover vários livros de uma vez na biblioteca

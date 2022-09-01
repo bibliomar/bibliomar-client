@@ -14,6 +14,11 @@ $accent-color: #7663F2;
   background-color: $accent-color !important;
 }
 
+.btn-outline-primary{
+  color: $accent-color !important;
+  border-color: $accent-color !important;
+}
+
 .bg-alt{
   background-image: url("/assets/img/back-lg-2.svg");
 }

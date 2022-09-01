@@ -5,9 +5,39 @@ import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 import { getUserInfo } from "../general/helpers/generalFunctions";
+import { Filters, EditMode, SelectedBooks } from "./helpers/libraryContext";
+import {
+    EditModeContext,
+    FiltersContext,
+    PossibleFilters,
+    SelectedBooksContext,
+} from "./helpers/libraryTypes";
+import { bookFiltering, defaultFilters } from "./helpers/libraryFunctions";
+import { Book, UserLibrary } from "../general/helpers/generalTypes";
 
 export default function LibraryParent() {
-    const [userInfo, setUserInfo] = useState<any>(undefined);
+    const [filters, setFilters] = useState<PossibleFilters>(defaultFilters);
+    const filtersContext: FiltersContext = {
+        filters: filters,
+        setFilters: setFilters,
+    };
+
+    const [selectedBooks, setSelectedBooks] = useState<Book[]>([]);
+    const selectedBooksContext: SelectedBooksContext = {
+        selectedBooks: selectedBooks,
+        setSelectedBooks: setSelectedBooks,
+    };
+    console.log(selectedBooks);
+
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const editModeContext: EditModeContext = {
+        editMode: editMode,
+        setEditMode: setEditMode,
+    };
+
+    const [userInfo, setUserInfo] = useState<UserLibrary | undefined>(
+        undefined
+    );
     const [progress, setProgress] = useState<number>(0);
     const navigate = useNavigate();
     const token = localStorage.getItem("jwt-token") as string;
@@ -38,15 +68,19 @@ export default function LibraryParent() {
             setUserInfo(undefined);
             setProgress(60);
             getUserInfo(token, navigate).then((r) => {
-                sessionStorage.setItem(
-                    `${decoded_token.sub}-user`,
-                    JSON.stringify(r)
-                );
-                setProgress(0);
-                setUserInfo(r);
+                if (r) {
+                    sessionStorage.setItem(
+                        `${decoded_token.sub}-user`,
+                        JSON.stringify(r)
+                    );
+                    setProgress(0);
+                    setUserInfo(r);
+                } else {
+                    navigate("/error");
+                }
             });
         }
-    }, [progress]);
+    }, []);
 
     return (
         <div className="like-body bg-alt">
@@ -69,12 +103,20 @@ export default function LibraryParent() {
                 <div className="row">
                     <div className="col">
                         {userInfo != null ? (
-                            <Outlet
-                                context={{
-                                    userInfo: userInfo,
-                                    username: username,
-                                }}
-                            />
+                            <EditMode.Provider value={editModeContext}>
+                                <SelectedBooks.Provider
+                                    value={selectedBooksContext}
+                                >
+                                    <Filters.Provider value={filtersContext}>
+                                        <Outlet
+                                            context={{
+                                                userInfo: userInfo,
+                                                username: username,
+                                            }}
+                                        />
+                                    </Filters.Provider>
+                                </SelectedBooks.Provider>
+                            </EditMode.Provider>
                         ) : (
                             <BlankLoadingSpinner />
                         )}

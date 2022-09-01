@@ -59,10 +59,17 @@ export default function RecommendationScreen(props: Props) {
                                     ? (timeout = 1000)
                                     : (timeout = i * 1000);
                                 return (
-                                    <RecommendationBookFigure
-                                        book={el}
-                                        timeout={timeout}
-                                    />
+                                    <>
+                                        {i % 4 === 0 ? (
+                                            <Break desktop />
+                                        ) : i % 2 === 0 ? (
+                                            <Break mobile />
+                                        ) : null}
+                                        <RecommendationBookFigure
+                                            book={el}
+                                            timeout={timeout}
+                                        />
+                                    </>
                                 );
                             })}
                         </div>

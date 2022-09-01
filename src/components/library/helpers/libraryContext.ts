@@ -1,18 +1,26 @@
 import { createContext } from "react";
-import { FiltersContext, PossibleFilters } from "./libraryTypes";
+import {
+    EditModeContext,
+    FiltersContext,
+    PossibleFilters,
+    SelectedBooksContext,
+} from "./libraryTypes";
 import { defaultFilters } from "./libraryFunctions";
 
-const EditMode = createContext<boolean>(false);
+const EditMode = createContext<EditModeContext>({
+    editMode: false,
+    setEditMode: () => {},
+});
+
+// Must only be used when EditMode is enabled.
+const SelectedBooks = createContext<SelectedBooksContext>({
+    selectedBooks: [],
+    setSelectedBooks: () => {},
+});
+
 const Filters = createContext<FiltersContext>({
     filters: defaultFilters,
     setFilters: () => {},
 });
 
-// How will filtering work??
-/*
-  - leitura iniciada
-  - de formato
-  - titulo
- */
-
-export { EditMode, Filters };
+export { EditMode, SelectedBooks, Filters };

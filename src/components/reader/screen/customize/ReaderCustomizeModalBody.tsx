@@ -165,7 +165,7 @@ export default function ReaderCustomizeModalBody({
                 <h4 className="ms-2 mt-1">
                     <MDBIcon
                         fas
-                        icon={size.width > 600 ? "desktop" : "mobile-alt"}
+                        icon={size.width > 768 ? "desktop" : "mobile-alt"}
                         size={"lg"}
                         className={"me-3"}
                     />
