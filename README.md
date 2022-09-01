@@ -4,6 +4,9 @@
 
 Sua suíte completa de leitura: pesquise, baixe e leia livros gratuitamente.
 
+<p align="center">
+  <img src="./images/bibliomar-search-full.png">
+</p>
 
 ### Português
 ## Do que se trata?
