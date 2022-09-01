@@ -3,16 +3,11 @@ import BookCover from "./BookCover";
 import { useEffect, useRef, useState } from "react";
 import BookInfo from "./BookInfo";
 import BookFooter from "./BookFooter";
-import Navbar from "../../general/Navbar";
-import Break from "../../general/Break";
-
-type Book = {
-    [key: string]: string;
-};
+import { Book } from "../../../helpers/types";
 
 export default function BookScreen() {
     let navigate = useNavigate();
-    const [bookInfo, setBookInfo] = useState<Book>({});
+    const [bookInfo, setBookInfo] = useState<Book | undefined>(undefined);
     const topic = useOutletContext() as string;
     const params = useParams();
     const md5 = params.md5;
@@ -34,7 +29,7 @@ export default function BookScreen() {
         <div className="d-flex flex-wrap justify-content-center">
             <section className="ms-lg-5 w-75">
                 <div className="row">
-                    {Object.entries(bookInfo).length > 0 ? (
+                    {bookInfo ? (
                         <>
                             <BookCover md5={md5!} />
                             <BookInfo
