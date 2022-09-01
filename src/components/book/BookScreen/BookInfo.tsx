@@ -44,12 +44,6 @@ export default function BookInfo(props: Props) {
                     setBookError(true);
                     return;
                 }
-                if (r["description"] == null) {
-                    setDescription("Sem descrição.");
-                } else {
-                    setDescription(r["description"]);
-                }
-                console.log(r);
                 setDownloadLinks(r);
                 return;
             }
