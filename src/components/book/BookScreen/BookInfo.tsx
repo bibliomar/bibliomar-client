@@ -40,7 +40,7 @@ export default function BookInfo(props: Props) {
         let ignore = false;
         getMetadata(props.md5, props.topic).then((r) => {
             if (!ignore) {
-                if (r == null || r["download_links"] == null) {
+                if (r == null) {
                     setBookError(true);
                     return;
                 }
@@ -49,6 +49,7 @@ export default function BookInfo(props: Props) {
                 } else {
                     setDescription(r["description"]);
                 }
+                console.log(r);
                 setDownloadLinks(r);
                 return;
             }
