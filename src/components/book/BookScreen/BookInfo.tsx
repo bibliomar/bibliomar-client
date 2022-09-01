@@ -49,7 +49,7 @@ export default function BookInfo(props: Props) {
                 } else {
                     setDescription(r["description"]);
                 }
-                setDownloadLinks(r["download_links"]);
+                setDownloadLinks(r);
                 return;
             }
         });
