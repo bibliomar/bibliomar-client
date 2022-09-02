@@ -62,7 +62,6 @@ export default function ReaderCustomizeModalBody({
         localStorage.removeItem("reader-theme");
         navigate(0);
     };
-    console.log(formik.values);
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className="d-flex flex-wrap">
@@ -72,9 +71,12 @@ export default function ReaderCustomizeModalBody({
                 </h4>
                 <Break className="mb-4" />
                 <div className="d-flex">
-                    {Object.values(themeColorsObject).map((el) => {
+                    {Object.values(themeColorsObject).map((el, index) => {
                         return (
-                            <div className="d-flex flex-wrap justify-content-center">
+                            <div
+                                className="d-flex flex-wrap justify-content-center"
+                                key={index}
+                            >
                                 <label
                                     className="basic-text"
                                     htmlFor="themeName"
@@ -222,7 +224,9 @@ export default function ReaderCustomizeModalBody({
                         </div>
 
                         <Break className="mb-5" />
-                        <label htmlFor={"swipe"}>Deslizável</label>
+                        <label htmlFor={"swipe"} className="basic-text">
+                            Deslizável
+                        </label>
                         <Break />
                         <MDBSwitch
                             name={"swipe"}

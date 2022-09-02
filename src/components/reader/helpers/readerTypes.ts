@@ -25,9 +25,6 @@ export interface PossibleReaderLandingState {
  * url corresponds to IPFS.io and secondaryUrl to Pinata.
  */
 export interface ReaderDownloaderProps {
-    userLoggedIn: boolean;
-    url: string;
-    secondaryUrl?: string;
     bookInfo: Book;
     savedBooks?: SavedBooks;
 }

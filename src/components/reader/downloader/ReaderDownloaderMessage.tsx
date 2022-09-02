@@ -4,7 +4,6 @@ interface Props {
     downloadProgress: number;
     downloadStatus: number;
     downloadSize: number;
-    failedFirstAttempt: boolean;
     userLoggedIn: boolean;
 }
 
@@ -12,35 +11,36 @@ export default function ({
     downloadProgress,
     downloadStatus,
     downloadSize,
-    failedFirstAttempt,
     userLoggedIn,
 }: Props) {
     const renderBasedOnStatus = () => {
         if (downloadStatus === 0) {
-            return failedFirstAttempt ? (
-                <span>
-                    Tentando conexão com o servidor secondário de download...
-                </span>
-            ) : (
-                <span>Aguardando para iniciar seu download...</span>
-            );
+            return <span>Preparando-se para iniciar seu download...</span>;
         }
         // Else...
         switch (downloadStatus) {
             case 103:
                 return (
-                    <span>
-                        {failedFirstAttempt
-                            ? "Entrando em contato com o servidor de download secundário..."
-                            : "Entrando em contato com o servidor de download..."}
-                    </span>
+                    <>
+                        <p>
+                            Estamos baixando seu arquivo em nossos servidores...
+                        </p>
+                    </>
                 );
             case 200:
                 return (
-                    <span>
-                        Seu livro foi baixado e já estamos salvando na sua lista
-                        para você ler quando quiser!
-                    </span>
+                    <>
+                        <span>
+                            Seu livro foi baixado e já estamos salvando na sua
+                            lista para você ler quando quiser!
+                        </span>
+                        <Break />
+                        <span>
+                            Nota: Seu arquivo já foi excluido dos nossos
+                            servidores, e não salvamos nenhuma informação sobre
+                            ele ;)
+                        </span>
+                    </>
                 );
             case 201:
                 return (

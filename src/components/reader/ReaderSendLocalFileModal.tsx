@@ -20,7 +20,10 @@ interface Props {
     setModalToggle: any;
 }
 
-export default function ({ modalToggle, setModalToggle }: Props) {
+export default function ReaderSendLocalFileModal({
+    modalToggle,
+    setModalToggle,
+}: Props) {
     const [bookFile, setBookFile] = useState<File | null>(null);
     const [invalidFile, setInvalidFile] = useState<boolean>(false);
     const navigate = useNavigate();

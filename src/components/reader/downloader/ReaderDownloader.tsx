@@ -4,10 +4,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ReaderDownloaderMessage from "./ReaderDownloaderMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import fileToArrayBuffer from "file-to-array-buffer";
-import { Book } from "../../general/helpers/generalTypes";
 import { useNavigate } from "react-router-dom";
-import ReaderBookOnList from "./ReaderBookOnList";
-import { saveBookLocally, updateBookLocally } from "../helpers/readerFunctions";
+import { saveBookLocally } from "../helpers/readerFunctions";
 import localforage from "localforage";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
@@ -15,19 +13,19 @@ import {
     PossibleReaderScreenState,
     ReaderDownloaderProps,
 } from "../helpers/readerTypes";
+import { backendUrl } from "../../general/helpers/generalFunctions";
+import { Auth } from "../../general/helpers/generalContext";
 
 export default function ReaderDownloader({
     savedBooks,
-    userLoggedIn,
-    url,
-    secondaryUrl,
     bookInfo,
 }: ReaderDownloaderProps) {
-    console.log("downloader");
-    const navigate = useNavigate();
+    console.log("Welcome to Bibliomar's downloader!");
+    console.log("Rest assured, your books are not saved in our servers.");
 
-    const [failedFirstAttempt, setFailedFirstAttempt] =
-        useState<boolean>(false);
+    const navigate = useNavigate();
+    const authContext = useContext(Auth);
+    const userLoggedIn = authContext.userLogged;
 
     //Should be in KB.
     //KB = Byte * 1000
@@ -36,13 +34,13 @@ export default function ReaderDownloader({
     const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
 
-    const downloadBook = async (requestUrl: string) => {
+    const downloadBook = async () => {
         const config: AxiosRequestConfig = {
-            url: requestUrl,
+            url: `${backendUrl}/v1/temp-download/${bookInfo.topic}/${bookInfo.md5}`,
             method: "GET",
             responseType: "blob",
-            // Equals to 120 seconds.
-            timeout: 120000,
+            // Equals to 300 seconds.
+            timeout: 300000,
 
             onDownloadProgress: (evt) => {
                 //Transforms sizes from bytes to kb.
@@ -63,10 +61,18 @@ export default function ReaderDownloader({
         try {
             setDownloadStatus(103);
             let req: AxiosResponse = await axios.request(config);
-            console.log(req);
+            const blobData: Blob = req.data;
+            if (!blobData.type.includes("epub")) {
+                setDownloadStatus(403);
+                setTimeout(() => {
+                    navigate(-1);
+                }, 4000);
+                return;
+            } else {
+                setDownloadStatus(200);
+            }
 
-            setDownloadStatus(200);
-            const arrayBuffer = await fileToArrayBuffer(req.data);
+            const arrayBuffer = await fileToArrayBuffer(blobData);
             await saveBookLocally(arrayBuffer, bookInfo);
             // Saves current time in last-download, so we can define the last time the user has made a download.
             await localforage.setItem("last-download", new Date());
@@ -75,20 +81,19 @@ export default function ReaderDownloader({
                 onlineFile: bookInfo,
                 localFile: undefined,
             };
-            navigate(`/reader/${bookInfo.md5}`, {
-                state: readerScreenState,
-                replace: true,
-            });
+
+            setTimeout(() => {
+                navigate(`/reader/${bookInfo.md5}`, {
+                    state: readerScreenState,
+                    replace: true,
+                });
+            }, 3000);
         } catch (e: any) {
             console.error(e);
             setDownloadStatus(e.response ? e.response.status : 500);
             setTimeout(() => {
-                if (!failedFirstAttempt) {
-                    setFailedFirstAttempt(true);
-                } else {
-                    location.reload();
-                }
-            }, 2000);
+                location.reload();
+            }, 3000);
             return;
         }
     };
@@ -97,7 +102,7 @@ export default function ReaderDownloader({
         //For strict mode double mounting...
         let ignore = false;
 
-        if (!ignore && url) {
+        if (!ignore) {
             /*
             In minutes.
             If the user is logged, 1 minute restriction.
@@ -106,20 +111,21 @@ export default function ReaderDownloader({
             const downloadTimeLimit = userLoggedIn ? 1 : 5;
             /*
             In seconds.
-            We wait for 15 seconds minimum because otherwise it could result in blocks from the servers.
+            We wait for 30 seconds minimum because otherwise it could result in blocks from the servers.
              */
-            const minDownloadTimeLimit = 15;
+            const minDownloadTimeLimit = 30;
 
             /*
             In MB.
             If the user is logged, he can download up to 15mb.
             If it's not, 5mb.
              */
+
             const downloadSizeLimit = userLoggedIn ? 15 : 5;
             // If it's more than ~20, it's probably in Kb.
-            const fileSize = Number.parseInt(bookInfo.size);
-            const sizeInMb = bookInfo.size.includes("Mb");
-            const sizeInGb = bookInfo.size.includes("Gb");
+            const fileSize = Number.parseInt(bookInfo.size!);
+            const sizeInMb = bookInfo.size?.includes("Mb");
+            const sizeInGb = bookInfo.size?.includes("Gb");
 
             if (sizeInGb) {
                 setDownloadStatus(413);
@@ -148,18 +154,10 @@ export default function ReaderDownloader({
                             setDownloadStatus(401);
                             return;
                         } else {
-                            downloadBook(
-                                failedFirstAttempt && secondaryUrl
-                                    ? secondaryUrl
-                                    : url
-                            ).then();
+                            downloadBook().then();
                         }
                     } else {
-                        downloadBook(
-                            failedFirstAttempt && secondaryUrl
-                                ? secondaryUrl
-                                : url
-                        ).then();
+                        downloadBook().then();
                     }
                 });
         }
@@ -167,25 +165,27 @@ export default function ReaderDownloader({
         return () => {
             ignore = true;
         };
-    }, [failedFirstAttempt]);
+    }, []);
 
     return (
         <div className="d-flex flex-wrap justify-content-center w-100">
-            <div className="basic-container p-3">
+            <div className="basic-container d-flex flex-wrap justify-content-center p-3">
                 <BlankLoadingSpinner />
                 <Break />
                 <ReaderDownloaderMessage
                     downloadProgress={downloadProgress}
                     downloadStatus={downloadStatus}
                     downloadSize={downloadSize}
-                    failedFirstAttempt={failedFirstAttempt}
                     userLoggedIn={userLoggedIn}
                 />
                 <Break />
                 <span className="text-center text-muted mt-4">
                     Dica: Isso pode demorar um pouco, você pode trocar de aba
-                    enquanto aguarda. Nós reiniciamos o download automaticamente
-                    em caso de erro.
+                    enquanto aguarda.
+                </span>
+                <Break />
+                <span className="text-center text-muted mt-2">
+                    Nós reiniciamos o download automaticamente em caso de erro.
                 </span>
             </div>
         </div>

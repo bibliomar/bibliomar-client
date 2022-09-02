@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Search from "./components/search/Search";
 import BookInfoError from "./components/bookinfo/BookInfoError";
@@ -14,6 +14,7 @@ import ReaderMain from "./components/reader/screen/ReaderMain";
 import BookInfoParent from "./components/bookinfo/BookInfoParent";
 import BookInfoScreen from "./components/bookinfo/BookInfoScreen";
 import BookInfoTopicParent from "./components/bookinfo/BookInfoTopicParent";
+import { LibraryCategories } from "./components/general/helpers/generalTypes";
 
 function App() {
     return (
@@ -35,7 +36,7 @@ function App() {
                     element={
                         <LibraryExpandedScreen
                             message={"Lendo"}
-                            bookCategory={"reading"}
+                            bookCategory={LibraryCategories.reading}
                         />
                     }
                 />
@@ -44,7 +45,7 @@ function App() {
                     element={
                         <LibraryExpandedScreen
                             message={"Planejando ler"}
-                            bookCategory={"to-read"}
+                            bookCategory={LibraryCategories.toRead}
                         />
                     }
                 />
@@ -53,7 +54,7 @@ function App() {
                     element={
                         <LibraryExpandedScreen
                             message={"Backlog"}
-                            bookCategory={"backlog"}
+                            bookCategory={LibraryCategories.backlog}
                         />
                     }
                 />

@@ -3,21 +3,27 @@ import LibrarySection from "./LibrarySection";
 import Break from "../general/Break";
 import LibraryNavbar from "./LibraryNavbar";
 import React from "react";
+import {
+    LibraryCategories,
+    UserLibrary,
+} from "../general/helpers/generalTypes";
 
 interface Props {
     message: string;
-    bookCategory: string;
+    bookCategory: LibraryCategories;
 }
 
 export default function (props: Props) {
     const context: any = useOutletContext();
-    const user = context["userInfo"];
+    const user: UserLibrary = context["userInfo"];
     const setProgress: React.Dispatch<React.SetStateAction<number>> =
         context["setProgress"];
     const username = context["username"];
     return (
         <div className="d-flex flex-wrap justify-content-center mt-5 w-100">
-            {username ? <LibraryNavbar username={username} /> : null}
+            {username ? (
+                <LibraryNavbar userLibrary={user} username={username} />
+            ) : null}
             <Break />
             <LibrarySection
                 expanded

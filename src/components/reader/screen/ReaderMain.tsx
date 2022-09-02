@@ -111,8 +111,8 @@ export default function ReaderMain() {
             setInitialLoadDone(true);
         }
     };
-    // Title side effect
 
+    // Title side effect
     useEffect(() => {
         if (onlineFile || localFile) {
             document.title = `${
@@ -223,7 +223,6 @@ export default function ReaderMain() {
     // Theming side effects
     useEffect(() => {}, []);
 
-    // @ts-ignore
     return (
         <>
             <div
@@ -238,8 +237,8 @@ export default function ReaderMain() {
                 <div
                     className="bg-alt"
                     style={{
-                        maxHeight: readerSettings.fullscreen ? "0" : "8vh",
-                        minHeight: readerSettings.fullscreen ? "0" : "8vh",
+                        maxHeight: readerSettings.fullscreen ? "0" : "9vh",
+                        minHeight: readerSettings.fullscreen ? "0" : "9vh",
                     }}
                 >
                     <ReaderNavbar

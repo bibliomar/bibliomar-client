@@ -3,9 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
-import ReaderSendModal from "./ReaderSendModal";
+import ReaderSendLocalFileModal from "./ReaderSendLocalFileModal";
 import ReaderDownloader from "./downloader/ReaderDownloader";
-import ReaderSavedBooksScreen from "./saved-deprecated/ReaderSavedBooksScreen";
 import localforage from "localforage";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 import {
@@ -75,7 +74,7 @@ export default function ReaderLanding() {
         <div className="like-body bg-alt">
             <div className="container">
                 <Portal node={document.getElementById("modal-root")}>
-                    <ReaderSendModal
+                    <ReaderSendLocalFileModal
                         modalToggle={modalToggle}
                         setModalToggle={setModalToggle}
                     />
@@ -93,13 +92,6 @@ export default function ReaderLanding() {
                 {landingState ? (
                     bookOnListRetrieved ? (
                         <ReaderDownloader
-                            userLoggedIn={authContext.userLogged}
-                            url={landingState.url}
-                            secondaryUrl={
-                                landingState.secondaryUrl
-                                    ? landingState.secondaryUrl
-                                    : undefined
-                            }
                             bookInfo={landingState.bookInfo}
                             savedBooks={savedBooks}
                         />

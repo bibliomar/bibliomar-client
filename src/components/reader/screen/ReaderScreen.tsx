@@ -37,7 +37,7 @@ export default function ReaderScreen({
                 height: "100%",
                 minHeight: "100%",
                 width: "100%",
-                top: readerSettings.fullscreen ? "0" : "8vh",
+                top: readerSettings.fullscreen ? "0" : "9vh",
                 position: "absolute",
                 backgroundColor: "black",
             }}

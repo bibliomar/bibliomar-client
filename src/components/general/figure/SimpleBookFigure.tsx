@@ -27,11 +27,11 @@ export default function SimpleBookFigure({
                     editModeContext.setEditMode(
                         (prevEditMode) => !prevEditMode
                     );
+                    handleCheckboxChange();
                 }
-                handleCheckboxChange();
             }
         },
-        { detect: LongPressDetectEvents.TOUCH }
+        { detect: LongPressDetectEvents.BOTH }
     );
 
     const editModeContext = useContext(EditMode);
