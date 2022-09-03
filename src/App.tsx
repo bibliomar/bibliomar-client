@@ -14,6 +14,7 @@ import LibraryLanding from "./components/library/main/LibraryLanding";
 import LibraryExpandedScreen from "./components/library/expanded/LibraryExpandedScreen";
 
 function App() {
+    console.log("Welcome to Bibliomar v0.5");
     return (
         <Routes>
             <Route path="*" element={<Error404 />} />
