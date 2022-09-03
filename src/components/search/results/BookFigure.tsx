@@ -4,10 +4,7 @@ import axios from "axios";
 import { MDBBtn, MDBRipple, MDBSpinner } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
-
-type Book = {
-    [key: string]: any;
-};
+import { Book } from "../../../helpers/types";
 
 interface Props {
     result: Book;
