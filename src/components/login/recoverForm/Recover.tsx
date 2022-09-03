@@ -29,7 +29,7 @@ export default function Recover() {
                     message="Recuperação de Conta"
                 />
                 <Break />
-                <div className="bg-black p-3 rounded-3 bg-opacity-25 w-75">
+                <div className="bg-black p-3 rounded-3 bg-opacity-25 login-form-container">
                     {recoverable && token !== "" ? (
                         <Recoverable token={token} />
                     ) : (

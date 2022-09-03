@@ -5,7 +5,7 @@ export default function Footer() {
     const width = useWindowSize().width;
 
     return (
-        <div className="navbar-bg footer-container w-100 d-flex flex-column justify-content-center mt-5">
+        <div className="navbar-bg footer-container w-100 d-flex flex-column justify-content-center mt-auto">
             <div className="d-flex align-content-center w-100 h-100">
                 <div>
                     <Link
@@ -23,7 +23,7 @@ export default function Footer() {
                         <span className={"basic-text"}>FAQ</span>
                     </Link>
                 </div>
-                {width > 768 && (
+                {width > 767 && (
                     <span className="ms-auto me-auto">
                         <strong>Bibliomar</strong> - Genuinamente brasileiro.
                     </span>

@@ -24,6 +24,7 @@ export default function LibraryLanding() {
             {username ? (
                 <LibraryNavbar userLibrary={user} username={username} />
             ) : null}
+            <Break />
             <LibraryRow
                 title="Lendo"
                 message={"Para livros que você está lendo agora"}

@@ -48,6 +48,14 @@ abbr[title]:after
     font-size: 1.6rem;
 }
 
+.about-first-text-container{
+    width: 80%;
+}
+
+.about-first-img-container{
+    width: 80%;
+}
+
 .library-checkbox-input{
     transform: scale(1.8);
 }
@@ -85,7 +93,9 @@ abbr[title]:after
     margin-top: 5vh;
 }
 
-
+.login-form-container{
+    width: 95%;
+}
 
 .searchfield {
     width: 75%;
@@ -119,8 +129,6 @@ abbr[title]:after
     max-height: 100%;
     min-height: fit-content;
 }
-
-
 
 .recommendation-figure{
     width: 45%;
@@ -245,12 +253,24 @@ abbr[title]:after
         width: 50%;
     }
 
+    .about-first-img-container{
+        width: 40%;
+    }
+
+    .about-first-text-container{
+        width: 50%;
+    }
+
     .result-div{
         width: 20vw;
     }
 
     .recommendation-figure{
         width: 20%;
+    }
+
+    .login-form-container{
+        width: 75%;
     }
 
     .recommendation-div{

@@ -5,19 +5,23 @@ import {
     MDBPopoverHeader,
 } from "mdb-react-ui-kit";
 import LibraryFilters from "./LibraryFilters";
-import React from "react";
+import React, { useState } from "react";
+import { useToggle } from "../../general/helpers/useToggle";
 
 export default function LibraryFilterToggle() {
+    const [active, toggleActive] = useToggle(false);
+
     return (
         <MDBPopover
             size={"lg"}
             btnChildren={
-                <>
-                    <MDBIcon fas icon="filter" size={"lg"} className="me-2" />
-                </>
+                <MDBIcon fas icon="filter" size={"lg"} className="me-2" />
             }
-            color={"none"}
-            btnClassName="btn-floating btn-outline-primary"
+            color={active ? "primary" : "none"}
+            onClick={toggleActive}
+            btnClassName={`btn-floating ${
+                active ? null : "btn-outline-primary"
+            }`}
             placement={"auto-start"}
         >
             <MDBPopoverHeader>Filtros</MDBPopoverHeader>

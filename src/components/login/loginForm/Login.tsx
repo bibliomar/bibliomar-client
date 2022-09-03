@@ -129,7 +129,7 @@ export default function Login() {
             <div className="d-flex flex-wrap justify-content-center">
                 <Bibliologo />
                 <Break className="mb-6" />
-                <div className="basic-container rounded-3 p-3 w-75">
+                <div className="basic-container rounded-3 p-3 login-form-container">
                     <AutoLoginMessage
                         autoLoginStatus={autoLoginStatus}
                         disabled={autoLoginStatus === 0}

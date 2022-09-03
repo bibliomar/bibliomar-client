@@ -16,21 +16,17 @@ interface Props {
 export default function (props: Props) {
     const context: any = useOutletContext();
     const user: UserLibrary = context["userInfo"];
-    const setProgress: React.Dispatch<React.SetStateAction<number>> =
-        context["setProgress"];
     const username = context["username"];
     return (
-        <div className="d-flex flex-wrap justify-content-center mt-5 w-100">
+        <div className="d-flex flex-wrap justify-content-start justify-content-md-center mt-5 w-100">
             {username ? (
                 <LibraryNavbar userLibrary={user} username={username} />
             ) : null}
             <Break />
             <LibrarySection
-                expanded
                 message={props.message}
                 bookCategory={props.bookCategory}
                 booksInfo={user[props.bookCategory]}
-                setProgress={setProgress}
             />
         </div>
     );

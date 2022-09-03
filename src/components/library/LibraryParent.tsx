@@ -1,6 +1,6 @@
 import Navbar from "../general/navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
@@ -14,8 +14,10 @@ import {
 } from "./helpers/libraryTypes";
 import { bookFiltering, defaultFilters } from "./helpers/libraryFunctions";
 import { Book, UserLibrary } from "../general/helpers/generalTypes";
+import { Auth } from "../general/helpers/generalContext";
 
 export default function LibraryParent() {
+    const authContext = useContext(Auth);
     const [filters, setFilters] = useState<PossibleFilters>(defaultFilters);
     const filtersContext: FiltersContext = {
         filters: filters,
@@ -39,15 +41,27 @@ export default function LibraryParent() {
     );
     const [progress, setProgress] = useState<number>(0);
     const navigate = useNavigate();
-    const token = localStorage.getItem("jwt-token") as string;
-    let decoded_token = jwt_decode(token) as JwtPayload;
+    let token: string | undefined = undefined;
+    if (authContext.userLogged) {
+        token = localStorage.getItem("jwt-token") as string;
+    }
+    let decoded_token: JwtPayload | undefined = undefined;
+    if (token) {
+        decoded_token = jwt_decode(token) as JwtPayload;
+    }
+
     let username = undefined;
     if (decoded_token) {
         username = decoded_token.sub;
     }
 
     useEffect(() => {
-        let decoded_token = jwt_decode(token) as JwtPayload;
+        if (!authContext.userLogged) {
+            navigate("/user/login");
+        }
+    }, [authContext.userLogged]);
+
+    useEffect(() => {
         if (token && decoded_token) {
             sessionStorage.removeItem(`${decoded_token.sub}-user`);
         }
@@ -69,7 +83,7 @@ export default function LibraryParent() {
             getUserInfo(token, navigate).then((r) => {
                 if (r) {
                     sessionStorage.setItem(
-                        `${decoded_token.sub}-user`,
+                        `${decoded_token!.sub}-user`,
                         JSON.stringify(r)
                     );
                     setProgress(0);

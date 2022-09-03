@@ -27,8 +27,11 @@ export default function LibraryRow({
 }: Props) {
     const filtersContext = useContext(Filters);
 
-    const onDefaultFilters = equal(filtersContext.filters, defaultFilters);
-    const books = useMemo<Book[]>(() => {
+    const onDefaultFilters = useMemo(() => {
+        return equal(filtersContext.filters, defaultFilters);
+    }, [filtersContext.filters]);
+
+    const books = useMemo(() => {
         return bookFiltering(
             bookCategorySetter(booksInfo, bookCategory),
             filtersContext.filters

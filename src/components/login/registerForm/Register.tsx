@@ -96,12 +96,12 @@ export default function Register() {
             <div className="d-flex flex-wrap justify-content-center">
                 <Bibliologo />
                 <Break className="mb-6" />
-                <div className="basic-container rounded-3 p-3 w-75">
+                <div className="basic-container rounded-3 p-3 login-form-container">
                     {registerStatus !== 0 ? (
                         <div>
                             {registerStatus === 103 ? (
                                 <div className="d-flex justify-content-center">
-                                    <span className="text-info text-center">
+                                    <span className="text-primary text-center">
                                         Enviando sua solicitação ao servidor...
                                     </span>
                                 </div>

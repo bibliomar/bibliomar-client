@@ -11,10 +11,10 @@ import {
     MDBNavbarNav,
     MDBNavbarToggler,
 } from "mdb-react-ui-kit";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import NavbarUser from "./NavbarUser";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Theme } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
@@ -37,6 +37,11 @@ export default function Navbar({ activeItem, badgeText }: Props) {
             navigate(`/search?category=any&q=${values.query}`);
         },
     });
+
+    const handleNavigate = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+        evt.preventDefault();
+        navigate(`${evt.currentTarget.name}`);
+    };
 
     return (
         <div className="navbar-bg p-0">
@@ -63,16 +68,20 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                         <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
                             <MDBNavbarItem className="mt-2 mt-md-0">
                                 <MDBNavbarLink
+                                    name="/about"
                                     active={activeItem === "about"}
                                     href="/about"
+                                    onClick={handleNavigate}
                                 >
                                     Sobre
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink
-                                    active={activeItem === "library"}
                                     href="/user/login"
+                                    name="/user/login"
+                                    active={activeItem === "library"}
+                                    onClick={handleNavigate}
                                 >
                                     Biblioteca
                                 </MDBNavbarLink>
@@ -81,6 +90,8 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 <MDBNavbarLink
                                     active={activeItem === "reader"}
                                     href="/reader"
+                                    name="/reader"
+                                    onClick={handleNavigate}
                                 >
                                     Leitor
                                 </MDBNavbarLink>
@@ -89,7 +100,9 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 <>
                                     <form
                                         onSubmit={formik.handleSubmit}
-                                        className="d-flex input-group justify-content-end me-5 mt-3 mt-lg-0"
+                                        className="d-flex input-group justify-content-center
+                                        justify-content-lg-end me-0 me-lg-5 mt-3 mt-lg-0"
+                                        style={{ maxWidth: "100%" }}
                                     >
                                         <MDBInput
                                             name="query"
@@ -97,7 +110,6 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                             type="search"
                                             value={formik.values.query}
                                             onChange={formik.handleChange}
-                                            className=""
                                         />
                                         <MDBBtn color="primary" type="submit">
                                             Pesquisar
