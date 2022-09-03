@@ -9,9 +9,9 @@ export default defineConfig({
         VitePWA({
             registerType: "autoUpdate",
             includeAssets: [
-                "/icons/favicon.ico",
-                "/icons/apple-touch-icon.png",
-                "/icons/masked-icon.svg",
+                "/favicon.ico",
+                "/apple-touch-icon.png",
+                "/safari-pinned-tab.svg",
             ],
             manifest: {
                 name: "Bibliomar",
