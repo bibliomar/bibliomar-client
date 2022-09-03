@@ -21,6 +21,7 @@ export default function EditModeMove({
     actionLoading,
     setActionLoading,
 }: EditModeSubProps) {
+    const navigate = useNavigate();
     const editModeContext = useContext(EditMode);
     const selectedBooksContext = useContext(SelectedBooks);
     const jwtToken = localStorage.getItem("jwt-token");
@@ -40,14 +41,17 @@ export default function EditModeMove({
                 LibraryCategories[category as keyof typeof LibraryCategories]
             );
             setActionLoading(false);
-            window.location.reload();
+            navigate(0);
         }
     };
 
     return (
         <MDBDropdown>
             <MDBDropdownToggle
-                disabled={actionLoading}
+                disabled={
+                    actionLoading ||
+                    selectedBooksContext.selectedBooks.length === 0
+                }
                 size={"lg"}
                 type={"button"}
                 color={"none"}

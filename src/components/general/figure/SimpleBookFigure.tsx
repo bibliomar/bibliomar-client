@@ -4,7 +4,7 @@ import FigureCoverSkeleton from "../FigureCoverSkeleton";
 import React, { useContext, useEffect, useState } from "react";
 import { EditMode, SelectedBooks } from "../../library/helpers/libraryContext";
 import { LongPressDetectEvents, useLongPress } from "use-long-press";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface SimpleBookFigureProps {
     book: Book;
@@ -115,8 +115,8 @@ export default function SimpleBookFigure({
                     className="w-100 h-100"
                     style={{ minHeight: "100%" }}
                 />
-                <a
-                    href={editModeContext.editMode ? "" : href}
+                <Link
+                    to={editModeContext.editMode ? "" : href}
                     onClick={(evt) => {
                         evt.preventDefault();
                         if (editModeContext && editModeContext.editMode) {
@@ -127,7 +127,7 @@ export default function SimpleBookFigure({
                     }}
                 >
                     <FigureCoverSkeleton coverDone={coverDone} />
-                </a>
+                </Link>
             </MDBRipple>
         </div>
     );

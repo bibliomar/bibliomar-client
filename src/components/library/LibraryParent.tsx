@@ -1,6 +1,6 @@
 import Navbar from "../general/navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
@@ -27,7 +27,6 @@ export default function LibraryParent() {
         selectedBooks: selectedBooks,
         setSelectedBooks: setSelectedBooks,
     };
-    console.log(selectedBooks);
 
     const [editMode, setEditMode] = useState<boolean>(false);
     const editModeContext: EditModeContext = {

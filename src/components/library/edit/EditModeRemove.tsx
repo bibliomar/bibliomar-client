@@ -8,6 +8,7 @@ import {
     MDBModalFooter,
     MDBModalHeader,
     MDBModalTitle,
+    MDBTooltip,
 } from "mdb-react-ui-kit";
 import React, { useContext, useState } from "react";
 import { EditModeSubProps } from "../LibraryNavbar";
@@ -15,11 +16,13 @@ import { EditMode, SelectedBooks } from "../helpers/libraryContext";
 import { removeBookFromLibrary } from "../../general/helpers/generalFunctions";
 import { Portal } from "react-portal";
 import Break from "../../general/Break";
+import { useNavigate } from "react-router-dom";
 
 export default function EditModeRemove({
     actionLoading,
     setActionLoading,
 }: EditModeSubProps) {
+    const navigate = useNavigate();
     const editModeContext = useContext(EditMode);
     const selectedBooksContext = useContext(SelectedBooks);
     const jwtToken = localStorage.getItem("jwt-token");
@@ -42,7 +45,7 @@ export default function EditModeRemove({
                 jwtToken
             );
             setActionLoading(false);
-            window.location.reload();
+            navigate(0);
         }
     };
 
@@ -107,8 +110,12 @@ export default function EditModeRemove({
                     </MDBModalDialog>
                 </MDBModal>
             </Portal>
+
             <MDBBtn
-                disabled={actionLoading}
+                disabled={
+                    actionLoading ||
+                    selectedBooksContext.selectedBooks.length === 0
+                }
                 size={"lg"}
                 type={"button"}
                 color={"none"}

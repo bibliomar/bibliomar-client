@@ -21,8 +21,9 @@ export default function BookInfoBadges({ book, savedBook }: Props) {
             <div className="badge book-info-badge me-1">
                 {book.progress ? "Leitura iniciada" : null}
             </div>
-
-            <div className="badge book-info-badge">{book.series}</div>
+            <div className="badge book-info-badge">
+                {book.series ? book.series : null}
+            </div>
         </>
     );
 }

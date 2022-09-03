@@ -9,9 +9,8 @@ import {
     MDBModalTitle,
 } from "mdb-react-ui-kit";
 import Break from "../general/Break";
-import localforage from "localforage";
 import fileToArrayBuffer from "file-to-array-buffer";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PossibleReaderScreenState } from "./helpers/readerTypes";
 

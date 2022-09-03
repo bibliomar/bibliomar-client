@@ -2,7 +2,6 @@ import LoadingSending from "./LoadingSending";
 import LoadingWaiting from "./LoadingWaiting";
 import LoadingDone from "./LoadingDone";
 import LoadingError from "./LoadingError";
-import { MDBBtn } from "mdb-react-ui-kit";
 
 interface loadingStatus {
     status: string;

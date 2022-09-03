@@ -36,7 +36,6 @@ export default function LibraryFilters() {
 
     const resetFilters = () => {
         setFilters(defaultFilters);
-        console.log(filters);
     };
 
     return (

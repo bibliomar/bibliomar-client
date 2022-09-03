@@ -1,13 +1,14 @@
 import { Theme } from "./helpers/generalContext";
 import { useContext } from "react";
 import { ThemeOptions } from "./helpers/generalTypes";
+import { Link } from "react-router-dom";
 
 function Bibliologo() {
     const theme = useContext(Theme).theme;
     return (
         <div className="row">
             <div className="col d-flex flex-wrap justify-content-center mt-5">
-                <a href="/search">
+                <Link to="/search">
                     <img
                         style={{ maxWidth: "80vw" }}
                         src={
@@ -17,7 +18,7 @@ function Bibliologo() {
                         }
                         alt="Bibliomar"
                     />
-                </a>
+                </Link>
             </div>
             <div className="break" />
         </div>

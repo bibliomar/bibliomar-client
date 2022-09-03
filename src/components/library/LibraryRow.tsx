@@ -1,5 +1,5 @@
 import { Book, LibraryCategories } from "../general/helpers/generalTypes";
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import LibraryBookFigure from "./LibraryBookFigure";
 import Break from "../general/Break";
 import { MDBIcon, MDBTooltip } from "mdb-react-ui-kit";
@@ -28,11 +28,12 @@ export default function LibraryRow({
     const filtersContext = useContext(Filters);
 
     const onDefaultFilters = equal(filtersContext.filters, defaultFilters);
-
-    const books = bookFiltering(
-        bookCategorySetter(booksInfo, bookCategory),
-        filtersContext.filters
-    );
+    const books = useMemo<Book[]>(() => {
+        return bookFiltering(
+            bookCategorySetter(booksInfo, bookCategory),
+            filtersContext.filters
+        );
+    }, [filtersContext.filters]);
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">

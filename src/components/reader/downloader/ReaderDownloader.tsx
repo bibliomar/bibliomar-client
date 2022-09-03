@@ -61,6 +61,7 @@ export default function ReaderDownloader({
         try {
             setDownloadStatus(103);
             let req: AxiosResponse = await axios.request(config);
+            console.log(req);
             const blobData: Blob = req.data;
             if (!blobData.type.includes("epub")) {
                 setDownloadStatus(403);
