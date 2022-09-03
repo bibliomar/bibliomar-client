@@ -32,7 +32,6 @@ export default defineConfig({
                     },
                 ],
                 background_color: "#ffffff",
-                start_url: "https://bibliomar.site",
                 display: "standalone",
                 orientation: "portrait",
             },
