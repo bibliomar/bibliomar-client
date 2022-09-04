@@ -8,7 +8,7 @@ function Bibliologo() {
     return (
         <div className="row">
             <div className="col d-flex flex-wrap justify-content-center mt-5">
-                <Link to="/search">
+                <Link to="/">
                     <img
                         style={{ maxWidth: "80vw" }}
                         src={
@@ -20,7 +20,6 @@ function Bibliologo() {
                     />
                 </Link>
             </div>
-            <div className="break" />
         </div>
     );
 }

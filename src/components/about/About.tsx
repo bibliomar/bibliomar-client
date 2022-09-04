@@ -18,41 +18,42 @@ export default function About() {
                 >
                     <div className="d-flex flex-wrap justify-content-center justify-content-lg-between flex-md-nowrap w-100">
                         <div className="about-first-text-container text-center mt-4 mt-lg-5 ms-0 ms-lg-3">
+                            <h3 className="mb-5 text-start">Sobre</h3>
                             <h6>
                                 O Bibliomar é um projeto educacional que busca
                                 se tornar a opção definitiva de leitura no
                                 Brasil.
                             </h6>
                             <p>
-                                Nosso projeto nasceu de um único objetivo:
-                                tornar possível o fácil acesso a literatura,
-                                tanto nacional quanto estrangeira, a população
+                                Nosso projeto nasceu com um único objetivo:
+                                tornar possível o fácil acesso à literatura,
+                                tanto nacional quanto estrangeira, à população
                                 brasileira e aos demais falantes da lingua
                                 portuguesa.
                             </p>
                             <p>
-                                O Bibliomar é genuinamente brasileiro, e temos
+                                O Bibliomar é genuinamente brasileiro e temos
                                 muito orgulho disso.
                             </p>
                             <p className="mt-3">
-                                Aqui você tem a certeza de encontrar milhares de
-                                livros gratuitos e de qualidade. Nós usamos o
-                                acervo do LibraryGenesis, a maior biblioteca
-                                digital do mundo, como base.
+                                Aqui, você tem a certeza de encontrar milhares
+                                de livros em um acervo de qualidade. Nós usamos
+                                o banco de dados do LibraryGenesis - a maior
+                                biblioteca digital do mundo - como base.
                             </p>
                             <p className="mt-1">
-                                E quando encontrar o livro ou artigo acadêmico
-                                que tanto procura, você usufruir de uma
-                                biblioteca pessoal gratuita, com opções de
-                                filtragem e categorias.
+                                Quando encontrar o livro ou artigo acadêmico que
+                                tanto procura, você pode usufruir de uma
+                                biblioteca pessoal com opções de filtragem e
+                                categorias.
                             </p>
                             <MDBTooltip
                                 title="Apenas para arquivos no formato ePub ;)"
                                 tag={"div"}
                             >
                                 <p>
-                                    E além disso, a qualquer momento você pode
-                                    ler qualquer* livro online gratuitamente.{" "}
+                                    E, além disso, você pode ler qualquer* livro
+                                    online gratuitamente.{" "}
                                 </p>
                             </MDBTooltip>
                         </div>

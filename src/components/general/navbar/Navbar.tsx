@@ -52,7 +52,14 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                 className="p-2 pt-4 pb-4"
             >
                 <MDBContainer fluid>
-                    <MDBNavbarBrand href="/search" style={{ maxWidth: "50%" }}>
+                    <MDBNavbarBrand
+                        href="/"
+                        onClick={(evt) => {
+                            evt.preventDefault();
+                            navigate("/");
+                        }}
+                        style={{ maxWidth: "50%" }}
+                    >
                         <BibliomarBrand badgeText={badgeText} />
                     </MDBNavbarBrand>
                     <MDBNavbarToggler

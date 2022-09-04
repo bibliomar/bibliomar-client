@@ -8,6 +8,7 @@
     "preview": "vite preview --port 3000"
   },
   "dependencies": {
+    "@readshape/covers": "github:Lamarcke/covers",
     "axios": "^0.27.2",
     "date-fns": "^2.29.1",
     "fast-deep-equal": "^3.1.3",

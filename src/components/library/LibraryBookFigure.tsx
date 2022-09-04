@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-
-import { MDBRipple } from "mdb-react-ui-kit";
-
+import React from "react";
 import { Book } from "../general/helpers/generalTypes";
-import { getCover } from "../general/helpers/generalFunctions";
-import FigureCoverSkeleton from "../general/FigureCoverSkeleton";
 import SimpleBookFigure from "../general/figure/SimpleBookFigure";
+import useCover from "../general/helpers/useCover";
 
 interface Props {
     book: Book;
@@ -15,20 +11,7 @@ interface Props {
 
 export default function LibraryBookFigure(props: Props) {
     let book = props.book;
-    const [cover, setCover] = useState<string>(
-        "https://libgen.rocks/img/blank.png"
-    );
-    const [coverDone, setCoverDone] = useState<boolean>(false);
-
-    useEffect(() => {
-        let coverSetTimeout: number | undefined;
-        getCover(book.md5, setCover, setCoverDone, props.timeout).then(
-            (r) => (coverSetTimeout = r)
-        );
-        return () => {
-            clearTimeout(coverSetTimeout);
-        };
-    }, [props.book]);
+    const [cover, coverDone] = useCover(book.md5, props.timeout);
 
     return (
         <div

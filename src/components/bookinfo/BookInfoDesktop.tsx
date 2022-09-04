@@ -30,7 +30,7 @@ export default function BookInfoDesktop({
                     className="ms-3 mt-4 mb-4 book-info-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
-                        <BookInfoCover md5={bookInfo.md5} />
+                        <BookInfoCover book={bookInfo} md5={bookInfo.md5} />
                         <Break />
                         <BookInfoDownload
                             downloadLinks={downloadLinks}

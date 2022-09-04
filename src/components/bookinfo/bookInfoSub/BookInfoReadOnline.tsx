@@ -38,12 +38,14 @@ export default function BookInfoReadOnline({
                 type="button"
                 size="lg"
                 onClick={() => {
-                    if (downloadLinks) {
+                    if (
+                        downloadLinks &&
+                        book.extension &&
+                        book.extension.toLowerCase() !== "epub"
+                    ) {
                         // State to be used by ReaderLanding on /reader
                         let readerLandingState: PossibleReaderLandingState = {
                             bookInfo: book,
-                            url: downloadLinks["IPFS.io"],
-                            secondaryUrl: downloadLinks["Pinata"],
                         };
 
                         navigate("/reader", {
@@ -52,7 +54,9 @@ export default function BookInfoReadOnline({
                     }
                 }}
                 disabled={
-                    book.extension !== "epub" || downloadLinks == undefined
+                    (book.extension &&
+                        book.extension.toLowerCase() !== "epub") ||
+                    downloadLinks == undefined
                 }
             >
                 {book.progress && book.category

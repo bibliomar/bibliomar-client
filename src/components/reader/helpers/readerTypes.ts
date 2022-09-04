@@ -2,8 +2,6 @@
 
 import { Book } from "../../general/helpers/generalTypes";
 import React, { MouseEventHandler } from "react";
-import { NavigateFunction } from "react-router-dom";
-import { ReactReaderStyle } from "react-reader";
 
 // State to be passed to ReaderMain component, making it usable.
 export interface PossibleReaderScreenState {
@@ -15,8 +13,6 @@ export interface PossibleReaderScreenState {
 // State to be passed to ReaderLanding component, depending on its value, the component will render different subcomponents.
 export interface PossibleReaderLandingState {
     bookInfo: Book;
-    url: string;
-    secondaryUrl?: string;
 }
 
 /**
@@ -50,14 +46,6 @@ export type SavedBooks = {
     secondBook: SavedBookEntry | null;
     thirdBook: SavedBookEntry | null;
 };
-
-/* A type definition for the props that the ReaderBookFigure component will receive. */
-export interface ReaderBookFigureProps {
-    book: Book;
-    cover: string;
-    coverDone: boolean;
-    onClickFunction: MouseEventHandler;
-}
 
 export type ReaderThemeColors = [string, string, string, string];
 

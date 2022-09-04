@@ -124,6 +124,11 @@ abbr[title]:after
     width: 90vw;
 }
 
+.recommendation-div{
+    min-width: 75%;
+    width: fit-content;
+}
+
 .result-div{
     width: 90vw;
     max-height: 100%;
@@ -194,6 +199,12 @@ abbr[title]:after
 .cover-img{
     width: 100%;
     height: auto;
+}
+
+.loading-cover-img{
+    width: 100%;
+    min-height: 40vh;
+    max-height: 100%;
 }
 
 .book-info-container{
@@ -273,10 +284,6 @@ abbr[title]:after
         width: 75%;
     }
 
-    .recommendation-div{
-        width: fit-content;
-    }
-
     .library-checkbox-container{
         top: 1%;
         right: 1%;
@@ -333,7 +340,7 @@ abbr[title]:after
     }
 
     .book-info-section{
-    width: 75%;
+        width: 75%;
     }
 
     .book-info-container{

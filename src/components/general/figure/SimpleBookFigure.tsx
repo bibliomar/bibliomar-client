@@ -1,14 +1,14 @@
 import { Book } from "../helpers/generalTypes";
 import { MDBCheckbox, MDBRipple } from "mdb-react-ui-kit";
-import FigureCoverSkeleton from "../FigureCoverSkeleton";
 import React, { useContext, useEffect, useState } from "react";
 import { EditMode, SelectedBooks } from "../../library/helpers/libraryContext";
 import { LongPressDetectEvents, useLongPress } from "use-long-press";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import BookFigureCover from "../BookFigureCover";
 
 interface SimpleBookFigureProps {
     book: Book;
-    cover: string;
+    cover: string | undefined;
     coverDone: boolean;
     href: string;
 }
@@ -93,9 +93,7 @@ export default function SimpleBookFigure({
                 </span>
             </div>
             <MDBRipple
-                className={`bg-image ${
-                    coverDone ? "hover-overlay" : undefined
-                } shadow-1-strong rounded w-100 h-100`}
+                className={`bg-image hover-overlay shadow-1-strong rounded w-100 h-100`}
                 rippleTag="div"
                 rippleColor="light"
                 {...longPressBind()}
@@ -109,14 +107,11 @@ export default function SimpleBookFigure({
                         ></MDBCheckbox>
                     </div>
                 )}
-                <img
-                    alt={"Capa do livro"}
-                    src={cover}
-                    className="w-100 h-100"
-                    style={{ minHeight: "100%" }}
-                />
-                <Link
-                    to={editModeContext.editMode ? "" : href}
+                <BookFigureCover
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                    href={href}
                     onClick={(evt) => {
                         evt.preventDefault();
                         if (editModeContext && editModeContext.editMode) {
@@ -125,9 +120,7 @@ export default function SimpleBookFigure({
                             navigate(href);
                         }
                     }}
-                >
-                    <FigureCoverSkeleton coverDone={coverDone} />
-                </Link>
+                />
             </MDBRipple>
         </div>
     );

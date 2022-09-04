@@ -1,7 +1,6 @@
 import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
-import { useEffect, useState } from "react";
-import { getCover } from "../../general/helpers/generalFunctions";
 import { Book } from "../../general/helpers/generalTypes";
+import useCover from "../../general/helpers/useCover";
 
 interface Props {
     book: Book;
@@ -9,23 +8,7 @@ interface Props {
 }
 
 export default function RecommendationBookFigure({ book, timeout }: Props) {
-    const [cover, setCover] = useState<string>(
-        "https://libgen.rocks/img/blank.png"
-    );
-
-    const [coverDone, setCoverDone] = useState<boolean>(false);
-
-    useEffect(() => {
-        let coverSetTimeout: number | undefined;
-
-        getCover(book.md5, setCover, setCoverDone, timeout).then((r) => {
-            coverSetTimeout = r;
-        });
-
-        return () => {
-            clearTimeout(coverSetTimeout);
-        };
-    }, []);
+    const [cover, coverDone] = useCover(book.md5, timeout);
 
     const href = `/search?category=${book.topic}&q=${book.title}`;
 

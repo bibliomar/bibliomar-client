@@ -52,7 +52,7 @@ export default function RecommendationScreen(props: Props) {
                             </span>
                         </div>
                         <Break />
-                        <div className="d-flex flex-wrap justify-content-center">
+                        <div className="d-flex flex-wrap justify-content-center w-100">
                             {recommendations.map((el, i) => {
                                 let timeout;
                                 i === 0

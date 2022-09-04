@@ -1,29 +1,28 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Break from "../../general/Break";
-import { getCover } from "../../general/helpers/generalFunctions";
+import useCover from "../../general/helpers/useCover";
+import Skeleton from "react-loading-skeleton";
+import { Cover } from "@readshape/covers";
+import BookFigureCover from "../../general/BookFigureCover";
+import { Book } from "../../general/helpers/generalTypes";
 
 interface Props {
+    book: Book;
     md5: string;
 }
 
 // Here we use MDBootstrap col- classes to make the cover stay in the left half of the screen.
-export default function BookInfoCover({ md5 }: Props) {
-    const [cover, setCover] = useState<string>(
-        "https://libgen.rocks/img/blank.png"
-    );
-    useEffect(() => {
-        getCover(md5, setCover).then();
-    }, []);
+export default function BookInfoCover({ md5, book }: Props) {
+    const [cover, coverDone] = useCover(md5);
 
     return (
-        <div className="d-flex flex-column mb-3">
-            <img
-                src={cover}
-                alt="https://libgen.rocks/img/blank.png"
-                className="cover-img"
-            />
-            <Break />
+        <div className="d-flex flex-column mb-3 w-100">
+            <div className="bg-image">
+                <BookFigureCover
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                />
+            </div>
         </div>
     );
 }

@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { MDBBtn, MDBRipple } from "mdb-react-ui-kit";
+import React, { useContext } from "react";
+
+import { MDBRipple } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
-import { Book, ThemeOptions } from "../../general/helpers/generalTypes";
-import { getCover } from "../../general/helpers/generalFunctions";
-import FigureCoverSkeleton from "../../general/FigureCoverSkeleton";
+import { Book } from "../../general/helpers/generalTypes";
 import { Theme } from "../../general/helpers/generalContext";
+import useCover from "../../general/helpers/useCover";
+import BookFigureCover from "../../general/BookFigureCover";
 
 interface Props {
     result: Book;
@@ -15,37 +15,23 @@ interface Props {
 export default function BookFigure(props: Props) {
     const theme = useContext(Theme).theme;
     const book: Book = props.result;
-    const [cover, setCover] = useState<string>(
-        "https://libgen.rocks/img/blank.png"
-    );
+    const [cover, coverDone] = useCover(book.md5, props.timeout);
 
-    const [coverDone, setCoverDone] = useState<boolean>(false);
-
-    useEffect(() => {
-        let coverSetTimeout: number | undefined;
-
-        getCover(book.md5, setCover, setCoverDone, props.timeout).then((r) => {
-            coverSetTimeout = r;
-        });
-
-        return () => {
-            clearTimeout(coverSetTimeout);
-        };
-    }, []);
+    const href = `/book/${book.topic}/${book.md5}`;
 
     return (
         <figure className="figure d-flex flex-column result-div me-3">
             <MDBRipple
-                className={`bg-image ${
-                    coverDone ? "hover-overlay" : undefined
-                } shadow-1-strong w-100 figure-img mb-1`}
+                className={`bg-image hover-overlay shadow-1-strong w-100 figure-img mb-1`}
                 rippleTag="div"
                 rippleColor="light"
             >
-                <img className="w-100 h-100" src={cover} alt="Capa do livro" />
-                <Link to={`/book/${book.topic}/${book.md5}`}>
-                    <FigureCoverSkeleton coverDone={coverDone} />
-                </Link>
+                <BookFigureCover
+                    book={book}
+                    cover={cover}
+                    coverDone={coverDone}
+                    href={href}
+                />
             </MDBRipple>
 
             <figcaption
