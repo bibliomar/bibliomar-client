@@ -1,6 +1,7 @@
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import GuestGreeting from "../general/GuestGreeting";
 import UserGreeting from "../general/UserGreeting";
+import Break from "../general/Break";
 
 interface Props {
     isUserLoggedContext: boolean;
@@ -31,6 +32,13 @@ export default function Greeting(props: Props) {
             <div className="break" />
             {isUserLoggedIn()}
             <div className="break" />
+            <p className="text-center mt-3">
+                Uma atualização incrível está saindo do forno! <br />
+            </p>
+            <Break />
+            <a href={"https://github.com/Lamarcke/bibliomar-react/tree/reader"}>
+                Saiba mais
+            </a>
         </div>
     );
 }
