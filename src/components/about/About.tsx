@@ -16,9 +16,11 @@ export default function About() {
                     className="basic-container p-2 p-lg-3"
                     style={{ minHeight: "75vh" }}
                 >
-                    <div className="d-flex flex-wrap justify-content-center justify-content-lg-between flex-md-nowrap w-100">
-                        <div className="about-first-text-container text-center mt-4 mt-lg-5 ms-0 ms-lg-3">
-                            <h3 className="mb-5 text-start">Sobre</h3>
+                    <div className="d-flex flex-wrap justify-content-center justify-content-lg-between w-100">
+                        <div className="about-first-text-container text-center mt-4 mt-lg-5 ms-0 ms-lg-3 simple-text">
+                            <h3 className="mb-5 text-start simple-text-bolder">
+                                Sobre
+                            </h3>
                             <h6>
                                 O Bibliomar é um projeto educacional que busca
                                 se tornar a opção definitiva de leitura no
@@ -65,9 +67,45 @@ export default function About() {
                                 src="/assets/img/about-image-1.png"
                             />
                         </div>
+                        <Break />
+
+                        <div
+                            className="d-flex flex-wrap w-100
+                        text-center mt-4 mt-lg-5 ms-0 ms-lg-3 simple-text"
+                        >
+                            <div
+                                className="about-first-img-container d-flex
+                            flex-wrap justify-content-center justify-content-lg-start"
+                            >
+                                <h3 className="simple-text-bolder text-start mb-5 flex-grow-1">
+                                    Conheça nossa comunidade
+                                </h3>
+                                <Break className="mb-5" />
+                                <img
+                                    className={"img-fluid"}
+                                    alt={"Icone 2"}
+                                    src="/assets/img/about-image-2.png"
+                                />
+                            </div>
+                            <Break mobile />
+                            <div className="d-flex about-first-text-container">
+                                <div className="d-flex flex-wrap w-50">
+                                    <img
+                                        className="mt-auto"
+                                        style={{ width: "auto", height: "20%" }}
+                                        src="/assets/img/about-github-logo.png"
+                                    />
+                                    <span>
+                                        Nosso projeto é open-source. Contribua
+                                        para melhorar ainda mais o Bibliomar!
+                                    </span>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 ">
                     <Footer />
                 </div>
             </MDBContainer>

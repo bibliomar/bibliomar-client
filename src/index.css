@@ -60,7 +60,7 @@ abbr[title]:after
     transform: scale(1.8);
 }
 
-.simple-figure-text{
+.simple-text{
     font-family: 'Nunito Sans', sans-serif;
 }
 
@@ -233,7 +233,7 @@ abbr[title]:after
 }
 
 /*Be sure to define font-size manually. */
-.book-info-title, .basic-text{
+.book-info-title, .simple-text-bolder{
     font-family: 'Nunito Sans', sans-serif;
     font-style: normal;
     font-weight: 600;

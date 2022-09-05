@@ -13,14 +13,14 @@ export default function Footer() {
                         className="ms-4 me-4"
                         style={{ color: "unset", fontSize: "1.15rem" }}
                     >
-                        <span className={"basic-text"}>Sobre</span>
+                        <span className={"simple-text-bolder"}>Sobre</span>
                     </Link>
                     <Link
                         to={"/faq"}
                         className="me-4 me-md-0"
                         style={{ color: "unset", fontSize: "1.15rem" }}
                     >
-                        <span className={"basic-text"}>FAQ</span>
+                        <span className={"simple-text-bolder"}>FAQ</span>
                     </Link>
                 </div>
                 {width > 767 && (
@@ -35,13 +35,13 @@ export default function Footer() {
                     style={{ color: "unset" }}
                 >
                     <img
-                        src={"/assets/img/discord-footer-logo.svg"}
+                        src={"/assets/img/footer-discord-logo.svg"}
                         alt={"Discord logo"}
                     />
                 </Link>
                 <Link to={"/"} className="me-3" style={{ color: "unset" }}>
                     <img
-                        src={"/assets/img/github-footer-logo.svg"}
+                        src={"/assets/img/footer-github-logo.svg"}
                         alt={"Discord logo"}
                     />
                 </Link>

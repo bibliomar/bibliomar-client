@@ -67,7 +67,7 @@ export default function ReaderCustomizeModalBody({
             <div className="d-flex flex-wrap">
                 <h4 className="ms-2 mt-4">
                     <MDBIcon fas icon="palette" size="lg" className="me-3" />
-                    <span className="basic-text">Tema</span>
+                    <span className="simple-text-bolder">Tema</span>
                 </h4>
                 <Break className="mb-4" />
                 <div className="d-flex">
@@ -78,7 +78,7 @@ export default function ReaderCustomizeModalBody({
                                 key={index}
                             >
                                 <label
-                                    className="basic-text"
+                                    className="simple-text-bolder"
                                     htmlFor="themeName"
                                 >
                                     {el[3]}
@@ -104,7 +104,7 @@ export default function ReaderCustomizeModalBody({
                 <Break className="mb-4" />
                 <h4 className="ms-2 mt-1">
                     <MDBIcon fas icon="font" size={"lg"} className={"me-3"} />
-                    <span className="basic-text">Fonte</span>
+                    <span className="simple-text-bolder">Fonte</span>
                 </h4>
                 <Break className="mb-4" />
                 <div className="d-flex justify-content-around w-100">
@@ -171,7 +171,7 @@ export default function ReaderCustomizeModalBody({
                         size={"lg"}
                         className={"me-3"}
                     />
-                    <span className="basic-text">Leitura</span>
+                    <span className="simple-text-bolder">Leitura</span>
                 </h4>
                 <Break className="mb-4" />
                 <div className={"d-flex flex-wrap w-100"}>
@@ -224,7 +224,7 @@ export default function ReaderCustomizeModalBody({
                         </div>
 
                         <Break className="mb-5" />
-                        <label htmlFor={"swipe"} className="basic-text">
+                        <label htmlFor={"swipe"} className="simple-text-bolder">
                             Deslizável
                         </label>
                         <Break />

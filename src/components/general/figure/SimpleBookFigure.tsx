@@ -79,14 +79,14 @@ export default function SimpleBookFigure({
         <div className="position-relative w-100 h-100">
             <div className="simple-figure-bg text-light">
                 <span
-                    className="ms-2 text-nowrap simple-figure-text fw-bolder"
+                    className="ms-2 text-nowrap simple-text fw-bolder"
                     style={{ fontSize: "1.15em" }}
                 >
                     {book.title}
                 </span>
                 <br />
                 <span
-                    className="ms-2 text-nowrap simple-figure-text"
+                    className="ms-2 text-nowrap simple-text"
                     style={{ fontSize: "0.9em" }}
                 >
                     {book.authors}

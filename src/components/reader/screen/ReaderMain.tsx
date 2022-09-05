@@ -3,6 +3,7 @@ import localforage from "localforage";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
+    PossibleReaderLandingState,
     PossibleReaderScreenState,
     ReaderSettings,
     ReaderThemeAccentOptions,
@@ -179,7 +180,7 @@ export default function ReaderMain() {
 
         if (onlineFile && currentPage) {
             // Timeout in minutes: minutes * 60000 = miliseconds.
-            saveInterval = setInterval(() => {
+            saveInterval = window.setInterval(() => {
                 if (onlineFile!.category == null) {
                     if (sessionStorage.getItem("reader-user-warned") == null) {
                         sessionStorage.setItem("reader-user-warned", "true");

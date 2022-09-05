@@ -8,7 +8,7 @@ export default function ReaderGreeting() {
             className="basic-container mt-4 d-flex justify-content-center"
             style={{ minHeight: "30vh" }}
         >
-            <div className="text-center basic-text w-75 mt-5">
+            <div className="text-center simple-text-bolder w-75 mt-5">
                 <p className="lead">
                     Você pode enviar seu arquivo local por aqui.
                 </p>

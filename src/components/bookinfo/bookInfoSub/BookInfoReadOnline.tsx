@@ -41,7 +41,7 @@ export default function BookInfoReadOnline({
                     if (
                         downloadLinks &&
                         book.extension &&
-                        book.extension.toLowerCase() !== "epub"
+                        book.extension.toLowerCase() === "epub"
                     ) {
                         // State to be used by ReaderLanding on /reader
                         let readerLandingState: PossibleReaderLandingState = {
