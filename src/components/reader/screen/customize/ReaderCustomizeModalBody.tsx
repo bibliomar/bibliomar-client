@@ -65,9 +65,10 @@ export default function ReaderCustomizeModalBody({
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className="d-flex flex-wrap">
-                <h4 className="ms-2 mt-4">
+                <h4 className="ms-2 mt-4 w-100 d-flex align-items-center">
                     <MDBIcon fas icon="palette" size="lg" className="me-3" />
                     <span className="simple-text-bolder">Tema</span>
+                    <MDBBtn color={"none"} className="ms-auto btn-close me-2" />
                 </h4>
                 <Break className="mb-4" />
                 <div className="d-flex">

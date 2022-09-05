@@ -15,7 +15,7 @@ interface Props {
 export default function BibliomarBrand({ badgeText, readerAccent }: Props) {
     const theme = useContext(Theme).theme;
     return (
-        <div className={readerAccent ? "position-absolute" : undefined}>
+        <div className="">
             <img
                 src={
                     readerAccent

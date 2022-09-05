@@ -22,7 +22,11 @@ export default function ReaderNavbar({
     const [modalToggle, setModalToggle] = useState<boolean>(false);
 
     return (
-        <div className={`w-100 h-100`}>
+        <div
+            className={`w-100 h-100 ${
+                readerSettings.fullscreen ? "visually-hidden" : ""
+            }`}
+        >
             <Portal node={document.getElementById("modal-root")}>
                 <ReaderCustomizeModal
                     modalToggle={modalToggle}
@@ -46,15 +50,18 @@ export default function ReaderNavbar({
                             : "4px solid #383838",
                 }}
             >
-                <MDBContainer fluid>
-                    <MDBNavbarBrand className="ms-4" href="/reader">
+                <MDBContainer fluid className="d-flex flex-nowrap w-100">
+                    <MDBNavbarBrand
+                        className="ms-4 reader-navbar-brand"
+                        href="/reader"
+                    >
                         <BibliomarBrand
                             readerAccent={readerAccent}
                             badgeText={"reader"}
                         />
                     </MDBNavbarBrand>
 
-                    <MDBNavbarLink className="ms-auto">
+                    <MDBNavbarLink className="ms-auto ">
                         <MDBBtn onClick={() => setModalToggle(true)}>
                             Aparência
                         </MDBBtn>

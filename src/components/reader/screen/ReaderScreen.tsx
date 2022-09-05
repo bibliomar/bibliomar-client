@@ -37,21 +37,13 @@ export default function ReaderScreen({
                 height: "100%",
                 minHeight: "100%",
                 width: "100%",
-                top: readerSettings.fullscreen ? "0" : "9vh",
                 position: "absolute",
                 backgroundColor: "black",
             }}
         >
             <div
-                id="title-toggle-fullscreen"
-                style={{
-                    position: "absolute",
-                    top: "12px",
-                    left: "96vw",
-                    cursor: "pointer",
-                    //Swipe area zIndex is 200.
-                    zIndex: "300",
-                }}
+                id="fullscreen-toggle-arrow"
+                className="reader-fullscreen-toggle"
                 onClick={(evt) => {
                     setReaderSettings({
                         ...readerSettings,
@@ -75,8 +67,8 @@ export default function ReaderScreen({
                 tocChanged={(toc) => {
                     tocRef.current = toc;
                 }}
+                swipeable={readerSettings.swipe}
                 getRendition={(rendition) => {
-                    renditionRef.current = rendition;
                     registerRenditionThemes(
                         rendition,
                         readerSettings.fontFamily,
@@ -84,6 +76,7 @@ export default function ReaderScreen({
                         readerSettings.fontSize
                     );
                     rendition.themes.select(readerSettings.themeName);
+                    renditionRef.current = rendition;
                 }}
             />
         </div>

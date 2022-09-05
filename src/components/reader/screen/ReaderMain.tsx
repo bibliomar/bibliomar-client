@@ -235,13 +235,7 @@ export default function ReaderMain() {
                     overflow: "hidden",
                 }}
             >
-                <div
-                    className="bg-alt"
-                    style={{
-                        maxHeight: readerSettings.fullscreen ? "0" : "9vh",
-                        minHeight: readerSettings.fullscreen ? "0" : "9vh",
-                    }}
-                >
+                <div className="bg-alt">
                     <ReaderNavbar
                         readerSettings={readerSettings}
                         setReaderSettings={setReaderSettings}

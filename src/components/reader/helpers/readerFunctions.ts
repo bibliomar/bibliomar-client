@@ -220,7 +220,7 @@ interface ThemeColorsModel {
 // Be sure to also set on ReaderThemeOptions enum.
 export const themeColorsObject: ThemeColorsModel = {
     default: ["#000", "#fff", "light", "default"],
-    dark: ["#FAFAFA", "#252525", "dark", "dark"],
+    dark: ["#FFF", "#252525", "dark", "dark"],
     amoled: ["#fff", "#000", "dark", "amoled"],
     paste: ["#231f1f", "#dbd0bf", "light", "paste"],
     mono: ["#343532", "#f2efea", "light", "mono"],
@@ -237,10 +237,11 @@ export const registerRenditionThemes = (
     fontSize: number
 ) => {
     Object.values(themeColorsObject).forEach((theme) => {
+        console.log(theme);
         rendition.themes.register(theme[3], {
             "*": {
-                color: theme[0],
-                background: theme[1],
+                color: `${theme[0]} !important`,
+                backgroundColor: `${theme[1]} !important`,
             },
 
             p: {
@@ -260,7 +261,7 @@ export const createReactReaderStyle = (
 ): ReactReaderStyle => {
     /*
     Index 1 equals to backgroundColor.
-    Index 0 equals to color.
+    Index 0 equals to text color.
      */
 
     return {
