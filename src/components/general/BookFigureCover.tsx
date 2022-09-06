@@ -49,11 +49,16 @@ export default function BookFigureCover({
                 <Skeleton className="loading-cover-img" />
             )}
 
-            {href && coverDone ? (
+            {href ? (
                 <Link to={href} onClick={onClick}>
                     <div
-                        className="mask"
-                        style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+                        className={"mask"}
+                        style={{
+                            backgroundColor: coverDone
+                                ? "rgba(0,0,0,0.2)"
+                                : undefined,
+                            zIndex: "10",
+                        }}
                     />
                 </Link>
             ) : null}
