@@ -26,7 +26,7 @@ export default function BookFigureCover({
         storage: StorageOptions.sessionstorage,
     };
     return (
-        <>
+        <Link to={href ? href : "#"} onClick={onClick}>
             {coverDone ? (
                 cover ? (
                     <img
@@ -57,11 +57,11 @@ export default function BookFigureCover({
                             backgroundColor: coverDone
                                 ? "rgba(0,0,0,0.2)"
                                 : undefined,
-                            zIndex: "10",
+                            zIndex: "30000",
                         }}
                     />
                 </Link>
             ) : null}
-        </>
+        </Link>
     );
 }
