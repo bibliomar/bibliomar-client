@@ -1,7 +1,6 @@
 import Break from "../../general/Break";
 import useCover from "../../general/helpers/useCover";
 import Skeleton from "react-loading-skeleton";
-import { Cover } from "@readshape/covers";
 import BookFigureCover from "../../general/BookFigureCover";
 import { Book } from "../../general/helpers/generalTypes";
 

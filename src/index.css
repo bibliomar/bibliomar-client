@@ -365,4 +365,8 @@ abbr[title]:after
         max-width: 85%;
     }
 
+    .loading-cover-img{
+        min-height: 50vh;
+    }
+
 }

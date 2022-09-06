@@ -26,7 +26,7 @@ export default function BookFigureCover({
         storage: StorageOptions.sessionstorage,
     };
     return (
-        <Link to={href ? href : "#"} onClick={onClick}>
+        <>
             {coverDone ? (
                 cover ? (
                     <img
@@ -43,7 +43,7 @@ export default function BookFigureCover({
                             <Skeleton className="loading-cover-img" />
                         }
                         cacheOptions={cacheOptions}
-                    ></Cover>
+                    />
                 )
             ) : (
                 <Skeleton className="loading-cover-img" />
@@ -62,6 +62,6 @@ export default function BookFigureCover({
                     />
                 </Link>
             ) : null}
-        </Link>
+        </>
     );
 }
