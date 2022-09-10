@@ -30,7 +30,7 @@ export default function useCover(
                 async () => {
                     const onlineCover = await getOnlineCover(md5);
                     if (onlineCover != null && !onlineCover.includes("blank")) {
-                        console.log(onlineCover.includes("blank"));
+                        sessionStorage.setItem(`${md5}-cover`, onlineCover);
                         setCover(onlineCover);
                     }
                     setCoverDone(true);

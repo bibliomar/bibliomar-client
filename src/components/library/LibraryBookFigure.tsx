@@ -12,7 +12,7 @@ interface Props {
 export default function LibraryBookFigure(props: Props) {
     let book = props.book;
     const [cover, coverDone] = useCover(book.md5, props.timeout);
-
+    const href = `/book/${book.topic}/${book.md5}`;
     return (
         <div
             id="library-book-div"
@@ -25,8 +25,9 @@ export default function LibraryBookFigure(props: Props) {
             <SimpleBookFigure
                 book={book}
                 cover={cover}
+                loadingClassName="loading-skeleton-library"
                 coverDone={coverDone}
-                href={`/book/${book.topic}/${book.md5}`}
+                href={href}
             />
         </div>
     );

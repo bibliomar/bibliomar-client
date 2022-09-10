@@ -14,7 +14,6 @@ export const getOnlineCover = async (
         if (result.includes("blank")) {
             return undefined;
         }
-        sessionStorage.setItem(`${md5}-cover`, result);
         return result;
     } catch (e: any) {
         // 500 errors means Biblioterra couldn't find a cover.

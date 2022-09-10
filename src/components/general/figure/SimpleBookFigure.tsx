@@ -10,6 +10,7 @@ interface SimpleBookFigureProps {
     book: Book;
     cover: string | undefined;
     coverDone: boolean;
+    loadingClassName?: string;
     href: string;
 }
 
@@ -17,6 +18,7 @@ interface SimpleBookFigureProps {
 export default function SimpleBookFigure({
     book,
     cover,
+    loadingClassName,
     coverDone,
     href,
 }: SimpleBookFigureProps) {
@@ -104,13 +106,15 @@ export default function SimpleBookFigure({
                             checked={onSelectedBooks}
                             className="library-checkbox-input"
                             onChange={handleCheckboxChange}
-                        ></MDBCheckbox>
+                        />
                     </div>
                 )}
+
                 <BookFigureCover
                     book={book}
                     cover={cover}
                     coverDone={coverDone}
+                    loadingClassName={loadingClassName}
                     href={href}
                     onClick={(evt) => {
                         evt.preventDefault();

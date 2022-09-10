@@ -20,7 +20,7 @@ export default function BookFigure(props: Props) {
     const href = `/book/${book.topic}/${book.md5}`;
 
     return (
-        <figure className="figure d-flex flex-column result-div me-3">
+        <figure className="figure d-flex flex-column result-div me-lg me-md-3">
             <MDBRipple
                 className={`bg-image hover-overlay shadow-1-strong w-100 figure-img mb-1`}
                 rippleTag="div"
@@ -29,6 +29,7 @@ export default function BookFigure(props: Props) {
                 <BookFigureCover
                     book={book}
                     cover={cover}
+                    loadingClassName="loading-skeleton-search"
                     coverDone={coverDone}
                     href={href}
                 />

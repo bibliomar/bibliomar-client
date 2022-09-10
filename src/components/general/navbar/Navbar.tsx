@@ -19,6 +19,7 @@ import { Theme } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
 import ThemeChooser from "./ThemeChooser";
+import { useWindowSize } from "../helpers/useWindowSize";
 
 interface Props {
     activeItem?: string;
@@ -28,6 +29,7 @@ interface Props {
 export default function Navbar({ activeItem, badgeText }: Props) {
     const themeContext = useContext(Theme);
     const theme = themeContext.theme;
+    const width = useWindowSize().width;
     const [showNav, setShowNav] = useState<boolean>(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -104,25 +106,32 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             {location.pathname !== "/search" ? (
-                                <>
-                                    <form
-                                        onSubmit={formik.handleSubmit}
-                                        className="d-flex input-group justify-content-center
+                                <form
+                                    onSubmit={formik.handleSubmit}
+                                    className="d-flex input-group justify-content-center
                                         justify-content-lg-end me-0 me-lg-5 mt-3 mt-lg-0"
-                                        style={{ maxWidth: "100%" }}
+                                    style={{ maxWidth: "100%" }}
+                                >
+                                    <MDBInput
+                                        name="query"
+                                        id="query"
+                                        type="search"
+                                        wrapperClass={
+                                            width <= 1024 ? "w-75" : undefined
+                                        }
+                                        value={formik.values.query}
+                                        onChange={formik.handleChange}
+                                    />
+                                    <MDBBtn
+                                        className={
+                                            width <= 1024 ? "w-25" : undefined
+                                        }
+                                        color="primary"
+                                        type="submit"
                                     >
-                                        <MDBInput
-                                            name="query"
-                                            id="query"
-                                            type="search"
-                                            value={formik.values.query}
-                                            onChange={formik.handleChange}
-                                        />
-                                        <MDBBtn color="primary" type="submit">
-                                            Pesquisar
-                                        </MDBBtn>
-                                    </form>
-                                </>
+                                        <i className="fas fa-search"></i>
+                                    </MDBBtn>
+                                </form>
                             ) : null}
                             <ThemeChooser />
                             <NavbarUser />

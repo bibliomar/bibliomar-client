@@ -4,11 +4,14 @@ import React from "react";
 import Cover, { CacheOptions } from "@readshape/covers";
 import { Link } from "react-router-dom";
 import { StorageOptions } from "@readshape/covers/dist/types";
+import SimpleCoverCanvas from "./figure/SimpleCoverCanvas";
+import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
 
 interface Props {
     book: Book;
     cover: string | undefined;
     coverDone: boolean;
+    loadingClassName?: string;
     href?: string;
     onClick?: React.MouseEventHandler;
 }
@@ -18,13 +21,10 @@ export default function BookFigureCover({
     book,
     cover,
     coverDone,
+    loadingClassName,
     href,
     onClick,
 }: Props) {
-    const cacheOptions: CacheOptions = {
-        identifier: book.md5,
-        storage: StorageOptions.sessionstorage,
-    };
     return (
         <>
             {coverDone ? (
@@ -35,18 +35,10 @@ export default function BookFigureCover({
                         className="h-100 w-100"
                     />
                 ) : (
-                    <Cover
-                        title={book.title}
-                        authors={[book.authors]}
-                        className="w-100 h-100"
-                        fallbackElement={
-                            <Skeleton className="loading-cover-img" />
-                        }
-                        cacheOptions={cacheOptions}
-                    />
+                    <SimpleCoverCanvas book={book} />
                 )
             ) : (
-                <Skeleton className="loading-cover-img" />
+                <SimpleFigureSkeleton loadingClassName={loadingClassName} />
             )}
 
             {href ? (
@@ -55,7 +47,7 @@ export default function BookFigureCover({
                         className={"mask"}
                         style={{
                             backgroundColor: coverDone
-                                ? "rgba(0,0,0,0.2)"
+                                ? "rgba(0,0,0,0.1)"
                                 : undefined,
                             zIndex: "30000",
                         }}

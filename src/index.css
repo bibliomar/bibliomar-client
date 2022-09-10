@@ -190,7 +190,7 @@ abbr[title]:after
 }
 
 .dbutton{
-    width: 35vw;
+    width: fit-content;
 }
 
 .saved-list-div{
@@ -212,12 +212,6 @@ abbr[title]:after
 .cover-img{
     width: 100%;
     height: auto;
-}
-
-.loading-cover-img{
-    width: 100%;
-    min-height: 40vh;
-    max-height: 100%;
 }
 
 .book-info-container{
@@ -266,6 +260,24 @@ abbr[title]:after
     border: 1px solid #CACACA;
 }
 
+.about-icon-img{
+    height: 8vh;
+    width: 100%;
+}
+
+.loading-skeleton-library{
+    min-height: 45vh;
+}
+
+.loading-skeleton-search{
+    min-height: 50vh;
+}
+
+.loading-skeleton-recommendation{
+    width: 45%;
+    min-height: 30vh;
+}
+
 
 @media screen and (min-width: 768px) {
     abbr[title]:after
@@ -275,6 +287,11 @@ abbr[title]:after
 
     .searchfield {
         width: 50%;
+    }
+
+    .about-icon-img{
+        height: 12vh;
+        width: 80%;
     }
 
     .about-first-img-container{
@@ -312,10 +329,12 @@ abbr[title]:after
 
     .library-figure-img{
         width: 30%;
+        height: auto;
     }
 
     .library-figure-row-img{
         width: 15%;
+
     }
 
     .reader-spotlight-figure-img{
@@ -339,8 +358,7 @@ abbr[title]:after
     }
 
     .dbutton{
-        max-width: 80%;
-        width: 20vw;
+        width: fit-content;
     }
 
     .library-actions-button{
@@ -365,8 +383,30 @@ abbr[title]:after
         max-width: 85%;
     }
 
-    .loading-cover-img{
+    .loading-skeleton-library{
+        min-height: 40vh;
+    }
+
+    .loading-skeleton-search{
         min-height: 50vh;
     }
 
+    .loading-skeleton-recommendation{
+        min-height: 40vh;
+    }
+
+}
+
+@media screen and (min-width: 1024px) {
+    .loading-skeleton-library{
+        min-height: 35vh;
+    }
+
+    .loading-skeleton-search{
+        min-height: 50vh;
+    }
+
+    .loading-skeleton-recommendation{
+        min-height: 50vh;
+    }
 }

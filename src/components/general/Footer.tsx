@@ -23,7 +23,7 @@ export default function Footer() {
                         <span className={"simple-text-bolder"}>FAQ</span>
                     </Link>
                 </div>
-                {width > 767 && (
+                {width >= 768 && (
                     <span className="ms-auto me-auto">
                         <strong>Bibliomar</strong> - Genuinamente brasileiro.
                     </span>

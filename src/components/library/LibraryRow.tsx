@@ -40,7 +40,7 @@ export default function LibraryRow({
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
-            <div className="d-flex flex-wrap justify-content-lg-start justify-content-center w-100 mb-3">
+            <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100 mb-3">
                 <div className="d-flex flex-wrap">
                     <MDBTooltip title={message} tag={"span"} placement={"auto"}>
                         <span className="fw-bold lead">{title}</span>
@@ -64,7 +64,7 @@ export default function LibraryRow({
                 )}
             </div>
             <Break />
-            <div className="d-flex flex-wrap justify-content-lg-start justify-content-center w-100">
+            <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100">
                 {books.length > 0
                     ? books.map((book, index) => {
                           if (index < 8) {

@@ -103,7 +103,7 @@ export default function SearchBar({
                         style={{
                             position: "absolute",
                             top: "38%",
-                            marginLeft: width < 768 ? "88%" : "94%",
+                            marginLeft: width < 768 ? "87%" : "94%",
                             cursor: "pointer",
                             zIndex: "30",
                         }}

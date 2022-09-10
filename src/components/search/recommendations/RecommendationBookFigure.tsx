@@ -15,6 +15,7 @@ export default function RecommendationBookFigure({ book, timeout }: Props) {
     return (
         <div className="recommendation-figure me-2 mb-3">
             <SimpleBookFigure
+                loadingClassName="loading-skeleton-recommendation"
                 book={book}
                 cover={cover}
                 coverDone={coverDone}

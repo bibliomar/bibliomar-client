@@ -16,6 +16,7 @@ import BookInfoScreen from "./components/bookinfo/BookInfoScreen";
 import BookInfoTopicParent from "./components/bookinfo/BookInfoTopicParent";
 import { LibraryCategories } from "./components/general/helpers/generalTypes";
 import About from "./components/about/About";
+import FAQ from "./components/faq/FAQ";
 
 function App() {
     return (
@@ -24,7 +25,7 @@ function App() {
             <Route path="error" element={<Error404 />} />
             <Route path="/" element={<Navigate to="/search" />} />
             <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<></>} />
+            <Route path="/faq" element={<FAQ></FAQ>} />
             <Route path="/search" element={<Search />} />
             <Route path="/book" element={<BookInfoParent />}>
                 <Route path=":topic" element={<BookInfoTopicParent />}>
