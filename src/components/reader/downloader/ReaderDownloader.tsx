@@ -63,11 +63,15 @@ export default function ReaderDownloader({
             let req: AxiosResponse = await axios.request(config);
             console.log(req);
             const blobData: Blob = req.data;
-            if (!blobData.type.includes("epub")) {
+            // If the download book is neither an epub nor text/plain
+            if (
+                !blobData.type.includes("epub") &&
+                !blobData.type.includes("text")
+            ) {
                 setDownloadStatus(403);
                 setTimeout(() => {
                     navigate(-1);
-                }, 4000);
+                }, 6000);
                 return;
             } else {
                 setDownloadStatus(200);
