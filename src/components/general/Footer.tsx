@@ -29,8 +29,8 @@ export default function Footer() {
                     </span>
                 )}
 
-                <Link
-                    to={"/"}
+                <a
+                    href={"https://github.com/Lamarcke/bibliomar-react"}
                     className="ms-auto ms-md-0 me-4"
                     style={{ color: "unset" }}
                 >
@@ -38,13 +38,17 @@ export default function Footer() {
                         src={"/assets/img/footer-discord-logo.svg"}
                         alt={"Discord logo"}
                     />
-                </Link>
-                <Link to={"/"} className="me-3" style={{ color: "unset" }}>
+                </a>
+                <a
+                    href={"https://discord.gg/J5FBbh8JbS"}
+                    className="me-3"
+                    style={{ color: "unset" }}
+                >
                     <img
                         src={"/assets/img/footer-github-logo.svg"}
                         alt={"Discord logo"}
                     />
-                </Link>
+                </a>
             </div>
         </div>
     );

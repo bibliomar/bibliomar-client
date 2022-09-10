@@ -100,22 +100,31 @@ export default function About() {
                                 }`}
                             >
                                 <div className="d-flex flex-wrap justify-content-center w-50 me-4">
-                                    <img
-                                        alt={"Icone 3"}
-                                        className="mt-0 mt-lg-auto about-icon-img mb-1"
-                                        src="/assets/img/about-github-logo.png"
-                                    />
+                                    <a href="https://github.com/Lamarcke/bibliomar-react">
+                                        <img
+                                            alt={"Icone 3"}
+                                            className="mt-0 mt-lg-auto about-icon-img mb-1"
+                                            src="/assets/img/about-github-logo.png"
+                                        />
+                                    </a>
+
                                     <span>
                                         Nosso projeto é open-source. Contribua
                                         para melhorar ainda mais o Bibliomar!
                                     </span>
                                 </div>
                                 <div className="d-flex flex-wrap justify-content-center w-50 me-3">
-                                    <img
-                                        alt={"Icone 4"}
-                                        className="mt-0 mt-lg-auto about-icon-img"
-                                        src="/assets/img/about-discord-logo.png"
-                                    />
+                                    <a
+                                        href="https://discord.gg/J5FBbh8JbS"
+                                        style={{ color: "unset" }}
+                                    >
+                                        <img
+                                            alt={"Icone 4"}
+                                            className="mt-0 mt-lg-auto about-icon-img"
+                                            src="/assets/img/about-discord-logo.png"
+                                        />
+                                    </a>
+
                                     <span>
                                         Converse e participe da comunidade em
                                         nosso discord!
