@@ -64,7 +64,7 @@ export default function BookInfoScreen() {
             return;
         }
         const metadata = await getMetadata(md5, topicContext);
-        if (metadata !== null) {
+        if (metadata != null) {
             setBookInfo(metadata);
             const libraryBook = await findBookInLibrary(md5);
             if (libraryBook !== null) {

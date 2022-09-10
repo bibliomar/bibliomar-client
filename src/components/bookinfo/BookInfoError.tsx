@@ -24,8 +24,10 @@ export default function BookInfoError() {
                     noteColor="info"
                 >
                     <span>
-                        Quando você clica em um livro, nós salvamos informações
-                        importantes que serão mostradas aqui.
+                        Caso essa mensagem apareça enquanto você acessa um
+                        livro, signifca que não conseguimos recuperar as
+                        informações do mesmo em nosso servidor. Pedimos que
+                        tente novamente mais tarde.
                     </span>
                 </MDBTypography>
             </div>

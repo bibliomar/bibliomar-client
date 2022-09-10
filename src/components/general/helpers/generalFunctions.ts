@@ -64,22 +64,17 @@ export const findBookInLibrary = async (md5: string) => {
     if (jwtToken == null) {
         return null;
     }
-    const userInfo: UserLibrary | null = await getUserInfo(jwtToken);
-    let foundBook: Book | null = null;
-    if (userInfo == null) {
+
+    try {
+        const req = await axios.get(`${backendUrl}/v1/library/get/${md5}`);
+        const data: {
+            result: Book;
+        } = req.data;
+        return data.result;
+    } catch (err: any) {
+        console.error(err);
         return null;
     }
-    // This will iterate over all values in bookList, which are 3 lists, in every list, iterates over every entry checking
-    // for it's md5.
-    Object.values(userInfo).forEach((bookList: Book[]) => {
-        bookList.forEach((book: Book) => {
-            if (book.md5 === md5) {
-                foundBook = book;
-            }
-        });
-    });
-
-    return foundBook as Book | null;
 };
 
 export async function removeBookFromLibrary(

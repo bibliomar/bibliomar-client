@@ -360,6 +360,7 @@ abbr[title]:after
 
     .dbutton{
         width: 20vw;
+        max-width: 70%;
     }
 
     .library-actions-button{
