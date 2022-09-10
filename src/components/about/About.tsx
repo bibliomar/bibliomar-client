@@ -100,7 +100,11 @@ export default function About() {
                                 }`}
                             >
                                 <div className="d-flex flex-wrap justify-content-center w-50 me-4">
-                                    <a href="https://github.com/Lamarcke/bibliomar-react">
+                                    <a
+                                        style={{ color: "unset" }}
+                                        className="mt-0 mt-lg-auto"
+                                        href="https://github.com/Lamarcke/bibliomar-react"
+                                    >
                                         <img
                                             alt={"Icone 3"}
                                             className="mt-0 mt-lg-auto about-icon-img mb-1"
@@ -115,12 +119,13 @@ export default function About() {
                                 </div>
                                 <div className="d-flex flex-wrap justify-content-center w-50 me-3">
                                     <a
+                                        className="mt-0 mt-lg-auto"
                                         href="https://discord.gg/J5FBbh8JbS"
                                         style={{ color: "unset" }}
                                     >
                                         <img
                                             alt={"Icone 4"}
-                                            className="mt-0 mt-lg-auto about-icon-img"
+                                            className="about-icon-img"
                                             src="/assets/img/about-discord-logo.png"
                                         />
                                     </a>

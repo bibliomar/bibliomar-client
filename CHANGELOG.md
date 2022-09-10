@@ -30,8 +30,9 @@ o componente `ReaderSavedBooksList`, o componente de modal dos livros da bibliot
 Agora, temos apenas dois figures principais, tornando o design do site mais consistente.
 Isso é bom, pois agora o código está mais sucinto.
 - Agora, ao entrar na URL de um livro no Bibliomar Reader, caso o leitor não encontre um arrayBuffer salvo 
-- (nos casos em que o usuario fecha o navegador e retorna a mesma URL) o leitor automaticamente irá tentar
+(nos casos em que o usuario fecha o navegador e retorna a mesma URL) o leitor automaticamente irá tentar
 recuperar o livro da lista de livros salvos do usuario.
+- O código de download de livros pelo leitor online foi em maior parte movido para o backend.
 - Bibliomar (o backend) agora é hospedado na [fly.io](https://fly.io)
 - Agora é possível filtrar os livros na biblioteca.
 - Agora é possível mover e remover vários livros de uma vez na biblioteca.
