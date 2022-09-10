@@ -3,6 +3,7 @@ import {
     MDBContainer,
     MDBNavbar,
     MDBNavbarBrand,
+    MDBNavbarItem,
     MDBNavbarLink,
 } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
@@ -11,7 +12,7 @@ import {
     ReaderThemeAccentOptions,
 } from "../helpers/readerTypes";
 import ReaderCustomizeModal from "./customize/ReaderCustomizeModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BibliomarBrand from "../../general/navbar/BibliomarBrand";
 
 export default function ReaderNavbar({
@@ -19,7 +20,27 @@ export default function ReaderNavbar({
     setReaderSettings,
     readerAccent,
 }: ReaderNavbarProps) {
+    let showWarningCache = sessionStorage.getItem("reader-navbar-show-warning");
+    const [showWarning, setShowWarning] = useState<boolean>(
+        showWarningCache ? JSON.parse(showWarningCache) : true
+    );
     const [modalToggle, setModalToggle] = useState<boolean>(false);
+
+    useEffect(() => {
+        let warningTimeout: number | undefined;
+        warningTimeout = window.setTimeout(() => {
+            sessionStorage.setItem(
+                "reader-navbar-show-warning",
+                JSON.stringify(false)
+            );
+            setShowWarning(false);
+        }, 7000);
+        return () => {
+            if (warningTimeout) {
+                window.clearTimeout(warningTimeout);
+            }
+        };
+    }, []);
 
     return (
         <div
@@ -60,6 +81,21 @@ export default function ReaderNavbar({
                             badgeText={"reader"}
                         />
                     </MDBNavbarBrand>
+
+                    {showWarning ? (
+                        <>
+                            <MDBNavbarLink
+                                className="ms-auto me-auto"
+                                tag={"div"}
+                                style={{ color: "unset" }}
+                            >
+                                <span>
+                                    Caso a mudança de páginas trave, mude de
+                                    capítulo manualmente.
+                                </span>
+                            </MDBNavbarLink>
+                        </>
+                    ) : null}
 
                     <MDBNavbarLink className="ms-auto ">
                         <MDBBtn onClick={() => setModalToggle(true)}>

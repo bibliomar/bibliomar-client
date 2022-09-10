@@ -14,36 +14,39 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                 <>
                     <span className="recommendation-title mb-2">Download</span>
                     <Break />
-                    {Object.entries(downloadLinks!).map(([key, value]) => {
-                        return (
-                            <>
-                                <a
-                                    className="d-flex justify-content-center"
-                                    href={value ? value : undefined}
-                                >
-                                    <button
-                                        className={
-                                            !error
-                                                ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                                                : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
-                                        }
-                                        disabled={
-                                            key == null ||
-                                            value == null ||
-                                            error
-                                        }
+                    {Object.entries(downloadLinks!).map(
+                        ([key, value], index) => {
+                            return (
+                                <>
+                                    <a
+                                        key={index}
+                                        className="d-flex justify-content-center"
+                                        href={value ? value : undefined}
                                     >
-                                        {key
-                                            ? key.toLowerCase() === "get"
-                                                ? "libgen"
-                                                : key
-                                            : "erro"}
-                                    </button>
-                                </a>
-                                <Break />
-                            </>
-                        );
-                    })}
+                                        <button
+                                            className={
+                                                !error
+                                                    ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
+                                                    : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
+                                            }
+                                            disabled={
+                                                key == null ||
+                                                value == null ||
+                                                error
+                                            }
+                                        >
+                                            {key
+                                                ? key.toLowerCase() === "get"
+                                                    ? "libgen"
+                                                    : key
+                                                : "erro"}
+                                        </button>
+                                    </a>
+                                    <Break />
+                                </>
+                            );
+                        }
+                    )}
 
                     <Break />
                     <span className="text-muted mt-1 text-center w-75">

@@ -74,6 +74,7 @@ export default function ReaderMain() {
     const [readerAccent, setReaderAccent] = useState<ReaderThemeAccentOptions>(
         chooseThemeAccent(readerSettings.themeName)
     );
+
     const renditionRef = useRef<any>(null);
     const tocRef = useRef<any>(null);
     const pageInfoRef = useRef<string | null>(null);
