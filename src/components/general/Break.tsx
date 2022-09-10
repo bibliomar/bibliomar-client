@@ -15,11 +15,11 @@ export default function Break({ className, mobile, desktop }: Breaking) {
             {(!mobile && !desktop) || (mobile && desktop) ? (
                 <div className={`break ${className}`} />
             ) : mobile && !desktop ? (
-                size.width < 768 ? (
+                size.width <= 768 ? (
                     <div className={`break ${className}`} />
                 ) : null
             ) : !mobile && desktop ? (
-                size.width > 768 ? (
+                size.width >= 768 ? (
                     <div className={`break ${className}`} />
                 ) : null
             ) : null}
