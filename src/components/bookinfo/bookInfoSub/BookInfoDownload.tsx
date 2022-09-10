@@ -35,7 +35,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                     >
                                         {key
                                             ? key.toLowerCase() === "get"
-                                                ? "link direto"
+                                                ? "libgen"
                                                 : key
                                             : "erro"}
                                     </button>

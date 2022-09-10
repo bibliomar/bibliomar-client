@@ -190,7 +190,8 @@ abbr[title]:after
 }
 
 .dbutton{
-    width: fit-content;
+    min-width: fit-content;
+    width: 40vw;
 }
 
 .saved-list-div{
@@ -358,7 +359,7 @@ abbr[title]:after
     }
 
     .dbutton{
-        width: fit-content;
+        width: 20vw;
     }
 
     .library-actions-button{

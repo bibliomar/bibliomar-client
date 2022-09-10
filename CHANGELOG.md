@@ -36,3 +36,5 @@ recuperar o livro da lista de livros salvos do usuario.
 - Agora é possível filtrar os livros na biblioteca.
 - Agora é possível mover e remover vários livros de uma vez na biblioteca.
 - Corrigido o uso de tags `<a>` ao invés do equivalente `<Link />` para navegação. Isso ocasionava em recarregamentos completos de página, tirando o sentindo de construir um aplicativo SPA.
+- Adicionado dois novos servidores `Crust` e `c4rex.co`, servidor `Infura` removido pelo LibraryGenesis.
+
