@@ -67,7 +67,7 @@ export default function BookInfoLibraryButtons({
     }
 
     return (
-        <div className={`d-flex ${className}`}>
+        <div className={`d-flex ${className} mt-3 mt-lg-0`}>
             <BookInfoLibraryAdd
                 book={book}
                 category={LibraryCategories.reading}

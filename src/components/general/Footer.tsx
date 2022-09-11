@@ -30,7 +30,7 @@ export default function Footer() {
                 )}
 
                 <a
-                    href={"https://github.com/Lamarcke/bibliomar-react"}
+                    href={"https://discord.gg/J5FBbh8JbS"}
                     className="ms-auto ms-md-0 me-4"
                     style={{ color: "unset" }}
                 >
@@ -40,7 +40,7 @@ export default function Footer() {
                     />
                 </a>
                 <a
-                    href={"https://discord.gg/J5FBbh8JbS"}
+                    href={"https://github.com/Lamarcke/bibliomar-react"}
                     className="me-3"
                     style={{ color: "unset" }}
                 >

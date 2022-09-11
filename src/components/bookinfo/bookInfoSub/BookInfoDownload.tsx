@@ -26,8 +26,8 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                         <button
                                             className={
                                                 !error
-                                                    ? "dbutton btn btn-primary btn-rounded btn-lg mb-1 me-1"
-                                                    : "dbutton btn btn-danger btn-rounded btn-lg mb-1 me-1"
+                                                    ? "dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
+                                                    : "dbutton btn btn-danger btn-rounded btn-lg mt-1 mb-1 me-1"
                                             }
                                             disabled={
                                                 key == null ||

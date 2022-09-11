@@ -7,23 +7,27 @@ interface Breaking {
     desktop?: boolean;
 }
 
+const BreakComponent = ({ className }: Breaking) => {
+    return <div className={`break ${className}`} />;
+};
+
 // Talk about code golfing...
 // TODO: refactoring
 export default function Break({ className, mobile, desktop }: Breaking) {
     const size: Size = useWindowSize();
-    return (
-        <>
-            {(!mobile && !desktop) || (mobile && desktop) ? (
-                <div className={`break ${className}`} />
-            ) : mobile && !desktop ? (
-                size.width <= 768 ? (
-                    <div className={`break ${className}`} />
-                ) : null
-            ) : !mobile && desktop ? (
-                size.width >= 768 ? (
-                    <div className={`break ${className}`} />
-                ) : null
-            ) : null}
-        </>
-    );
+    const onBoth = !mobile && !desktop;
+    const onMobile = mobile && !desktop && size.width <= 768;
+    const onDesktop = !mobile && desktop && size.width >= 768;
+    const renderConditionally = () => {
+        if (onBoth) {
+            return <BreakComponent />;
+        } else if (onMobile) {
+            return <BreakComponent />;
+        } else if (onDesktop) {
+            return <BreakComponent />;
+        } else {
+            return null;
+        }
+    };
+    return <>{renderConditionally()}</>;
 }
