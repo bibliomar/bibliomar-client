@@ -18,7 +18,7 @@ export default function BookInfoDesktop({
     bookInfo,
     setBookInfo,
     downloadLinks,
-    error,
+    downloadLinksError,
     savedBook,
 }: BookInfoSubProps) {
     return (
@@ -34,7 +34,7 @@ export default function BookInfoDesktop({
                         <Break />
                         <BookInfoDownload
                             downloadLinks={downloadLinks}
-                            error={error}
+                            error={downloadLinksError}
                         />
                     </div>
                 </div>

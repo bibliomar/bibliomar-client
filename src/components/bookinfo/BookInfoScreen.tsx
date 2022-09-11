@@ -14,86 +14,30 @@ import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
 import localforage from "localforage";
 import { findBookLocally } from "../reader/helpers/readerFunctions";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
+import useDownloadLinks from "../general/helpers/useDownloadLinks";
+import useMetadata from "../general/helpers/useMetadata";
 
 export interface BookInfoSubProps {
     bookInfo: Book;
     setBookInfo: React.Dispatch<SetStateAction<Book | undefined>>;
     downloadLinks: DownloadLinks | undefined;
     savedBook: SavedBookEntry | null;
-    error: boolean;
-}
-
-async function getMetadata(md5: string, topic: string): Promise<Book | null> {
-    let reqUrl = `${backendUrl}/v1/metadata/${topic}/${md5}`;
-    try {
-        let req = await axios.get(reqUrl);
-        return req.data;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-}
-
-async function getDownloadLinks(md5: string, topic: string) {
-    let reqUrl = `${backendUrl}/v1/downloads/${topic}/${md5}`;
-    try {
-        let req = await axios.get(reqUrl);
-        return req.data;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
+    downloadLinksError: boolean;
 }
 
 export default function BookInfoScreen() {
-    let navigate = useNavigate();
-    const size: Size = useWindowSize();
-    const topicContext = useOutletContext() as string;
-    const [bookInfo, setBookInfo] = useState<Book | undefined>(undefined);
-    const [downloadLinks, setDownloadLinks] = useState<
-        DownloadLinks | undefined
-    >(undefined);
-    const [bookError, setBookError] = useState<boolean>(false);
-    const [savedBook, setSavedBook] = useState<SavedBookEntry | null>(null);
-
     const params = useParams();
-    const md5 = params.md5;
+    const md5 = params.md5!;
+    let navigate = useNavigate();
 
-    const getBookInfo = async () => {
-        if (!md5) {
-            return;
-        }
-        const metadata = await getMetadata(md5, topicContext);
-        if (metadata != null) {
-            setBookInfo(metadata);
-            const libraryBook = await findBookInLibrary(md5);
-            if (libraryBook !== null) {
-                setBookInfo({
-                    ...metadata,
-                    progress: libraryBook.progress
-                        ? libraryBook.progress
-                        : undefined,
-                    category: libraryBook.category,
-                });
-            }
-        } else {
-            navigate("/book/error", { replace: true });
-            return;
-        }
-    };
-
-    const getBookDownloads = async () => {
-        if (!md5) {
-            return;
-        }
-        const dlinks = await getDownloadLinks(md5, topicContext);
-        if (dlinks) {
-            setDownloadLinks(dlinks);
-        } else {
-            setBookError(true);
-            return;
-        }
-    };
+    const size: Size = useWindowSize();
+    const topicContext: string | undefined = useOutletContext();
+    const [bookInfo, setBookInfo] = useMetadata(md5, topicContext);
+    const [downloadLinks, downloadLinksError] = useDownloadLinks(
+        md5,
+        topicContext
+    );
+    const [savedBook, setSavedBook] = useState<SavedBookEntry | null>(null);
 
     const getSavedBook = async () => {
         const ls = localforage.createInstance({
@@ -123,10 +67,8 @@ export default function BookInfoScreen() {
         }
         // The functions that actually does the heavy working.
         // Done this way because i prefer working with async/await syntax.
-        getBookInfo().then();
-        getBookDownloads().then();
         getSavedBook().then();
-    }, []);
+    }, [md5, topicContext]);
 
     return (
         <div className="d-flex flex-column align-items-center">
@@ -138,7 +80,7 @@ export default function BookInfoScreen() {
                             setBookInfo={setBookInfo}
                             downloadLinks={downloadLinks}
                             savedBook={savedBook}
-                            error={bookError}
+                            downloadLinksError={downloadLinksError}
                         />
                     ) : (
                         <BookInfoMobile
@@ -146,7 +88,7 @@ export default function BookInfoScreen() {
                             setBookInfo={setBookInfo}
                             downloadLinks={downloadLinks}
                             savedBook={savedBook}
-                            error={bookError}
+                            downloadLinksError={downloadLinksError}
                         />
                     )}
                 </div>

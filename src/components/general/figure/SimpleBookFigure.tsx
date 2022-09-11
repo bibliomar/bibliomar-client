@@ -2,7 +2,6 @@ import { Book } from "../helpers/generalTypes";
 import { MDBCheckbox, MDBRipple } from "mdb-react-ui-kit";
 import React, { useContext, useEffect, useState } from "react";
 import { EditMode, SelectedBooks } from "../../library/helpers/libraryContext";
-import { LongPressDetectEvents, useLongPress } from "use-long-press";
 import { useNavigate } from "react-router-dom";
 import BookFigureCover from "../BookFigureCover";
 
@@ -22,20 +21,6 @@ export default function SimpleBookFigure({
     coverDone,
     href,
 }: SimpleBookFigureProps) {
-    const longPressBind = useLongPress(
-        () => {
-            if (editModeContext) {
-                if (!editModeContext.editMode) {
-                    editModeContext.setEditMode(
-                        (prevEditMode) => !prevEditMode
-                    );
-                    handleCheckboxChange();
-                }
-            }
-        },
-        { detect: LongPressDetectEvents.BOTH }
-    );
-
     const editModeContext = useContext(EditMode);
     const selectedBooksContext = useContext(SelectedBooks);
     const [onSelectedBooks, setOnSelectedBooks] = useState<boolean>(false);
@@ -98,7 +83,6 @@ export default function SimpleBookFigure({
                 className={`bg-image hover-overlay shadow-1-strong rounded w-100 h-100`}
                 rippleTag="div"
                 rippleColor="light"
-                {...longPressBind()}
             >
                 {editModeContext.editMode && (
                     <div className="library-checkbox-container">

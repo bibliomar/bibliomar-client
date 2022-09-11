@@ -3,6 +3,18 @@ import { NavigateFunction } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 
+export const hasStorage = (storage: Storage): boolean => {
+    const testItem = "_bibliomar_storage_test";
+    try {
+        storage.setItem(testItem, "parangole");
+        storage.getItem(testItem);
+        storage.removeItem(testItem);
+        return true;
+    } catch (e: any) {
+        return false;
+    }
+};
+
 // This is mainly used in the useCover hook.
 export const getOnlineCover = async (
     md5: string

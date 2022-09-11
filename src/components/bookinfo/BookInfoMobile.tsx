@@ -16,7 +16,7 @@ export default function BookInfoMobile({
     bookInfo,
     setBookInfo,
     downloadLinks,
-    error,
+    downloadLinksError,
     savedBook,
 }: BookInfoSubProps) {
     return (
@@ -57,7 +57,7 @@ export default function BookInfoMobile({
                         <Break className="mb-5" />
                         <BookInfoDownload
                             downloadLinks={downloadLinks}
-                            error={error}
+                            error={downloadLinksError}
                         />
                     </div>
                 </div>

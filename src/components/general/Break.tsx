@@ -11,8 +11,6 @@ const BreakComponent = ({ className }: Breaking) => {
     return <div className={`break ${className}`} />;
 };
 
-// Talk about code golfing...
-// TODO: refactoring
 export default function Break({ className, mobile, desktop }: Breaking) {
     const size: Size = useWindowSize();
     const onBoth = !mobile && !desktop;
@@ -20,11 +18,11 @@ export default function Break({ className, mobile, desktop }: Breaking) {
     const onDesktop = !mobile && desktop && size.width >= 768;
     const renderConditionally = () => {
         if (onMobile && !onDesktop) {
-            return <BreakComponent />;
+            return <BreakComponent className={className} />;
         } else if (onDesktop && !onMobile) {
-            return <BreakComponent />;
+            return <BreakComponent className={className} />;
         } else if (onBoth) {
-            return <BreakComponent />;
+            return <BreakComponent className={className} />;
         } else {
             return null;
         }

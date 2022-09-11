@@ -1,4 +1,3 @@
-import Skeleton from "react-loading-skeleton";
 import Cover, { CacheOptions } from "@readshape/covers";
 import React from "react";
 import { Book } from "../helpers/generalTypes";

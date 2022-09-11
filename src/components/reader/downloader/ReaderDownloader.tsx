@@ -114,11 +114,6 @@ export default function ReaderDownloader({
             If it's not, 5 minutes.
              */
             const downloadTimeLimit = userLoggedIn ? 1 : 5;
-            /*
-            In seconds.
-            We wait for 30 seconds minimum because otherwise it could result in blocks from the servers.
-             */
-            const minDownloadTimeLimit = 30;
 
             /*
             In MB.
@@ -152,10 +147,7 @@ export default function ReaderDownloader({
                             new Date(),
                             lastDownloadTime
                         );
-                        if (
-                            differenceMinutes < downloadTimeLimit ||
-                            differenceSeconds < minDownloadTimeLimit
-                        ) {
+                        if (differenceMinutes < downloadTimeLimit) {
                             setDownloadStatus(401);
                             return;
                         } else {

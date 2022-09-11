@@ -10,6 +10,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import Themeing from "./Themeing";
+import { hasStorage } from "./components/general/helpers/generalFunctions";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
@@ -79,6 +80,18 @@ export default function Bibliomar() {
             });
         });
     }, [theme]);
+
+    // Tries for localStorage and sessionStorage, and clear them if they are full.
+    useEffect(() => {
+        // Tries for sessionStorage
+        if (!hasStorage(sessionStorage)) {
+            sessionStorage.clear();
+        }
+        // Tries for localStorage
+        if (!hasStorage(localStorage)) {
+            localStorage.clear();
+        }
+    }, []);
 
     return (
         <BrowserRouter>

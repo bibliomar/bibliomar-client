@@ -1,9 +1,12 @@
 import { MDBBtn, MDBSpinner, MDBTypography } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
+import { Link } from "react-router-dom";
 
 interface LoadingStatus {
     errorType: string;
 }
+
+// TODO: refactoring and enum of possible errorTypes.
 
 export default function LoadingError(props: LoadingStatus) {
     function basedOnError() {
@@ -12,7 +15,8 @@ export default function LoadingError(props: LoadingStatus) {
                 <div className="d-flex flex-wrap justify-content-center">
                     <MDBTypography note noteColor="warning">
                         Não conseguimos encontrar nada com esses termos, que tal
-                        tentar novamente?
+                        olhar nossas{" "}
+                        <Link to={"/faq?ref=7"}>dicas de pesquisa</Link>?
                     </MDBTypography>
                     <Break />
                 </div>

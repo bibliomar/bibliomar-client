@@ -12,13 +12,12 @@ import {
     PossibleReaderScreenState,
     SavedBooks,
 } from "./helpers/readerTypes";
-import { Auth } from "../general/helpers/generalContext";
 import ReaderGreeting from "./ReaderGreeting";
+import { ReaderDeleteCacheModal } from "./ReaderDeleteCacheModal";
 
 export default function ReaderLanding() {
     const location = useLocation();
     const navigate = useNavigate();
-    const authContext = useContext(Auth);
     const [savedBooks, setSavedBooks] = useState<SavedBooks | undefined>(
         undefined
     );
@@ -26,7 +25,6 @@ export default function ReaderLanding() {
         useState<boolean>(false);
     const locationState: any = location.state;
     let landingState: PossibleReaderLandingState = locationState;
-    console.log(landingState);
 
     useEffect(() => {
         const ls = localforage.createInstance({
@@ -69,25 +67,48 @@ export default function ReaderLanding() {
         });
     }, []);
 
-    const [modalToggle, setModalToggle] = useState(false);
+    const [sendModal, setSendModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
-    const toggleShow = () => setModalToggle(!modalToggle);
+    const toggleSend = () => setSendModal(!sendModal);
+    const toggleDelete = () => setDeleteModal(!deleteModal);
+    const handleDeleteCache = async () => {
+        const ls = localforage.createInstance({
+            driver: localforage.INDEXEDDB,
+        });
+        await ls.clear();
+    };
 
     return (
         <div className="like-body bg-alt">
             <div className="container">
                 <Portal node={document.getElementById("modal-root")}>
                     <ReaderSendLocalFileModal
-                        modalToggle={modalToggle}
-                        setModalToggle={setModalToggle}
+                        modalToggle={sendModal}
+                        setModalToggle={setSendModal}
+                    />
+                    <ReaderDeleteCacheModal
+                        show={deleteModal}
+                        setShow={setDeleteModal}
+                        onClick={toggleDelete}
+                        agreedOnClick={handleDeleteCache}
                     />
                 </Portal>
                 <Navbar activeItem="reader" />
                 <div className="d-flex justify-content-end mt-4 mb-5 me-2">
                     <MDBBtn
+                        className="me-3"
+                        type="button"
+                        color="danger"
+                        onClick={toggleDelete}
+                    >
+                        Limpar cache do leitor
+                    </MDBBtn>
+
+                    <MDBBtn
                         type="button"
                         color="secondary"
-                        onClick={toggleShow}
+                        onClick={toggleSend}
                     >
                         Enviar arquivo
                     </MDBBtn>

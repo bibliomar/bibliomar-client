@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { MDBAccordion, MDBAccordionItem, MDBTooltip } from "mdb-react-ui-kit";
 import Bibliologo from "../general/Bibliologo";
 import { useEffect, useState } from "react";
+import Navbar from "../general/navbar/Navbar";
 
 export default function FAQ() {
     const [searchParams, _] = useSearchParams();
@@ -15,6 +16,9 @@ export default function FAQ() {
     return (
         <div className="like-body bg-alt">
             <div className="container-fluid">
+                <div>
+                    <Navbar />
+                </div>
                 <div className="mb-5">
                     <Bibliologo />
                     <br />
@@ -25,14 +29,62 @@ export default function FAQ() {
                 >
                     <MDBAccordion initialActive={ref}>
                         <MDBAccordionItem
-                            tag={"div"}
                             collapseId={1}
+                            headerTitle={
+                                "Não consigo encontrar meu livro, como proceder?"
+                            }
+                        >
+                            <p>
+                                Em muitos casos, isso é apenas uma questão de
+                                como você está estruturando sua pesquisa. Eis
+                                aqui alguns métodos para aumentar suas chances
+                                de encontrar seu livro:
+                            </p>
+                            <ul>
+                                <li>
+                                    Apague algumas palavras da sua pesquisa,
+                                    remova acentos, exclua preposições (o e a).
+                                </li>
+                                <li>Tente pesquisar em outra categoria</li>
+                                <li>
+                                    <span>
+                                        Tente pesquisar em outro formato
+                                    </span>
+                                    <br />
+                                    <span className="text-muted">
+                                        Normalmente, literatura brasileira é
+                                        mais encontrada no formato ePub.
+                                    </span>
+                                </li>
+                            </ul>
+                            <br />
+                            <p>
+                                Caso nenhum desses métodos funcione, por favor,
+                                pesquise por seu livro{" "}
+                                <a href="https://libgen.is/">
+                                    diretamente no LibraryGenesis
+                                </a>
+                                .
+                            </p>
+                            <p>
+                                Caso mesmo assim não encontre seu livro, você
+                                pode ajudar outros a encontrarem{" "}
+                                <a href={"/faq?ref=7"}>
+                                    fazendo upload do mesmo.
+                                </a>
+                            </p>
+                        </MDBAccordionItem>
+                        <MDBAccordionItem
+                            tag={"div"}
+                            collapseId={2}
                             headerTitle={"Como funciona o Bibliomar?"}
                         >
                             <p>
-                                Nós somos basicamente uma interface bem completa
-                                baseada no banco de dados do{" "}
-                                {<Link to={"/faq?ref=3"}>Library Genesis</Link>}
+                                Nós somos basicamente uma interface baseada no
+                                banco de dados do{" "}
+                                <a href={"https://libgen.is"}>
+                                    Library Genesis
+                                </a>
                                 .
                             </p>
 
@@ -69,15 +121,15 @@ export default function FAQ() {
                                         Apesar de ter sido desenvolvido com foco
                                         em atender as necessidades do Bibliomar,
                                         o Biblioterra é uma API pura e funciona
-                                        perfeitamente sem o uso do mesmo.
+                                        perfeitamente sozinha.
                                     </p>
-                                    <Link
-                                        to={
+                                    <a
+                                        href={
                                             "https://github.com/Lamarcke/Biblioterra"
                                         }
                                     >
                                         Biblioterra
-                                    </Link>
+                                    </a>
                                 </li>
                                 <br />
                                 <li>
@@ -116,7 +168,7 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={2}
+                            collapseId={3}
                             headerTitle={"Qual formato devo baixar?"}
                         >
                             <span className="fw-bold lead">EPUB: </span>
@@ -169,7 +221,7 @@ export default function FAQ() {
                                 Agora que você tem uma ideia geral sobre os
                                 formatos, basta baixar seu livro e ler a seção{" "}
                                 {
-                                    <a href={"/faq?ref=3"}>
+                                    <a href={"/faq?ref=4"}>
                                         "Baixei meu livro, e agora?"
                                     </a>
                                 }
@@ -177,7 +229,7 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={3}
+                            collapseId={4}
                             headerTitle={"Baixei meu livro, e agora?"}
                         >
                             <div className="accordion-body">
@@ -276,11 +328,11 @@ export default function FAQ() {
                             </div>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={4}
+                            collapseId={5}
                             headerTitle={"Como funciona a leitura online?"}
                         >
                             <h5>
-                                A ideia do leitor online é muito simples, nós
+                                A ideia do leitor online é muito simples: nós
                                 simplificamos todo o processo de leitura pra
                                 você.
                             </h5>
@@ -415,19 +467,23 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={5}
-                            headerTitle={""}
-                        ></MDBAccordionItem>
-                        <MDBAccordionItem
                             collapseId={6}
                             headerTitle={
                                 "Quero contribuir mas estou meio perdido, o que fazer?"
                             }
                         >
                             <p>
-                                Nesses casos (e em qualquer outro), fique a
-                                vontade para entrar em contato comigo (Lamarcke)
-                                diretamente:
+                                A principal forma de contribuiçao é justamente
+                                adicionando novos livros para a comunidade.
+                            </p>
+                            <p>
+                                Siga <a href={"/faq?ref=7"}>esse guia</a> para
+                                saber como enviar novos livros.
+                            </p>
+                            <p>
+                                Caso sua dúvida seja sobre contribuição no
+                                desenvolvimento, fique a vontade para entrar em
+                                contato comigo (Lamarcke) diretamente:
                             </p>
                             <ul>
                                 <li>
@@ -437,7 +493,7 @@ export default function FAQ() {
                                             "mailto:cassiolamarcksilvafreitas@gmail.com"
                                         }
                                     >
-                                        email
+                                        email.
                                     </a>
                                 </li>
                                 <li>Através do meu discord: Lamarco#5809</li>
@@ -452,6 +508,98 @@ export default function FAQ() {
                                     </a>
                                 </li>
                             </ul>
+                        </MDBAccordionItem>
+                        <MDBAccordionItem
+                            collapseId={7}
+                            headerTitle={"Como faço upload de novos livros?"}
+                        >
+                            <h5>
+                                Primeiramente, muito obrigado por sua
+                                contribuição!
+                                <br />
+                                Sua adição ao acervo com certeza será valiosa
+                                para outros leitores.
+                            </h5>
+                            <p>
+                                Esse guia vai lhe ensinar a fazer upload dos
+                                seus livros diretamente no acervo do
+                                LibraryGenesis.
+                            </p>
+                            <p>Não se preocupe, o processo é bem simples.</p>
+                            <p>
+                                PS: Você precisa de, no mínimo, o nome do livro
+                                e seus autores para enviar seu livro.
+                            </p>
+                            <ul>
+                                <li>
+                                    <p>
+                                        Primeiramente, entre no menu de upload
+                                        do libgen:
+                                    </p>
+                                    <a href={"https://library.bz/main/upload/"}>
+                                        Para livros de não-ficção
+                                    </a>
+                                    <br />
+                                    <a href="https://library.bz/fiction/upload/">
+                                        Para livros de ficção
+                                    </a>
+                                    <p>
+                                        Por favor, tenha certeza de escolher a
+                                        categoria correta baseada no seu
+                                        arquivo, isso ajuda muito a manter o
+                                        acervo organizado.
+                                    </p>
+                                </li>
+                                <li>
+                                    Na tela de login, digite as credenciais:
+                                    <br />
+                                    <strong>Login</strong>: genesis
+                                    <br />
+                                    <strong>Senha</strong>: upload
+                                </li>
+                                <li>
+                                    Na tela de upload, escolha o arquivo que
+                                    deseja enviar.
+                                </li>
+                                <li>
+                                    Com o arquivo enviado, preencha
+                                    primeiramente o nome e as informações dos
+                                    autores, caso não estejam preenchidas.
+                                </li>
+                                <li>
+                                    Em seguida, você pode adicionar todas as
+                                    informações que achar relevante ao seu
+                                    livro, como descrição, n. de páginas,
+                                    editora, etc.
+                                </li>
+                                <li>
+                                    <span>
+                                        (opcional) Escolha algum dos métodos de
+                                        pesquisa bibliográfica (o primeiro campo
+                                        na tela) e digite o código do livro
+                                        correspondente na plataforma.
+                                    </span>
+                                    <br />
+                                    <span>
+                                        Por exemplo, selecione "Goodreads" e
+                                        digite o ISBN-10 ou ISBN-13 do seu
+                                        livro.
+                                    </span>
+                                </li>
+                            </ul>
+                            <span>
+                                Com esse processo finalizado, seu livro deve
+                                aparecer no acervo do Bibliomar em pelo menos 24
+                                horas.
+                            </span>
+                            <p className="text-muted">
+                                Esse é o tempo que armazenamos as pesquisas em
+                                cache.
+                            </p>
+                            <h5>
+                                Mais uma vez, muito obrigado, a comunidade
+                                agradece!
+                            </h5>
                         </MDBAccordionItem>
                     </MDBAccordion>
                 </div>

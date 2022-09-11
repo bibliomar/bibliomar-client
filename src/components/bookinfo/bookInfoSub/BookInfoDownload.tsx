@@ -15,11 +15,11 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     <span className="recommendation-title mb-2">Download</span>
                     <Break />
                     {Object.entries(downloadLinks!).map(
-                        ([key, value], index) => {
+                        ([provider, value], index) => {
                             return (
                                 <>
                                     <a
-                                        key={index}
+                                        key={provider}
                                         className="d-flex justify-content-center"
                                         href={value ? value : undefined}
                                     >
@@ -30,19 +30,20 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                                     : "dbutton btn btn-danger btn-rounded btn-lg mt-1 mb-1 me-1"
                                             }
                                             disabled={
-                                                key == null ||
+                                                provider == null ||
                                                 value == null ||
                                                 error
                                             }
                                         >
-                                            {key
-                                                ? key.toLowerCase() === "get"
+                                            {provider
+                                                ? provider.toLowerCase() ===
+                                                  "get"
                                                     ? "libgen"
-                                                    : key
+                                                    : provider
                                                 : "erro"}
                                         </button>
                                     </a>
-                                    <Break />
+                                    <Break key={index} />
                                 </>
                             );
                         }

@@ -93,6 +93,8 @@ abbr[title]:after
 
 .bg-alt {
     /*noinspection CssUnknownTarget*/
+    position: relative;
+    bottom: 0;
     background: url("/assets/img/newBGLight.png") no-repeat fixed center center;
     background-size: cover;
 }
