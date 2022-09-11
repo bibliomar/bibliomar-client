@@ -15,18 +15,15 @@ const BreakComponent = ({ className }: Breaking) => {
 // TODO: refactoring
 export default function Break({ className, mobile, desktop }: Breaking) {
     const size: Size = useWindowSize();
-    const onBoth = !mobile && !desktop;
     const onMobile = mobile && !desktop && size.width <= 768;
     const onDesktop = !mobile && desktop && size.width >= 768;
     const renderConditionally = () => {
-        if (onBoth) {
-            return <BreakComponent />;
-        } else if (onMobile) {
+        if (onMobile) {
             return <BreakComponent />;
         } else if (onDesktop) {
             return <BreakComponent />;
         } else {
-            return null;
+            return <BreakComponent />;
         }
     };
     return <>{renderConditionally()}</>;

@@ -26,6 +26,7 @@ export default function ReaderLanding() {
         useState<boolean>(false);
     const locationState: any = location.state;
     let landingState: PossibleReaderLandingState = locationState;
+    console.log(landingState);
 
     useEffect(() => {
         const ls = localforage.createInstance({
