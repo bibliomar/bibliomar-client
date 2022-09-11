@@ -63,6 +63,8 @@ export default function ReaderLanding() {
                     );
                     setBookOnListRetrieved(true);
                 }
+            } else {
+                setBookOnListRetrieved(true);
             }
         });
     }, []);
