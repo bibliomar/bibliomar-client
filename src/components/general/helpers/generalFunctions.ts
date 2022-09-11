@@ -66,7 +66,11 @@ export const findBookInLibrary = async (md5: string) => {
     }
 
     try {
-        const req = await axios.get(`${backendUrl}/v1/library/get/${md5}`);
+        const req = await axios.get(`${backendUrl}/v1/library/get/${md5}`, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
         const data: {
             result: Book;
         } = req.data;
