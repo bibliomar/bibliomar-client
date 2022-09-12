@@ -61,7 +61,9 @@ export default function ReaderMain() {
     const [currentPage, setCurrentPage] = useState<string | undefined>(
         undefined
     );
+    // Tracks the last progress saved on database, it's them compared
     const savedProgressRef = useRef<string | undefined>(undefined);
+
     // This should contain all settings relevant to the reader, including themes, fullscreen toggle, etc.
     // The component should only render if it's not null.
     const [readerSettings, setReaderSettings] = useState<ReaderSettings>(
@@ -75,9 +77,16 @@ export default function ReaderMain() {
         chooseThemeAccent(readerSettings.themeName)
     );
 
+    let showWarningCache = sessionStorage.getItem("reader-navbar-show-warning");
+    const [showWarning, setShowWarning] = useState<boolean>(
+        showWarningCache ? JSON.parse(showWarningCache) : true
+    );
+
     const renditionRef = useRef<any>(null);
     const tocRef = useRef<any>(null);
     const pageInfoRef = useRef<string | null>(null);
+    const notOnLibraryWarned = useRef<boolean>(false);
+    const userNotLoggedInWarned = useRef<boolean>(false);
 
     const locationBasedOnIdentifier = async () => {
         // First, tries for local cache...
@@ -114,13 +123,37 @@ export default function ReaderMain() {
         }
     };
 
-    // Title side effect
+    const paginationTextHandler = () => {
+        if (showWarning) {
+            return "Caso o avanço de páginas trave, mude o capítulo manualmente.";
+        } else if (pageInfoRef.current != null) {
+            return pageInfoRef.current;
+        } else {
+            return "Carregando...";
+        }
+    };
+
+    // Document side effect
     useEffect(() => {
         if (onlineFile || localFile) {
             document.title = `${
                 onlineFile?.title || localFile?.name
             } - Bibliomar Reader`;
         }
+
+        let warningTimeout: number | undefined;
+        warningTimeout = window.setTimeout(() => {
+            sessionStorage.setItem(
+                "reader-navbar-show-warning",
+                JSON.stringify(false)
+            );
+            setShowWarning(false);
+        }, 7000);
+        return () => {
+            if (warningTimeout) {
+                window.clearTimeout(warningTimeout);
+            }
+        };
     }, []);
 
     // Functional side effects
@@ -183,8 +216,8 @@ export default function ReaderMain() {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = window.setInterval(() => {
                 if (onlineFile!.category == null) {
-                    if (sessionStorage.getItem("reader-user-warned") == null) {
-                        sessionStorage.setItem("reader-user-warned", "true");
+                    if (!notOnLibraryWarned.current) {
+                        notOnLibraryWarned.current = true;
                         alert(
                             "Você está lendo um livro que não está na sua biblioteca, " +
                                 "e por isso seu progresso não está sendo salvo online."
@@ -193,22 +226,21 @@ export default function ReaderMain() {
                     return;
                 }
                 if (
-                    savedProgressRef != null &&
+                    savedProgressRef.current != null &&
                     savedProgressRef.current === currentPage
                 ) {
                     return;
                 }
+
                 saveProgressOnDatabase(currentPage, onlineFile!).then((r) => {
-                    if (
-                        r == null &&
-                        sessionStorage.getItem("reader-user-warned") == null
-                    ) {
-                        sessionStorage.setItem("reader-user-warned", "true");
+                    if (!r && !userNotLoggedInWarned.current) {
+                        userNotLoggedInWarned.current = true;
                         alert(
                             "Sessão de login expirada, seu progresso não está sendo salvo online."
                         );
+                        return;
                     }
-                    if (r != null) {
+                    if (r) {
                         savedProgressRef.current = currentPage;
                         console.log("Progress saved online.");
                     }
@@ -220,7 +252,7 @@ export default function ReaderMain() {
                 clearInterval(saveInterval);
             }
         };
-    }, []);
+    }, [arrayBuffer]);
 
     // Theming side effects
     useEffect(() => {}, []);
@@ -271,11 +303,7 @@ export default function ReaderMain() {
                     zIndex: 1,
                 }}
             >
-                {initialLoadDone
-                    ? pageInfoRef.current
-                        ? pageInfoRef.current
-                        : null
-                    : "Livro carregado."}
+                {paginationTextHandler()}
             </div>
         </>
     );

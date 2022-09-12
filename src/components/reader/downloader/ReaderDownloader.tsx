@@ -9,17 +9,16 @@ import { saveBookLocally } from "../helpers/readerFunctions";
 import localforage from "localforage";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
-import {
-    PossibleReaderScreenState,
-    ReaderDownloaderProps,
-} from "../helpers/readerTypes";
+import { PossibleReaderScreenState } from "../helpers/readerTypes";
 import { backendUrl } from "../../general/helpers/generalFunctions";
 import { Auth } from "../../general/helpers/generalContext";
+import { Book } from "../../general/helpers/generalTypes";
 
-export default function ReaderDownloader({
-    savedBooks,
-    bookInfo,
-}: ReaderDownloaderProps) {
+interface ReaderDownloaderProps {
+    bookInfo: Book;
+}
+
+export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
     console.log("Welcome to Bibliomar's downloader!");
     console.log("Rest assured, your books are not saved in our servers.");
 
@@ -30,9 +29,11 @@ export default function ReaderDownloader({
     //Should be in KB.
     //KB = Byte * 1000
     const [downloadProgress, setDownloadProgress] = useState<number>(0);
-
-    const [downloadStatus, setDownloadStatus] = useState<number>(0);
     const [downloadSize, setDownloadSize] = useState<number>(0);
+
+    // TODO: add enum with possible downloadStatus values.
+    // For now, please use ReaderDownloaderMessage component as reference.
+    const [downloadStatus, setDownloadStatus] = useState<number>(0);
 
     const downloadBook = async () => {
         const config: AxiosRequestConfig = {
@@ -43,15 +44,24 @@ export default function ReaderDownloader({
             timeout: 300000,
 
             onDownloadProgress: (evt) => {
-                //Transforms sizes from bytes to kb.
-                const maxSize = evt.total / 1000;
-                const loadedSize = evt.total / 1000;
-                //Only sets downloadSize and status on first fired event.
+                // Be sure to transform to kb before setting the state.
+                // bytes (original value) / 1000 = value in kb
+                console.log(evt);
+                let loadedSize: number = 0;
+
+                if (evt.lengthComputable) {
+                    const maxSize = evt.total / 1000;
+                    loadedSize = evt.total / 1000;
+                    if (!Number.isNaN(maxSize) && maxSize !== downloadSize) {
+                        setDownloadSize(maxSize);
+                    }
+                } else if (evt.loaded) {
+                    loadedSize = evt.loaded / 1000;
+                }
+
+                // Only sets status on first fired event.
                 if (downloadStatus !== 201) {
                     setDownloadStatus(201);
-                }
-                if (maxSize !== downloadSize) {
-                    setDownloadSize(maxSize);
                 }
 
                 setDownloadProgress(loadedSize);
@@ -62,6 +72,7 @@ export default function ReaderDownloader({
             setDownloadStatus(103);
             let req: AxiosResponse = await axios.request(config);
             console.log(req);
+
             const blobData: Blob = req.data;
             // If the download book is neither an epub nor text/plain
             if (
@@ -80,7 +91,7 @@ export default function ReaderDownloader({
             const arrayBuffer = await fileToArrayBuffer(blobData);
             await saveBookLocally(arrayBuffer, bookInfo);
             // Saves current time in last-download, so we can define the last time the user has made a download.
-            await localforage.setItem("last-download", new Date());
+            await localforage.setItem("reader-last-download-date", new Date());
             const readerScreenState: PossibleReaderScreenState = {
                 arrayBuffer: arrayBuffer,
                 onlineFile: bookInfo,
@@ -92,13 +103,13 @@ export default function ReaderDownloader({
                     state: readerScreenState,
                     replace: true,
                 });
-            }, 3000);
+            }, 4000);
         } catch (e: any) {
             console.error(e);
-            setDownloadStatus(e.response ? e.response.status : 500);
+            setDownloadStatus(500);
             setTimeout(() => {
                 location.reload();
-            }, 3000);
+            }, 10000);
             return;
         }
     };
@@ -136,7 +147,7 @@ export default function ReaderDownloader({
                 return;
             }
             localforage
-                .getItem<Date | null>("last-download")
+                .getItem<Date | null>("reader-last-download-date")
                 .then((lastDownloadTime) => {
                     if (lastDownloadTime != null) {
                         const differenceMinutes = differenceInMinutes(
@@ -165,26 +176,26 @@ export default function ReaderDownloader({
     }, []);
 
     return (
-        <div className="d-flex flex-wrap justify-content-center w-100">
-            <div className="basic-container d-flex flex-wrap justify-content-center p-3">
-                <BlankLoadingSpinner />
-                <Break />
-                <ReaderDownloaderMessage
-                    downloadProgress={downloadProgress}
-                    downloadStatus={downloadStatus}
-                    downloadSize={downloadSize}
-                    userLoggedIn={userLoggedIn}
-                />
-                <Break />
-                <span className="text-center text-muted mt-4">
-                    Dica: Isso pode demorar um pouco, você pode trocar de aba
-                    enquanto aguarda.
-                </span>
-                <Break />
-                <span className="text-center text-muted mt-2">
-                    Nós reiniciamos o download automaticamente em caso de erro.
-                </span>
-            </div>
-        </div>
+        <>
+            <BlankLoadingSpinner
+                color={downloadStatus === 200 ? "sucess" : undefined}
+            />
+            <Break />
+            <ReaderDownloaderMessage
+                downloadProgress={downloadProgress}
+                downloadStatus={downloadStatus}
+                downloadSize={downloadSize}
+                userLoggedIn={userLoggedIn}
+            />
+            <Break />
+            <span className="text-center text-muted mt-4">
+                Dica: Isso pode demorar um pouco, você pode trocar de aba
+                enquanto aguarda.
+            </span>
+            <Break />
+            <span className="text-center text-muted mt-2">
+                Nós reiniciamos o download automaticamente em caso de erro.
+            </span>
+        </>
     );
 }

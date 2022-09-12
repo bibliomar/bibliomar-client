@@ -194,14 +194,10 @@ export const saveProgressOnDatabase = async (
     };
     try {
         await axios.request(config);
-        return 200;
+        return true;
     } catch (e: any) {
-        if (e.response) {
-            if (e.response.status === 401) {
-                return null;
-            }
-        }
         console.error(e);
+        return false;
     }
 };
 

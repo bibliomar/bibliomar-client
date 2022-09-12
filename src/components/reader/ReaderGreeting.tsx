@@ -4,10 +4,7 @@ import SmallLine from "../general/SmallLine";
 
 export default function ReaderGreeting() {
     return (
-        <div
-            className="basic-container mt-4 d-flex justify-content-center"
-            style={{ minHeight: "30vh" }}
-        >
+        <>
             <div className="text-center simple-text-bolder w-75 mt-5">
                 <p className="lead">
                     Você pode enviar seu arquivo local por aqui.
@@ -19,6 +16,6 @@ export default function ReaderGreeting() {
                 </p>
                 <p className="">Dica: apenas arquivos EPUB são suportados.</p>
             </div>
-        </div>
+        </>
     );
 }

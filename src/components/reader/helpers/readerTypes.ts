@@ -15,16 +15,6 @@ export interface PossibleReaderLandingState {
     bookInfo: Book;
 }
 
-/**
- * Props that the component ReaderDownloader will receive.
- *
- * url corresponds to IPFS.io and secondaryUrl to Pinata.
- */
-export interface ReaderDownloaderProps {
-    bookInfo: Book;
-    savedBooks?: SavedBooks;
-}
-
 /* Describes a user savedBooks schema.
 You absolutely should use createBookInfoList and createArrayBufferList to effectively use this schema.
 Both functions will return you useful arrays in an ordered manner.

@@ -13,6 +13,24 @@ export default function ({
     downloadSize,
     userLoggedIn,
 }: Props) {
+    const downloadProgressHandler = () => {
+        if (downloadSize > 0) {
+            return (
+                <>
+                    <span>
+                        {downloadProgress}Kb de {downloadSize}Kb
+                    </span>
+                    <Break />
+                    <span>
+                        {(downloadProgress / downloadSize) * 100}% concluído.
+                    </span>
+                </>
+            );
+        } else if (downloadSize === 0 && downloadProgress > 0) {
+            return <span>{downloadProgress}Kb baixados.</span>;
+        }
+    };
+
     const renderBasedOnStatus = () => {
         if (downloadStatus === 0) {
             return <span>Preparando-se para iniciar seu download...</span>;
@@ -47,28 +65,8 @@ export default function ({
                     <div className="d-flex flex-wrap justify-content-center">
                         <span className="lead">Baixando: </span>
                         <Break />
-                        <span>
-                            {downloadProgress}Kb de {downloadSize}Kb
-                        </span>
-                        <Break />
-                        <span>
-                            {(downloadProgress / downloadSize) * 100}%
-                            concluído.
-                        </span>
-                        <Break className="mb-2" />
-                        <span>
-                            {downloadProgress === downloadSize
-                                ? "Finalizando..."
-                                : null}
-                        </span>
+                        {downloadProgressHandler()}
                     </div>
-                );
-            case 400:
-                return (
-                    <span>
-                        Ocorreu um erro durante o seu download... por favor,
-                        tente novamente.
-                    </span>
                 );
             case 401:
                 return (
@@ -137,15 +135,8 @@ export default function ({
             case 500:
                 return (
                     <span>
-                        Ocorreu um erro durante o seu download... por favor,
-                        tente novamente.
-                    </span>
-                );
-            case 504:
-                return (
-                    <span>
-                        O servidor de download não está respondendo, tente
-                        novamente mais tarde.
+                        Ocorreu um erro durante o seu download... Vamos tentar
+                        novamente em 10 segundos.
                     </span>
                 );
         }

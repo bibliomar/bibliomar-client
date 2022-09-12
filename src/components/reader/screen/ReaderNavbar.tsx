@@ -20,27 +20,9 @@ export default function ReaderNavbar({
     setReaderSettings,
     readerAccent,
 }: ReaderNavbarProps) {
-    let showWarningCache = sessionStorage.getItem("reader-navbar-show-warning");
-    const [showWarning, setShowWarning] = useState<boolean>(
-        showWarningCache ? JSON.parse(showWarningCache) : true
-    );
     const [modalToggle, setModalToggle] = useState<boolean>(false);
 
-    useEffect(() => {
-        let warningTimeout: number | undefined;
-        warningTimeout = window.setTimeout(() => {
-            sessionStorage.setItem(
-                "reader-navbar-show-warning",
-                JSON.stringify(false)
-            );
-            setShowWarning(false);
-        }, 7000);
-        return () => {
-            if (warningTimeout) {
-                window.clearTimeout(warningTimeout);
-            }
-        };
-    }, []);
+    useEffect(() => {}, []);
 
     return (
         <div
@@ -81,21 +63,6 @@ export default function ReaderNavbar({
                             badgeText={"reader"}
                         />
                     </MDBNavbarBrand>
-
-                    {showWarning ? (
-                        <>
-                            <MDBNavbarLink
-                                className="ms-auto me-auto"
-                                tag={"div"}
-                                style={{ color: "unset" }}
-                            >
-                                <span>
-                                    Caso a mudança de páginas trave, mude de
-                                    capítulo manualmente.
-                                </span>
-                            </MDBNavbarLink>
-                        </>
-                    ) : null}
 
                     <MDBNavbarLink className="ms-auto ">
                         <MDBBtn onClick={() => setModalToggle(true)}>

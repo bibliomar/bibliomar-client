@@ -44,7 +44,6 @@ export default function SearchBar({
     let [query, setQuery] = useState("");
     let [indexes, setIndexes] = useState([]);
     let [relevantIndexes, setRelevantIndexes] = useState<any[]>([]);
-    let fuse: Fuse<any>;
 
     useEffect(() => {
         let q = searchParameters.get("q");
@@ -54,21 +53,13 @@ export default function SearchBar({
     }, [searchParameters]);
 
     useEffect(() => {
-        if (categoryContext !== "any") {
-            getIndexes(categoryContext).then((r) => {
-                setIndexes(r);
-            });
-        } else {
-            getIndexes("fiction").then((r) => {
-                setIndexes(r);
-            });
-        }
+        getIndexes(categoryContext).then((r) => setIndexes(r));
     }, [categoryContext]);
 
     async function handleInput(input: HTMLInputElement) {
         setQuery(input.value);
-        if (query.length > 2) {
-            fuse = new Fuse(indexes, { keys: ["title"] });
+        if (query.length >= 3) {
+            let fuse = new Fuse(indexes, { keys: ["title"] });
             let search = fuse.search(input.value);
             setRelevantIndexes(search);
         }
@@ -103,7 +94,7 @@ export default function SearchBar({
                         style={{
                             position: "absolute",
                             top: "38%",
-                            marginLeft: width < 768 ? "87%" : "94%",
+                            marginLeft: width <= 768 ? "86%" : "94%",
                             cursor: "pointer",
                             zIndex: "30",
                         }}
@@ -116,12 +107,12 @@ export default function SearchBar({
                                 return !prev;
                             });
                         }}
-                    ></i>
+                    />
                 </MDBInput>
             </div>
 
             <button type="submit" className="btn btn-primary search-button">
-                <i className="fas fa-search"></i>
+                <i className="fas fa-search fa-lg"></i>
             </button>
         </div>
     );

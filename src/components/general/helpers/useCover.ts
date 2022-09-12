@@ -1,8 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
-import { getOnlineCover } from "./generalFunctions";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { backendUrl } from "./generalFunctions";
+
+const getOnlineCover = async (md5: string): Promise<string | undefined> => {
+    let reqUrl = `${backendUrl}/v1/cover/${md5}`;
+    try {
+        const request = await axios.get(reqUrl);
+        const result: string = request.data;
+        if (result.includes("blank")) {
+            return undefined;
+        }
+        return result;
+    } catch (e: any) {
+        // 500 errors means Biblioterra couldn't find a cover.
+        return undefined;
+    }
+};
 
 // Async handles book cover recovery.
 // Returns a tuple with a possible cover and if the process of retrieving the cover is done.
+// If the returned cover is a "No Cover" image from LibraryGenesis, we will use our own cover generation instead.
+// So undefined is returned.
 export default function useCover(
     md5: string,
     timeout?: number

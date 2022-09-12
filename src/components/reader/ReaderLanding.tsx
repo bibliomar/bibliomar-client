@@ -14,57 +14,37 @@ import {
 } from "./helpers/readerTypes";
 import ReaderGreeting from "./ReaderGreeting";
 import { ReaderDeleteCacheModal } from "./ReaderDeleteCacheModal";
+import { findBookInSavedBooks } from "../general/helpers/generalFunctions";
+import { useToggle } from "../general/helpers/useToggle";
 
 export default function ReaderLanding() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [savedBooks, setSavedBooks] = useState<SavedBooks | undefined>(
-        undefined
-    );
-    const [bookOnListRetrieved, setBookOnListRetrieved] =
-        useState<boolean>(false);
+    const [savedBooksRetrieved, setSavedBooksRetrieved] = useToggle(false);
     const locationState: any = location.state;
     let landingState: PossibleReaderLandingState = locationState;
 
     useEffect(() => {
-        const ls = localforage.createInstance({
-            driver: localforage.INDEXEDDB,
-        });
-        ls.getItem<SavedBooks | null>("saved-books").then((savedBooks) => {
-            if (savedBooks != null) {
-                setSavedBooks(savedBooks);
-                if (landingState) {
-                    Object.values(savedBooks).forEach(
-                        (savedBookEntry, index) => {
-                            if (savedBookEntry != null) {
-                                if (
-                                    savedBookEntry.bookInfo.md5 ===
-                                    landingState.bookInfo.md5
-                                ) {
-                                    // Set's this book arrayBuffer as the state if the md5 matches.
-                                    const readerScreenState: PossibleReaderScreenState =
-                                        {
-                                            arrayBuffer:
-                                                savedBookEntry.arrayBuffer,
-                                            onlineFile: savedBookEntry.bookInfo,
-                                            localFile: undefined,
-                                        };
-
-                                    navigate(`${savedBookEntry.bookInfo.md5}`, {
-                                        state: readerScreenState,
-                                        replace: true,
-                                    });
-                                    return;
-                                }
-                            }
-                        }
-                    );
-                    setBookOnListRetrieved(true);
+        if (landingState && landingState.bookInfo) {
+            const md5 = landingState.bookInfo.md5;
+            findBookInSavedBooks(md5).then((possibleSavedBook) => {
+                if (possibleSavedBook != null) {
+                    const readerScreenState: PossibleReaderScreenState = {
+                        arrayBuffer: possibleSavedBook.arrayBuffer,
+                        onlineFile: possibleSavedBook.bookInfo,
+                        localFile: undefined,
+                    };
+                    navigate(`${possibleSavedBook.bookInfo.md5}`, {
+                        state: readerScreenState,
+                        replace: true,
+                    });
+                    setSavedBooksRetrieved(true);
+                    return;
+                } else {
+                    setSavedBooksRetrieved(true);
                 }
-            } else {
-                setBookOnListRetrieved(true);
-            }
-        });
+            });
+        }
     }, []);
 
     const [sendModal, setSendModal] = useState(false);
@@ -77,6 +57,7 @@ export default function ReaderLanding() {
             driver: localforage.INDEXEDDB,
         });
         await ls.clear();
+        window.location.reload();
     };
 
     return (
@@ -113,18 +94,24 @@ export default function ReaderLanding() {
                         Enviar arquivo
                     </MDBBtn>
                 </div>
-                {landingState ? (
-                    bookOnListRetrieved ? (
-                        <ReaderDownloader
-                            bookInfo={landingState.bookInfo}
-                            savedBooks={savedBooks}
-                        />
-                    ) : (
-                        <BlankLoadingSpinner />
-                    )
-                ) : (
-                    <ReaderGreeting />
-                )}
+                <div
+                    className="d-flex flex-wrap justify-content-center w-100"
+                    style={{ minHeight: "30vh" }}
+                >
+                    <div className="basic-container d-flex flex-wrap justify-content-center p-3">
+                        {landingState ? (
+                            savedBooksRetrieved ? (
+                                <ReaderDownloader
+                                    bookInfo={landingState.bookInfo}
+                                />
+                            ) : (
+                                <BlankLoadingSpinner />
+                            )
+                        ) : (
+                            <ReaderGreeting />
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

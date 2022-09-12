@@ -1,7 +1,8 @@
-import { Book, LibraryCategories, UserLibrary } from "./generalTypes";
+import { Book, LibraryCategories } from "./generalTypes";
 import { NavigateFunction } from "react-router-dom";
-import React from "react";
 import axios from "axios";
+import localforage from "localforage";
+import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
 
 export const hasStorage = (storage: Storage): boolean => {
     const testItem = "_bibliomar_storage_test";
@@ -12,24 +13,6 @@ export const hasStorage = (storage: Storage): boolean => {
         return true;
     } catch (e: any) {
         return false;
-    }
-};
-
-// This is mainly used in the useCover hook.
-export const getOnlineCover = async (
-    md5: string
-): Promise<string | undefined> => {
-    let reqUrl = `${backendUrl}/v1/cover/${md5}`;
-    try {
-        const request = await axios.get(reqUrl);
-        const result: string = request.data;
-        if (result.includes("blank")) {
-            return undefined;
-        }
-        return result;
-    } catch (e: any) {
-        // 500 errors means Biblioterra couldn't find a cover.
-        return undefined;
     }
 };
 
@@ -69,7 +52,35 @@ export const getUserInfo = async (
     }
 };
 
-// A shorthand function that calls getUserInfo and tries to find a book based on md5.
+// Tries to find a book in the browser's saved books based on md5.
+export const findBookInSavedBooks = async (
+    md5: string
+): Promise<SavedBookEntry | null> => {
+    try {
+        const lf = localforage.createInstance({
+            driver: localforage.INDEXEDDB,
+        });
+        const savedBooks: SavedBooks | null =
+            await lf.getItem<SavedBooks | null>("saved-books");
+        if (savedBooks != null) {
+            let possibleSavedBook: SavedBookEntry | null = null;
+            Object.values(savedBooks).forEach((savedBook) => {
+                if (savedBook && savedBook.bookInfo) {
+                    if (savedBook.bookInfo.md5 === md5) {
+                        possibleSavedBook = savedBook;
+                    }
+                }
+            });
+            return possibleSavedBook;
+        } else {
+            return null;
+        }
+    } catch (e) {
+        return null;
+    }
+};
+
+// Tries to find a book on a user's library based on md5.
 // Automatically uses stored jwt-token, if it exists.
 export const findBookInLibrary = async (md5: string) => {
     const jwtToken = localStorage.getItem("jwt-token");

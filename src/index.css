@@ -117,6 +117,7 @@ abbr[title]:after
 }
 
 .search-input{
+    min-height: 60px !important;
     height: 7vh !important;
 }
 
@@ -124,6 +125,7 @@ abbr[title]:after
     min-width: 70px;
     max-width: 150px;
     width: 10vw;
+    min-height: 60px !important;
     height: 7vh !important;
 }
 
