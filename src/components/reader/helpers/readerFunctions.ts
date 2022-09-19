@@ -288,6 +288,8 @@ export const createReactReaderStyle = (
             right: "50px",
             textAlign: "center",
             color: themeColorsObject[themeName][0],
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
         },
         reader: {
             position: "absolute",

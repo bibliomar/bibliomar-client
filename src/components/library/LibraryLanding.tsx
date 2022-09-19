@@ -41,7 +41,7 @@ export default function LibraryLanding() {
             <Break />
             <LibraryRow
                 title="Backlog"
-                message={"Para livros abandonados ou finalizados"}
+                message={"Para livros finalizados ou abandonados"}
                 bookCategory={LibraryCategories.backlog}
                 booksInfo={user["backlog"]}
             />

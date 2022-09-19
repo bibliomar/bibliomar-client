@@ -32,6 +32,7 @@ export default function ReaderCustomizeModalBody({
     readerSettings,
     setReaderSettings,
 }: Props) {
+    console.log(readerSettings);
     const navigate = useNavigate();
     const size: Size = useWindowSize();
     const themeAccent = chooseThemeAccent(readerSettings.themeName);
@@ -44,6 +45,7 @@ export default function ReaderCustomizeModalBody({
             swipe: readerSettings.swipe,
             flow: readerSettings.flow,
         },
+
         onSubmit: (values, formikHelpers) => {
             const newReaderSettings: ReaderSettings = {
                 ...values,

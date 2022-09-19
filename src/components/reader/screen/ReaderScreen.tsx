@@ -30,6 +30,11 @@ export default function ReaderScreen({
     renditionRef,
     tocRef,
 }: ReaderScreenProps) {
+    const epubOptions = {
+        flow: readerSettings.flow,
+        manager: readerSettings.manager,
+    };
+
     return (
         <div
             id={"reader-reader-screen"}
@@ -67,6 +72,7 @@ export default function ReaderScreen({
                 tocChanged={(toc) => {
                     tocRef.current = toc;
                 }}
+                epubOptions={epubOptions}
                 swipeable={readerSettings.swipe}
                 getRendition={(rendition) => {
                     registerRenditionThemes(

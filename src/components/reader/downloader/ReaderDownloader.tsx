@@ -40,8 +40,8 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
             url: `${backendUrl}/v1/temp-download/${bookInfo.topic}/${bookInfo.md5}`,
             method: "GET",
             responseType: "blob",
-            // Equals to 300 seconds.
-            timeout: 300000,
+            // Equals to 600 seconds.
+            timeout: 600000,
 
             onDownloadProgress: (evt) => {
                 // Be sure to transform to kb before setting the state.

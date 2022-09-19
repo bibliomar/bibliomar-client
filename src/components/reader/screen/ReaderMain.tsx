@@ -296,9 +296,10 @@ export default function ReaderMain() {
             <div
                 style={{
                     position: "absolute",
-                    bottom: "1rem",
+                    bottom: "15px",
                     right: "1rem",
                     left: "1rem",
+                    fontSize: "1rem",
                     textAlign: "center",
                     zIndex: 1,
                 }}
