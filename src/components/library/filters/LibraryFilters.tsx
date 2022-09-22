@@ -39,7 +39,7 @@ export default function LibraryFilters() {
     };
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} style={{}}>
             <div className="basic-container">
                 <div className="d-flex flex-wrap justify-content-center">
                     <LibraryFiltersWrapper>

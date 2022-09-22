@@ -18,11 +18,14 @@ export default function LibraryFilterToggle() {
                 <MDBIcon fas icon="filter" size={"lg"} className="me-2" />
             }
             color={active ? "primary" : "none"}
-            onClick={toggleActive}
+            onClick={() => {
+                toggleActive();
+            }}
             btnClassName={`btn-floating ${
                 active ? null : "btn-outline-primary"
             }`}
             placement={"auto-start"}
+            poperStyle={{ zIndex: "200000" }}
         >
             <MDBPopoverHeader>Filtros</MDBPopoverHeader>
             <MDBPopoverBody>
