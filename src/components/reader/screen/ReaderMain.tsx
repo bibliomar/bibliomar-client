@@ -216,7 +216,7 @@ export default function ReaderMain() {
     // Saving side effects
     useEffect(() => {
         let saveInterval: number | undefined = undefined;
-        if (onlineFile && currentPage) {
+        if (onlineFile) {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = window.setInterval(() => {
                 if (onlineFile!.category == null) {
@@ -236,7 +236,7 @@ export default function ReaderMain() {
                     return;
                 }
 
-                saveProgressOnDatabase(currentPage, onlineFile!).then((r) => {
+                saveProgressOnDatabase(currentPage!, onlineFile!).then((r) => {
                     if (!r && !userNotLoggedInWarned.current) {
                         userNotLoggedInWarned.current = true;
                         alert(

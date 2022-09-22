@@ -2,9 +2,10 @@ import SearchResults from "./SearchResults";
 import React from "react";
 import Pagination from "../pagination/Pagination";
 import Break from "../../general/Break";
+import { Book } from "../../general/helpers/generalTypes";
 
 interface ResultsInterface {
-    results: any;
+    results: Book[];
     page: any;
     setAjaxStatus: React.Dispatch<React.SetStateAction<string>>;
     setPage: any;
