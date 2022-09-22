@@ -189,7 +189,7 @@ export const saveProgressOnDatabase = async (
             Authorization: `Bearer ${jwtToken}`,
         },
         method: "POST",
-        timeout: 20000,
+        timeout: 60000,
         data: reqBody,
     };
     try {
@@ -253,7 +253,8 @@ export const registerRenditionThemes = (
 };
 
 export const createReactReaderStyle = (
-    themeName: ReaderThemeOptions
+    themeName: ReaderThemeOptions,
+    readerSettings: ReaderSettings
 ): ReactReaderStyle => {
     /*
     Index 1 equals to backgroundColor.
@@ -313,13 +314,18 @@ export const createReactReaderStyle = (
             right: "1",
         },
         arrow: {
+            display:
+                readerSettings.swipe ||
+                readerSettings.flow === FlowOptions.scrolled
+                    ? "none"
+                    : "unset",
             outline: "none",
             border: "none",
             background: "none",
             position: "absolute",
             top: "50%",
             marginTop: "-32",
-            fontSize: "62",
+            fontSize: "64px",
             padding: "0 10px",
             color: themeColorsObject[themeName][0],
             fontFamily: "arial, sans-serif",
@@ -422,9 +428,11 @@ export const chooseThemeAccent = (themeName: ReaderThemeOptions) => {
 // Always call this when changing the reader flow.
 // Weird stuff will happen otherwise.
 export const managerBasedOnFlow = (flow: FlowOptions) => {
-    return flow === FlowOptions.default || flow === FlowOptions.paginated
-        ? ManagerOptions.default
-        : ManagerOptions.continuous;
+    if (flow === FlowOptions.default || flow === FlowOptions.paginated) {
+        return ManagerOptions.default;
+    } else {
+        return ManagerOptions.continuous;
+    }
 };
 
 // Use these settings as base when changing reader settings.

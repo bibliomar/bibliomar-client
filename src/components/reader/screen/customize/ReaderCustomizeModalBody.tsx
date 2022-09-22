@@ -3,7 +3,7 @@ import {
     ReaderSettings,
     ReaderThemeAccentOptions,
 } from "../../helpers/readerTypes";
-import React, { MouseEventHandler, SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import {
     MDBBtn,
     MDBIcon,
@@ -47,6 +47,10 @@ export default function ReaderCustomizeModalBody({
         },
 
         onSubmit: (values, formikHelpers) => {
+            if (values.flow === FlowOptions.scrolled) {
+                values.swipe = false;
+            }
+
             const newReaderSettings: ReaderSettings = {
                 ...values,
                 fullscreen: readerSettings.fullscreen,
@@ -234,7 +238,13 @@ export default function ReaderCustomizeModalBody({
                         <MDBSwitch
                             name={"swipe"}
                             id={"swipe"}
-                            checked={formik.values.swipe}
+                            checked={
+                                formik.values.swipe &&
+                                formik.values.flow !== FlowOptions.scrolled
+                            }
+                            disabled={
+                                formik.values.flow === FlowOptions.scrolled
+                            }
                             onChange={formik.handleChange}
                         />
                         <Break />

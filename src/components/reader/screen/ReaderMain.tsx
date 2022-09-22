@@ -71,7 +71,7 @@ export default function ReaderMain() {
     );
     // Not to be confused with ReaderTheme on ReaderSettings.
     const [readerStyle, setReaderStyle] = useState<ReactReaderStyle>(
-        createReactReaderStyle(readerSettings.themeName)
+        createReactReaderStyle(readerSettings.themeName, readerSettings)
     );
     const [readerAccent, setReaderAccent] = useState<ReaderThemeAccentOptions>(
         chooseThemeAccent(readerSettings.themeName)
@@ -211,7 +211,11 @@ export default function ReaderMain() {
                 );
             }
         }
+    }, [arrayBuffer]);
 
+    // Saving side effects
+    useEffect(() => {
+        let saveInterval: number | undefined = undefined;
         if (onlineFile && currentPage) {
             // Timeout in minutes: minutes * 60000 = miliseconds.
             saveInterval = window.setInterval(() => {
@@ -253,9 +257,6 @@ export default function ReaderMain() {
             }
         };
     }, [arrayBuffer]);
-
-    // Theming side effects
-    useEffect(() => {}, []);
 
     return (
         <>
