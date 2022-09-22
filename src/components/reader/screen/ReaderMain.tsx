@@ -61,8 +61,8 @@ export default function ReaderMain() {
     const [currentPage, setCurrentPage] = useState<string | undefined>(
         undefined
     );
-    // Tracks the last progress saved on database, it's them compared
-    const savedProgressRef = useRef<string | undefined>(undefined);
+    // Tracks the current num of changed pages.
+    const numOfChangedPages = useRef<number>(0);
 
     // This should contain all settings relevant to the reader, including themes, fullscreen toggle, etc.
     // The component should only render if it's not null.
@@ -111,9 +111,14 @@ export default function ReaderMain() {
 
             pageInfoRef.current = `Página ${displayed.page} de ${displayed.total} neste capítulo.`;
         }
+
         if (initialLoadDone) {
             //After the initial page load, we can save the user's progress normally.
             await localforage.setItem(`${identifier}-page`, epubcifi);
+            if (numOfChangedPages.current >= 10) {
+                numOfChangedPages.current = 0;
+            }
+            numOfChangedPages.current += 1;
             setCurrentPage(epubcifi);
         } else {
             // This function is also called on the very first render, so we just need to set the initial page here.
@@ -215,48 +220,31 @@ export default function ReaderMain() {
 
     // Saving side effects
     useEffect(() => {
-        let saveInterval: number | undefined = undefined;
-        if (onlineFile) {
-            // Timeout in minutes: minutes * 60000 = miliseconds.
-            saveInterval = window.setInterval(() => {
-                if (onlineFile!.category == null) {
-                    if (!notOnLibraryWarned.current) {
-                        notOnLibraryWarned.current = true;
-                        alert(
-                            "Você está lendo um livro que não está na sua biblioteca, " +
-                                "e por isso seu progresso não está sendo salvo online."
-                        );
-                    }
-                    return;
-                }
-                if (
-                    savedProgressRef.current != null &&
-                    savedProgressRef.current === currentPage
-                ) {
-                    return;
-                }
-
-                saveProgressOnDatabase(currentPage!, onlineFile!).then((r) => {
-                    if (!r && !userNotLoggedInWarned.current) {
+        if (onlineFile && currentPage) {
+            if (onlineFile.category == null) {
+                userNotLoggedInWarned.current = true;
+                alert(
+                    "Você está lendo um livro que não está na sua biblioteca, por isso seu progresso não será salvo online."
+                );
+                return;
+            }
+            if (numOfChangedPages.current === 10) {
+                saveProgressOnDatabase(currentPage, onlineFile).then((r) => {
+                    if (!r && userNotLoggedInWarned.current) {
                         userNotLoggedInWarned.current = true;
                         alert(
-                            "Sessão de login expirada, seu progresso não está sendo salvo online."
+                            "Sua sessão de login expirou. O progresso de leitura não será salvo online."
                         );
                         return;
                     }
+
                     if (r) {
-                        savedProgressRef.current = currentPage;
                         console.log("Progress saved online.");
                     }
                 });
-            }, 5 * 60000);
-        }
-        return () => {
-            if (saveInterval) {
-                clearInterval(saveInterval);
             }
-        };
-    }, [arrayBuffer]);
+        }
+    }, [numOfChangedPages.current]);
 
     return (
         <>

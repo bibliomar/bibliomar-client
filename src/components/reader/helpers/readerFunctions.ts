@@ -180,6 +180,7 @@ export const saveProgressOnDatabase = async (
     if (jwtToken == null || book.category == null) {
         return null;
     }
+    console.log(currentProgress);
     book.progress = currentProgress;
     const reqBody = [book];
 
@@ -193,7 +194,8 @@ export const saveProgressOnDatabase = async (
         data: reqBody,
     };
     try {
-        await axios.request(config);
+        const req = await axios.request(config);
+        console.log(req);
         return true;
     } catch (e: any) {
         console.error(e);
