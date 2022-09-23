@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Bibliologo from "../general/Bibliologo";
 import SearchOptions from "./SearchOptions";
 import SearchBar from "./SearchBar";
 import Greeting from "./Greeting";
-import ResultScreen from "./results/ResultScreen";
+import SearchResultScreen from "./results/SearchResultScreen";
 import LoadingScreen from "./loading/LoadingScreen";
 import axios, { AxiosResponse } from "axios";
 import Navbar from "../general/navbar/Navbar";
@@ -13,6 +13,8 @@ import { Auth } from "../general/helpers/generalContext";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
 import Footer from "../general/Footer";
 import { backendUrl } from "../general/helpers/generalFunctions";
+import Paginator from "../general/Paginator";
+import SearchPagination from "./SearchPagination";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -24,7 +26,7 @@ export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
  */
 
 function requestConstructor(form: FormData, category: string) {
-    let request = "";
+    let request: string | null = null;
     let query = form.get("q") as string;
     let type = form.get("type");
     let format = form.get("format");
@@ -63,6 +65,7 @@ function requestConstructor(form: FormData, category: string) {
 
 function sciTechFiltering(results: Book[], form: FormData) {
     // This is kinda of an excerpt from /filter on Biblioterra API.
+    // It's harder to filter sciTech results on the backend, so we need to do it here.
     let results_list: Book[] = [];
     let language = form.get("language") as string;
     let format = form.get("format") as string;
@@ -97,19 +100,52 @@ function sciTechFiltering(results: Book[], form: FormData) {
 
 function Search() {
     const optionsHiddenSetting = localStorage.getItem("options-hidden");
-    const [isUserLoggedContext, setIsUserLoggedContext] =
-        useState<boolean>(false);
-    let [searchResults, setSearchResults] = useState<Book[]>([]);
     const [optionsHidden, setOptionsHidden] = useState<boolean>(
         optionsHiddenSetting ? optionsHiddenSetting === "true" : true
     );
-    let [page, setPage] = useState(1);
+    // Query related states
+    const searchResults = useRef<Book[]>([]);
+
+    const queryPage = useRef<number>(1);
     let [ajaxStatus, setAjaxStatus] = useState("");
     let [errorType, setErrorType] = useState<string | undefined>(undefined);
     let [categoryContext, setCategoryContext] = useState("any");
     let formRef = useRef<HTMLFormElement>(null);
     let [searchParams, setSearchParameters] = useSearchParams();
     let query = searchParams.get("q");
+
+    // Paging related states and functions
+    const itemsPerPage = 8;
+    // Tracks the last page in which a request error ocurred.
+    const lastErrorPage = useRef<number | undefined>(undefined);
+    const [visibleBooks, setVisibleBooks] = useState<Book[]>([]);
+    const [pageCount, setPageCount] = useState<number>(0);
+    const [itemOffset, setItemOffset] = useState<number>(0);
+
+    const handlePageClick = async (evt: any) => {
+        // Current page in index format (starts at 0)
+        const currentPageIndex = evt.selected;
+        const currentPageNum = currentPageIndex + 1;
+
+        const newOffset =
+            (currentPageIndex * itemsPerPage) % searchResults.current.length;
+        setItemOffset(newOffset);
+
+        if (
+            searchResults.current.length >= 25 &&
+            currentPageNum === pageCount
+        ) {
+            if (
+                typeof lastErrorPage.current === "number" &&
+                queryPage >= lastErrorPage
+            ) {
+                console.log("Avoiding duplicate prefetch request.");
+                return;
+            }
+            queryPage.current += 1;
+            await requestHandler(formRef.current!, false);
+        }
+    };
 
     useEffect(() => {
         let submit = setTimeout(async () => {
@@ -118,10 +154,28 @@ function Search() {
                     new Event("submit", { bubbles: true, cancelable: true })
                 );
             }
-            // ~1000ms gives enough time for everything to render.
+            // 100ms gives enough time for everything to render.
         }, 100);
         return () => clearTimeout(submit);
-    }, [page, searchParams]);
+    }, [queryPage, searchParams]);
+
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        setPageCount(Math.ceil(searchResults.current.length / itemsPerPage));
+        setVisibleBooks(searchResults.current.slice(itemOffset, endOffset));
+    }, [itemOffset, searchResults.current]);
+
+    const resetSearchState = () => {
+        // Resets relevant values to their initial values
+        searchResults.current = [];
+        queryPage.current = 1;
+        lastErrorPage.current = undefined;
+        setVisibleBooks([]);
+        setItemOffset(0);
+        setPageCount(0);
+        setAjaxStatus("");
+        setErrorType(undefined);
+    };
 
     function errorHandler(status: number) {
         if (status === 400) {
@@ -141,17 +195,6 @@ function Search() {
             setAjaxStatus("error");
             setErrorType("blue");
             return;
-        } else if (status === 800) {
-            setAjaxStatus("error");
-            setErrorType("yellow-page");
-            setTimeout(() => {
-                if (page < 1) {
-                    setPage(1);
-                } else if (page !== 1 && page > 1) {
-                    setPage(page - 1);
-                }
-            }, 2500);
-            return;
         } else {
             setAjaxStatus("error");
             setErrorType("red");
@@ -159,7 +202,10 @@ function Search() {
         }
     }
 
-    async function getSearchResults(formData: FormData, category: string) {
+    async function getSearchResults(
+        formData: FormData,
+        category: string
+    ): Promise<Book[] | number> {
         let requestParameters = requestConstructor(formData, category);
         if (requestParameters == null) {
             return 700;
@@ -171,9 +217,6 @@ function Search() {
                 `${backendUrl}/v1/search/${requestParameters}`
             );
         } catch (e: any) {
-            if (page !== 1) {
-                return 800;
-            }
             return e.response.status;
         }
 
@@ -188,35 +231,43 @@ function Search() {
         }
     }
 
-    const submitHandler = async (formElement: HTMLFormElement) => {
-        setSearchResults([]);
-        setAjaxStatus("");
-        setErrorType(undefined);
+    const requestHandler = async (
+        formElement: HTMLFormElement,
+        initialRequest: boolean
+    ) => {
+        if (initialRequest) {
+            resetSearchState();
+        }
 
-        let resultsList = [];
+        let resultsList: Book[] = [];
         let formData = new FormData(formElement);
-        let formDataString = JSON.stringify(formData);
-        let URLParameters = new URLSearchParams();
-
-        for (let [key, value] of formData) {
-            let valueStr = value.toString();
-            URLParameters.append(key, valueStr);
-        }
-
-        if (sessionStorage.getItem(formDataString)) {
-            let resultsListString = sessionStorage.getItem(formDataString);
-            if (resultsListString) {
-                resultsList = JSON.parse(resultsListString);
+        console.log(...formData);
+        if (initialRequest) {
+            // Builds a URLParameters instance and changes the URL for the user.
+            let URLParameters = new URLSearchParams();
+            for (let [key, value] of formData) {
+                let valueStr = value.toString();
+                URLParameters.append(key, valueStr);
             }
+            setSearchParameters(URLParameters, { replace: false });
+            setAjaxStatus("sending");
         }
 
-        setSearchParameters(URLParameters, { replace: false });
-        setAjaxStatus("sending");
+        formData.set("page", queryPage.current.toString());
 
-        if (resultsList != null) {
+        let formDataString = JSON.stringify(formData);
+
+        const possibleResultsList = sessionStorage.getItem(
+            `${formDataString}-${queryPage.current.toString()}-search`
+        );
+        if (possibleResultsList) {
+            resultsList = JSON.parse(possibleResultsList);
+        }
+
+        if (resultsList.length === 0) {
             if (categoryContext !== "any") {
                 let request = await getSearchResults(formData, categoryContext);
-                if (Number.isInteger(request)) {
+                if (typeof request === "number") {
                     errorHandler(request);
                     return;
                 }
@@ -224,39 +275,47 @@ function Search() {
             } else {
                 // Means categoryContext === "any", so we are doing a dual request.
                 let request1 = await getSearchResults(formData, "fiction");
-                // Waits 4 seconds so libgen doesn't get mad at us.
+                // Waits 3 seconds so libgen doesn't get mad at us.
                 await sleep(3000);
                 let request2 = await getSearchResults(formData, "sci-tech");
-                if (Number.isInteger(request1) && Number.isInteger(request2)) {
-                    errorHandler(request2);
-                    return;
-                } else if (
-                    !Number.isInteger(request1) &&
-                    !Number.isInteger(request2)
-                ) {
-                    resultsList = [...request1, ...request2];
-                } else if (
-                    !Number.isInteger(request1) &&
-                    Number.isInteger(request2)
-                ) {
-                    resultsList = request1;
-                } else if (
-                    Number.isInteger(request1) &&
-                    !Number.isInteger(request2)
-                ) {
-                    resultsList = request2;
+                const requests = [request1, request2];
+
+                requests.forEach((req) => {
+                    if (typeof req === "object") {
+                        resultsList = [...resultsList, ...req];
+                    }
+                });
+                if (resultsList.length === 0) {
+                    lastErrorPage.current = queryPage.current;
+                    // Only shows errors and warnings if this is the first request made.
+                    if (initialRequest) {
+                        if (typeof request2 === "number") {
+                            errorHandler(request2);
+                            return;
+                        } else if (typeof request1 === "number") {
+                            // This is an extreme edge case and shouldn't possibly happen. But better safe than sorry.
+                            errorHandler(request1);
+                            return;
+                        }
+                    }
                 }
             }
         }
 
         console.log(resultsList);
         let resultsListString = JSON.stringify(resultsList);
-        sessionStorage.setItem(formDataString, resultsListString);
-        setAjaxStatus("waiting");
-        setSearchResults(resultsList);
-        setTimeout(() => {
-            setAjaxStatus("done");
-        }, 2000);
+        sessionStorage.setItem(
+            `${formDataString}-${queryPage.current.toString()}-search`,
+            resultsListString
+        );
+        const oldSearchResults = searchResults.current;
+        searchResults.current = [...oldSearchResults, ...resultsList];
+        if (initialRequest) {
+            setAjaxStatus("waiting");
+            setTimeout(() => {
+                setAjaxStatus("done");
+            }, 2000);
+        }
     };
 
     return (
@@ -274,14 +333,13 @@ function Search() {
                     ref={formRef}
                     onSubmit={async (evt) => {
                         evt.preventDefault();
-                        await submitHandler(evt.currentTarget);
+                        await requestHandler(evt.currentTarget, true);
                     }}
                 >
                     <SearchOptions
                         hidden={optionsHidden}
                         categoryContext={categoryContext}
                         setCategoryContext={setCategoryContext}
-                        page={page}
                     />
                     <SearchBar
                         setOptionsHidden={setOptionsHidden}
@@ -289,13 +347,15 @@ function Search() {
                     />
                 </form>
                 <LoadingScreen status={ajaxStatus} errorType={errorType} />
-                <ResultScreen
-                    results={searchResults}
-                    page={page}
-                    setAjaxStatus={setAjaxStatus}
-                    setPage={setPage}
+                <SearchResultScreen
+                    results={visibleBooks}
+                    pageCount={pageCount}
+                    pageChangeHandler={handlePageClick}
                 />
-                <RecommendationScreen disabled={searchResults.length !== 0} />
+
+                <RecommendationScreen
+                    disabled={searchResults.current.length !== 0}
+                />
                 <Footer />
             </div>
         </div>

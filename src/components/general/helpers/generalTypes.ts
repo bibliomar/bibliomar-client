@@ -88,5 +88,17 @@ interface AuthContext {
     setUserLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type PaginationIndexes = {
+    startIndex: number;
+    endIndex: null;
+};
+
 export { ThemeOptions, LibraryCategories };
-export type { Book, DownloadLinks, ThemeContext, UserLibrary, AuthContext };
+export type {
+    Book,
+    DownloadLinks,
+    ThemeContext,
+    UserLibrary,
+    AuthContext,
+    PaginationIndexes,
+};

@@ -34,7 +34,7 @@ export const saveBookLocally = async (
         This should only be uncommented after #12 is resolved.
         if (savedBooksCache.firstBookInfo) {
             localStorage.removeItem(
-                `${savedBooksCache.firstBookInfo.title}-page`
+                `${savedBooksCache.firstBookInfo.title}-queryPage`
             );
         }
          */

@@ -1,6 +1,6 @@
 import Break from "../general/Break";
 import LibraryBookFigure from "./LibraryBookFigure";
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Book, LibraryCategories } from "../general/helpers/generalTypes";
 import { Filters } from "./helpers/libraryContext";
 import equal from "fast-deep-equal/es6";
@@ -11,6 +11,8 @@ import {
 } from "./helpers/libraryFunctions";
 import { MDBIcon, MDBTooltip } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
+import Paginator from "../general/Paginator";
+import LibraryPagination from "./pagination/LibraryPagination";
 
 interface Props {
     message: string;
@@ -29,19 +31,35 @@ export default function LibrarySection({
         return equal(filtersContext.filters, defaultFilters);
     }, [filtersContext.filters]);
 
-    const books = useMemo(() => {
+    const filteredBooks = useMemo(() => {
         return bookFiltering(
             bookCategorySetter(booksInfo, bookCategory),
             filtersContext.filters
         );
     }, [filtersContext.filters]);
 
+    const itemsPerPage = 10;
+    const [itemOffset, setItemOffset] = useState(0);
+    const [books, setBooks] = useState<Book[]>([]);
+    const [pageCount, setPageCount] = useState(0);
+
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        setPageCount(Math.ceil(filteredBooks.length / itemsPerPage));
+        setBooks(filteredBooks.slice(itemOffset, endOffset));
+    }, [filteredBooks, itemOffset]);
+
+    const pageChangeHandler = (evt: any) => {
+        const newOffset = (evt.selected * itemsPerPage) % filteredBooks.length;
+        setItemOffset(newOffset);
+        setBooks(filteredBooks.slice(newOffset, newOffset + itemsPerPage));
+    };
+
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
             <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100 mb-3">
-                <div className="d-flex w-100">
+                <div className="d-flex flex-wrap w-100">
                     <span className="fw-bold lead">{message}</span>
-
                     <Link to={"/library"} className="ms-auto">
                         <MDBIcon
                             fas
@@ -50,17 +68,17 @@ export default function LibrarySection({
                             size={"2x"}
                         />
                     </Link>
+                    <Break className="mb-1" />
+                    <span className="text-muted">
+                        <strong>{filteredBooks.length}</strong> livros nessa
+                        categoria
+                    </span>
                 </div>
 
                 <Break />
-                {books.length > 8 && (
-                    <span className="text-muted">
-                        Mostrando 8 de {books.length}
-                    </span>
-                )}
             </div>
             <Break />
-            <div className="d-flex flex-wrap justify-content-center justify-content-md-start w-100">
+            <div className="d-flex flex-wrap justify-content-center justify-content-md-start  w-100">
                 {books.length > 0 ? (
                     books.map((el, i) => {
                         let timeout;
@@ -74,7 +92,7 @@ export default function LibrarySection({
                         );
                     })
                 ) : (
-                    <div className="d-flex justify-content-center w-100">
+                    <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
                             <span>Vazio, que tal adicionar algum livro?</span>
                         ) : (
@@ -85,6 +103,13 @@ export default function LibrarySection({
                         )}
                     </div>
                 )}
+                <Break />
+                {books.length > 0 ? (
+                    <LibraryPagination
+                        pageChangeHandler={pageChangeHandler}
+                        pageCount={pageCount}
+                    />
+                ) : null}
             </div>
         </div>
     );
