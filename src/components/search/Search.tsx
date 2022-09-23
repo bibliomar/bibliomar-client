@@ -247,12 +247,14 @@ function Search() {
         let resultsList: Book[] = [];
         let formData = new FormData(formElement);
         let formDataString = "";
+
         let URLParameters = new URLSearchParams();
         for (let [key, value] of formData) {
             let valueStr = value.toString();
             URLParameters.append(key, valueStr);
             formDataString += `${key}=${value}&`;
         }
+
         // Set after the above loop to avoid being added on the url search parameters.
         formData.set("page", queryPage.current.toString());
 
@@ -309,7 +311,6 @@ function Search() {
             }
         }
 
-        console.log(resultsList);
         let resultsListString = JSON.stringify(resultsList);
         sessionStorage.setItem(
             `${formDataString}-${queryPage.current.toString()}-search`,
