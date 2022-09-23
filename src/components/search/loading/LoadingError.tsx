@@ -21,7 +21,7 @@ export default function LoadingError(props: LoadingStatus) {
                     <Break />
                 </div>
             );
-        } else if (props.errorType === "yellow-page") {
+        } else if (props.errorType === "yellow-queryPage") {
             return (
                 <div className="">
                     <MDBTypography

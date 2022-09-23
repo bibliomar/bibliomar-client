@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { MDBCol, MDBCollapse, MDBTooltip } from "mdb-react-ui-kit";
 
 //@ts-ignore
-function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
+function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
     let [searchParams, setSearchParams] = useSearchParams();
     let [type, setType] = useState("title");
     let [formatSelect, setFormatSelect] = useState("any");
@@ -13,7 +13,6 @@ function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
     const searchType = searchParams.get("type");
     const format = searchParams.get("format");
     const language = searchParams.get("language");
-    const pageParamString = searchParams.get("page");
 
     // Change based on URL
     useEffect(() => {
@@ -194,15 +193,6 @@ function SearchOptions({ categoryContext, setCategoryContext, page, hidden }) {
                         <option value="portuguese">Português</option>
                         <option value="english">Inglês</option>
                     </select>
-                </div>
-                <div>
-                    <input
-                        className="visually-hidden"
-                        type="number"
-                        value={page}
-                        name="page"
-                        readOnly={true}
-                    />
                 </div>
             </div>
         </MDBCollapse>

@@ -40,7 +40,7 @@ export default function LibraryRow({
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
-            <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100 mb-3">
+            <div className="d-flex flex-wrap justify-content-md-start w-100 mb-3">
                 <div className="d-flex flex-wrap">
                     <MDBTooltip title={message} tag={"span"} placement={"auto"}>
                         <span className="fw-bold lead">{title}</span>
@@ -57,17 +57,21 @@ export default function LibraryRow({
                 </Link>
 
                 <Break />
-                {books.length > 8 && (
+                {books.length > 5 && (
                     <span className="text-muted">
-                        Mostrando 8 de {books.length}
+                        Mostrando <strong>5</strong> livros de {books.length}
                     </span>
                 )}
             </div>
             <Break />
-            <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100">
+            <div
+                className={`d-flex flex-wrap 
+                    justify-content-md-start
+                 justify-content-center w-100`}
+            >
                 {books.length > 0
                     ? books.map((book, index) => {
-                          if (index < 8) {
+                          if (index < 5) {
                               return (
                                   <LibraryBookFigure
                                       key={index * (Math.random() * 100)}
@@ -80,7 +84,7 @@ export default function LibraryRow({
                     : null}
                 <Break />
                 {books.length === 0 ? (
-                    <div className="d-flex justify-content-center w-100">
+                    <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
                             <span>Vazio, que tal adicionar algum livro?</span>
                         ) : (

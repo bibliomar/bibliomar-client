@@ -383,7 +383,7 @@ declare module "mdb-react-ui-kit" {
 
     interface BreadcrumbItemProp extends BaseComponent {
         active?: boolean;
-        current?: "page" | "step" | "location";
+        current?: "queryPage" | "step" | "location";
         ref?: React.Ref<HTMLLIElement>;
     }
 

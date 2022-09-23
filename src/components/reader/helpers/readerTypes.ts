@@ -94,13 +94,13 @@ export interface ReaderSettings {
     fontWeight: number;
     fontSize: number;
 
-    // Pagination
+    // SearchPagination
     // If swiping to turn pages is enabled
     swipe: boolean;
     // This one should be set based on "flow" below. Set to "default" if flow is "default / paginated", else "continuous"
     // Two options.
     manager: ManagerOptions;
-    // Sets the direction of the page.
+    // Sets the direction of the queryPage.
     // Three options.
     flow: FlowOptions;
 }

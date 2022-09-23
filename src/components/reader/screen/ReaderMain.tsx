@@ -52,7 +52,7 @@ export default function ReaderMain() {
             : undefined;
 
     /*
-    This state is pretty important, because of the way that react-reader works, everytime you render the page (components updating, etc.)
+    This state is pretty important, because of the way that react-reader works, everytime you render the queryPage (components updating, etc.)
     the handleChange function gets triggered. What this means is that, if you have an epubcifi saved, in say, localStorage, and you define handleChange
     to change it every time the user changes pages (which is not 100% ideal), you lose everything that was saved before handleChange was called.
      */
@@ -113,7 +113,7 @@ export default function ReaderMain() {
         }
 
         if (initialLoadDone) {
-            //After the initial page load, we can save the user's progress normally.
+            //After the initial queryPage load, we can save the user's progress normally.
             await localforage.setItem(`${identifier}-page`, epubcifi);
             if (numOfChangedPages.current >= 10) {
                 numOfChangedPages.current = 0;
@@ -121,7 +121,7 @@ export default function ReaderMain() {
             numOfChangedPages.current += 1;
             setCurrentPage(epubcifi);
         } else {
-            // This function is also called on the very first render, so we just need to set the initial page here.
+            // This function is also called on the very first render, so we just need to set the initial queryPage here.
 
             setCurrentPage(await locationBasedOnIdentifier());
             setInitialLoadDone(true);
