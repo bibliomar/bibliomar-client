@@ -104,6 +104,7 @@ function Search() {
         optionsHiddenSetting ? optionsHiddenSetting === "true" : true
     );
     // Query related states
+    const initialRequestMade = useRef<boolean>(false);
     const searchResults = useRef<Book[]>([]);
 
     const queryPage = useRef<number>(1);
@@ -148,6 +149,9 @@ function Search() {
     };
 
     useEffect(() => {
+        if (initialRequestMade.current) {
+            return;
+        }
         let submit = setTimeout(async () => {
             if (query != null && query !== "") {
                 formRef.current!.dispatchEvent(
@@ -237,25 +241,26 @@ function Search() {
     ) => {
         if (initialRequest) {
             resetSearchState();
+            initialRequestMade.current = true;
         }
 
         let resultsList: Book[] = [];
         let formData = new FormData(formElement);
-        console.log(...formData);
+        let formDataString = "";
+        let URLParameters = new URLSearchParams();
+        for (let [key, value] of formData) {
+            let valueStr = value.toString();
+            URLParameters.append(key, valueStr);
+            formDataString += `${key}=${value}&`;
+        }
+        // Set after the above loop to avoid being added on the url search parameters.
+        formData.set("page", queryPage.current.toString());
+
         if (initialRequest) {
             // Builds a URLParameters instance and changes the URL for the user.
-            let URLParameters = new URLSearchParams();
-            for (let [key, value] of formData) {
-                let valueStr = value.toString();
-                URLParameters.append(key, valueStr);
-            }
             setSearchParameters(URLParameters, { replace: false });
             setAjaxStatus("sending");
         }
-
-        formData.set("page", queryPage.current.toString());
-
-        let formDataString = JSON.stringify(formData);
 
         const possibleResultsList = sessionStorage.getItem(
             `${formDataString}-${queryPage.current.toString()}-search`
@@ -268,7 +273,9 @@ function Search() {
             if (categoryContext !== "any") {
                 let request = await getSearchResults(formData, categoryContext);
                 if (typeof request === "number") {
-                    errorHandler(request);
+                    if (initialRequest) {
+                        errorHandler(request);
+                    }
                     return;
                 }
                 resultsList = request;
