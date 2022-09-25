@@ -221,7 +221,7 @@ export default function ReaderMain() {
     // Saving side effects
     useEffect(() => {
         if (onlineFile && currentPage) {
-            if (onlineFile.category == null) {
+            if (onlineFile.category == null && !userNotLoggedInWarned.current) {
                 userNotLoggedInWarned.current = true;
                 alert(
                     "Você está lendo um livro que não está na sua biblioteca, por isso seu progresso não será salvo online."
@@ -230,7 +230,7 @@ export default function ReaderMain() {
             }
             if (numOfChangedPages.current === 10) {
                 saveProgressOnDatabase(currentPage, onlineFile).then((r) => {
-                    if (!r && userNotLoggedInWarned.current) {
+                    if (!r && !userNotLoggedInWarned.current) {
                         userNotLoggedInWarned.current = true;
                         alert(
                             "Sua sessão de login expirou. O progresso de leitura não será salvo online."

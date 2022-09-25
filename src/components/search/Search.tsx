@@ -55,7 +55,13 @@ function requestConstructor(form: FormData, category: string) {
         }
         request = `${category}?q=${query}&criteria=${type}&format=${format}&language=${language}&page=${page}`;
     } else {
-        request = `${category}?q=${query}&page=${page}`;
+        let column: string;
+        if (type === "author") {
+            column = "author";
+        } else {
+            column = "def";
+        }
+        request = `${category}?q=${query}&column=${column}&page=${page}`;
     }
     return request;
 }
