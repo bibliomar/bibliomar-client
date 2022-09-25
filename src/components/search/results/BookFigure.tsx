@@ -1,21 +1,23 @@
-import React, { useContext } from "react";
+import React, { SetStateAction, useEffect } from "react";
 
 import { MDBRipple } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import { Book } from "../../general/helpers/generalTypes";
-import { Theme } from "../../general/helpers/generalContext";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
+import {
+    RequestStatus,
+    RequestStatusOptions,
+    RequestType,
+} from "../helpers/searchTypes";
 
 interface Props {
-    result: Book;
+    book: Book;
     timeout: number;
 }
 
-export default function BookFigure(props: Props) {
-    const theme = useContext(Theme).theme;
-    const book: Book = props.result;
-    const [cover, coverDone] = useCover(book.md5, props.timeout);
+export default function BookFigure({ book, timeout }: Props) {
+    const [cover, coverDone] = useCover(book.md5, timeout);
 
     const href = `/book/${book.topic}/${book.md5}`;
 

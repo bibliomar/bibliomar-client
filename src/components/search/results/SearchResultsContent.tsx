@@ -1,7 +1,8 @@
 import BookFigure from "./BookFigure";
 import Break from "../../general/Break";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { Book } from "../../general/helpers/generalTypes";
+import { RequestStatus } from "../helpers/searchTypes";
 
 interface Props {
     results: Book[];
@@ -26,7 +27,7 @@ export default function SearchResultsContent(props: Props) {
                 addBreak(i);
                 return (
                     <BookFigure
-                        result={ele}
+                        book={ele}
                         timeout={timeout}
                         key={i * Math.random() * 100}
                     />
