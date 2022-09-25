@@ -337,13 +337,41 @@ function Search() {
                 status: RequestStatusOptions.BAD_REQUEST,
             });
         }
+        // Since we are doing async forced waiting and there's a chance that another component may change the requestStatus,
+        // it's recommended to implement checks in the setState callback.
+        // Be mindful that state changes are async by nature.
+
         await sleep((searchResults.current.length * 500) / 2);
-        setRequestStatus({
-            type: requestType,
-            status: RequestStatusOptions.SUCCESS,
+
+        setRequestStatus((prevState) => {
+            const newRequestStatus = {
+                type: requestType,
+                status: RequestStatusOptions.SUCCESS,
+            };
+            if (prevState != undefined) {
+                if (
+                    prevState.type === RequestType.SEARCH &&
+                    prevState.status === RequestStatusOptions.LOADING
+                ) {
+                    return newRequestStatus;
+                }
+            }
+            // If the checks fail.
+            return prevState;
         });
         await sleep(3000);
-        setRequestStatus(undefined);
+        setRequestStatus((prevState) => {
+            if (prevState != undefined) {
+                if (
+                    prevState.type === RequestType.SEARCH &&
+                    prevState.status === RequestStatusOptions.SUCCESS
+                ) {
+                    return undefined;
+                }
+            }
+            // If the cheks fail.
+            return prevState;
+        });
     };
 
     const makePaginationRequest = async (

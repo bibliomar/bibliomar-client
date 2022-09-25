@@ -1,2 +1,2 @@
 /// <reference types="vite/client" />
-// noinspection JSFileReferences
+/// <reference types="vite-plugin-pwa/client" />
