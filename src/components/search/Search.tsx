@@ -281,6 +281,7 @@ function Search() {
 
                 if (resultsList.length === 0) {
                     lastErrorPage.current = queryPage.current;
+                    // Meaning a request is a instance of RequestStatusOptions.
                     if (typeof request2 === "number") {
                         return request2;
                     } else {
@@ -318,6 +319,7 @@ function Search() {
             type: requestType,
             status: RequestStatusOptions.SENDING,
         });
+
         const searchRequest = await requestOrganizer(formData);
         if (typeof searchRequest === "number") {
             setRequestStatus({
@@ -331,9 +333,6 @@ function Search() {
             type: requestType,
             status: RequestStatusOptions.LOADING,
         });
-
-        // The book figure component is responsible for setting the RequestStatus.status to Done and then back to undefined.
-        // Check /results/BookFigure.tsx for more info.
 
         if (Array.isArray(searchRequest)) {
             searchResults.current = searchRequest;

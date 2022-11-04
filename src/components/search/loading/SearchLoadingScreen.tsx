@@ -46,6 +46,15 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.BAD_QUERY:
+                message = "Não é possível realizar pesquisas de menos de 3 caracteres.";
+                return (
+                    <SearchLoadingMessage
+                        message={message}
+                        noteColor={"warning"}
+                    />
+                );
+
+            case RequestStatusOptions.BAD_REQUEST:
                 message = (
                     <span>
                         Não conseguimos encontrar nada com esses termos, que tal

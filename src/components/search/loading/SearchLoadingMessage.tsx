@@ -1,5 +1,4 @@
 import { MDBTypography } from "mdb-react-ui-kit";
-import Break from "../../general/Break";
 import { ReactNode } from "react";
 
 interface LoadingMessage {

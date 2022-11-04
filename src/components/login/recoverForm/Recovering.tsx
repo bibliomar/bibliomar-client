@@ -30,7 +30,7 @@ export default function Recovering() {
             const formData = new FormData();
             formData.set("email", values.email);
             const config = {
-                url: `${backendUrl}/v1/user/recover`,
+                url: `http://127.0.0.1:8000/v1/user/recover`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
