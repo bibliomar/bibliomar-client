@@ -11,7 +11,7 @@ interface Props {
 
 export default function LibraryBookFigure(props: Props) {
     let book = props.book;
-    const [cover, coverDone] = useCover(book.md5, props.timeout);
+    const [cover, coverDone] = useCover(book.md5, book.topic, props.timeout);
     const href = `/book/${book.topic}/${book.md5}`;
     return (
         <div

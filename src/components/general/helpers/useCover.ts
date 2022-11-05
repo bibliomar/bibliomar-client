@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { backendUrl } from "./generalFunctions";
 
-const getOnlineCover = async (md5: string): Promise<string | undefined> => {
-    let reqUrl = `${backendUrl}/v1/cover/${md5}`;
+const getOnlineCover = async (md5: string, topic: string): Promise<string | undefined> => {
+    let reqUrl = `${backendUrl}/v1/cover/${topic}/${md5}`;
     try {
         const request = await axios.get(reqUrl);
         const result: string = request.data;
@@ -23,6 +23,7 @@ const getOnlineCover = async (md5: string): Promise<string | undefined> => {
 // So undefined is returned.
 export default function useCover(
     md5: string,
+    topic: string,
     timeout?: number
 ): [string | undefined, boolean] {
     const [cover, setCover] = useState<string | undefined>(undefined);
@@ -46,7 +47,7 @@ export default function useCover(
         } else {
             coverTimeout = window.setTimeout(
                 async () => {
-                    const onlineCover = await getOnlineCover(md5);
+                    const onlineCover = await getOnlineCover(md5, topic);
                     if (onlineCover != null && !onlineCover.includes("blank")) {
                         sessionStorage.setItem(`${md5}-cover`, onlineCover);
                         setCover(onlineCover);
