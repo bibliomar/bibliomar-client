@@ -1,5 +1,5 @@
 # example netlify.toml
-[build]
+  [build]
   command = "npm run build"
   publish = "dist"
 
@@ -9,12 +9,6 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-  [[redirects]]
-    from = "http://www.bibliomar.site/*"
-    to = "https://www.bibliomar.site/:splat"
-    status = 301
-    force = true
 
   ## (optional) Settings for Netlify Dev
   ## https://github.com/netlify/cli/blob/main/docs/netlify-dev.md#project-detection
