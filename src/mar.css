@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+
+body {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+abbr[title]{
+    text-decoration: none !important;
+}
+
+abbr[title]:after
+{
+    content: " (" attr(title) ")";
+}
+
+.text-accent{
+    color: #7663F2 !important;
+}
+
+.reader-fullscreen-toggle{
+    position: absolute;
+    top: 12px;
+    left: 90vw;
+    cursor: pointer;
+    z-index: 300;
+}
+
+
+.reader-navbar-brand{
+    max-width: 40%;
+}
+
+.disabled-page{
+    pointer-events: none;
+}
+
+.library-add-button{
+    background: url("/assets/img/button-ellipse.svg") no-repeat;
+    background-size: contain;
+    width: 15%;
+    height: auto;
+}
+
+.simple-figure-bg{
+    cursor: text;
+    position: absolute;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0.71) 17%, rgba(0,0,0,0.63) 85%);;
+    width: 100%;
+    z-index: 5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.library-checkbox-container{
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    z-index: 5;
+    font-size: 1.6rem;
+}
+
+.about-first-text-container{
+    width: 80%;
+}
+
+.about-first-img-container{
+    width: 80%;
+}
+
+.library-checkbox-input{
+    transform: scale(1.8);
+}
+
+.simple-text{
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+
+.break {
+    border: 0;
+    margin: 0;
+    height: 0;
+    padding: 0;
+    flex-basis: 100%;
+}
+/* Mainly used in old Bibliomar, here because reasons. */
+.bg {
+    background: linear-gradient(#231b40, #5948c6) no-repeat fixed center center;
+    background-size: cover;
+}
+
+.bg-alt {
+    /*noinspection CssUnknownTarget*/
+    position: relative;
+    bottom: 0;
+    background: url("/assets/img/newBGLight.png") no-repeat fixed center center;
+    background-size: cover;
+}
+
+.like-body {
+    min-height: 100vh;
+    width: inherit;
+}
+
+#newhere {
+    margin-top: 5vh;
+}
+
+.login-form-container{
+    width: 95%;
+}
+
+.searchfield {
+    width: 75%;
+}
+
+.search-input{
+    min-height: 60px !important;
+    height: 7vh !important;
+}
+
+.search-button{
+    min-width: 70px;
+    max-width: 150px;
+    width: 10vw;
+    min-height: 60px !important;
+    height: 7vh !important;
+}
+
+.greeting-text{
+    font-family: 'Nunito Sans', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+}
+
+.disclaimer {
+    width: 90vw;
+}
+
+.recommendation-div{
+    min-width: 75%;
+    width: fit-content;
+}
+
+.result-div{
+    width: 90vw;
+    max-height: 100%;
+    min-height: fit-content;
+}
+
+.recommendation-figure{
+    width: 45%;
+}
+
+.library-section-container{
+    width: 90vw;
+}
+
+.library-figure-img{
+    width: 32%;
+}
+
+.library-figure-row-img{
+    width: 90%;
+}
+
+.reader-spotlight-figure-img{
+    min-width: 50%;
+}
+
+.brand-img{
+    max-width: 100%;
+}
+
+.reader-navbar-img{
+    max-width: 30%;
+}
+
+.navbar-badge{
+    font-size: 0.75rem !important;
+}
+
+.book-info-badge{
+    font-size: .9rem !important;
+    background: #8B7CF1 !important;
+}
+
+.book-item{
+    width: 100%;
+}
+
+.dbutton{
+    min-width: fit-content;
+    width: 40vw;
+}
+
+.saved-list-div{
+    width: fit-content;
+}
+
+.library-actions-button{
+    width: 40vw;
+}
+
+.reader-modal-light-bg{
+    background: #FAFAFA !important;
+
+}
+.reader-modal-dark-bg{
+    background: #252525 !important;
+}
+
+.cover-img{
+    width: 100%;
+    height: auto;
+}
+
+.book-info-container{
+    min-width: 100%;
+    height: fit-content;
+}
+
+.book-info-cover-section{
+    width: 80%;
+}
+
+.book-info-section{
+    width: 80%;
+}
+
+.footer-container{
+    min-height: 10vh;
+}
+
+/* Be sure to set the background color, otherwise it's an empty element.*/
+.ellipse{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 1px solid #E3E3E3;
+}
+
+/*Be sure to define font-size manually. */
+.book-info-title, .simple-text-bolder{
+    font-family: 'Nunito Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5rem;
+}
+
+.book-info-description{
+    font-family: 'Nunito Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5rem;
+    text-align: justify;
+}
+
+.small-line{
+    max-height: 1px;
+    border: 1px solid #CACACA;
+}
+
+.about-icon-img{
+    height: 8vh;
+    width: 100%;
+}
+
+.loading-skeleton-library{
+    min-height: 45vh;
+}
+
+.loading-skeleton-search{
+    min-height: 50vh;
+}
+
+.loading-skeleton-recommendation{
+    width: 45%;
+    min-height: 30vh;
+}
+
+
+@media screen and (min-width: 768px) {
+    abbr[title]:after
+    {
+        content: "";
+    }
+
+    .searchfield {
+        width: 50%;
+    }
+
+    .about-icon-img{
+        height: 12vh;
+        width: 80%;
+    }
+
+    .about-first-img-container{
+        width: 40%;
+    }
+
+    .about-first-text-container{
+        width: 50%;
+    }
+
+    .result-div{
+        width: 20vw;
+    }
+
+    .recommendation-figure{
+        width: 20%;
+    }
+
+    .login-form-container{
+        width: 75%;
+    }
+
+    .library-checkbox-container{
+        top: 1%;
+        right: 1%;
+    }
+
+    .library-checkbox-input{
+        transform: scale(1.2);
+    }
+
+    .library-section-container{
+        width: 70vw;
+    }
+
+    .library-figure-img{
+        width: 30%;
+        height: auto;
+    }
+
+    .library-figure-row-img{
+        width: 19%;
+
+    }
+
+    .reader-spotlight-figure-img{
+        min-width: 30%;
+    }
+
+    .reader-figure-container{
+        max-width: 40%;
+    }
+
+    .reader-fullscreen-toggle{
+        left: 96vw;
+    }
+
+    .bookcaption {
+        width: 23vw;
+    }
+
+    .disclaimer {
+        width: 40vw;
+    }
+
+    .dbutton{
+        width: 20vw;
+        max-width: 70%;
+    }
+
+    .library-actions-button{
+        width: 15vw;
+    }
+
+    .saved-list-div{
+        min-width: 70%;
+        max-width: fit-content;
+    }
+
+    .book-info-cover-section{
+        width: 25%;
+    }
+
+    .book-info-section{
+        width: 75%;
+    }
+
+    .book-info-container{
+        min-width: 85%;
+        max-width: 85%;
+    }
+
+    .loading-skeleton-library{
+        min-height: 40vh;
+    }
+
+    .loading-skeleton-search{
+        min-height: 50vh;
+    }
+
+    .loading-skeleton-recommendation{
+        min-height: 40vh;
+    }
+
+}
+
+@media screen and (min-width: 1024px) {
+    .loading-skeleton-library{
+        min-height: 35vh;
+    }
+
+    .loading-skeleton-search{
+        min-height: 50vh;
+    }
+
+    .loading-skeleton-recommendation{
+        min-height: 50vh;
+    }
+}

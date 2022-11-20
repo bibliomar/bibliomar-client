@@ -5,7 +5,7 @@ import {
     ThemeOptions,
 } from "./components/general/helpers/generalTypes";
 import { Theme, Auth } from "./components/general/helpers/generalContext";
-import "./index.css";
+import "./mar.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
