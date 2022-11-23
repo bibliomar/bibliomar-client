@@ -21,7 +21,7 @@ export default function About() {
                         </h3>
                         <Break />
                         <div className="d-flex justify-content-center justify-content-lg-between flex-wrap">
-                            <div className="about-first-text-container text-center mt-4 mt-lg-5 simple-text fs-5">
+                            <div className="about-first-text-container text-left mt-4 mt-lg-5 simple-text fs-5">
                                 <h5>
                                     O Bibliomar é um projeto educacional que
                                     busca se tornar a opção definitiva de
@@ -67,7 +67,7 @@ export default function About() {
                                 <img
                                     className="img-fluid"
                                     alt={"Icone"}
-                                    src="/assets/img/about-image-1.png"
+                                    src="/assets/img/about1.svg"
                                 />
                             </div>
                         </div>
@@ -89,7 +89,7 @@ export default function About() {
                                 <img
                                     className={"img-fluid"}
                                     alt={"Icone 2"}
-                                    src="/assets/img/about-image-2.png"
+                                    src="/assets/img/about2.svg"
                                 />
                             </div>
                             <Break mobile />
@@ -99,7 +99,7 @@ export default function About() {
                                     width <= 768 ? "w-100" : undefined
                                 }`}
                             >
-                                <div className="d-flex flex-wrap justify-content-center w-50 me-4">
+                                <div className="d-flex flex-wrap justify-center items-center w-50 me-4">
                                     <a
                                         style={{ color: "unset" }}
                                         className="mt-0 mt-lg-auto"
@@ -108,7 +108,7 @@ export default function About() {
                                         <img
                                             alt={"Icone 3"}
                                             className="mt-0 mt-lg-auto about-icon-img mb-1"
-                                            src="/assets/img/about-github-logo.png"
+                                            src="/assets/img/github.svg"
                                         />
                                     </a>
 
@@ -117,7 +117,7 @@ export default function About() {
                                         para melhorar ainda mais o Bibliomar!
                                     </span>
                                 </div>
-                                <div className="d-flex flex-wrap justify-content-center w-50 me-3">
+                                <div className="d-flex flex-wrap justify-center items w-50 me-3">
                                     <a
                                         className="mt-0 mt-lg-auto"
                                         href="https://discord.gg/J5FBbh8JbS"
@@ -126,7 +126,7 @@ export default function About() {
                                         <img
                                             alt={"Icone 4"}
                                             className="about-icon-img"
-                                            src="/assets/img/about-discord-logo.png"
+                                            src="/assets/img/discord.svg"
                                         />
                                     </a>
 
