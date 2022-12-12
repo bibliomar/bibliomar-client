@@ -75,28 +75,3 @@ Isso ajuda no desenvolvimento atual e futuro.
 #### Design
 Você pode sugerir mudanças no design de alguma parte do site, e os membros da comunidade vão avaliar a implementação.  
 Para isso, abra um issue e descreva sua sugestão.
-
-### English
-
-### A bit of thanking
-I learned a great ton of Python from messing around in [Willmeyers](https://github.com/willmeyers) codebase, and it's funny to me how a guy that never once saw me was a bridge in my learning process.
-
-Thank you, the amazing people at LibraryGenesis, and the amazing people on my country, Brazil, who have had nothing but love to show for this project.  
-I do hope it goes way beyond the scope it has now, because it's a project i've been wanting to see since my first days of reading on a screen.
-
-
-Developers aside, there are three people i couldn't thank enough, and are the reason this was made possible.  
-**My son**  
-How can something so small have this much impact on someone's life?  
-You still don't know what you want, or when you want it, the only thing you do most of the day is sleep.  
-But seeing you learn one thing a day, everyday, showing us the most beautiful smile on Earth, is what gives me the strength to go on.  
-You will always be my treasure, and i hope that i can show what i was doing while you were sleeping on your first year soon. I love you.
-
-**My wife**  
-The most important person on this project, and yet, she didn't write a single line of code.  
-If it wasn't for you, the first Bibliomar would be just a single search bar, that returns a table with almost no content, on a white screen.  
-I hope you know that you are the most important woman in my life, and the place you have in my heart can't be taken by no one else.
-
-**My dad**  
-I know that it's hard to trust a career like this in a third world country, but you've been doing it.  
-I thank you very much for everything you have done, not only for me, but for your grandson as well.
