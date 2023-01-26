@@ -20,9 +20,9 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                 <>
                                     <a
                                         key={provider}
+                                        target={"_blank"}
                                         className="d-flex justify-content-center"
                                         href={value ? value : undefined}
-                                        download
                                     >
                                         <button
                                             className={
@@ -36,12 +36,7 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                                 error
                                             }
                                         >
-                                            {provider
-                                                ? provider.toLowerCase() ===
-                                                  "get"
-                                                    ? "libgen"
-                                                    : provider
-                                                : "erro"}
+                                            {provider ? provider : "erro"}
                                         </button>
                                     </a>
                                     <Break key={index} />

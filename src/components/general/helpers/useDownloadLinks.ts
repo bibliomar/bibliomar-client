@@ -16,6 +16,25 @@ async function getDownloadLinksOnline(md5: string, topic: string) {
     }
 }
 
+function getLibgenURL(md5: string, topic: string) {
+    const baseURL = "https://library.lol/main/"
+    let topicURL = "";
+    if (topic === "fiction"){
+        topicURL = "fiction";
+    } else {
+        topicURL = "main"
+    }
+
+    return `${baseURL}/${topicURL}/${md5}`;
+}
+
+function getLibrocksURL(md5: string) {
+    const contentURL = `https://libgen.rocks/ads.php?md5=${md5}`;
+    
+
+    return contentURL;
+}
+
 export default function useDownloadLinks(
     md5: string | undefined,
     topic: string | undefined
@@ -35,6 +54,8 @@ export default function useDownloadLinks(
         }
         const dlinks = await getDownloadLinksOnline(md5, topic);
         if (dlinks) {
+            dlinks.libgen = getLibgenURL(md5, topic);
+            dlinks.librocks = getLibrocksURL(md5);
             setDownloadLinks(dlinks);
         } else {
             toggleError(true);
