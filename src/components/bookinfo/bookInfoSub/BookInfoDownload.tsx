@@ -20,9 +20,9 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                                 <>
                                     <a
                                         key={provider}
-                                        target={"_blank"}
                                         className="d-flex justify-content-center"
                                         href={value ? value : undefined}
+                                        download
                                     >
                                         <button
                                             className={
