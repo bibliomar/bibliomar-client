@@ -17,7 +17,7 @@ async function getDownloadLinksOnline(md5: string, topic: string) {
 }
 
 function getLibgenURL(md5: string, topic: string) {
-    const baseURL = "https://library.lol/main/"
+    const baseURL = "https://library.lol"
     let topicURL = "";
     if (topic === "fiction"){
         topicURL = "fiction";
