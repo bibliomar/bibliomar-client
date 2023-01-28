@@ -58,11 +58,13 @@ export default function SearchBar({
 
     async function handleInput(input: HTMLInputElement) {
         setQuery(input.value);
+        /** Temporarily disabled for performance reasons
         if (query.length >= 3) {
             let fuse = new Fuse(indexes, { keys: ["title"] });
             let search = fuse.search(input.value);
             setRelevantIndexes(search);
         }
+        */
     }
 
     return (
