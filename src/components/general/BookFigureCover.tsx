@@ -49,7 +49,7 @@ export default function BookFigureCover({
                             backgroundColor: coverDone
                                 ? "rgba(0,0,0,0.1)"
                                 : undefined,
-                            zIndex: "30000",
+                            zIndex: "999",
                         }}
                     />
                 </Link>
