@@ -27,5 +27,4 @@ dev-dist
 .netlify
 src/components/Testing.tsx
 
-# Env
 .env

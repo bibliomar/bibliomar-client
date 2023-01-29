@@ -23,6 +23,7 @@ export function EditModeRemoveModal(props: {
             show={props.show}
             setShow={props.setShow}
             tabIndex={"-1"}
+            style={{ zIndex: 9999 }}
         >
             <MDBModalDialog centered>
                 <MDBModalContent className={"w-100 text-center"}>
