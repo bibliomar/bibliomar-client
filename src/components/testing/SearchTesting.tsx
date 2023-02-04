@@ -324,6 +324,7 @@ function SearchTesting() {
             // If the checks fail.
             return prevState;
         });
+        // Wait time for the "Done" message.
         await sleep(3000);
         setRequestStatus((prevState) => {
             if (prevState != undefined) {
