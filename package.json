@@ -18,6 +18,7 @@
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
     "localforage": "^1.10.0",
+    "manticoresearch": "^3.2.1",
     "mdb-react-ui-kit": "^4.0.0",
     "mdb-ui-kit": "^4.4.0",
     "react": "^18.0.0",

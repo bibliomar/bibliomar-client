@@ -9,14 +9,15 @@ import {
     MDBModalTitle,
 } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
-import React from "react";
 
-export function EditModeRemoveModal(props: {
+interface EditModeRemoveModalProps {
     show: boolean;
     setShow: (value: ((prevState: boolean) => boolean) | boolean) => void;
     onClick: () => void;
     agreedOnClick: () => void;
-}) {
+}
+
+export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
     return (
         <MDBModal
             backdrop

@@ -161,3 +161,6 @@ export async function addBookToLibrary(
 
 // @ts-ignore
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+
+// @ts-ignore
+export const manticoreUrl = import.meta.env.VITE_MANTICORE_URL as string;

@@ -17,7 +17,7 @@ import BookInfoTopicParent from "./components/bookinfo/BookInfoTopicParent";
 import { LibraryCategories } from "./components/general/helpers/generalTypes";
 import About from "./components/about/About";
 import FAQ from "./components/faq/FAQ";
-import ImageTest from "./components/ImageTest";
+import SearchTesting from "./components/testing/SearchTesting";
 
 function App() {
     return (
@@ -74,7 +74,7 @@ function App() {
                 <Route index element={<ReaderLanding />} />
                 <Route path=":bookidentifier" element={<ReaderMain />} />
             </Route>
-            <Route path="/testing" element={<ImageTest />} />
+            <Route path="/testing" element={<SearchTesting />} />
         </Routes>
     );
 }
