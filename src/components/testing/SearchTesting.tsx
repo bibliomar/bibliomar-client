@@ -15,10 +15,9 @@ import {
     RequestType,
 } from "./helpers/searchTypes";
 
-import {getBooksFromHits, getManticoreSearchApi} from "./manticoreUtils"
+import { getBooksFromHits, getManticoreSearchApi } from "./manticoreUtils";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 
 /**
  * It takes a FormData object, and returns a string that can be used to make a request to the API
@@ -41,23 +40,19 @@ function requestConstructor(form: FormData, category: string) {
     }
 
     if (category === "fiction") {
-        
         request = {
-            "index": "fiction",
-            "query": {
-                "query_string": query,
-            }
-
-        }
+            index: "fiction",
+            query: {
+                query_string: query,
+            },
+        };
     } else {
-
         request = {
-            "index": "scitech",
-            "query": {
-                "query_string": query,
-            }
-
-        }
+            index: "scitech",
+            query: {
+                query_string: query,
+            },
+        };
     }
 
     return request;
@@ -90,30 +85,27 @@ async function getSearchResults(
     let response: any;
     try {
         response = await searchApi.search(requestObject);
-
     } catch (e: any) {
         if (e.response) {
             return requestErrorAsStatus(e.response.status);
         }
         return RequestStatusOptions.BAD_REQUEST;
     }
-    if (response == null) {
-        console.log("Response is null")
+    if (response == null || response.hits == null) {
+        console.log("Response is null");
         return RequestStatusOptions.BAD_REQUEST;
     }
-    const books = getBooksFromHits(category, response.hits.hits)
-    console.log("Original results: ")
-    console.log(response.hits)
-    console.log("Parsed results: ")
-    console.log(getBooksFromHits(category, response.hits.hits))
+    const books = getBooksFromHits(category, response.hits.hits);
+    if (books.length == 0) {
+        return RequestStatusOptions.BAD_REQUEST;
+    }
+    console.log(getBooksFromHits(category, response.hits.hits));
     return books;
 }
 
 function SearchTesting() {
     const optionsHiddenSetting = localStorage.getItem("options-hidden");
-    const [optionsHidden, setOptionsHidden] = useState<boolean>(
-        false
-    );
+    const [optionsHidden, setOptionsHidden] = useState<boolean>(false);
     // Query related states
     const initialRequestMade = useRef<boolean>(false);
     const searchResults = useRef<Book[]>([]);
@@ -218,7 +210,6 @@ function SearchTesting() {
         }
          */
 
-
         if (resultsList.length === 0) {
             if (categoryContext !== "any") {
                 let request = await getSearchResults(formData, categoryContext);
@@ -252,7 +243,6 @@ function SearchTesting() {
             }
         }
         if (resultsList.length > 0) {
-            
             /*
             Code for caching results.
             Disabled in testing phase.
@@ -407,7 +397,6 @@ function SearchTesting() {
                     pageCount={pageCount}
                     pageChangeHandler={handlePageClick}
                 />
-
             </div>
         </div>
     );
