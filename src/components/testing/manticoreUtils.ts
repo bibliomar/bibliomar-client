@@ -1,5 +1,6 @@
 import { Book } from "../general/helpers/generalTypes";
 import { manticoreUrl } from "../general/helpers/generalFunctions";
+// @ts-ignore
 import manticore from "manticoresearch";
 
 // Exerpt from SO:
