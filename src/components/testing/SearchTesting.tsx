@@ -122,7 +122,7 @@ function SearchTesting() {
     let [requestStatus, setRequestStatus] = useState<RequestStatus | undefined>(
         undefined
     );
-    let [categoryContext, setCategoryContext] = useState("sci-tech");
+    let [categoryContext, setCategoryContext] = useState("any");
     let formRef = useRef<HTMLFormElement>(null);
     let [searchParams, setSearchParameters] = useSearchParams();
     let query = searchParams.get("q");
@@ -230,8 +230,7 @@ function SearchTesting() {
                 // Contidion means categoryContext === "any", so we are doing a dual request.
 
                 let request1 = await getSearchResults(formData, "fiction");
-                // Waits 3 seconds so libgen doesn't get mad at us.
-                await sleep(3000);
+                await sleep(1000);
                 let request2 = await getSearchResults(formData, "sci-tech");
                 const requests = [request1, request2];
 

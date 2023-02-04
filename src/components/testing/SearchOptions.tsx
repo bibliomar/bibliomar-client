@@ -54,6 +54,24 @@ function SearchTestingOptions({ categoryContext, setCategoryContext, hidden }) {
                         <label className="" htmlFor="searchcat">
                             Categoria:
                         </label>
+                        <div className="form-check form-check">
+                            <input
+                                type="radio"
+                                value="any"
+                                className="form-check-input"
+                                name="category"
+                                id="searchcatany"
+                                checked={categoryContext === "any"}
+                                onChange={() => {
+                                    setCategoryContext("any");
+                                }}
+                            />
+                            <MDBTooltip tag={"a"} title="Mais lento">
+                                <label htmlFor="searchcatany" className="mb-1">
+                                    Todas <br />
+                                </label>
+                            </MDBTooltip>
+                        </div>
                         
                         <div className="form-check form-check">
                             <input
