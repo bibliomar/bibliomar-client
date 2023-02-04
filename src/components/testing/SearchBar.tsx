@@ -103,14 +103,12 @@ export default function SearchTestingBar({
         const trimmedInput = input.value.trim();
         if (trimmedInput.length > 3){
             if (awaitingAutocompleteResponse.current){
-                console.log("Skipping request")
                 return;
             }
 
             awaitingAutocompleteResponse.current = true;
             let books = await getAutocomplete(searchApi, categoryContext, input.value);
             if (books){
-                console.log("Auto complete results: ", books)
                 setRelevantIndexes(books);
             }
 
