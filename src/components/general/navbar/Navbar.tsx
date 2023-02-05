@@ -20,6 +20,7 @@ import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
 import ThemeChooser from "./ThemeChooser";
 import { useWindowSize } from "../helpers/useWindowSize";
+import LanguageSelector from "./LanguageSelector";
 
 interface Props {
     activeItem?: string;
@@ -133,6 +134,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     </MDBBtn>
                                 </form>
                             ) : null}
+                            <LanguageSelector />
                             <ThemeChooser />
                             <NavbarUser />
                         </MDBNavbarNav>

@@ -17,7 +17,7 @@ export default function ThemeChooser() {
         });
     };
     return (
-        <MDBNavbarItem className="ms-auto mt-3 mt-lg-0 me-2">
+        <MDBNavbarItem className="mt-3 mt-lg-0 me-2">
             <MDBNavbarLink>
                 <div onClick={changeTheme}>
                     <MDBIcon

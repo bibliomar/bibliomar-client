@@ -21,7 +21,6 @@ const resources: Resource = {
 
 i18n.use(initReactI18next).use(I18nextBrowserLanguageDetector).init({
     fallbackLng: "pt",
-    lng: "pt",
     defaultNS: false,
     resources: resources,
 });
