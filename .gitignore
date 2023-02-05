@@ -27,3 +27,5 @@ dev-dist
 .netlify
 
 .env
+locales
+/locales/

@@ -373,16 +373,31 @@ function SearchTesting() {
                         <Navbar activeItem="home" />
                     </div>
                 </div>
-                <div className="d-flex flex-wrap justify-content-center mt-5">
+                <div className="d-flex flex-wrap justify-content-center mt-5 mb-3">
                     <div className="justify-content-center text-center w-50">
-                        <h2 className="mt-3"> Teste de Pesquisa</h2>
+                        <h1 className="mt-3 simple-text">
+                            Bibliomar - Teste de Pesquisa
+                        </h1>
                         <Break />
-                        <p>Essa página é uma versão simplificada de nossa página inicial, exclusivamente para testar
-                            o novo sistema de pesquisa que estamos desenvolvendo.</p>
+                        <p>
+                            Essa página é uma versão simplificada de nossa
+                            página inicial, exclusivamente para testar o novo
+                            sistema de pesquisa que estamos desenvolvendo.
+                        </p>
                         <Break />
-                        <p>Nós precisamos do feedback da comunidade para determinar como implementar as opções de filtro.</p>
+                        <p></p>
+                        <Break />
+                        <p>
+                            Seu feedback é extremamente importante. Por favor,
+                            depois de testar a pesquisa, preencha o formulário
+                            abaixo.
+                        </p>
+                        <Break />
+                        <a href="https://forms.gle/UwPSmVtobfn6wasw9">
+                            Formulario de feedback
+                        </a>
+                        <Break />
                     </div>
-
                 </div>
                 <form
                     ref={formRef}
