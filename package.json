@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "prebuild": "rimraf build",
+    "prebuild": "rimraf build && sh ./provision.sh",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 3000"
