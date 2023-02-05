@@ -3,7 +3,10 @@ import axios from "axios";
 import { backendUrl } from "./generalFunctions";
 import { onProduction } from "./generalFunctions";
 
-const getOnlineCover = async (md5: string, topic: string): Promise<string | undefined> => {
+const getOnlineCover = async (
+    md5: string,
+    topic: string
+): Promise<string | undefined> => {
     let reqUrl = `${backendUrl}/v1/cover/${topic}/${md5}`;
     try {
         const request = await axios.get(reqUrl);
@@ -18,7 +21,6 @@ const getOnlineCover = async (md5: string, topic: string): Promise<string | unde
     }
 };
 
-
 // Async handles book cover recovery.
 // Returns a tuple with a possible cover and if the process of retrieving the cover is done.
 // If the returned cover is a "No Cover" image from LibraryGenesis, we will use our own cover generation instead.
@@ -28,10 +30,9 @@ export default function useCover(
     topic: string,
     timeout?: number
 ): [string | undefined, boolean] {
-    const noCoverUrl: string = "https://libgen.rocks/img/blank.png"
+    const noCoverUrl: string = "https://libgen.rocks/img/blank.png";
     const [cover, setCover] = useState<string | undefined>(undefined);
     const [coverDone, setCoverDone] = useState<boolean>(false);
-    console.log("Production", onProduction)
 
     useEffect(() => {
         let coverTimeout: number | undefined = undefined;
@@ -53,10 +54,10 @@ export default function useCover(
                 async () => {
                     let cover: string | undefined;
                     if (onProduction != null) {
-                        console.log("Getting online cover")
+                        console.log("Getting online cover");
                         cover = await getOnlineCover(md5, topic);
                     } else {
-                        cover = noCoverUrl
+                        cover = noCoverUrl;
                     }
                     if (cover != null && !cover.includes("blank")) {
                         if (cover !== noCoverUrl) {

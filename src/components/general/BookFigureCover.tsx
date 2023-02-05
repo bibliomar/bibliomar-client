@@ -1,9 +1,7 @@
 import { Book } from "./helpers/generalTypes";
 import Skeleton from "react-loading-skeleton";
 import React from "react";
-import Cover, { CacheOptions } from "@readshape/covers";
 import { Link } from "react-router-dom";
-import { StorageOptions } from "@readshape/covers/dist/types";
 import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
 
 interface Props {
@@ -17,15 +15,18 @@ interface Props {
 
 const chooseCurrentCoverComponent = (props: Props) => {
     const noCoverUrl: string = "https://libgen.rocks/img/blank.png";
+    let usableCover: string;
 
     if (props.coverDone) {
         if (props.cover == null) {
-            props.cover = noCoverUrl;
+            usableCover = noCoverUrl;
+        } else {
+            usableCover = props.cover;
         }
 
         return (
             <img
-                src={props.cover}
+                src={usableCover}
                 alt="Capa do livro"
                 className="h-100 w-100"
             />
