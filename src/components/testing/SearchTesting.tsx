@@ -16,6 +16,7 @@ import {
 } from "./helpers/searchTypes";
 
 import { getBooksFromHits, getManticoreSearchApi } from "./manticoreUtils";
+import Break from "../general/Break";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -367,13 +368,22 @@ function SearchTesting() {
     return (
         <div className="like-body bg-alt">
             <div className="container-fluid">
-                <div className="row ">
+                <div className="row">
                     <div className="col mt-3">
                         <Navbar activeItem="home" />
                     </div>
                 </div>
+                <div className="d-flex flex-wrap justify-content-center mt-5">
+                    <div className="justify-content-center text-center w-50">
+                        <h2 className="mt-3"> Teste de Pesquisa</h2>
+                        <Break />
+                        <p>Essa página é uma versão simplificada de nossa página inicial, exclusivamente para testar
+                            o novo sistema de pesquisa que estamos desenvolvendo.</p>
+                        <Break />
+                        <p>Nós precisamos do feedback da comunidade para determinar como implementar as opções de filtro.</p>
+                    </div>
 
-                <Bibliologo />
+                </div>
                 <form
                     ref={formRef}
                     onSubmit={async (evt) => {
