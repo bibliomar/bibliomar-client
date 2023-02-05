@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Bibliomar from "./Bibliomar";
 import { registerSW } from "virtual:pwa-register";
+import "./i18n";
 
 // Equivalent to 1h in milliseconds
 const timeout = 60 * 60 * 1000;
