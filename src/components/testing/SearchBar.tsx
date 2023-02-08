@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import { MDBInput } from "mdb-react-ui-kit";
 import { useSearchParams } from "react-router-dom";
 import React, { SetStateAction, useEffect, useRef, useState } from "react";
@@ -5,10 +7,9 @@ import axios from "axios";
 import Fuse from "fuse.js";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import { backendUrl } from "../general/helpers/generalFunctions";
-import {getBooksFromHits, getManticoreSearchApi} from "./manticoreUtils"
+import { getBooksFromHits, getManticoreSearchApi } from "./manticoreUtils";
 import { Book } from "../general/helpers/generalTypes";
 import { sleep } from "./SearchTesting";
-
 
 interface Props {
     categoryContext: string;
@@ -30,13 +31,17 @@ function buildAutocompleteRequest(category: string, query: string) {
     };
 }
 
-async function getAutocomplete(searchApi: any, category: string, query: string): Promise<Book[] | null> {
+async function getAutocomplete(
+    searchApi: any,
+    category: string,
+    query: string
+): Promise<Book[] | null> {
     let resultsList: Book[] = [];
 
-    if (category !== "any"){
+    if (category !== "any") {
         const request = buildAutocompleteRequest(category, query);
         const response = await searchApi.search(request);
-        if (response != null && response.hits != null){
+        if (response != null && response.hits != null) {
             resultsList = getBooksFromHits(category, response.hits.hits);
         }
     } else {
@@ -45,23 +50,29 @@ async function getAutocomplete(searchApi: any, category: string, query: string):
         const fictionResponse = await searchApi.search(fictionRequest);
         await sleep(250);
         const scitechResponse = await searchApi.search(scitechRequest);
-        if (fictionResponse != null && fictionResponse.hits != null){
-            resultsList = [...resultsList, ...getBooksFromHits("fiction", fictionResponse.hits.hits)];
+        if (fictionResponse != null && fictionResponse.hits != null) {
+            resultsList = [
+                ...resultsList,
+                ...getBooksFromHits("fiction", fictionResponse.hits.hits),
+            ];
         }
-        if (scitechResponse != null && scitechResponse.hits != null){
-            resultsList = [...resultsList, ...getBooksFromHits("scitech", scitechResponse.hits.hits)];
+        if (scitechResponse != null && scitechResponse.hits != null) {
+            resultsList = [
+                ...resultsList,
+                ...getBooksFromHits("scitech", scitechResponse.hits.hits),
+            ];
         }
     }
 
-    if (resultsList.length === 0){
+    if (resultsList.length === 0) {
         return null;
     }
 
     return resultsList;
 }
 
-function populateDatalist(relevantIndexes: Book[]){
-    if (relevantIndexes == null || relevantIndexes.length === 0){
+function populateDatalist(relevantIndexes: Book[]) {
+    if (relevantIndexes == null || relevantIndexes.length === 0) {
         return null;
     }
     let relevantIndexesList: JSX.Element[] = [];
@@ -70,13 +81,10 @@ function populateDatalist(relevantIndexes: Book[]){
         if (el != null && typeof el === "object") {
             relevantIndexesList.push(<option value={el.title} key={i} />);
         }
-
     });
 
     return relevantIndexesList;
-
 }
-
 
 export default function SearchTestingBar({
     categoryContext,
@@ -101,33 +109,33 @@ export default function SearchTestingBar({
         setQuery(input.value);
         charactersInputChange.current += 1;
         const trimmedInput = input.value.trim();
-        if (trimmedInput.length > 3){
-            if (awaitingAutocompleteResponse.current){
+        if (trimmedInput.length > 3) {
+            if (awaitingAutocompleteResponse.current) {
                 return;
             }
 
             awaitingAutocompleteResponse.current = true;
-            let books = await getAutocomplete(searchApi, categoryContext, input.value);
-            if (books){
+            let books = await getAutocomplete(
+                searchApi,
+                categoryContext,
+                input.value
+            );
+            if (books) {
                 setRelevantIndexes(books);
             }
 
             awaitingAutocompleteResponse.current = false;
 
             charactersInputChange.current = 0;
-
         }
-       
     }
 
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
             <div className="searchfield">
-                
                 <datalist id="indexes">
                     {populateDatalist(relevantIndexes)}
                 </datalist>
-                
 
                 <MDBInput
                     value={query}
@@ -139,9 +147,7 @@ export default function SearchTestingBar({
                     labelStyle={{ position: "absolute", top: "8%" }}
                     name="q"
                     autoComplete="true"
-                >
-                    
-                </MDBInput>
+                ></MDBInput>
             </div>
 
             <button type="submit" className="btn btn-primary search-button">
@@ -149,5 +155,4 @@ export default function SearchTestingBar({
             </button>
         </div>
     );
-
 }

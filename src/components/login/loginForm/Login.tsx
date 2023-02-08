@@ -10,6 +10,7 @@ import AutoLoginMessage from "./AutoLoginMessage";
 import LoginMessage from "./LoginMessage";
 import { Auth } from "../../general/helpers/generalContext";
 import { backendUrl } from "../../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
     const authContext = useContext(Auth);
@@ -19,9 +20,11 @@ export default function Login() {
     const navigate = useNavigate();
     const [loginStatus, setLoginStatus] = useState<number>(0);
     const [autoLoginStatus, setAutoLoginStatus] = useState<number>(0);
+    const { t } = useTranslation();
 
     const autoLogin = async (jwt: string) => {
         try {
+            // noinspection AllyPlainJsInspection
             const config = {
                 url: `${backendUrl}/v1/user/validate`,
                 method: "GET",
@@ -139,7 +142,9 @@ export default function Login() {
                         disabled={loginStatus === 0}
                     />
                     <form onSubmit={formik.handleSubmit}>
-                        <label htmlFor="username">Nome de usuario</label>
+                        <label htmlFor="username">
+                            {t("user:nomeDeUsuario")}
+                        </label>
                         <MDBInput
                             className="book-info-description"
                             name="username"
@@ -158,7 +163,7 @@ export default function Login() {
                                 <Break />
                             </div>
                         ) : null}
-                        <label htmlFor="password">Senha</label>
+                        <label htmlFor="password">{t("user:senha")}</label>
                         <MDBInput
                             className="book-info-description"
                             name="password"
@@ -182,7 +187,7 @@ export default function Login() {
                                 style={{ fontSize: "0.85rem" }}
                                 className="text-muted"
                             >
-                                Esqueci minha senha/usuario
+                                {t("user:esqueciMinhaSenhausuario")}
                             </span>
                         </Link>
                         <Break />
@@ -194,7 +199,7 @@ export default function Login() {
                                         : "/user/register"
                                 }
                             >
-                                Não possui uma conta? Crie uma gratuitamente.
+                                {t("user:noPossuiUmaContaCrieUmaGratuitamente")}
                             </Link>
                             <Break />
 
@@ -203,7 +208,7 @@ export default function Login() {
                                 type="submit"
                                 disabled={autoLoginStatus !== 0}
                             >
-                                logar
+                                {t("user:logar")}
                             </MDBBtn>
                         </div>
                     </form>

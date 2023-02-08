@@ -21,8 +21,10 @@ import {
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
 import { Book } from "../../general/helpers/generalTypes";
+import { useTranslation } from "react-i18next";
 
 export default function ReaderMain() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location: any = useLocation();
     const params = useParams();
@@ -109,7 +111,10 @@ export default function ReaderMain() {
                 (item: any) => item.href === href
             );
 
-            pageInfoRef.current = `Página ${displayed.page} de ${displayed.total} neste capítulo.`;
+            pageInfoRef.current = t("reader:pginaDeNesteCaptulo", {
+                page: displayed.page,
+                total: displayed.total,
+            });
         }
 
         if (initialLoadDone) {
@@ -130,20 +135,20 @@ export default function ReaderMain() {
 
     const paginationTextHandler = () => {
         if (showWarning) {
-            return "Caso o avanço de páginas trave, mude o capítulo manualmente.";
+            return t("reader:casoOAvanoDePginasTraveMudeOCaptuloManualmente");
         } else if (pageInfoRef.current != null) {
             return pageInfoRef.current;
         } else {
-            return "Carregando...";
+            return t("reader:carregando");
         }
     };
 
     // Document side effect
     useEffect(() => {
         if (onlineFile || localFile) {
-            document.title = `${
-                onlineFile?.title || localFile?.name
-            } - Bibliomar Reader`;
+            document.title = t("reader:bibliomarReader", {
+                expr: onlineFile?.title || localFile?.name,
+            });
         }
 
         let warningTimeout: number | undefined;

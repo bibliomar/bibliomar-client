@@ -4,15 +4,20 @@ import { useEffect, useState } from "react";
 import { Book } from "../../general/helpers/generalTypes";
 import axios from "axios";
 import RecommendationBookFigure from "./RecommendationBookFigure";
+import { useTranslation } from "react-i18next";
+
 interface Props {
     disabled: boolean;
 }
+
 // Hard-coded stuff
 // We actually only need the authors and name parameters for the recommendations.
 // You can just copy-paste a search result here:
 // The md5 is needed for the cover. the topic helps to filter the search.
 // All the rest is optional.
+// TODO: Improve this and use actual statistics to generate recommendations.
 
+// noinspection AllyPlainJsInspection
 const recommendations: Book[] = [
     {
         authors: "Daniel, Keyes",
@@ -41,6 +46,7 @@ const recommendations: Book[] = [
 ];
 
 export default function RecommendationScreen(props: Props) {
+    const { t } = useTranslation();
     return (
         <>
             {!props.disabled ? (
@@ -48,7 +54,7 @@ export default function RecommendationScreen(props: Props) {
                     <div className="p-2 rounded-3 text-dark recommendation-div">
                         <div className="d-flex flex-wrap justify-content-center mb-2">
                             <span className="recommendation-title">
-                                Recomendações do editor
+                                {t("search:recomendaesDoEditor")}
                             </span>
                         </div>
                         <Break />

@@ -13,6 +13,7 @@ import { PossibleReaderScreenState } from "../helpers/readerTypes";
 import { backendUrl } from "../../general/helpers/generalFunctions";
 import { Auth } from "../../general/helpers/generalContext";
 import { Book } from "../../general/helpers/generalTypes";
+import { useTranslation } from "react-i18next";
 
 interface ReaderDownloaderProps {
     bookInfo: Book;
@@ -25,6 +26,7 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
     const navigate = useNavigate();
     const authContext = useContext(Auth);
     const userLoggedIn = authContext.userLogged;
+    const { t } = useTranslation();
 
     //Should be in KB.
     //KB = Byte * 1000
@@ -189,12 +191,11 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
             />
             <Break />
             <span className="text-center text-muted mt-4">
-                Dica: Isso pode demorar um pouco, você pode trocar de aba
-                enquanto aguarda.
+                {t("reader:downloadWaitTip1")}
             </span>
             <Break />
             <span className="text-center text-muted mt-2">
-                Nós reiniciamos o download automaticamente em caso de erro.
+                {t("reader:downloadWaitTip2")}
             </span>
         </>
     );

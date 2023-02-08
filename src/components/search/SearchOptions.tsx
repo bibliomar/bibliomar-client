@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MDBCol, MDBCollapse, MDBTooltip } from "mdb-react-ui-kit";
+import { Trans, useTranslation } from "react-i18next";
 
 //@ts-ignore
+// TODO: Add props to this.
 function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
+    const { t } = useTranslation();
     let [searchParams, setSearchParams] = useSearchParams();
     let [type, setType] = useState("title");
     let [formatSelect, setFormatSelect] = useState("any");
@@ -46,13 +49,14 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
         }
     }, [searchParams]);
 
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <MDBCollapse show={!hidden}>
             <div className="row d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
                     <div id="searchcat">
                         <label className="" htmlFor="searchcat">
-                            Categoria:
+                            {t("search:categoria")}
                         </label>
                         <div className="form-check form-check">
                             <input
@@ -66,9 +70,15 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                     setCategoryContext("any");
                                 }}
                             />
-                            <MDBTooltip tag={"a"} title="Mais lento">
+                            <MDBTooltip tag={"a"} title={t("search:maisLento")}>
                                 <label htmlFor="searchcatany" className="mb-1">
-                                    Todas <br />
+                                    <Trans
+                                        ns="search"
+                                        i18nKey="todas"
+                                        components={{
+                                            b: <br />,
+                                        }}
+                                    />
                                 </label>
                             </MDBTooltip>
                         </div>
@@ -104,7 +114,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 }}
                             />
                             <label htmlFor="searchcatfiction " className="mb-1">
-                                Ficção
+                                {t("search:fiction")}
                             </label>
                         </div>
                     </div>
@@ -112,7 +122,9 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
 
                 <div className="col-lg-2 col-5">
                     <div id="searchby" className="">
-                        <label htmlFor="searchby">Pesquisar por:</label>
+                        <label htmlFor="searchby">
+                            {t("search:pesquisarPor")}
+                        </label>
                         <div className="form-check form-check">
                             <input
                                 type="radio"
@@ -126,7 +138,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 }}
                             />
                             <label htmlFor="searchbytitle" className="mb-1">
-                                Título
+                                {t("search:title")}
                             </label>
                         </div>
                         <div className="form-check form-check">
@@ -145,7 +157,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 id="searchbyauthorlabel"
                                 htmlFor="searchbyauthorinput"
                             >
-                                Autor
+                                {t("search:author")}
                             </label>
                         </div>
                     </div>
@@ -154,7 +166,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
 
             <div className="row mt-4 d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
-                    <label htmlFor="format">Formato:</label>
+                    <label htmlFor="format">{t("search:formato")}</label>
                     <select
                         value={formatSelect}
                         onChange={(e) => setFormatSelect(e.target.value)}
@@ -163,7 +175,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         id="format"
                     >
                         <option className="text-dark" value="any">
-                            TODOS
+                            {t("search:todos2")}
                         </option>
                         <option value="epub" className="text-dark">
                             EPUB
@@ -179,7 +191,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
 
                 <div className="col-lg-2 col-5">
                     <label className="" htmlFor="searchlang">
-                        Linguagem:
+                        {t("search:linguagem")}
                     </label>
 
                     <select
@@ -189,9 +201,11 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         name="language"
                         id="searchlang"
                     >
-                        <option value="any">Qualquer</option>
-                        <option value="portuguese">Português</option>
-                        <option value="english">Inglês</option>
+                        <option value="any">{t("search:qualquer")}</option>
+                        <option value="portuguese">
+                            {t("search:portugus")}
+                        </option>
+                        <option value="english">{t("search:ingls")}</option>
                     </select>
                 </div>
             </div>

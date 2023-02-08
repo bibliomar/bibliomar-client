@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import { MDBBadge } from "mdb-react-ui-kit";
 import { useContext } from "react";
 import { Theme } from "../helpers/generalContext";

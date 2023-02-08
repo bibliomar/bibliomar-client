@@ -1,7 +1,9 @@
 import { MDBContainer, MDBSpinner } from "mdb-react-ui-kit";
 import Break from "./components/general/Break";
+import { useTranslation } from "react-i18next";
 
 export default function Themeing() {
+    const { t } = useTranslation();
     return (
         <div className="like-body bg-alt">
             <p
@@ -14,7 +16,7 @@ export default function Themeing() {
                     textAlign: "center",
                 }}
             >
-                Carregando tema...
+                {t("general:carregandoTema")}
             </p>
         </div>
     );

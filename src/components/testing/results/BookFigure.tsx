@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import React, { SetStateAction, useEffect } from "react";
 
 import { MDBRipple } from "mdb-react-ui-kit";

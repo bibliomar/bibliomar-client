@@ -6,12 +6,10 @@ import { Book } from "../../general/helpers/generalTypes";
 
 interface Props {
     book: Book;
-    md5: string;
 }
 
-// Here we use MDBootstrap col- classes to make the cover stay in the left half of the screen.
-export default function BookInfoCover({ md5, book }: Props) {
-    const [cover, coverDone] = useCover(md5, book.topic);
+export default function BookInfoCover({ book }: Props) {
+    const [cover, coverDone] = useCover(book.md5, book.topic);
 
     return (
         <div className="d-flex flex-column mb-3 w-100">

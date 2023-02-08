@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import { MDBSpinner, MDBTypography } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import { SyntheticEvent, useEffect, useState } from "react";

@@ -1,20 +1,24 @@
 import Break from "../general/Break";
 import React from "react";
 import SmallLine from "../general/SmallLine";
+import { useTranslation } from "react-i18next";
 
 export default function ReaderGreeting() {
+    const { t } = useTranslation();
     return (
         <>
             <div className="text-center simple-text-bolder w-75 mt-5">
                 <p className="lead">
-                    Você pode enviar seu arquivo local por aqui.
+                    {t("reader:vocPodeEnviarSeuArquivoLocalPorAqui")}
                 </p>
                 <p className="lead">
-                    Para ler um livro online usando nosso leitor, basta acessar
-                    a pagina de informações de algum livro (pela sua biblioteca
-                    ou pela pesquisa) e clicar em "Ler online"!
+                    {t(
+                        "reader:paraLerUmLivroOnlineUsandoNossoLeitorBastaAcessarA"
+                    )}
                 </p>
-                <p className="">Dica: apenas arquivos EPUB são suportados.</p>
+                <p className="">
+                    {t("reader:dicaApenasArquivosEpubSoSuportados")}
+                </p>
             </div>
         </>
     );

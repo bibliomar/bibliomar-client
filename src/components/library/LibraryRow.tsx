@@ -11,6 +11,7 @@ import {
     defaultFilters,
 } from "./helpers/libraryFunctions";
 import equal from "fast-deep-equal/es6";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     title: string;
@@ -26,6 +27,7 @@ export default function LibraryRow({
     booksInfo,
 }: Props) {
     const filtersContext = useContext(Filters);
+    const { t } = useTranslation();
 
     const onDefaultFilters = useMemo(() => {
         return equal(filtersContext.filters, defaultFilters);
@@ -86,11 +88,14 @@ export default function LibraryRow({
                 {books.length === 0 ? (
                     <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
-                            <span>Vazio, que tal adicionar algum livro?</span>
+                            <span>
+                                {t("library:vazioQueTalAdicionarAlgumLivro")}
+                            </span>
                         ) : (
                             <span>
-                                Nenhum livro corresponde aos filtros
-                                selecionados.
+                                {t(
+                                    "library:nenhumLivroCorrespondeAosFiltrosSelecionados"
+                                )}
                             </span>
                         )}
                     </div>

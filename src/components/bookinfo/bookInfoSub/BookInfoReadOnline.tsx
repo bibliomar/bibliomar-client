@@ -7,6 +7,7 @@ import {
 } from "../../reader/helpers/readerTypes";
 import { useNavigate } from "react-router-dom";
 import Break from "../../general/Break";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     book: Book;
@@ -20,6 +21,7 @@ export default function BookInfoReadOnline({
     savedBook,
 }: Props) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className="d-flex flex-wrap justify-content-center">
@@ -28,7 +30,7 @@ export default function BookInfoReadOnline({
                     className="mb-1 book-info-title"
                     style={{ fontSize: "0.9rem" }}
                 >
-                    Somente arquivos EPUB são suportados
+                    {t("bookinfo:onlyEpubFiles")}
                 </span>
             ) : null}
 

@@ -24,14 +24,26 @@ export default function SearchResultsContent(props: Props) {
                 } else {
                     timeout = i * 1500;
                 }
-                addBreak(i);
-                return (
-                    <BookFigure
-                        book={ele}
-                        timeout={timeout}
-                        key={i * Math.random() * 100}
-                    />
-                );
+                if (i % 3 === 0) {
+                    return (
+                        <>
+                            <Break desktop key={1 + i + Math.random() * 1000} />
+                            <BookFigure
+                                book={ele}
+                                timeout={timeout}
+                                key={1 + i * Math.random() * 1000}
+                            />
+                        </>
+                    );
+                } else {
+                    return (
+                        <BookFigure
+                            book={ele}
+                            timeout={timeout}
+                            key={1 + i * Math.random() * 1000}
+                        />
+                    );
+                }
             })}
         </>
     );

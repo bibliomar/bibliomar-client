@@ -7,9 +7,11 @@ import {
 import LibraryFilters from "./LibraryFilters";
 import React, { useState } from "react";
 import { useToggle } from "../../general/helpers/useToggle";
+import { useTranslation } from "react-i18next";
 
 export default function LibraryFilterToggle() {
     const [active, toggleActive] = useToggle(false);
+    const { t } = useTranslation();
 
     return (
         <MDBPopover
@@ -27,7 +29,7 @@ export default function LibraryFilterToggle() {
             placement={"auto-start"}
             poperStyle={{ zIndex: "200000" }}
         >
-            <MDBPopoverHeader>Filtros</MDBPopoverHeader>
+            <MDBPopoverHeader>{t("library:filters")}</MDBPopoverHeader>
             <MDBPopoverBody>
                 <LibraryFilters />
             </MDBPopoverBody>

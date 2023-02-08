@@ -13,6 +13,7 @@ import fileToArrayBuffer from "file-to-array-buffer";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PossibleReaderScreenState } from "./helpers/readerTypes";
+import { Trans, useTranslation } from "react-i18next";
 
 interface Props {
     modalToggle: boolean;
@@ -26,6 +27,7 @@ export default function ReaderSendLocalFileModal({
     const [bookFile, setBookFile] = useState<File | null>(null);
     const [invalidFile, setInvalidFile] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const navigateToBook = async () => {
         if (bookFile != null) {
@@ -45,19 +47,25 @@ export default function ReaderSendLocalFileModal({
             <MDBModalDialog>
                 <MDBModalContent>
                     <MDBModalHeader>
-                        <MDBModalTitle>Envie seu arquivo</MDBModalTitle>
+                        <MDBModalTitle>
+                            {t("reader:envieSeuArquivo")}
+                        </MDBModalTitle>
                     </MDBModalHeader>
                     <MDBModalBody className="d-flex flex-wrap justify-content-center">
                         <span className="text-center mb-2">
-                            Caso seu arquivo seja muito grande ou você tenha
-                            ultrapassado a limitação de download, você pode
-                            enviar um arquivo <strong>epub</strong> do seu
-                            próprio dispositivo.
+                            <Trans
+                                ns="reader"
+                                i18nKey="casoSeuArquivoSejaMuitoGrandeOuVocTenhaUltrapassad"
+                                components={{
+                                    s: <strong />,
+                                }}
+                            />
                         </span>
                         <Break />
                         <span className="mb-3">
-                            Esse arquivo não tem o progresso salvo online,
-                            apenas no seu dispositivo.
+                            {t(
+                                "reader:esseArquivoNoTemOProgressoSalvoOnlineApenasNoSeuDi"
+                            )}
                         </span>
                         <Break />
 
@@ -90,7 +98,7 @@ export default function ReaderSendLocalFileModal({
                             }
                             onClick={navigateToBook}
                         >
-                            Carregar
+                            {t("reader:carregar")}
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>

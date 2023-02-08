@@ -8,8 +8,10 @@ import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 import { useContext, useState } from "react";
 import { Auth } from "../../general/helpers/generalContext";
 import { backendUrl } from "../../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 export default function Register() {
+    const { t } = useTranslation();
     const authContext = useContext(Auth);
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
@@ -102,37 +104,43 @@ export default function Register() {
                             {registerStatus === 103 ? (
                                 <div className="d-flex justify-content-center">
                                     <span className="text-primary text-center">
-                                        Enviando sua solicitação ao servidor...
+                                        {t(
+                                            "user:enviandoSuaSolicitaoAoServidor"
+                                        )}
                                     </span>
                                 </div>
                             ) : null}
                             {registerStatus === 200 ? (
                                 <div className="d-flex justify-content-center">
                                     <span className="text-success text-center">
-                                        Tudo certo! Sua conta foi criada e já
-                                        vamos te enviar pra próxima página...
+                                        {t(
+                                            "user:tudoCertoSuaContaFoiCriadaEJVamosTeEnviarPraPrxima"
+                                        )}
                                     </span>
                                 </div>
                             ) : null}
                             {registerStatus === 400 ? (
                                 <div className="d-flex justify-content-center">
                                     <span className="text-danger text-center">
-                                        Nome de usuario ou email em uso.
+                                        {t("user:nomeDeUsuarioOuEmailEmUso")}
                                     </span>
                                 </div>
                             ) : null}
                             {registerStatus === 500 ? (
                                 <div className="d-flex justify-content-center">
                                     <span className="text-danger text-center">
-                                        Não conseguimos fazer seu registro,
-                                        tente novamente mais tarde.
+                                        {t(
+                                            "user:noConseguimosFazerSeuRegistroTenteNovamenteMaisTar"
+                                        )}
                                     </span>
                                 </div>
                             ) : null}
                         </div>
                     ) : null}
                     <form onSubmit={formik.handleSubmit}>
-                        <label htmlFor="username">Nome de usuario</label>
+                        <label htmlFor="username">
+                            {t("user:nomeDeUsuario")}
+                        </label>
                         <MDBInput
                             className="book-info-description"
                             name="username"
@@ -151,7 +159,7 @@ export default function Register() {
                                 <Break />
                             </div>
                         ) : null}
-                        <label htmlFor="password">Email</label>
+                        <label htmlFor="password">{t("user:email")}</label>
                         <MDBInput
                             className="book-info-description"
                             name="email"
@@ -170,7 +178,7 @@ export default function Register() {
                                 <Break />
                             </div>
                         ) : null}
-                        <label htmlFor="password">Senha</label>
+                        <label htmlFor="password">{t("user:senha")}</label>
                         <MDBInput
                             className="book-info-description"
                             name="password"
@@ -198,11 +206,13 @@ export default function Register() {
                                         : "/user/login"
                                 }
                             >
-                                Já tenho uma conta
+                                {t("user:jTenhoUmaConta")}
                             </Link>
                             <Break />
 
-                            <MDBBtn className="mt-4">registrar</MDBBtn>
+                            <MDBBtn className="mt-4">
+                                {t("user:registrar")}
+                            </MDBBtn>
                         </div>
                     </form>
                 </div>

@@ -16,11 +16,15 @@ import { LibraryCategories } from "../../general/helpers/generalTypes";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EditModeSubProps } from "../LibraryNavbar";
 import { addBookToLibrary } from "../../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
+import { Auth } from "../../general/helpers/generalContext";
 
 export default function EditModeMove({
     actionLoading,
     setActionLoading,
 }: EditModeSubProps) {
+    const { t } = useTranslation();
+    const authContext = useContext(Auth);
     const navigate = useNavigate();
     const editModeContext = useContext(EditMode);
     const selectedBooksContext = useContext(SelectedBooks);
@@ -32,12 +36,12 @@ export default function EditModeMove({
             editModeContext.editMode &&
             selectedBooksContext &&
             selectedBooksContext.selectedBooks.length > 0 &&
-            jwtToken
+            authContext.userLogged
         ) {
             setActionLoading(true);
             await addBookToLibrary(
                 selectedBooksContext.selectedBooks,
-                jwtToken,
+                jwtToken!,
                 LibraryCategories[category as keyof typeof LibraryCategories]
             );
             setActionLoading(false);
@@ -65,13 +69,13 @@ export default function EditModeMove({
             </MDBDropdownToggle>
 
             <MDBDropdownMenu>
-                <MDBDropdownHeader>Mover para</MDBDropdownHeader>
+                <MDBDropdownHeader>{t("library:editMoveTo")}</MDBDropdownHeader>
                 <MDBDropdownItem>
                     <MDBDropdownLink
                         data-category={"reading"}
                         onClick={(evt) => handleClick(evt)}
                     >
-                        Lendo agora
+                        {t("library:editReadingNow")}
                     </MDBDropdownLink>
                 </MDBDropdownItem>
                 <MDBDropdownItem>
@@ -79,7 +83,7 @@ export default function EditModeMove({
                         data-category={"toRead"}
                         onClick={handleClick}
                     >
-                        Planejando ler
+                        {t("library:editPlanToRead")}
                     </MDBDropdownLink>
                 </MDBDropdownItem>
                 <MDBDropdownItem>
@@ -87,7 +91,7 @@ export default function EditModeMove({
                         data-category={"backlog"}
                         onClick={handleClick}
                     >
-                        Backlog
+                        {t("library:editBacklog")}
                     </MDBDropdownLink>
                 </MDBDropdownItem>
             </MDBDropdownMenu>

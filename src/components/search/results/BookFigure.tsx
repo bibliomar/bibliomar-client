@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import React, { SetStateAction, useEffect } from "react";
 
 import { MDBRipple } from "mdb-react-ui-kit";
@@ -10,6 +12,7 @@ import {
     RequestStatusOptions,
     RequestType,
 } from "../helpers/searchTypes";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     book: Book;
@@ -17,6 +20,7 @@ interface Props {
 }
 
 export default function BookFigure({ book, timeout }: Props) {
+    const { t } = useTranslation();
     const [cover, coverDone] = useCover(book.md5, book.topic, timeout);
 
     const href = `/book/${book.topic}/${book.md5}`;
@@ -24,7 +28,7 @@ export default function BookFigure({ book, timeout }: Props) {
     return (
         <figure className="figure d-flex flex-column result-div me-lg me-md-3">
             <MDBRipple
-                className={`bg-image hover-overlay shadow-1-strong w-100 figure-img mb-1`}
+                className={`bg-image hover-overlay shadow-1-strong w-100 result-image figure-img mb-1`}
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -44,17 +48,17 @@ export default function BookFigure({ book, timeout }: Props) {
             >
                 <div className="d-flex flex-wrap">
                     <span className="mx-2 mb-1">
-                        <strong>Título: </strong>
+                        <strong>{t("figure:title")} </strong>
                         {book.title}
                     </span>
                     <Break />
                     <span className="mx-2 mb-1">
-                        <strong>Autor(a)(s): </strong>
+                        <strong>{t("figure:author")}</strong>
                         {book["authors"]}
                     </span>
                     <Break />
                     <p className="mx-2 mb-2">
-                        <strong>Arquivo: </strong>
+                        <strong>{t("figure:file")}</strong>
                         {book.extension
                             ? book.extension.toUpperCase()
                             : null}, {book.size}

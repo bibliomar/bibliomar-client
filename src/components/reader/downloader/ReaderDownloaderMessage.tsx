@@ -1,4 +1,5 @@
 import Break from "../../general/Break";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     downloadProgress: number;
@@ -13,57 +14,59 @@ export default function ({
     downloadSize,
     userLoggedIn,
 }: Props) {
+    const { t } = useTranslation();
     const downloadProgressHandler = () => {
         if (downloadSize > 0) {
+            // noinspection AllyJsxHardcodedStringInspection
             return (
                 <>
                     <span>
-                        {downloadProgress}Kb de {downloadSize}Kb
+                        {downloadProgress}Kb / {downloadSize}Kb
                     </span>
                     <Break />
                     <span>
-                        {(downloadProgress / downloadSize) * 100}% concluído.
+                        {(downloadProgress / downloadSize) * 100}
+                        {t("reader:downloadConcludedLabel")}
                     </span>
                 </>
             );
         } else if (downloadSize === 0 && downloadProgress > 0) {
-            return <span>{downloadProgress}Kb baixados.</span>;
+            // noinspection AllyJsxHardcodedStringInspection
+            return (
+                <span>
+                    {downloadProgress}Kb{" "}
+                    {t("reader:downloadProgressDownloaded")}.
+                </span>
+            );
         }
     };
 
     const renderBasedOnStatus = () => {
         if (downloadStatus === 0) {
-            return <span>Preparando-se para iniciar seu download...</span>;
+            return <span>{t("reader:downloadStartingLabel")}</span>;
         }
         // Else...
         switch (downloadStatus) {
             case 103:
                 return (
                     <>
-                        <p>
-                            Estamos baixando seu arquivo em nossos servidores...
-                        </p>
+                        <p>{t("reader:downloadStartingLabel2")}</p>
                     </>
                 );
             case 200:
                 return (
                     <>
-                        <span>
-                            Seu livro foi baixado e já estamos salvando na sua
-                            lista para você ler quando quiser!
-                        </span>
+                        <span>{t("reader:downloadDoneLabel1")}</span>
                         <Break />
-                        <span>
-                            Nota: Seu arquivo já foi excluido dos nossos
-                            servidores, e não salvamos nenhuma informação sobre
-                            ele ;)
-                        </span>
+                        <span>{t("reader:downloadDoneLabel2")}</span>
                     </>
                 );
             case 201:
                 return (
                     <div className="d-flex flex-wrap justify-content-center">
-                        <span className="lead">Baixando: </span>
+                        <span className="lead">
+                            {t("reader:downloadingProgressLabel")}{" "}
+                        </span>
                         <Break />
                         {downloadProgressHandler()}
                     </div>
@@ -74,71 +77,38 @@ export default function ({
                         {!userLoggedIn ? (
                             <>
                                 <span className="mb-2">
-                                    Desculpe, parece que você fez um outro
-                                    download a menos de 5 minutos...
+                                    {t("reader:downloadTimeoutText1")}
                                 </span>
                                 <Break />
-                                <span>
-                                    Nós sabemos que essa limitação é irritante.
-                                    Mas é ela quem garante que o conteúdo que
-                                    você consome continue gratuito, obrigado
-                                    pela compreensão.
-                                </span>
+                                <span>{t("reader:downloadTimeoutText2")}</span>
                                 <Break />
-                                <span>
-                                    <strong>PS:</strong> Usuários logados não
-                                    possuem restrição de download.
-                                    <br />
-                                    Criar uma conta é totalmente gratuito ;).
-                                </span>
+                                <span>{t("reader:downloadTimeoutText3")}</span>
+                                <Break />
+                                <span>{t("reader:downloadTimeoutText4")}</span>
                             </>
                         ) : (
                             <>
                                 <span>
-                                    Desculpe, você baixou outro livro a menos de
-                                    15 segundos, por favor, aguarde mais um
-                                    pouco.
+                                    {t("reader:downloadUserTimeoutText")}
                                 </span>
                             </>
                         )}
                     </div>
                 );
             case 403:
-                return (
-                    <span>
-                        Aparentemente, o arquivo que você está tentando baixar
-                        não se trata de um ePub... que coisa, não?
-                    </span>
-                );
+                return <span>{t("reader:downloadFileNotEpub")}</span>;
             case 413:
                 return (
                     <div className="d-flex flex-wrap justify-content-center">
                         <span className="mb-2">
-                            Opa, parece que seu arquivo excede nossa cota de 5MB
-                            máximo de download.
+                            {t("reader:downloadFilesizeExceededText1")}
                         </span>
                         <Break />
-                        <span>
-                            Nós sabemos que essa limitação é irritante. Mas é
-                            ela quem garante que o conteúdo que você consome
-                            continue gratuito. Obrigado pela compreensão.
-                        </span>
-                        <Break />
-                        <span>
-                            <strong>PS:</strong> Usuários logados não possuem
-                            restrição de download.
-                            <br />
-                            Criar uma conta é totalmente gratuito ;).
-                        </span>
+                        <span>{t("reader:downloadFilesizeExceededText2")}</span>
                     </div>
                 );
             case 500:
-                return (
-                    <span>
-                        Ocorreu um erro durante o seu download... Vamos tentar
-                        novamente em 10 segundos.
-                    </span>
-                );
+                return <span>{t("reader:downloadErrorRetryMessage")}</span>;
         }
     };
 

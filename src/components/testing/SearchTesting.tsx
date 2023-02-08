@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Bibliologo from "../general/Bibliologo";
@@ -202,11 +204,11 @@ function SearchTesting() {
         /**
          * Code for getting results from cache.
          * Temporarily disabled in testing phase.
-         * 
-        const possibleResultsList = sessionStorage.getItem(
-            `${formDataString}-search`
-        );
-        if (possibleResultsList) {
+         *
+         const possibleResultsList = sessionStorage.getItem(
+         `${formDataString}-search`
+         );
+         if (possibleResultsList) {
             resultsList = JSON.parse(possibleResultsList);
         }
          */

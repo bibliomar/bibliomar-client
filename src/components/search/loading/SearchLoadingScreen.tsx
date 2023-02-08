@@ -6,6 +6,7 @@ import {
 import SearchLoadingMessage from "./SearchLoadingMessage";
 import { Link } from "react-router-dom";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 interface LoadingScreenProps {
     requestStatus: RequestStatus;
@@ -14,6 +15,7 @@ interface LoadingScreenProps {
 export default function SearchLoadingScreen({
     requestStatus,
 }: LoadingScreenProps) {
+    const { t } = useTranslation();
     const { type, status } = requestStatus;
 
     const renderSearchMessage = () => {
@@ -21,7 +23,7 @@ export default function SearchLoadingScreen({
 
         switch (status) {
             case RequestStatusOptions.SENDING:
-                message = "Estamos enviando sua solicitação ao servidor...";
+                message = t("search:estamosEnviandoSuaSolicitaoAoServidor2");
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -29,8 +31,9 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.LOADING:
-                message =
-                    "Estamos carregando seus arquivos, isso pode demorar um pouco...";
+                message = t(
+                    "search:estamosCarregandoSeusArquivosIssoPodeDemorarUmPouc2"
+                );
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -38,7 +41,7 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.SUCCESS:
-                message = "Tudo pronto! Boa leitura.";
+                message = t("search:tudoProntoBoaLeitura2");
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -46,7 +49,9 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.BAD_QUERY:
-                message = "Não é possível realizar pesquisas de menos de 3 caracteres.";
+                message = t(
+                    "search:noPossvelRealizarPesquisasDeMenosDe3Caracteres"
+                );
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -57,9 +62,13 @@ export default function SearchLoadingScreen({
             case RequestStatusOptions.BAD_REQUEST:
                 message = (
                     <span>
-                        Não conseguimos encontrar nada com esses termos, que tal
-                        olhar nossas{" "}
-                        <Link to={"/faq?ref=7"}>dicas de pesquisa</Link>?
+                        {t(
+                            "search:noConseguimosEncontrarNadaComEssesTermosQueTalOlha"
+                        )}{" "}
+                        <Link to={"/faq?ref=7"}>
+                            {t("search:dicasDePesquisa")}
+                        </Link>
+                        ?
                     </span>
                 );
                 return (
@@ -69,8 +78,9 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.CONNECTION_ERROR:
-                message =
-                    "Ops, não conseguimos realizar sua solicitação, por favor, verifique sua conexão.";
+                message = t(
+                    "search:opsNoConseguimosRealizarSuaSolicitaoPorFavorVerifi"
+                );
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -79,7 +89,7 @@ export default function SearchLoadingScreen({
                 );
 
             case RequestStatusOptions.TOO_MANY_REQUESTS:
-                message = "Calma! Você está fazendo muitas requisições.";
+                message = t("search:calmaVocEstFazendoMuitasRequisies");
                 return (
                     <SearchLoadingMessage
                         message={message}
@@ -92,7 +102,7 @@ export default function SearchLoadingScreen({
         let message: string | ReactNode = "";
         switch (status) {
             case RequestStatusOptions.SENDING:
-                message = "Procurando mais resultados...";
+                message = t("search:procurandoMaisResultados");
                 return (
                     <SearchLoadingMessage
                         message={message}

@@ -9,6 +9,7 @@ import {
     MDBModalTitle,
 } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
+import { useTranslation } from "react-i18next";
 
 interface EditModeRemoveModalProps {
     show: boolean;
@@ -18,6 +19,7 @@ interface EditModeRemoveModalProps {
 }
 
 export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
+    const { t } = useTranslation();
     return (
         <MDBModal
             backdrop
@@ -25,27 +27,25 @@ export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
             setShow={props.setShow}
             tabIndex={"-1"}
         >
-            <MDBModalDialog centered style={{zIndex: 9999}}>
-                <MDBModalContent className={"w-100 text-center"} >
+            <MDBModalDialog centered style={{ zIndex: 9999 }}>
+                <MDBModalContent className={"w-100 text-center"}>
                     <MDBModalHeader className="bg-danger">
                         <MDBModalTitle
                             tag={"h3"}
                             className={"ms-auto me-auto text-light fw-bold"}
                         >
-                            Tem certeza?
+                            {t("library:editUserConfirmation")}
                         </MDBModalTitle>
                     </MDBModalHeader>
                     <MDBModalBody className="d-flex flex-wrap justify-content-center">
                         <h5 className="text-center">
-                            Você está prestes a apagar todos os livros
-                            selecionados.
+                            {t("library:editRemoveWarningText1")}
                         </h5>
                         <Break />
-                        <p>Pode ser que você não consiga desfazer essa ação.</p>
+                        <p>{t("library:editRemoveWarningText2")}</p>
                         <Break />
                         <p className="text-muted">
-                            O seu progresso de leitura nesses livros também será
-                            apagado.
+                            {t("library:editRemoveWarningText3")}
                         </p>
                     </MDBModalBody>
                     <MDBModalFooter>
@@ -54,7 +54,7 @@ export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
                             className="ms-auto"
                             onClick={props.onClick}
                         >
-                            Voltar
+                            {t("library:editBack")}
                         </MDBBtn>
                         <MDBBtn
                             size={"lg"}
@@ -62,7 +62,7 @@ export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
                             className="me-auto"
                             onClick={props.agreedOnClick}
                         >
-                            Confirmar
+                            {t("library:editConfirm")}
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>

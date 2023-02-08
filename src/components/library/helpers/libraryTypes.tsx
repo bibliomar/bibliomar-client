@@ -3,9 +3,9 @@ import { Book } from "../../general/helpers/generalTypes";
 
 export interface PossibleFilters {
     [key: string]: string | boolean;
+
     title: string;
-    authors: string;
-    isReading: boolean;
+    author: string;
     format: string;
 }
 

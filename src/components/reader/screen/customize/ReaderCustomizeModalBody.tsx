@@ -22,6 +22,7 @@ import { useFormik } from "formik";
 import SmallLine from "../../../general/SmallLine";
 import { Size, useWindowSize } from "../../../general/helpers/useWindowSize";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     readerSettings: ReaderSettings;
@@ -32,7 +33,7 @@ export default function ReaderCustomizeModalBody({
     readerSettings,
     setReaderSettings,
 }: Props) {
-    console.log(readerSettings);
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const size: Size = useWindowSize();
     const themeAccent = chooseThemeAccent(readerSettings.themeName);
@@ -73,7 +74,9 @@ export default function ReaderCustomizeModalBody({
             <div className="d-flex flex-wrap">
                 <h4 className="ms-2 mt-4 w-100 d-flex align-items-center">
                     <MDBIcon fas icon="palette" size="lg" className="me-3" />
-                    <span className="simple-text-bolder">Tema</span>
+                    <span className="simple-text-bolder">
+                        {t("reader:themeLabel")}
+                    </span>
                     <MDBBtn color={"none"} className="ms-auto btn-close me-2" />
                 </h4>
                 <Break className="mb-4" />
@@ -111,7 +114,9 @@ export default function ReaderCustomizeModalBody({
                 <Break className="mb-4" />
                 <h4 className="ms-2 mt-1">
                     <MDBIcon fas icon="font" size={"lg"} className={"me-3"} />
-                    <span className="simple-text-bolder">Fonte</span>
+                    <span className="simple-text-bolder">
+                        {t("reader:fontLabel")}
+                    </span>
                 </h4>
                 <Break className="mb-4" />
                 <div className="d-flex justify-content-around w-100">
@@ -141,11 +146,11 @@ export default function ReaderCustomizeModalBody({
                         value={formik.values.fontWeight}
                         onChange={formik.handleChange}
                     >
-                        <option value={200}>Mais leve</option>
-                        <option value={300}>Leve</option>
-                        <option value={400}>Normal</option>
-                        <option value={600}>Negrito</option>
-                        <option value={700}>Mais negrito</option>
+                        <option value={200}>{t("reader:lighter")}</option>
+                        <option value={300}>{t("reader:light")}</option>
+                        <option value={400}>{t("reader:normal")}</option>
+                        <option value={600}>{t("reader:bold")}</option>
+                        <option value={700}>{t("reader:bolder")}</option>
                     </select>
 
                     <MDBInput
@@ -178,20 +183,26 @@ export default function ReaderCustomizeModalBody({
                         size={"lg"}
                         className={"me-3"}
                     />
-                    <span className="simple-text-bolder">Leitura</span>
+                    <span className="simple-text-bolder">
+                        {t("reader:readingLabel")}
+                    </span>
                 </h4>
                 <Break className="mb-4" />
                 <div className={"d-flex flex-wrap w-100"}>
                     <Break />
                     <div className="d-flex flex-wrap w-100 justify-content-center">
                         <div className="d-flex flex-wrap justify-content-around">
-                            <p className="lead">Modo de leitura</p>
+                            <p className="lead">
+                                {t("reader:readingModeLabel")}
+                            </p>
                             <Break />
                             <div className="d-flex">
                                 <div className="d-flex flex-wrap justify-content-center">
                                     <MDBIcon fas icon="file-alt" size={"5x"} />
                                     <Break />
-                                    <label htmlFor={"flow"}>Paginada</label>
+                                    <label htmlFor={"flow"}>
+                                        {t("reader:flowPaginatedLabel")}
+                                    </label>
                                     <Break />
                                     <MDBRadio
                                         name="flow"
@@ -214,7 +225,9 @@ export default function ReaderCustomizeModalBody({
                                     />
 
                                     <Break />
-                                    <label htmlFor={"flow"}>Contínua</label>
+                                    <label htmlFor={"flow"}>
+                                        {t("reader:flowContinuousLabel")}
+                                    </label>
                                     <Break />
                                     <MDBRadio
                                         name="flow"
@@ -232,7 +245,7 @@ export default function ReaderCustomizeModalBody({
 
                         <Break className="mb-5" />
                         <label htmlFor={"swipe"} className="simple-text-bolder">
-                            Deslizável
+                            {t("reader:swipeableLabel")}
                         </label>
                         <Break />
                         <MDBSwitch
@@ -249,8 +262,7 @@ export default function ReaderCustomizeModalBody({
                         />
                         <Break />
                         <span className={"text-muted"}>
-                            Ativa o deslizamento por gesto. Desativa a seleção
-                            de texto.
+                            {t("reader:swipeableDescription")}
                         </span>
                     </div>
                 </div>
@@ -259,10 +271,10 @@ export default function ReaderCustomizeModalBody({
                 <Break className="mb-4" />
                 <div className="d-flex flex-wrap justify-content-center w-100">
                     <MDBBtn onClick={resetSettings} color="danger" size="sm">
-                        Restaurar configurações
+                        {t("reader:resetConfig")}
                     </MDBBtn>
                     <Break className="mb-2" />
-                    <MDBBtn type={"submit"}>Salvar alterações</MDBBtn>
+                    <MDBBtn type={"submit"}>{t("reader:saveConfig")}</MDBBtn>
                 </div>
             </div>
         </form>

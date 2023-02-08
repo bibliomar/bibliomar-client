@@ -13,6 +13,7 @@ import { MDBIcon, MDBTooltip } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import Paginator from "../general/Paginator";
 import LibraryPagination from "./pagination/LibraryPagination";
+import { Trans, useTranslation } from "react-i18next";
 
 interface Props {
     message: string;
@@ -26,6 +27,7 @@ export default function LibrarySection({
     booksInfo,
 }: Props) {
     const filtersContext = useContext(Filters);
+    const { t } = useTranslation();
 
     const onDefaultFilters = useMemo(() => {
         return equal(filtersContext.filters, defaultFilters);
@@ -70,8 +72,16 @@ export default function LibrarySection({
                     </Link>
                     <Break className="mb-1" />
                     <span className="text-muted">
-                        <strong>{filteredBooks.length}</strong> livros nessa
-                        categoria
+                        <Trans
+                            ns={"library"}
+                            i18nKey="livrosNessaCategoria"
+                            values={{
+                                length: filteredBooks.length,
+                            }}
+                            components={{
+                                s: <strong />,
+                            }}
+                        />
                     </span>
                 </div>
 
@@ -94,11 +104,14 @@ export default function LibrarySection({
                 ) : (
                     <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
-                            <span>Vazio, que tal adicionar algum livro?</span>
+                            <span>
+                                {t("library:vazioQueTalAdicionarAlgumLivro2")}
+                            </span>
                         ) : (
                             <span>
-                                Nenhum livro corresponde aos filtros
-                                selecionados.
+                                {t(
+                                    "library:nenhumLivroCorrespondeAosFiltrosSelecionados2"
+                                )}
                             </span>
                         )}
                     </div>

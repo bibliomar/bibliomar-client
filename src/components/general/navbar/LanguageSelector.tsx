@@ -27,6 +27,7 @@ export default function LanguageSelector() {
         i18n.changeLanguage(lng).then();
     };
 
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <MDBNavbarItem className="ms-auto mt-auto mt-lg-0 me-2">
             <MDBDropdown className="shadow-0 h-100 d-flex flex-column justify-content-center">

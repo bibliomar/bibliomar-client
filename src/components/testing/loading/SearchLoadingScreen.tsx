@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection,AllyPlainJsInspection
+
 import {
     RequestStatus,
     RequestStatusOptions,
@@ -46,7 +48,8 @@ export default function SearchLoadingScreen({
                     />
                 );
             case RequestStatusOptions.BAD_QUERY:
-                message = "Não é possível realizar pesquisas de menos de 3 caracteres.";
+                message =
+                    "Não é possível realizar pesquisas de menos de 3 caracteres.";
                 return (
                     <SearchLoadingMessage
                         message={message}

@@ -4,28 +4,36 @@ import React from "react";
 interface Breaking {
     className?: string;
     mobile?: boolean;
+    tablet?: boolean;
     desktop?: boolean;
 }
 
 const BreakComponent = ({ className }: Breaking) => {
-    return <div className={`break ${className}`} />;
+    return <div className={`break ${className ? className : null}`} />;
 };
 
-export default function Break({ className, mobile, desktop }: Breaking) {
+export default function Break({
+    className,
+    mobile,
+    desktop,
+    tablet,
+}: Breaking) {
     const size: Size = useWindowSize();
-    const onBoth = !mobile && !desktop;
-    const onMobile = mobile && !desktop && size.width <= 768;
-    const onDesktop = !mobile && desktop && size.width >= 768;
+    const all = !mobile && !desktop && !tablet;
+    const onMobile = mobile && size.width < 768;
+    const onTablet = tablet && size.width >= 768 && size.width < 1024;
+    const onDesktop = desktop && size.width >= 1024;
     const renderConditionally = () => {
-        if (onMobile && !onDesktop) {
+        let shouldRender = false;
+        [all, onMobile, onTablet, onDesktop].forEach((ele, i) => {
+            if (ele) {
+                shouldRender = true;
+            }
+        });
+        if (shouldRender) {
             return <BreakComponent className={className} />;
-        } else if (onDesktop && !onMobile) {
-            return <BreakComponent className={className} />;
-        } else if (onBoth) {
-            return <BreakComponent className={className} />;
-        } else {
-            return null;
         }
+        return null;
     };
     return <>{renderConditionally()}</>;
 }

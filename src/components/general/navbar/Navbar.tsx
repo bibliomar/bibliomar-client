@@ -21,6 +21,7 @@ import BibliomarBrand from "./BibliomarBrand";
 import ThemeChooser from "./ThemeChooser";
 import { useWindowSize } from "../helpers/useWindowSize";
 import LanguageSelector from "./LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     activeItem?: string;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export default function Navbar({ activeItem, badgeText }: Props) {
+    const { t } = useTranslation();
     const themeContext = useContext(Theme);
     const theme = themeContext.theme;
     const width = useWindowSize().width;
@@ -68,7 +70,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                     <MDBNavbarToggler
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
-                        aria-label="Toggle navigation"
+                        aria-label={t("navbar:toggleNavigation") as string}
                         onClick={() => setShowNav(!showNav)}
                     >
                         <MDBIcon icon="bars" fas />
@@ -83,7 +85,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     href="/about"
                                     onClick={handleNavigate}
                                 >
-                                    Sobre
+                                    {t("navbar:about")}
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
@@ -93,7 +95,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     active={activeItem === "library"}
                                     onClick={handleNavigate}
                                 >
-                                    Biblioteca
+                                    {t("navbar:library")}
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
@@ -103,7 +105,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     name="/reader"
                                     onClick={handleNavigate}
                                 >
-                                    Leitor
+                                    {t("navbar:reader")}
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             {location.pathname !== "/search" ? (

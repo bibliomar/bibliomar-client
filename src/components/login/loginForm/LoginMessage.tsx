@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface Props {
     loginStatus: number;
     disabled: boolean;
@@ -5,6 +7,7 @@ interface Props {
 
 export default function LoginMessage(props: Props) {
     let loginStatus = props.loginStatus;
+    const { t } = useTranslation();
     return (
         <div>
             {!props.disabled ? (
@@ -12,29 +15,42 @@ export default function LoginMessage(props: Props) {
                     {loginStatus === 103 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-info text-center">
-                                Enviando sua solicitação ao servidor...
+                                {t("user:enviandoSuaSolicitaoAoServidor")}
                             </span>
                         </div>
                     ) : null}
                     {loginStatus === 200 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-success text-center">
-                                Login bem sucedido!
+                                {t("user:loginBemSucedido")}
                             </span>
                         </div>
                     ) : null}
                     {loginStatus === 400 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-danger text-center">
-                                Informações de login incorretas.
+                                {t("user:informaesDeLoginIncorretas")}
                             </span>
+                        </div>
+                    ) : null}
+                    {loginStatus === 403 ? (
+                        <div className="d-flex justify-content-center">
+                            <span className="text-danger text-center">
+                                {t(
+                                    "user:nsFizemosUmaMigraoInternaDeServidorEComIssoSuaSenh"
+                                )}
+                            </span>
+                            <a href="https://bibliomar.site/user/recover">
+                                {t("user:solicitarNovaSenha")}
+                            </a>
                         </div>
                     ) : null}
                     {loginStatus === 500 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-danger text-center">
-                                Não conseguimos fazer seu login, tente novamente
-                                mais tarde.
+                                {t(
+                                    "user:noConseguimosFazerSeuLoginTenteNovamenteMaisTarde"
+                                )}
                             </span>
                         </div>
                     ) : null}

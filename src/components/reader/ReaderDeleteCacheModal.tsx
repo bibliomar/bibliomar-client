@@ -10,6 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import Break from "../general/Break";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export function ReaderDeleteCacheModal(props: {
     show: boolean;
@@ -17,6 +18,7 @@ export function ReaderDeleteCacheModal(props: {
     onClick: () => void;
     agreedOnClick: () => void;
 }) {
+    const { t } = useTranslation();
     return (
         <MDBModal
             backdrop
@@ -31,24 +33,26 @@ export function ReaderDeleteCacheModal(props: {
                             tag={"h3"}
                             className={"ms-auto me-auto text-light fw-bold"}
                         >
-                            Tem certeza?
+                            {t("reader:editUserConfirmation")}
                         </MDBModalTitle>
                     </MDBModalHeader>
                     <MDBModalBody className="d-flex flex-wrap justify-content-center">
                         <h5 className="text-center">
-                            Você está prestes a apagar todos os livros salvos
-                            localmente.
+                            {t(
+                                "reader:vocEstPrestesAApagarTodosOsLivrosSalvosLocalmente"
+                            )}
                         </h5>
                         <Break />
                         <p>
-                            Isso provavelmente vai resolver quaisquer problemas
-                            que você esteja tendo com o leitor online.
+                            {t(
+                                "reader:issoProvavelmenteVaiResolverQuaisquerProblemasQueV"
+                            )}
                         </p>
                         <Break />
                         <p className="text-muted">
-                            O seu progresso de leitura online e offline não é
-                            apagado, apenas os arquivos salvos no seu
-                            dispositivo.
+                            {t(
+                                "reader:oSeuProgressoDeLeituraOnlineEOfflineNoApagadoApena"
+                            )}
                         </p>
                     </MDBModalBody>
                     <MDBModalFooter>
@@ -57,7 +61,7 @@ export function ReaderDeleteCacheModal(props: {
                             className="ms-auto"
                             onClick={props.onClick}
                         >
-                            Voltar
+                            {t("reader:editBack")}
                         </MDBBtn>
                         <MDBBtn
                             size={"lg"}
@@ -65,7 +69,7 @@ export function ReaderDeleteCacheModal(props: {
                             className="me-auto"
                             onClick={props.agreedOnClick}
                         >
-                            Confirmar
+                            {t("reader:editConfirm")}
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>

@@ -16,8 +16,10 @@ import ReaderGreeting from "./ReaderGreeting";
 import { ReaderDeleteCacheModal } from "./ReaderDeleteCacheModal";
 import { findBookInSavedBooks } from "../general/helpers/generalFunctions";
 import { useToggle } from "../general/helpers/useToggle";
+import { useTranslation } from "react-i18next";
 
 export default function ReaderLanding() {
+    const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const [savedBooksRetrieved, setSavedBooksRetrieved] = useToggle(false);
@@ -83,7 +85,7 @@ export default function ReaderLanding() {
                         color="danger"
                         onClick={toggleDelete}
                     >
-                        Limpar cache do leitor
+                        {t("reader:limparCacheDoLeitor")}
                     </MDBBtn>
 
                     <MDBBtn
@@ -91,7 +93,7 @@ export default function ReaderLanding() {
                         color="secondary"
                         onClick={toggleSend}
                     >
-                        Enviar arquivo
+                        {t("reader:enviarArquivo")}
                     </MDBBtn>
                 </div>
                 <div

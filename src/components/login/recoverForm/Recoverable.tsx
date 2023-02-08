@@ -9,12 +9,14 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { backendUrl } from "../../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     token: string;
 }
 
 export default function Recoverable(props: Props) {
+    const { t } = useTranslation();
     const [changeStatus, setChangeStatus] = useState<number>(0);
     const navigate = useNavigate();
     let jwt = jwt_decode(props.token) as JwtPayload;
@@ -40,6 +42,7 @@ export default function Recoverable(props: Props) {
         onSubmit: async (values) => {
             let formData = new FormData();
             formData.set("new_pass", values.password);
+            // noinspection AllyPlainJsInspection
             const config = {
                 url: `${backendUrl}/v1/user/change`,
                 method: "POST",
@@ -74,15 +77,16 @@ export default function Recoverable(props: Props) {
             {changeStatus !== 0 && changeStatus === 103 ? (
                 <div className="d-flex justify-content-center">
                     <span className="text-info text-center">
-                        Enviando sua solicitação ao servidor...
+                        {t("user:enviandoSuaSolicitaoAoServidor")}
                     </span>
                 </div>
             ) : null}
             {changeStatus !== 0 && changeStatus === 200 ? (
                 <div className="d-flex justify-content-center">
                     <span className="text-success text-center">
-                        Tudo certo! Redefinimos sua senha e vamos te redirecinar
-                        a pagina de login...
+                        {t(
+                            "user:tudoCertoRedefinimosSuaSenhaEVamosTeRedirecinarAPa"
+                        )}
                     </span>
                 </div>
             ) : null}
@@ -96,7 +100,7 @@ export default function Recoverable(props: Props) {
                 </div>
             ) : null}
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="username">Nome de usuario</label>
+                <label htmlFor="username">{t("user:nomeDeUsuario")}</label>
                 <MDBInput
                     className="text-dark"
                     name="username"
@@ -116,7 +120,7 @@ export default function Recoverable(props: Props) {
                         <Break />
                     </div>
                 ) : null}
-                <label htmlFor="password">Nova senha</label>
+                <label htmlFor="password">{t("user:novaSenha")}</label>
                 <MDBInput
                     className="text-white"
                     name="password"
@@ -137,7 +141,7 @@ export default function Recoverable(props: Props) {
                 ) : null}
                 <Break />
                 <div className="d-flex justify-content-end mt-5">
-                    <MDBBtn type="submit">Alterar senha</MDBBtn>
+                    <MDBBtn type="submit">{t("user:alterarSenha")}</MDBBtn>
                 </div>
             </form>
         </div>

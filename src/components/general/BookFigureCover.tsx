@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import { Book } from "./helpers/generalTypes";
 import Skeleton from "react-loading-skeleton";
 import React from "react";
@@ -27,8 +29,11 @@ const chooseCurrentCoverComponent = (props: Props) => {
         return (
             <img
                 src={usableCover}
-                alt="Capa do livro"
+                alt="Cover"
                 className="h-100 w-100"
+                onError={(e) => {
+                    e.currentTarget.src = noCoverUrl;
+                }}
             />
         );
     } else {

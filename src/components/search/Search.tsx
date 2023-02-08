@@ -16,6 +16,7 @@ import {
     RequestStatusOptions,
     RequestType,
 } from "./helpers/searchTypes";
+import "./search.css";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

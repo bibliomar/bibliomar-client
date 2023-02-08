@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useWindowSize } from "./helpers/useWindowSize";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
     const width = useWindowSize().width;
+    const { t } = useTranslation();
 
     return (
         <div className="navbar-bg footer-container w-100 d-flex flex-column justify-content-center mt-auto">
@@ -13,7 +15,9 @@ export default function Footer() {
                         className="ms-4 me-4"
                         style={{ color: "unset", fontSize: "1.15rem" }}
                     >
-                        <span className={"simple-text-bolder"}>Sobre</span>
+                        <span className={"simple-text-bolder"}>
+                            {t("general:sobre")}
+                        </span>
                     </Link>
                     <Link
                         to={"/faq"}
@@ -25,7 +29,7 @@ export default function Footer() {
                 </div>
                 {width >= 768 && (
                     <span className="ms-auto me-auto">
-                        <strong>Bibliomar</strong> - Genuinamente brasileiro.
+                        <strong>Bibliomar</strong> - {t("general:genuinely")}.
                     </span>
                 )}
 

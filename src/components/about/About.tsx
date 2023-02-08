@@ -51,7 +51,7 @@ export default function About() {
                             flex-wrap justify-content-center justify-content-lg-start mb-5 mb-lg-0"
                             >
                                 <h3 className="simple-text-bolder text-start mb-2 mb-lg-5 flex-grow-1">
-                                    Conheça nossa comunidade
+                                    {t("about:second.header")}
                                 </h3>
                                 <Break className="mb-5" />
                                 <img
@@ -80,10 +80,7 @@ export default function About() {
                                         />
                                     </a>
 
-                                    <span>
-                                        Nosso projeto é open-source. Contribua
-                                        para melhorar ainda mais o Bibliomar!
-                                    </span>
+                                    <span>{t("about:second.p1")}</span>
                                 </div>
                                 <div className="d-flex flex-wrap justify-center items w-50 me-3">
                                     <a
@@ -98,10 +95,7 @@ export default function About() {
                                         />
                                     </a>
 
-                                    <span>
-                                        Converse e participe da comunidade em
-                                        nosso discord!
-                                    </span>
+                                    <span>{t("about:second.p2")}</span>
                                 </div>
                             </div>
                             <Break className="mb-4" />

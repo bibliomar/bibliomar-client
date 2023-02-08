@@ -5,6 +5,7 @@ import axios from "axios";
 import Fuse from "fuse.js";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import { backendUrl } from "../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 type IndexesResponse = {
     indexes: string[];
@@ -39,6 +40,7 @@ export default function SearchBar({
     categoryContext,
     setOptionsHidden,
 }: Props) {
+    const { t } = useTranslation();
     const width = useWindowSize().width;
     let [searchParameters, _] = useSearchParams();
     let [query, setQuery] = useState("");
@@ -59,12 +61,12 @@ export default function SearchBar({
     async function handleInput(input: HTMLInputElement) {
         setQuery(input.value);
         /** Temporarily disabled for performance reasons
-        if (query.length >= 3) {
+         if (query.length >= 3) {
             let fuse = new Fuse(indexes, { keys: ["title"] });
             let search = fuse.search(input.value);
             setRelevantIndexes(search);
         }
-        */
+         */
     }
 
     return (
@@ -86,7 +88,7 @@ export default function SearchBar({
                     list="indexes"
                     type="text"
                     className="search-input"
-                    label="Pesquisar"
+                    label={t("search:pesquisar")}
                     labelStyle={{ position: "absolute", top: "8%" }}
                     name="q"
                     autoComplete="true"

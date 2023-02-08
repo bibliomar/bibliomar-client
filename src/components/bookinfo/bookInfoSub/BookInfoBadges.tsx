@@ -1,5 +1,6 @@
 import { Book } from "../../general/helpers/generalTypes";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     book: Book;
@@ -7,20 +8,18 @@ interface Props {
 }
 
 export default function BookInfoBadges({ book, savedBook }: Props) {
+    const { t } = useTranslation();
     return (
         <>
             <div className="badge book-info-badge me-1 mb-1">
-                {book.topic === "fiction" ? "Ficção" : "Não-ficção"}
+                {book.topic === "fiction"
+                    ? t("bookinfo:fiction")
+                    : t("bookinfo:nonfiction")}
             </div>
             <div className="badge book-info-badge me-1 mb-1">
-                {book.category ? "Salvo na biblioteca" : null}
+                {book.category ? t("bookinfo:onLibrary") : null}
             </div>
-            <div className="badge book-info-badge me-1 mb-1">
-                {savedBook ? "Salvo localmente" : null}
-            </div>
-            <div className="badge book-info-badge me-1 mb-1">
-                {book.progress ? "Leitura iniciada" : null}
-            </div>
+
             <div className="badge book-info-badge mb-1">
                 {book.series ? book.series : null}
             </div>

@@ -16,18 +16,19 @@ import LibraryFiltersLabel from "./LibraryFiltersLabel";
 import LibraryFiltersWrapper from "./LibraryFiltersWrapper";
 import LibraryFiltersIconWrapper from "./LibraryFiltersIconWrapper";
 import LibraryFiltersSeparator from "./LibraryFiltersSeparator";
+import { useTranslation } from "react-i18next";
 
 export default function LibraryFilters() {
     const filtersContext = useContext(Filters);
     const filters = filtersContext.filters;
     const setFilters = filtersContext.setFilters;
+    const { t } = useTranslation();
 
     const formik = useFormik({
         initialValues: {
-            isReading: filters.isReading,
             format: filters.format,
             title: filters.title,
-            authors: filters.authors,
+            author: filters.author,
         },
         onSubmit: (values) => {
             setFilters({ ...values });
@@ -38,34 +39,11 @@ export default function LibraryFilters() {
         setFilters(defaultFilters);
     };
 
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <form onSubmit={formik.handleSubmit} style={{}}>
             <div className="basic-container">
                 <div className="d-flex flex-wrap justify-content-center">
-                    <LibraryFiltersWrapper>
-                        <LibraryFiltersIconWrapper>
-                            <MDBIcon
-                                fas
-                                icon="bookmark"
-                                size={"lg"}
-                                className="me-2"
-                            />
-
-                            <LibraryFiltersLabel
-                                labelText={"Leitura iniciada"}
-                                labelFor={"isReading"}
-                            />
-                        </LibraryFiltersIconWrapper>
-
-                        <Break />
-                        <MDBSwitch
-                            name={"isReading"}
-                            id={"isReading"}
-                            onChange={formik.handleChange}
-                            checked={formik.values.isReading}
-                        />
-                    </LibraryFiltersWrapper>
-                    <LibraryFiltersSeparator />
                     <LibraryFiltersWrapper>
                         <LibraryFiltersIconWrapper>
                             <MDBIcon
@@ -75,7 +53,7 @@ export default function LibraryFilters() {
                                 className="me-2"
                             />
                             <LibraryFiltersLabel
-                                labelText={"Formato"}
+                                labelText={t("library:format")}
                                 labelFor={"format"}
                             />
                         </LibraryFiltersIconWrapper>
@@ -87,7 +65,7 @@ export default function LibraryFilters() {
                             onChange={formik.handleChange}
                             value={formik.values.format}
                         >
-                            <option value={"any"}>TODOS</option>
+                            <option value={"any"}>{t("library:todos")}</option>
                             <option value={"epub"}>EPUB</option>
                             <option value={"pdf"}>PDF</option>
                             <option value={"mobi"}>MOBI</option>
@@ -103,7 +81,7 @@ export default function LibraryFilters() {
                                 className="me-2"
                             />
                             <LibraryFiltersLabel
-                                labelText={"Título"}
+                                labelText={t("library:title")}
                                 labelFor={"title"}
                             />
                         </LibraryFiltersIconWrapper>
@@ -112,7 +90,11 @@ export default function LibraryFilters() {
                             name={"title"}
                             id={"title"}
                             type={"text"}
-                            placeholder={"O nome do vento"}
+                            placeholder={
+                                t(
+                                    "library:thenameofthewindPlaceholder"
+                                ) as string
+                            }
                             value={formik.values.title}
                             onChange={formik.handleChange}
                         />
@@ -128,24 +110,24 @@ export default function LibraryFilters() {
                             />
 
                             <LibraryFiltersLabel
-                                labelText={"Autor"}
-                                labelFor={"title"}
+                                labelText={t("library:author")}
+                                labelFor={"author"}
                             />
                         </LibraryFiltersIconWrapper>
 
                         <MDBInput
-                            name={"authors"}
-                            id={"authors"}
+                            name={"author"}
+                            id={"author"}
                             type={"text"}
                             placeholder={"Patrick Rothfuss"}
-                            value={formik.values.authors}
+                            value={formik.values.author}
                             onChange={formik.handleChange}
                         />
                     </LibraryFiltersWrapper>
                     <LibraryFiltersSeparator />
                     <LibraryFiltersWrapper>
                         <MDBBtn type={"submit"} size={"lg"} className="mt-2">
-                            Aplicar
+                            {t("library:aplicar")}
                         </MDBBtn>
                         <Break className="mb-2" />
                         <MDBBtn
@@ -154,7 +136,7 @@ export default function LibraryFilters() {
                             color={"danger"}
                             size={"sm"}
                         >
-                            Reiniciar
+                            {t("library:reiniciar")}
                         </MDBBtn>
                     </LibraryFiltersWrapper>
                 </div>

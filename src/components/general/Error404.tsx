@@ -1,8 +1,10 @@
 import Navbar from "./navbar/Navbar";
 import Message from "./Message";
 import Break from "./Break";
+import { useTranslation } from "react-i18next";
 
 export default function Error404() {
+    const { t } = useTranslation();
     return (
         <div className="like-body bg-alt">
             <div className="container">
@@ -15,8 +17,9 @@ export default function Error404() {
                     >
                         <Break />
                         <p className="note note-danger lead mt-5 fw-bold">
-                            Não encontramos o conteúdo que você está procurando,
-                            que tal tentar novamente?
+                            {t(
+                                "general:noEncontramosOContedoQueVocEstProcurandoQueTalTent"
+                            )}
                         </p>
                     </div>
                 </div>

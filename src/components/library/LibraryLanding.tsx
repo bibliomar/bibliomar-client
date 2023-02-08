@@ -8,6 +8,7 @@ import {
     UserLibrary,
 } from "../general/helpers/generalTypes";
 import LibraryRow from "./LibraryRow";
+import { useTranslation } from "react-i18next";
 
 export default function LibraryLanding() {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -16,6 +17,7 @@ export default function LibraryLanding() {
         selectedBooks: selectedBooks,
         setFunction: setSelectedBooks,
     };
+    const { t } = useTranslation();
     const context: any = useOutletContext();
     const user: UserLibrary = context["userInfo"];
     const username: string = context["username"];
@@ -26,22 +28,22 @@ export default function LibraryLanding() {
             ) : null}
             <Break />
             <LibraryRow
-                title="Lendo"
-                message={"Para livros que você está lendo agora"}
+                title={t("library:reading")}
+                message={t("library:readingExplanation")}
                 bookCategory={LibraryCategories.reading}
                 booksInfo={user["reading"]}
             />
             <Break />
             <LibraryRow
-                title="Planejando ler"
-                message={"Para livros que você planeja ler no futuro"}
+                title={t("library:planToRead")}
+                message={t("library:planToReadExplanation")}
                 bookCategory={LibraryCategories.toRead}
                 booksInfo={user["to-read"]}
             />
             <Break />
             <LibraryRow
-                title="Backlog"
-                message={"Para livros finalizados ou abandonados"}
+                title={t("library:backlog")}
+                message={t("library:backlogExplanation")}
                 bookCategory={LibraryCategories.backlog}
                 booksInfo={user["backlog"]}
             />

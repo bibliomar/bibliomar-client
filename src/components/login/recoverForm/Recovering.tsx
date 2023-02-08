@@ -6,8 +6,10 @@ import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import { useState } from "react";
 import axios from "axios";
 import { backendUrl } from "../../general/helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 export default function Recovering() {
+    const { t } = useTranslation();
     const [emailSent, setEmailSent] = useState<boolean>(false);
     const [emailFailed, setEmailFailed] = useState<number>(0);
     const formik = useFormik({
@@ -62,8 +64,9 @@ export default function Recovering() {
             {emailSent && emailFailed === 0 ? (
                 <div className="d-flex justify-content-center">
                     <span className="text-success text-center">
-                        Pronto! Enviamos um email de recuperação a sua caixa de
-                        entrada.
+                        {t(
+                            "user:prontoEnviamosUmEmailDeRecuperaoASuaCaixaDeEntrada"
+                        )}
                     </span>
                 </div>
             ) : null}
@@ -71,14 +74,13 @@ export default function Recovering() {
                 <div className="d-flex justify-content-center">
                     <span className="text-danger text-center">
                         {emailFailed === 400
-                            ? "O email não corresponde a uma conta existente."
-                            : "Não conseguimos enviar um email" +
-                              "ao destinatario."}
+                            ? t("user:correspondsToAccount")
+                            : t("user:correspondsToAccount2")}
                     </span>
                 </div>
             ) : null}
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">{t("user:email")}</label>
                 <MDBInput
                     className="text-white"
                     name="email"
@@ -99,7 +101,7 @@ export default function Recovering() {
                 ) : null}
                 <div className="d-flex justify-content-end">
                     <MDBBtn type="submit" className="mt-3">
-                        Enviar
+                        {t("user:enviar")}
                     </MDBBtn>
                 </div>
             </form>

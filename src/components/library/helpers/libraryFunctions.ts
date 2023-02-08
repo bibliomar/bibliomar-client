@@ -5,10 +5,10 @@ import equal from "fast-deep-equal/es6";
 
 export const defaultFilters: PossibleFilters = {
     format: "any",
-    isReading: false,
     title: "",
-    authors: "",
+    author: "",
 };
+
 /* This function is responsible for filtering the books based on the filterContext.
  *
  *
@@ -34,8 +34,8 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
             searchResults = [...searchResults, ...fuseResults];
         }
 
-        if (filters.authors !== "") {
-            const fuseSearch = fuse.search(filters.authors);
+        if (filters.author !== "") {
+            const fuseSearch = fuse.search(filters.author);
             let fuseResults: any[] = [];
             fuseSearch.forEach((el) => {
                 fuseResults.push(el.item);
@@ -45,18 +45,6 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
         }
 
         resultSet = searchResults;
-    }
-
-    if (filters.isReading) {
-        resultSet = [
-            ...resultSet,
-            ...books.filter(
-                (book) =>
-                    book.extension &&
-                    book.extension.toLowerCase() === "epub" &&
-                    book.progress
-            ),
-        ];
     }
 
     if (filters.format !== "any") {
@@ -70,8 +58,6 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
             ),
         ];
     }
-
-    console.log(resultSet);
 
     return resultSet;
 }

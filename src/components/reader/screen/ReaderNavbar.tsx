@@ -14,12 +14,14 @@ import {
 import ReaderCustomizeModal from "./customize/ReaderCustomizeModal";
 import { useEffect, useState } from "react";
 import BibliomarBrand from "../../general/navbar/BibliomarBrand";
+import { useTranslation } from "react-i18next";
 
 export default function ReaderNavbar({
     readerSettings,
     setReaderSettings,
     readerAccent,
 }: ReaderNavbarProps) {
+    const { t } = useTranslation();
     const [modalToggle, setModalToggle] = useState<boolean>(false);
 
     useEffect(() => {}, []);
@@ -66,7 +68,7 @@ export default function ReaderNavbar({
 
                     <MDBNavbarLink className="ms-auto ">
                         <MDBBtn onClick={() => setModalToggle(true)}>
-                            Aparência
+                            {t("reader:aparncia")}
                         </MDBBtn>
                     </MDBNavbarLink>
                 </MDBContainer>

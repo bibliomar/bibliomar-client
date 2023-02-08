@@ -9,8 +9,10 @@ import {
 } from "mdb-react-ui-kit";
 import { useLocation } from "react-router-dom";
 import { Auth } from "../helpers/generalContext";
+import { useTranslation } from "react-i18next";
 
 export default function NavbarUser() {
+    const { t } = useTranslation();
     const authContext = useContext(Auth);
     const location = useLocation();
     const logout = (evt: any) => {
@@ -35,21 +37,21 @@ export default function NavbarUser() {
                             <MDBDropdownLink
                                 href={`/user/login?redirect=${location.pathname}`}
                             >
-                                Entrar
+                                {t("navbar:user.signin")}
                             </MDBDropdownLink>
                         </MDBDropdownItem>
                     ) : (
                         <MDBDropdownItem>
                             <MDBDropdownLink href={`/user/login`}>
                                 <i className="fas fa-book me-1"></i>
-                                Minha Biblioteca
+                                {t("navbar:user.library")}
                             </MDBDropdownLink>
                             <MDBDropdownLink
                                 href="/user/logout"
                                 onClick={logout}
                             >
                                 <i className="fas fa-power-off me-1"></i>
-                                Deslogar
+                                {t("navbar:user.signoff")}
                             </MDBDropdownLink>
                         </MDBDropdownItem>
                     )}

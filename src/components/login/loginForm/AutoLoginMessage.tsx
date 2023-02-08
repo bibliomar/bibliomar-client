@@ -1,9 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 interface Props {
     autoLoginStatus: number;
     disabled: boolean;
 }
 
 export default function AutoLoginMessage(props: Props) {
+    const { t } = useTranslation();
     return (
         <>
             {!props.disabled ? (
@@ -11,23 +14,36 @@ export default function AutoLoginMessage(props: Props) {
                     {props.autoLoginStatus === 103 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-info text-center">
-                                Tentando login automático...
+                                {t("user:tentandoLoginAutomtico")}
                             </span>
                         </div>
                     ) : null}
                     {props.autoLoginStatus === 200 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-success text-center">
-                                Login automático bem sucedido!
+                                {t("user:loginAutomticoBemSucedido")}
                             </span>
                         </div>
                     ) : null}
                     {props.autoLoginStatus === 401 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-danger text-center">
-                                Sessão expirada, por favor, faça login
-                                novamente.
+                                {t(
+                                    "user:sessoExpiradaPorFavorFaaLoginNovamente"
+                                )}
                             </span>
+                        </div>
+                    ) : null}
+                    {props.autoLoginStatus === 403 ? (
+                        <div className="d-flex justify-content-center">
+                            <span className="text-danger text-center">
+                                {t(
+                                    "user:nsFizemosUmaMigraoInternaDeServidorEComIssoSuaSenh"
+                                )}
+                            </span>
+                            <a href="https://bibliomar.site/user/recover">
+                                {t("user:solicitarNovaSenha")}
+                            </a>
                         </div>
                     ) : null}
                 </div>
