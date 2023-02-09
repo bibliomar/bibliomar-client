@@ -20,25 +20,25 @@ interface Props {
 // noinspection AllyPlainJsInspection
 const recommendations: Book[] = [
     {
-        authors: "Daniel, Keyes",
+        author: "Daniel, Keyes",
         title: "Flores Para Algernon",
         md5: "6DC5A0A601B78CECFFC5EDE2538A8127",
         topic: "fiction",
     },
     {
-        authors: "Rothfuss, Patrick",
+        author: "Rothfuss, Patrick",
         title: "O Nome do Vento",
         md5: "7FA001B7F7A4CE3316036D1F6A3CBF47",
         topic: "fiction",
     },
     {
-        authors: "Amado, Jorge",
+        author: "Amado, Jorge",
         title: "Seara vermelha",
         md5: "7061F3E26D53E300FD64A77EE1865F23",
         topic: "fiction",
     },
     {
-        authors: "Sanderson, Brandon",
+        author: "Sanderson, Brandon",
         title: "O Império Final",
         md5: "C14CDF822286598C7A15032616563673",
         topic: "fiction",

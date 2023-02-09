@@ -72,15 +72,13 @@ export default function SearchBar({
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
             <div className="searchfield">
-                {query.length > 2 ? (
-                    <datalist id="indexes">
-                        {relevantIndexes.map((el, i) => {
-                            if (i < 5) {
-                                return <option value={el.item.title} key={i} />;
-                            }
-                        })}
-                    </datalist>
-                ) : null}
+                <datalist id="indexes">
+                    {relevantIndexes.map((el, i) => {
+                        if (el != null && i < 5) {
+                            return <option value={el.item.title} key={i} />;
+                        }
+                    })}
+                </datalist>
 
                 <MDBInput
                     value={query}

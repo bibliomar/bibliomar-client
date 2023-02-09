@@ -12,6 +12,7 @@ export default function Paginator({
     return (
         <ReactPaginate
             onPageChange={pageChangeHandler}
+            pageRangeDisplayed={10}
             breakLabel={"..."}
             nextLabel={"»"}
             previousLabel={"«"}

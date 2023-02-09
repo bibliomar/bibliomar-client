@@ -1,9 +1,11 @@
-enum RequestType {
+import { Book } from "../../general/helpers/generalTypes";
+
+enum SearchRequestType {
     SEARCH,
     PAGINATION,
 }
 
-enum RequestStatusOptions {
+enum SearchRequestStatusOptions {
     SENDING,
     LOADING,
     SUCCESS,
@@ -13,10 +15,29 @@ enum RequestStatusOptions {
     TOO_MANY_REQUESTS,
 }
 
-interface RequestStatus {
-    type: RequestType;
-    status: RequestStatusOptions;
+interface ManticoreSearchHits {
+    maxScore?: number;
+    total?: number;
+    totalRelation?: string;
+    hits?: Book[];
 }
 
-export { RequestType, RequestStatusOptions };
-export type { RequestStatus };
+interface ManticoreSearchResponse {
+    aggregations?: object;
+    took: number;
+    hits: ManticoreSearchHits;
+    warning: object;
+}
+
+interface SearchRequestStatus {
+    type: SearchRequestType;
+    status: SearchRequestStatusOptions;
+}
+
+export { SearchRequestType, SearchRequestStatusOptions };
+
+export type {
+    SearchRequestStatus,
+    ManticoreSearchResponse,
+    ManticoreSearchHits,
+};

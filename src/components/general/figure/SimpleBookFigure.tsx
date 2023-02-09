@@ -76,7 +76,7 @@ export default function SimpleBookFigure({
                     className="ms-2 text-nowrap simple-text"
                     style={{ fontSize: "0.9em" }}
                 >
-                    {book.authors}
+                    {book.author}
                 </span>
             </div>
             <MDBRipple

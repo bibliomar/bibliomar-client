@@ -9,12 +9,19 @@ export default function SearchPagination({
     pageCount,
     pageChangeHandler,
 }: Props) {
-    return (
-        <div className="mt-3 p-2 rounded-3 basic-container mb-4">
-            <Paginator
-                pageChangeHandler={pageChangeHandler}
-                pageCount={pageCount}
-            />
-        </div>
-    );
+    const renderBasedOnPageCount = () => {
+        if (pageCount === 0) {
+            return null;
+        }
+        return (
+            <div className="mt-3 p-2 rounded-3 basic-container mb-4">
+                <Paginator
+                    pageChangeHandler={pageChangeHandler}
+                    pageCount={pageCount}
+                />
+            </div>
+        );
+    };
+
+    return renderBasedOnPageCount();
 }

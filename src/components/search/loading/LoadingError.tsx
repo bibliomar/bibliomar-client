@@ -2,14 +2,14 @@ import { MDBBtn, MDBSpinner, MDBTypography } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import { Link } from "react-router-dom";
 import {
-    RequestStatus,
-    RequestStatusOptions,
-    RequestType,
+    SearchRequestStatus,
+    SearchRequestStatusOptions,
+    SearchRequestType,
 } from "../helpers/searchTypes";
 
 // TODO: refactoring and enum of possible errorTypes.
 
-export default function LoadingError({ type, status }: RequestStatus) {
+export default function LoadingError({ type, status }: SearchRequestStatus) {
     /*
     function basedOnError() {
         if (props.errorType === "yellow") {

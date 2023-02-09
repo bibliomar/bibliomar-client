@@ -20,12 +20,16 @@ interface LibraryProperties {
     // All properties here are only valid for library entries. (e.g. book you get from a user's library.)
     // Make sure to check if they exist before using them.
 
-    rating?: number | null;
     // The value is an epubcifi string.
     progress?: string | null;
     // The value is a string with the book's category on the user's library.
     // Not to be confused with "topic"
     category?: string | null;
+}
+
+interface DownloadMirrors {
+    libgenMirror: string;
+    librocksMirror: string;
 }
 
 interface MetadataProperties {
@@ -36,29 +40,26 @@ interface MetadataProperties {
     edition?: string | null;
     year?: string | null;
     publisher?: string | null;
-    isbn?: string | null;
     description?: string | null;
+    series?: string | null;
+    timeAdded?: string | null;
+    timeLastModified?: string | null;
+    downloadMirrors?: DownloadMirrors;
 }
 
 interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
     // This is the basic schema of a book. It may include extra properties if it has metadata or if it's from a user's library.
     // Be sure to check if a property exists before using it.
-    series?: string | null;
 
     title: string;
-    authors: string;
+    author: string;
     md5: string;
     topic: string;
-
     language?: string | null;
-
-    extension?: string;
-    size?: string;
-
-    // These values are not saved to a user's library.
-    file?: string;
-    mirror1?: string;
-    mirror2?: string;
+    extension?: string | null;
+    fileSize?: number | null;
+    formattedSize?: string | null;
+    coverURL?: string | null;
 }
 
 interface UserLibrary {
@@ -88,17 +89,5 @@ interface AuthContext {
     setUserLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-type PaginationIndexes = {
-    startIndex: number;
-    endIndex: null;
-};
-
 export { ThemeOptions, LibraryCategories };
-export type {
-    Book,
-    DownloadLinks,
-    ThemeContext,
-    UserLibrary,
-    AuthContext,
-    PaginationIndexes,
-};
+export type { Book, DownloadLinks, ThemeContext, UserLibrary, AuthContext };

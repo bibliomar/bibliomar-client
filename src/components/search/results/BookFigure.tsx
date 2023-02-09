@@ -8,9 +8,9 @@ import { Book } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
 import {
-    RequestStatus,
-    RequestStatusOptions,
-    RequestType,
+    SearchRequestStatus,
+    SearchRequestStatusOptions,
+    SearchRequestType,
 } from "../helpers/searchTypes";
 import { useTranslation } from "react-i18next";
 
@@ -54,14 +54,14 @@ export default function BookFigure({ book, timeout }: Props) {
                     <Break />
                     <span className="mx-2 mb-1">
                         <strong>{t("figure:author")}</strong>
-                        {book["authors"]}
+                        {book["author"]}
                     </span>
                     <Break />
                     <p className="mx-2 mb-2">
                         <strong>{t("figure:file")}</strong>
                         {book.extension
                             ? book.extension.toUpperCase()
-                            : null}, {book.size}
+                            : null}, {book.formattedSize}
                     </p>
                     <Break />
                 </div>

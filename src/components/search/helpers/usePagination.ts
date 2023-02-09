@@ -1,5 +1,5 @@
 // Handles pagination states and functions.
-import { Book } from "./generalTypes";
+import { Book } from "../../general/helpers/generalTypes";
 import { useRef } from "react";
 
 export default function usePagination(

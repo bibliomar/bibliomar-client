@@ -1,35 +1,56 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MDBCol, MDBCollapse, MDBTooltip } from "mdb-react-ui-kit";
+import {
+    MDBCheckbox,
+    MDBCol,
+    MDBCollapse,
+    MDBRadio,
+    MDBSwitch,
+    MDBTooltip,
+} from "mdb-react-ui-kit";
 import { Trans, useTranslation } from "react-i18next";
 
-//@ts-ignore
-// TODO: Add props to this.
-function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
+interface SearchOptionsProps {
+    topicContext: string;
+    setTopicContext: Dispatch<SetStateAction<string>>;
+    setPageNumber: Dispatch<SetStateAction<number>>;
+    hidden: boolean;
+}
+
+// TODO: Implement formik usage.
+
+function SearchOptions({
+    topicContext,
+    setTopicContext,
+    setPageNumber,
+    hidden,
+}: SearchOptionsProps) {
     const { t } = useTranslation();
     let [searchParams, setSearchParams] = useSearchParams();
-    let [type, setType] = useState("title");
+    let [type, setType] = useState("any");
     let [formatSelect, setFormatSelect] = useState("any");
     let [languageSelect, setLanguageSelect] = useState("any");
+    let [fulltextOn, setFulltextOn] = useState(false);
 
-    const cat = searchParams.get("category");
-    const searchType = searchParams.get("type");
+    const topic = searchParams.get("topic");
+    const searchType = searchParams.get("any");
     const format = searchParams.get("format");
     const language = searchParams.get("language");
+    const fulltext = searchParams.get("fulltext");
 
     // Change based on URL
     useEffect(() => {
         if (
-            cat != null &&
-            cat !== categoryContext &&
-            ["fiction", "sci-tech"].includes(cat)
+            topic != null &&
+            topic !== topicContext &&
+            ["fiction", "sci-tech"].includes(topic)
         ) {
-            setCategoryContext(cat);
+            setTopicContext(topic);
         }
         if (
             searchType != null &&
             searchType !== type &&
-            ["title", "author"].includes(searchType)
+            ["title", "author", "any"].includes(searchType)
         ) {
             setType(searchType);
         }
@@ -49,7 +70,6 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
         }
     }, [searchParams]);
 
-    // noinspection AllyJsxHardcodedStringInspection
     return (
         <MDBCollapse show={!hidden}>
             <div className="row d-flex flex-row justify-content-center">
@@ -63,12 +83,13 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 type="radio"
                                 value="any"
                                 className="form-check-input"
-                                name="category"
+                                name="topic"
                                 id="searchcatany"
-                                checked={categoryContext === "any"}
+                                checked={topicContext === "any"}
                                 onChange={() => {
-                                    setCategoryContext("any");
+                                    setTopicContext("any");
                                 }}
+                                disabled={fulltextOn}
                             />
                             <MDBTooltip tag={"a"} title={t("search:maisLento")}>
                                 <label htmlFor="searchcatany" className="mb-1">
@@ -85,20 +106,21 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         <div className="form-check form-check">
                             <input
                                 type="radio"
-                                value="sci-tech"
+                                value="scitech"
                                 className="form-check-input"
-                                name="category"
+                                name="topic"
                                 id="searchcatnonfiction"
-                                checked={categoryContext === "sci-tech"}
+                                checked={topicContext === "scitech"}
                                 onChange={() => {
-                                    setCategoryContext("sci-tech");
+                                    setTopicContext("scitech");
                                 }}
+                                disabled={fulltextOn}
                             />
                             <label
                                 htmlFor="searchcatnonfiction"
                                 className="mb-1"
                             >
-                                Não-ficção
+                                {t("search:nonfiction")}
                             </label>
                         </div>
                         <div className="form-check form-check">
@@ -106,12 +128,13 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 type="radio"
                                 value="fiction"
                                 className="form-check-input"
-                                name="category"
+                                name="topic"
                                 id="searchcatfiction"
-                                checked={categoryContext === "fiction"}
+                                checked={topicContext === "fiction"}
                                 onChange={() => {
-                                    setCategoryContext("fiction");
+                                    setTopicContext("fiction");
                                 }}
+                                disabled={fulltextOn}
                             />
                             <label htmlFor="searchcatfiction " className="mb-1">
                                 {t("search:fiction")}
@@ -128,6 +151,23 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         <div className="form-check form-check">
                             <input
                                 type="radio"
+                                value="any"
+                                className="form-check-input"
+                                name="type"
+                                id="searchbyany"
+                                checked={type === "any"}
+                                onChange={() => {
+                                    setType("any");
+                                }}
+                                disabled={fulltextOn}
+                            />
+                            <label htmlFor="searchbytitle" className="mb-1">
+                                {t("search:todos2")}
+                            </label>
+                        </div>
+                        <div className="form-check form-check">
+                            <input
+                                type="radio"
                                 value="title"
                                 className="form-check-input"
                                 name="type"
@@ -136,6 +176,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 onChange={() => {
                                     setType("title");
                                 }}
+                                disabled={fulltextOn}
                             />
                             <label htmlFor="searchbytitle" className="mb-1">
                                 {t("search:title")}
@@ -152,6 +193,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                                 onChange={() => {
                                     setType("author");
                                 }}
+                                disabled={fulltextOn}
                             />
                             <label
                                 id="searchbyauthorlabel"
@@ -173,6 +215,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         className="form-control form-select"
                         name="format"
                         id="format"
+                        disabled={fulltextOn}
                     >
                         <option className="text-dark" value="any">
                             {t("search:todos2")}
@@ -200,6 +243,7 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         className="form-control form-select"
                         name="language"
                         id="searchlang"
+                        disabled={fulltextOn}
                     >
                         <option value="any">{t("search:qualquer")}</option>
                         <option value="portuguese">
@@ -207,6 +251,18 @@ function SearchOptions({ categoryContext, setCategoryContext, hidden }) {
                         </option>
                         <option value="english">{t("search:ingls")}</option>
                     </select>
+                </div>
+            </div>
+            <div className="row mt-4 d-flex flex-row flex-wrap justify-content-center">
+                <div className="mt-1 d-flex justify-content-center">
+                    <MDBSwitch
+                        name="fulltext"
+                        checked={fulltextOn}
+                        onChange={() => {
+                            setFulltextOn(!fulltextOn);
+                        }}
+                        label={t("search:enableFulltext")}
+                    />
                 </div>
             </div>
         </MDBCollapse>

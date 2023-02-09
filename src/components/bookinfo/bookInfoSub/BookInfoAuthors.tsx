@@ -8,14 +8,14 @@ interface Props {
 }
 
 export default function BookInfoAuthors({ book }: Props) {
-    const authorSearchUrl = `/search?type=author&q=${book.authors}`;
+    const authorSearchUrl = `/search?type=author&q=${book.author}`;
     return (
         <>
             <span
                 className="book-info-title mb-2 mt-3"
                 style={{ fontSize: "1.2rem" }}
             >
-                <Link to={authorSearchUrl}>{book.authors}</Link>
+                <Link to={authorSearchUrl}>{book.author}</Link>
             </span>
         </>
     );

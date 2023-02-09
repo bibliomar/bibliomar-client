@@ -3,34 +3,27 @@ import React, { SetStateAction } from "react";
 import SearchPagination from "../SearchPagination";
 import Break from "../../general/Break";
 import { Book } from "../../general/helpers/generalTypes";
-import { RequestStatus } from "../helpers/searchTypes";
-import SearchLoadingScreen from "../loading/SearchLoadingScreen";
+import { SearchRequestStatus } from "../helpers/searchTypes";
+import SearchMessageScreen from "../loading/SearchMessageScreen";
+import { el } from "date-fns/locale";
 
 interface ResultScreenProps {
-    results: Book[];
-    requestStatus: RequestStatus | undefined;
-    pageChangeHandler: (evt: any) => void;
-    pageCount: number;
+    visibleResults: Book[];
 }
 
 export default function SearchResultScreen(props: ResultScreenProps) {
+    const renderBasedOnResults = () => {
+        if (props.visibleResults.length === 0) {
+            return null;
+        } else {
+            return (
+                <SearchResultsContent visibleResults={props.visibleResults} />
+            );
+        }
+    };
     return (
-        <div className="d-flex flex-wrap justify-content-center mt-5 ms-lg-4">
-            {props.requestStatus ? (
-                <SearchLoadingScreen requestStatus={props.requestStatus} />
-            ) : null}
-            <Break />
-
-            {props.results.length > 0 ? (
-                <>
-                    <SearchResultsContent results={props.results} />
-                    <Break />
-                    <SearchPagination
-                        pageChangeHandler={props.pageChangeHandler}
-                        pageCount={props.pageCount}
-                    />
-                </>
-            ) : null}
+        <div className="d-flex flex-wrap justify-content-center">
+            {renderBasedOnResults()}
         </div>
     );
 }

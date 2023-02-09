@@ -1,7 +1,7 @@
 import {
-    RequestStatus,
-    RequestStatusOptions,
-    RequestType,
+    SearchRequestStatus,
+    SearchRequestStatusOptions,
+    SearchRequestType,
 } from "../helpers/searchTypes";
 import SearchLoadingMessage from "./SearchLoadingMessage";
 import { Link } from "react-router-dom";
@@ -9,20 +9,19 @@ import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 interface LoadingScreenProps {
-    requestStatus: RequestStatus;
+    requestStatus?: SearchRequestStatus | null | undefined;
 }
 
-export default function SearchLoadingScreen({
+export default function SearchMessageScreen({
     requestStatus,
 }: LoadingScreenProps) {
     const { t } = useTranslation();
-    const { type, status } = requestStatus;
 
     const renderSearchMessage = () => {
         let message: string | ReactNode = "";
 
-        switch (status) {
-            case RequestStatusOptions.SENDING:
+        switch (requestStatus?.status) {
+            case SearchRequestStatusOptions.SENDING:
                 message = t("search:estamosEnviandoSuaSolicitaoAoServidor2");
                 return (
                     <SearchLoadingMessage
@@ -30,7 +29,7 @@ export default function SearchLoadingScreen({
                         noteColor={"primary"}
                     />
                 );
-            case RequestStatusOptions.LOADING:
+            case SearchRequestStatusOptions.LOADING:
                 message = t(
                     "search:estamosCarregandoSeusArquivosIssoPodeDemorarUmPouc2"
                 );
@@ -40,7 +39,7 @@ export default function SearchLoadingScreen({
                         noteColor={"primary"}
                     />
                 );
-            case RequestStatusOptions.SUCCESS:
+            case SearchRequestStatusOptions.SUCCESS:
                 message = t("search:tudoProntoBoaLeitura2");
                 return (
                     <SearchLoadingMessage
@@ -48,7 +47,7 @@ export default function SearchLoadingScreen({
                         noteColor={"success"}
                     />
                 );
-            case RequestStatusOptions.BAD_QUERY:
+            case SearchRequestStatusOptions.BAD_QUERY:
                 message = t(
                     "search:noPossvelRealizarPesquisasDeMenosDe3Caracteres"
                 );
@@ -59,7 +58,7 @@ export default function SearchLoadingScreen({
                     />
                 );
 
-            case RequestStatusOptions.BAD_REQUEST:
+            case SearchRequestStatusOptions.BAD_REQUEST:
                 message = (
                     <span>
                         {t(
@@ -77,7 +76,7 @@ export default function SearchLoadingScreen({
                         noteColor={"warning"}
                     />
                 );
-            case RequestStatusOptions.CONNECTION_ERROR:
+            case SearchRequestStatusOptions.CONNECTION_ERROR:
                 message = t(
                     "search:opsNoConseguimosRealizarSuaSolicitaoPorFavorVerifi"
                 );
@@ -88,7 +87,7 @@ export default function SearchLoadingScreen({
                     />
                 );
 
-            case RequestStatusOptions.TOO_MANY_REQUESTS:
+            case SearchRequestStatusOptions.TOO_MANY_REQUESTS:
                 message = t("search:calmaVocEstFazendoMuitasRequisies");
                 return (
                     <SearchLoadingMessage
@@ -100,8 +99,8 @@ export default function SearchLoadingScreen({
     };
     const renderPaginationMessage = () => {
         let message: string | ReactNode = "";
-        switch (status) {
-            case RequestStatusOptions.SENDING:
+        switch (requestStatus?.status) {
+            case SearchRequestStatusOptions.SENDING:
                 message = t("search:procurandoMaisResultados");
                 return (
                     <SearchLoadingMessage
@@ -109,14 +108,28 @@ export default function SearchLoadingScreen({
                         noteColor={"primary"}
                     />
                 );
+            case SearchRequestStatusOptions.BAD_REQUEST:
+                message = t("search:noConseguimosEncontrarMaisResultados");
+                return (
+                    <SearchLoadingMessage
+                        message={message}
+                        noteColor={"warning"}
+                    />
+                );
         }
     };
 
-    return (
-        <div className="text-dark mb-4">
-            {type === RequestType.SEARCH
-                ? renderSearchMessage()
-                : renderPaginationMessage()}
-        </div>
-    );
+    const renderBasedOnType = () => {
+        if (requestStatus == null) {
+            return null;
+        }
+
+        if (requestStatus.type === SearchRequestType.SEARCH) {
+            return renderSearchMessage();
+        } else {
+            return renderPaginationMessage();
+        }
+    };
+
+    return <div className="text-dark mb-4">{renderBasedOnType()}</div>;
 }
