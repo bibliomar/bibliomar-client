@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function RecommendationBookFigure({ book, timeout }: Props) {
-    const [cover, coverDone] = useCover(book.md5, book.topic, timeout);
+    const [cover, coverDone] = useCover(book, timeout);
 
     const href = `/search?category=${book.topic}&q=${book.title}`;
 

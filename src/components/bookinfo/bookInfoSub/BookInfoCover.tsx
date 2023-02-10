@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function BookInfoCover({ book }: Props) {
-    const [cover, coverDone] = useCover(book.md5, book.topic);
+    const [cover, coverDone] = useCover(book);
 
     return (
         <div className="d-flex flex-column mb-3 w-100">

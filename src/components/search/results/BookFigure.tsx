@@ -21,7 +21,7 @@ interface Props {
 
 export default function BookFigure({ book, timeout }: Props) {
     const { t } = useTranslation();
-    const [cover, coverDone] = useCover(book.md5, book.topic, timeout);
+    const [cover, coverDone] = useCover(book, timeout);
 
     const href = `/book/${book.topic}/${book.md5}`;
 
