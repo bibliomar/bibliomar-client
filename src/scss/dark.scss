@@ -5,29 +5,30 @@
 $accent-color: #7663F2;
 
 // Fix for white text in selects' options
-.form-select > option{
+.form-select > option {
   color: $dark
 }
 
-.btn-primary{
+.btn-primary {
   color: #FFFFFF;
   background-color: $accent-color !important;
 }
 
-.btn-outline-primary{
+.btn-outline-primary {
   color: $accent-color !important;
   border-color: $accent-color !important;
 }
 
-.bg-alt{
+.bg-alt {
+  //noinspection CssUnknownTarget
   background-image: url("/assets/img/back-lg-2.svg");
 }
 
-.navbar-bg{
+.navbar-bg {
   background-color: #252525;
 }
 
-.recommendation-title{
+.recommendation-title {
   font-family: 'Nunito Sans', sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -36,18 +37,18 @@ $accent-color: #7663F2;
   color: #CACACA;
 }
 
-.basic-container{
+.basic-container {
   background-color: rgba(0, 0, 0, 0.65);
   box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
   border-radius: 0 5px 5px 0;
 }
 
-.basic-container-alt{
+.basic-container-alt {
   background-color: rgba(0, 0, 0, 0.65);
   box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
   border-radius: 0 5px 5px 0;
 }
 
-.text-color{
+.text-color {
   color: $light
 }

@@ -5,6 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import React from "react";
 import { Link } from "react-router-dom";
 import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
+import { getEmptyCover } from "./helpers/generalFunctions";
 
 interface Props {
     book: Book;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const chooseCurrentCoverComponent = (props: Props) => {
-    const noCoverUrl: string = "https://libgen.rocks/img/blank.png";
+    const noCoverUrl: string = getEmptyCover();
     let usableCover: string;
 
     if (props.coverDone) {

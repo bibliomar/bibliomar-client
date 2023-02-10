@@ -173,6 +173,18 @@ export async function addBookToLibrary(
     console.log(req);
 }
 
+export function getEmptyCover() {
+    return "https://libgen.rocks/img/blank.png";
+}
+
+export function resolveCoverUrl(topic: string, coverUrl: string) {
+    if (topic === "fiction") {
+        return `${coverProviderUrl}/fictioncovers/${coverUrl}`;
+    } else {
+        return `${coverProviderUrl}/covers/${coverUrl}`;
+    }
+}
+
 // @ts-ignore
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
 
@@ -181,3 +193,6 @@ export const manticoreUrl = import.meta.env.VITE_MANTICORE_URL as string;
 
 // @ts-ignore
 export const onProduction = import.meta.env.VITE_ON_PRODUCTION as string;
+
+export const coverProviderUrl = import.meta.env
+    .VITE_COVER_PROVIDER_URL as string;

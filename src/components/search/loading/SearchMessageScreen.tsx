@@ -29,6 +29,9 @@ export default function SearchMessageScreen({
                         noteColor={"primary"}
                     />
                 );
+            // The implementation of this loading state needs to be discussed with the team.
+            // It makes the search experience feels slow for now real reason, since it doesn't actually track
+            // the progress of the "file loading" (there's no file loading to begin with).
             case SearchRequestStatusOptions.LOADING:
                 message = t(
                     "search:estamosCarregandoSeusArquivosIssoPodeDemorarUmPouc2"
@@ -131,5 +134,5 @@ export default function SearchMessageScreen({
         }
     };
 
-    return <div className="text-dark mb-4">{renderBasedOnType()}</div>;
+    return <div className="text-dark mt-2 mb-3">{renderBasedOnType()}</div>;
 }

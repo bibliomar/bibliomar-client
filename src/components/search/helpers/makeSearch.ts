@@ -9,6 +9,7 @@ import {
 import manticore from "manticoresearch";
 import {
     formatBytes,
+    hasStorage,
     manticoreUrl,
 } from "../../general/helpers/generalFunctions";
 
@@ -23,7 +24,7 @@ function getManticoreSearchApi() {
     return new manticore.SearchApi(client);
 }
 
-function getBooksFromHits(topic: string, hits: Book[]) {
+function getBooksFromHits(hits: Book[]) {
     let books: Book[] = [];
     hits.forEach((hit: any) => {
         const hitSource = hit._source;
@@ -34,9 +35,14 @@ function getBooksFromHits(topic: string, hits: Book[]) {
                 md5: hitSource.md5,
                 language: hitSource.language,
                 extension: hitSource.extension,
-                topic: topic,
+                topic: hitSource.topic,
+                coverUrl: hitSource.coverurl,
                 fileSize: hitSource.filesize,
             };
+
+            if (book.coverURL != null && book.coverURL.trim() === "") {
+                book.coverURL = null;
+            }
 
             if (book.fileSize != null) {
                 try {
@@ -53,7 +59,6 @@ function getBooksFromHits(topic: string, hits: Book[]) {
 }
 
 function normalizeResponse(
-    topic: string,
     response: ManticoreSearchResponse
 ): ManticoreSearchResponse {
     let normalizedResponse: ManticoreSearchResponse = {
@@ -64,7 +69,6 @@ function normalizeResponse(
         normalizedResponse.hits.hits != null
     ) {
         normalizedResponse.hits.hits = getBooksFromHits(
-            topic,
             normalizedResponse.hits.hits
         );
     }
@@ -90,7 +94,9 @@ function cacheResponse(
     const searchObjectString = JSON.stringify(searchObject);
     const responseString = JSON.stringify(response);
     try {
-        sessionStorage.setItem(searchObjectString, responseString);
+        if (hasStorage(sessionStorage)) {
+            sessionStorage.setItem(searchObjectString, responseString);
+        }
     } catch (e: unknown) {
         console.log("Error while saving results to cache:");
         console.log(e);
@@ -99,6 +105,7 @@ function cacheResponse(
 
 /**
  * Important: Exceptions from this function are propagated. Make sure to handle them.
+ * The manticore client has no typing file, so make sure to have the documentation open.
  * @param topic The topic to be searched
  * @param searchObject The search object to be sent to Manticore Search
  */
@@ -120,7 +127,7 @@ export default async function makeSearch(
 
     if (response != null) {
         // Normalize the response
-        const normalizedResponse = normalizeResponse(topic, response);
+        const normalizedResponse = normalizeResponse(response);
         cacheResponse(searchObject, normalizedResponse);
         return normalizedResponse;
     } else {

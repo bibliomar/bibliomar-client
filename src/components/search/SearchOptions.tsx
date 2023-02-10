@@ -68,15 +68,19 @@ function SearchOptions({
         ) {
             setLanguageSelect(language);
         }
+        if (fulltext != null && fulltext.trim() === "on") {
+            setFulltextOn(true);
+        }
     }, [searchParams]);
 
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <MDBCollapse show={!hidden}>
             <div className="row d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
                     <div id="searchcat">
                         <label className="" htmlFor="searchcat">
-                            {t("search:categoria")}
+                            {t("search:topico")}
                         </label>
                         <div className="form-check form-check">
                             <input
@@ -91,17 +95,15 @@ function SearchOptions({
                                 }}
                                 disabled={fulltextOn}
                             />
-                            <MDBTooltip tag={"a"} title={t("search:maisLento")}>
-                                <label htmlFor="searchcatany" className="mb-1">
-                                    <Trans
-                                        ns="search"
-                                        i18nKey="todas"
-                                        components={{
-                                            b: <br />,
-                                        }}
-                                    />
-                                </label>
-                            </MDBTooltip>
+                            <label htmlFor="searchcatany" className="mb-1">
+                                <Trans
+                                    ns="search"
+                                    i18nKey="todas"
+                                    components={{
+                                        b: <br />,
+                                    }}
+                                />
+                            </label>
                         </div>
                         <div className="form-check form-check">
                             <input

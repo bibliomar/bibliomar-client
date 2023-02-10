@@ -12,11 +12,13 @@ export default function SearchResultsContent(props: Props) {
     return (
         <>
             {props.visibleResults.map((ele, i) => {
+                if (ele === null) return null;
+
                 let timeout: number;
                 if (i === 0) {
-                    timeout = 250;
+                    timeout = 500;
                 } else {
-                    timeout = i * 500;
+                    timeout = i * 750;
                 }
                 return <BookFigure book={ele} timeout={timeout} key={i} />;
             })}

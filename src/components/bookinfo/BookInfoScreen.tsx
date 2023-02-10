@@ -31,7 +31,7 @@ export default function BookInfoScreen() {
     let navigate = useNavigate();
 
     const size: Size = useWindowSize();
-    const topicContext: string | undefined = useOutletContext();
+    let topicContext: string | undefined = useOutletContext();
     const [bookInfo, setBookInfo] = useMetadata(md5, topicContext);
     const [downloadLinks, downloadLinksError] = useDownloadLinks(
         md5,

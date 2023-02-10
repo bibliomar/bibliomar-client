@@ -12,34 +12,31 @@ type IndexesResponse = {
 };
 
 interface Props {
-    categoryContext: string;
+    topicContext: string;
     setOptionsHidden: React.Dispatch<SetStateAction<boolean>>;
 }
 
-async function getIndexes(category: string) {
-    if (sessionStorage.getItem(`${category}-indexes`)) {
-        let cachedIndexesJson = sessionStorage.getItem(
-            `${category}-indexes`
-        ) as string;
-        return JSON.parse(cachedIndexesJson);
-    }
-    try {
-        let indexRequest = await axios.get(
-            `${backendUrl}/v1/indexes/${category}`
-        );
-        let indexesObject: IndexesResponse = indexRequest.data;
-        let indexes = indexesObject.indexes;
-        sessionStorage.setItem(`${category}-indexes`, JSON.stringify(indexes));
-        return indexes;
-    } catch (e) {
-        console.log(e);
+function buildAutocompleteSearchObject(topicContext: string, query: string) {
+    // Important: Infixing must be enabled in manticore indexes for this to work:
+    // https://manual.manticoresearch.com/Creating_a_table/NLP_and_tokenization/Wildcard_searching_settings#min_infix_len
+
+    const searchObject = {
+        index: "libgen",
+        query: {
+            match: {
+                title: `${query}*`,
+            },
+        },
+    };
+}
+
+async function getAutocomplete(topicContext: string) {
+    if (topicContext !== "any") {
+        return;
     }
 }
 
-export default function SearchBar({
-    categoryContext,
-    setOptionsHidden,
-}: Props) {
+export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
     const { t } = useTranslation();
     const width = useWindowSize().width;
     let [searchParameters, _] = useSearchParams();
@@ -53,10 +50,6 @@ export default function SearchBar({
             setQuery(q);
         }
     }, [searchParameters]);
-
-    useEffect(() => {
-        getIndexes(categoryContext).then((r) => setIndexes(r));
-    }, [categoryContext]);
 
     async function handleInput(input: HTMLInputElement) {
         setQuery(input.value);
@@ -81,6 +74,7 @@ export default function SearchBar({
                 </datalist>
 
                 <MDBInput
+                    placeholder={t("search:placeholder") as string}
                     value={query}
                     onChange={(evt) => handleInput(evt.currentTarget)}
                     list="indexes"
