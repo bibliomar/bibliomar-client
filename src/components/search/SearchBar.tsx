@@ -100,6 +100,15 @@ export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
                 <datalist id="indexes">
                     {indexes.map((el, i) => {
                         if (el != null && i < 5) {
+                            if (el.title.length > 40) {
+                                return (
+                                    <option
+                                        value={
+                                            el.title.substring(0, 40) + "..."
+                                        }
+                                    />
+                                );
+                            }
                             return <option value={el.title} key={i} />;
                         }
                     })}
