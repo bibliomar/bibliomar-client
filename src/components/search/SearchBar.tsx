@@ -111,7 +111,7 @@ export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
                     onChange={(evt) => handleInput(evt.currentTarget)}
                     list="indexes"
                     type="search"
-                    className="search-input"
+                    className="search-input undefined"
                     wrapperClass={"d-flex flex-nowrap flex-row"}
                     label={t("search:pesquisar")}
                     labelStyle={{ position: "absolute", top: "8%" }}
