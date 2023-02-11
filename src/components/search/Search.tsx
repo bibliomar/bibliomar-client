@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Bibliologo from "../general/Bibliologo";
 import SearchOptions from "./SearchOptions";
-import SearchBar from "./SearchBar";
+import SearchBar from "./searchbar/SearchBar";
 import Greeting from "./Greeting";
 import SearchResultScreen from "./results/SearchResultScreen";
 import Navbar from "../general/navbar/Navbar";
@@ -218,8 +218,8 @@ function Search() {
                     new Event("submit", { bubbles: true, cancelable: true })
                 );
             }
-            // 200ms gives enough time for everything to render.
-        }, 200);
+            // 500ms gives enough time for everything to render.
+        }, 1500);
 
         return () => clearTimeout(submit);
     }, [searchParams]);

@@ -70,7 +70,7 @@ const showCoverMaskUrl = (props: Props) => {
                         backgroundColor: props.coverDone
                             ? "rgba(0,0,0,0.1)"
                             : undefined,
-                        zIndex: "999",
+                        zIndex: "100",
                     }}
                 />
             </Link>

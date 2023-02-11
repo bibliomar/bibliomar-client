@@ -25,7 +25,6 @@ export default function LibraryBookFigure(props: Props) {
             <SimpleBookFigure
                 book={book}
                 cover={cover}
-                loadingClassName="loading-skeleton-library"
                 coverDone={coverDone}
                 href={href}
             />

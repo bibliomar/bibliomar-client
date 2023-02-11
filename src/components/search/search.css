@@ -15,6 +15,12 @@
     max-height: 375px;
 }
 
+.search-bar-figure-cover {
+    height: auto;
+    min-width: 48px;
+    width: 20vw;
+}
+
 @media screen and (min-width: 768px) {
     .result-div {
         width: 20vw;
@@ -44,5 +50,10 @@
 
     .search-bar-div {
         width: 60%;
+    }
+
+    .search-bar-figure-cover {
+        min-width: 48px;
+        width: 8vw;
     }
 }
