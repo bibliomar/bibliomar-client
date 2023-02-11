@@ -5,13 +5,13 @@ import Skeleton from "react-loading-skeleton";
 import React from "react";
 import { Link } from "react-router-dom";
 import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
-import { getEmptyCover } from "./helpers/generalFunctions";
+import { getEmptyCover, resolveCoverUrl } from "./helpers/generalFunctions";
 
 interface Props {
     book: Book;
     cover: string | undefined;
     coverDone: boolean;
-    loadingClassName?: string;
+    loadingClassName?: string | undefined;
     href?: string;
     onClick?: React.MouseEventHandler;
 }
@@ -33,6 +33,22 @@ const chooseCurrentCoverComponent = (props: Props) => {
                 alt="Cover"
                 className="h-100 w-100"
                 onError={(e) => {
+                    const coverUrlParameter = props.book.coverUrl;
+                    if (coverUrlParameter) {
+                        const alternativeCover = resolveCoverUrl(
+                            true,
+                            props.book.topic,
+                            coverUrlParameter
+                        );
+                        if (
+                            alternativeCover != undefined &&
+                            e.currentTarget.src !== alternativeCover
+                        ) {
+                            e.currentTarget.src = alternativeCover;
+                            return;
+                        }
+                    }
+
                     e.currentTarget.src = noCoverUrl;
                 }}
             />

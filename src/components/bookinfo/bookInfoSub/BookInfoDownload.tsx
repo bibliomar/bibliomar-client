@@ -9,6 +9,7 @@ interface Props {
 
 export default function BookInfoDownload({ downloadLinks, error }: Props) {
     const { t } = useTranslation();
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <div className="d-flex flex-wrap justify-content-center">
             {downloadLinks ? (

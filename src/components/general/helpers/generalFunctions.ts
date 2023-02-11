@@ -177,22 +177,41 @@ export function getEmptyCover() {
     return "https://libgen.rocks/img/blank.png";
 }
 
-export function resolveCoverUrl(topic: string, coverUrl: string) {
-    if (topic === "fiction") {
-        return `${coverProviderUrl}/fictioncovers/${coverUrl}`;
+export function resolveCoverUrl(
+    alternative: boolean,
+    topic: string,
+    coverUrl: string
+) {
+    if (topic == undefined || coverUrl == undefined) {
+        return undefined;
+    }
+
+    let coverProvider = "";
+    if (alternative) {
+        if (alternativeCoverProviderUrl == undefined) {
+            return undefined;
+        }
+        coverProvider = alternativeCoverProviderUrl;
     } else {
-        return `${coverProviderUrl}/covers/${coverUrl}`;
+        if (coverProviderUrl == undefined) {
+            return undefined;
+        }
+        coverProvider = coverProviderUrl;
+    }
+
+    if (topic === "fiction") {
+        return `${coverProvider}/fictioncovers/${coverUrl}`;
+    } else {
+        return `${coverProvider}/covers/${coverUrl}`;
     }
 }
 
-// @ts-ignore
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
 
-// @ts-ignore
 export const manticoreUrl = import.meta.env.VITE_MANTICORE_URL as string;
-
-// @ts-ignore
-export const onProduction = import.meta.env.VITE_ON_PRODUCTION as string;
 
 export const coverProviderUrl = import.meta.env
     .VITE_COVER_PROVIDER_URL as string;
+
+export const alternativeCoverProviderUrl = import.meta.env
+    .VITE_ALTERNATIVE_COVER_PROVIDER_URL as string;

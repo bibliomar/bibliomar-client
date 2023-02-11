@@ -5,6 +5,7 @@ import {
     ManticoreSearchResponse,
     SearchRequestStatusOptions,
 } from "./searchTypes";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import manticore from "manticoresearch";
 import {
@@ -19,13 +20,13 @@ type UseSearchReturn = [
 ];
 
 function getManticoreSearchApi() {
-    let client = new manticore.ApiClient();
+    const client = new manticore.ApiClient();
     client.basePath = manticoreUrl;
     return new manticore.SearchApi(client);
 }
 
 function getBooksFromHits(hits: Book[]) {
-    let books: Book[] = [];
+    const books: Book[] = [];
     hits.forEach((hit: any) => {
         const hitSource = hit._source;
         if (hit && hitSource) {
@@ -61,7 +62,7 @@ function getBooksFromHits(hits: Book[]) {
 function normalizeResponse(
     response: ManticoreSearchResponse
 ): ManticoreSearchResponse {
-    let normalizedResponse: ManticoreSearchResponse = {
+    const normalizedResponse: ManticoreSearchResponse = {
         ...response,
     };
     if (
@@ -110,7 +111,6 @@ function cacheResponse(
  * @param searchObject The search object to be sent to Manticore Search
  */
 export default async function makeSearch(
-    topic: string,
     searchObject: object
 ): Promise<ManticoreSearchResponse | null> {
     // Check if the search results are already cached

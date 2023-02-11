@@ -25,9 +25,9 @@ import SearchStatistics from "./SearchStatistics";
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const buildURLParams = (formData: FormData) => {
-    let URLParameters = new URLSearchParams();
-    for (let [key, value] of formData) {
-        let valueStr = value.toString();
+    const URLParameters = new URLSearchParams();
+    for (const [key, value] of formData) {
+        const valueStr = value.toString();
         if (key !== "page") {
             URLParameters.append(key, valueStr);
         }
@@ -102,7 +102,7 @@ function buildSearchObject(
 
     finalQueryString = finalQueryString.trim();
 
-    let searchObject: any = {
+    const searchObject: any = {
         index: "libgen",
         query: {
             query_string: finalQueryString,
@@ -142,7 +142,7 @@ async function getSearchResults(
         limit
     );
     try {
-        const response = await makeSearch(topicContext, requestObject);
+        const response = await makeSearch(requestObject);
         if (response == null || response.hits == null) {
             return SearchRequestStatusOptions.CONNECTION_ERROR;
         } else if (
@@ -168,22 +168,25 @@ function Search() {
     // Query related states
     const initialRequestMade = useRef<boolean>(false);
     const [searchResults, setSearchResults] = useState<Book[]>([]);
-    let [requestStatus, setRequestStatus] = useState<
+    const [requestStatus, setRequestStatus] = useState<
         SearchRequestStatus | undefined
     >(undefined);
-    let [topicContext, setTopicContext] = useState("any");
-    let formRef = useRef<HTMLFormElement>(null);
-    let [searchParams, setSearchParameters] = useSearchParams();
-    let query = searchParams.get("q");
+    const [topicContext, setTopicContext] = useState("any");
+    const formRef = useRef<HTMLFormElement>(null);
+    const [searchParams, setSearchParameters] = useSearchParams();
+    const query = searchParams.get("q");
 
     // Paging related states and functions
     const itemsPerPage = 20;
-    const paginableItems = useRef<number>(0);
+    const pageableResults = useRef<number>(0);
     const totalItems = useRef<number>(0);
     const currentOffset = useRef<number>(0);
+    const visibleOffset =
+        currentOffset.current === 0 ? 1 : currentOffset.current;
+
     let visibleLimit = 0;
-    if (currentOffset.current + itemsPerPage > paginableItems.current) {
-        visibleLimit = paginableItems.current;
+    if (currentOffset.current + itemsPerPage > pageableResults.current) {
+        visibleLimit = pageableResults.current;
     } else {
         visibleLimit = currentOffset.current + itemsPerPage;
     }
@@ -197,7 +200,7 @@ function Search() {
         const currentPageNum = currentPageIndex + 1;
 
         const newOffset =
-            (currentPageIndex * itemsPerPage) % paginableItems.current;
+            (currentPageIndex * itemsPerPage) % pageableResults.current;
 
         currentOffset.current = newOffset;
 
@@ -209,7 +212,7 @@ function Search() {
             return;
         }
 
-        let submit = setTimeout(async () => {
+        const submit = setTimeout(async () => {
             if (query != null && query !== "") {
                 formRef.current!.dispatchEvent(
                     new Event("submit", { bubbles: true, cancelable: true })
@@ -219,7 +222,7 @@ function Search() {
         }, 200);
 
         return () => clearTimeout(submit);
-    }, []);
+    }, [searchParams]);
 
     const resetSearchState = (pagination: boolean) => {
         // Resets relevant values to their initial values
@@ -248,7 +251,7 @@ function Search() {
             return SearchRequestStatusOptions.BAD_QUERY;
         }
 
-        let request = await getSearchResults(
+        const request = await getSearchResults(
             topicContext,
             formData,
             currentOffset.current,
@@ -278,10 +281,10 @@ function Search() {
             totalItems.current = request.hits.total;
         }
 
-        paginableItems.current =
+        pageableResults.current =
             totalItems.current > 1000 ? 1000 : totalItems.current;
 
-        setPageCount(Math.ceil(paginableItems.current / itemsPerPage));
+        setPageCount(Math.ceil(pageableResults.current / itemsPerPage));
 
         resultsList = request.hits.hits;
 
@@ -435,8 +438,8 @@ function Search() {
                             disabled={searchResults.length === 0}
                             totalResults={totalItems.current}
                             tookTime={tookTime}
-                            paginableResults={paginableItems.current}
-                            offset={currentOffset.current}
+                            paginableResults={pageableResults.current}
+                            offset={visibleOffset}
                             limit={visibleLimit}
                         />
                         <Break />

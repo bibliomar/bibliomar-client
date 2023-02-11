@@ -12,7 +12,6 @@ type DownloadLinks = {
 
 interface AnyProperties {
     // Makes so that the Book type actually accepts any property with any value.
-    // Useful for creating new parameters when you don't know their names.
     [key: string]: any;
 }
 
@@ -59,7 +58,7 @@ interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
     extension?: string | null;
     fileSize?: number | null;
     formattedSize?: string | null;
-    coverURL?: string | null;
+    coverUrl?: string | null;
 }
 
 interface UserLibrary {

@@ -36,7 +36,7 @@ export default function SimpleBookFigure({
         } else {
             setOnSelectedBooks(false);
             selectedBooksContext.setSelectedBooks((prevSelected) => {
-                let newSelectedBooks = prevSelected;
+                const newSelectedBooks = prevSelected;
                 newSelectedBooks.forEach((selectedBook, index) => {
                     if (book.md5 === selectedBook.md5) {
                         newSelectedBooks.splice(index);

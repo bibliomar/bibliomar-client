@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { backendUrl, getEmptyCover, resolveCoverUrl } from "./generalFunctions";
-import { onProduction } from "./generalFunctions";
+import {
+    backendUrl,
+    coverProviderUrl,
+    getEmptyCover,
+    resolveCoverUrl,
+} from "./generalFunctions";
 import { Book } from "./generalTypes";
 
 // Async handles book cover recovery.
@@ -19,21 +23,17 @@ export default function useCover(
 
         coverTimeout = window.setTimeout(
             async () => {
-                let cover: string | undefined;
-                if (
-                    onProduction != null &&
-                    onProduction === "yes" &&
-                    book.coverURL != null
-                ) {
-                    cover = resolveCoverUrl(book.topic, book.coverURL);
+                let cover: string | undefined = undefined;
+                if (coverProviderUrl != null && book.coverUrl != null) {
+                    cover = resolveCoverUrl(false, book.topic, book.coverUrl);
+                }
+
+                if (cover != undefined && cover !== noCoverUrl) {
                     setCover(cover);
-                    setCoverDone(true);
                 } else {
-                    cover = noCoverUrl;
+                    setCover(noCoverUrl);
                 }
-                if (cover != null && !cover.includes("blank")) {
-                    setCover(cover);
-                }
+
                 setCoverDone(true);
             },
             timeout ? timeout : 1000

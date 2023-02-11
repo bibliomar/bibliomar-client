@@ -1,3 +1,4 @@
+/*noinspection CssUnknownTarget*/
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
 body {
@@ -34,6 +35,7 @@ abbr[title]:after {
 }
 
 .library-add-button {
+    /*noinspection CssUnknownTarget*/
     background: url("/assets/img/button-ellipse.svg") no-repeat;
     background-size: contain;
     width: 15%;
@@ -95,6 +97,7 @@ abbr[title]:after {
     /*noinspection CssUnknownTarget*/
     position: relative;
     bottom: 0;
+    /*noinspection CssUnknownTarget*/
     background: url("/assets/img/newBGLight.png") no-repeat fixed center center;
     background-size: cover;
 }

@@ -28,10 +28,13 @@ export interface BookInfoSubProps {
 export default function BookInfoScreen() {
     const params = useParams();
     const md5 = params.md5!;
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const size: Size = useWindowSize();
     let topicContext: string | undefined = useOutletContext();
+    if (topicContext == "scitech") {
+        topicContext = "sci-tech";
+    }
     const [bookInfo, setBookInfo] = useMetadata(md5, topicContext);
     const [downloadLinks, downloadLinksError] = useDownloadLinks(
         md5,

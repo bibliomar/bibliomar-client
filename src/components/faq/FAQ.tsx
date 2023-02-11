@@ -8,13 +8,12 @@ import { Trans, useTranslation } from "react-i18next";
 export default function FAQ() {
     const { t } = useTranslation();
     const [searchParams, _] = useSearchParams();
-    let refParam: string | null = searchParams.get("ref");
+    const refParam: string | null = searchParams.get("ref");
     let ref: number | undefined = undefined;
     if (refParam) {
         ref = parseInt(refParam);
     }
 
-    // noinspection AllyJsxHardcodedStringInspection
     return (
         <div className="like-body bg-alt">
             <div className="container-fluid">
