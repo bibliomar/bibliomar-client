@@ -21,6 +21,7 @@ import SearchMessageScreen from "./loading/SearchMessageScreen";
 import SearchPagination from "./SearchPagination";
 import Break from "../general/Break";
 import SearchStatistics from "./SearchStatistics";
+import { buildSearchObjectFromForm } from "../general/helpers/generalFunctions";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -35,7 +36,7 @@ const buildURLParams = (formData: FormData) => {
     return URLParameters;
 };
 
-function buildSearchObject(
+function oldbuildSearchObject(
     formData: FormData,
     topicContext: string,
     offset?: number,
@@ -130,12 +131,12 @@ function buildSearchObject(
 }
 
 async function getSearchResults(
-    topicContext: string,
     formData: FormData,
+    topicContext: string,
     offset?: number,
     limit?: number
 ): Promise<ManticoreSearchResponse | SearchRequestStatusOptions> {
-    const requestObject = buildSearchObject(
+    const requestObject = buildSearchObjectFromForm(
         formData,
         topicContext,
         offset,
@@ -252,8 +253,8 @@ function Search() {
         }
 
         const request = await getSearchResults(
-            topicContext,
             formData,
+            topicContext,
             currentOffset.current,
             currentOffset.current + itemsPerPage
         );
@@ -427,6 +428,7 @@ function Search() {
                     <SearchBar
                         setOptionsHidden={setOptionsHidden}
                         topicContext={topicContext}
+                        formRef={formRef!}
                     />
                 </form>
 

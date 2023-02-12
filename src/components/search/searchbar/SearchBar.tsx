@@ -1,10 +1,20 @@
 import { MDBInput } from "mdb-react-ui-kit";
-import { useSearchParams } from "react-router-dom";
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import React, {
+    MutableRefObject,
+    RefObject,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import axios from "axios";
 import Fuse from "fuse.js";
 import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
-import { backendUrl } from "../../general/helpers/generalFunctions";
+import {
+    backendUrl,
+    getBookInfoPath,
+} from "../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
 import { Book } from "../../general/helpers/generalTypes";
 import makeSearch from "../helpers/makeSearch";
@@ -15,48 +25,19 @@ import { useToggle } from "../../general/helpers/useToggle";
 import { Option } from "react-bootstrap-typeahead/types/types";
 import SearchBarInput from "./SearchBarInput";
 import SearchBarFigure from "./SearchBarFigure";
-
-type IndexesResponse = {
-    indexes: string[];
-};
+import { buildSearchObjectFromForm } from "../../general/helpers/generalFunctions";
 
 interface Props {
     topicContext: string;
     setOptionsHidden: React.Dispatch<SetStateAction<boolean>>;
-}
-
-function buildAutocompleteSearchObject(
-    topicContext: string,
-    query: string
-): object {
-    // Important: Infixing must be enabled in manticore indexes for this to work:
-    // https://manual.manticoresearch.com/Creating_a_table/NLP_and_tokenization/Wildcard_searching_settings#min_infix_len
-    let finalQueryString = `@title ${query}* `;
-
-    if (topicContext !== "any") {
-        finalQueryString += `@topic ${topicContext}`;
-    }
-
-    finalQueryString = finalQueryString.trim();
-
-    const searchObject = {
-        index: "libgen",
-        query: {
-            query_string: finalQueryString,
-        },
-        limit: 5,
-        max_matches: 10,
-    };
-
-    return searchObject;
+    // formRef inherited from Search component, to be used in buildSearchObject.
+    formRef: RefObject<HTMLFormElement>;
 }
 
 async function getAutocomplete(
-    topicContext: string,
-    query: string
+    searchObject: object
 ): Promise<ManticoreSearchResponse | null> {
     try {
-        const searchObject = buildAutocompleteSearchObject(topicContext, query);
         const response = await makeSearch(searchObject);
         return response;
     } catch (e: unknown) {
@@ -66,7 +47,12 @@ async function getAutocomplete(
     }
 }
 
-export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
+export default function SearchBar({
+    topicContext,
+    setOptionsHidden,
+    formRef,
+}: Props) {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const width = useWindowSize().width;
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,21 +68,32 @@ export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
         }
     }, [searchParameters]);
 
-    async function handleSearch(query: string) {
+    async function handleSearch() {
         setIsLoading(true);
-
-        const indexes = await getAutocomplete(topicContext, query);
-        if (indexes != null) {
-            if (
-                indexes.hits &&
-                indexes.hits.hits &&
-                indexes.hits.hits.length > 0
-            ) {
-                console.log(indexes.hits.hits);
-                setIndexes(indexes.hits.hits);
-            }
+        if (formRef.current == null) {
+            console.error("formRef.current is null at search bar");
+            return;
         }
 
+        const formData = new FormData(formRef.current);
+        const searchObject = buildSearchObjectFromForm(
+            formData,
+            topicContext,
+            0,
+            5
+        );
+
+        const response = await getAutocomplete(searchObject);
+        if (response != null) {
+            if (
+                response.hits &&
+                response.hits.hits &&
+                response.hits.hits.length > 0
+            ) {
+                console.log(response.hits.hits);
+                setIndexes(response.hits.hits);
+            }
+        }
         setIsLoading(false);
     }
 
@@ -116,7 +113,7 @@ export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
                     }}
                     renderMenuItemChildren={(option, props, index) => {
                         const book = option as Book;
-                        const timeout = index === 0 ? 250 : index * 250;
+                        const timeout = index === 0 ? 500 : index * 500;
                         return (
                             <SearchBarFigure
                                 text={props.text}
@@ -131,15 +128,33 @@ export default function SearchBar({ topicContext, setOptionsHidden }: Props) {
                         if (selected.length > 0) {
                             const book = selected[0] as Book;
                             queryRef.current = book.title;
+                            const bookHref = getBookInfoPath(
+                                book.topic,
+                                book.md5
+                            );
+                            console.log("Selected!");
+                            if (bookHref) {
+                                navigate(bookHref);
+                            }
                         }
                         setSelected(selected);
                     }}
-                    minLength={3}
+                    filterBy={() => {
+                        /**
+                         * VERY IMPORTANT: Filtering and searching is already done by manticore.
+                         * If this is not set to true,
+                         * Typeahead will try to filter the returned results, ignoring
+                         * some of them.
+                         */
+                        return true;
+                    }}
+                    minLength={5}
                     selected={selected}
                     className="search-input"
                     options={indexes}
                     labelKey="title"
                     useCache={false}
+                    maxResults={5}
                 ></AsyncTypeahead>
             </div>
 

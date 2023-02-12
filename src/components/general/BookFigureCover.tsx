@@ -13,6 +13,7 @@ interface Props {
     coverDone: boolean;
     loadingClassName?: string | undefined;
     href?: string;
+    mask?: boolean;
     onClick?: React.MouseEventHandler;
 }
 
@@ -64,15 +65,17 @@ const showCoverMaskUrl = (props: Props) => {
     if (props.href) {
         return (
             <Link to={props.href} onClick={props.onClick}>
-                <div
-                    className={"mask"}
-                    style={{
-                        backgroundColor: props.coverDone
-                            ? "rgba(0,0,0,0.1)"
-                            : undefined,
-                        zIndex: "100",
-                    }}
-                />
+                {props.mask || props.mask == undefined ? (
+                    <div
+                        className={"mask"}
+                        style={{
+                            backgroundColor: props.coverDone
+                                ? "rgba(0,0,0,0.1)"
+                                : undefined,
+                            zIndex: "100",
+                        }}
+                    />
+                ) : null}
             </Link>
         );
     }
