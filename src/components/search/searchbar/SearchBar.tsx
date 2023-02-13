@@ -18,20 +18,25 @@ import {
 import { useTranslation } from "react-i18next";
 import { Book } from "../../general/helpers/generalTypes";
 import makeSearch from "../helpers/makeSearch";
-import { ManticoreSearchResponse } from "../helpers/searchTypes";
+import {
+    ManticoreSearchResponse,
+    SearchFormFields,
+} from "../helpers/searchTypes";
 import { AsyncTypeahead, Highlighter, Hint } from "react-bootstrap-typeahead";
 import Typeahead from "react-bootstrap-typeahead/types/core/Typeahead";
 import { useToggle } from "../../general/helpers/useToggle";
 import { Option } from "react-bootstrap-typeahead/types/types";
 import SearchBarInput from "./SearchBarInput";
 import SearchBarFigure from "./SearchBarFigure";
-import { buildSearchObjectFromForm } from "../../general/helpers/generalFunctions";
+import { buildSearchObject } from "../../general/helpers/generalFunctions";
+import SearchBarItemExpanded from "./SearchBarItemExpanded";
+import SearchBarItemSimple from "./SearchBarItemSimple";
+import { FormikConfig, FormikProps, useField } from "formik";
 
 interface Props {
     topicContext: string;
     setOptionsHidden: React.Dispatch<SetStateAction<boolean>>;
-    // formRef inherited from Search component, to be used in buildSearchObject.
-    formRef: RefObject<HTMLFormElement>;
+    formik: FormikProps<SearchFormFields>;
 }
 
 async function getAutocomplete(
@@ -50,38 +55,21 @@ async function getAutocomplete(
 export default function SearchBar({
     topicContext,
     setOptionsHidden,
-    formRef,
+    formik,
 }: Props) {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const width = useWindowSize().width;
+    const { width } = useWindowSize();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selected, setSelected] = useState<Option[]>([]);
-    const queryRef = useRef<string>("");
-    const [searchParameters, _] = useSearchParams();
     const [indexes, setIndexes] = useState<Option[]>([]);
+    // Necessary because formik's setFieldValue is async, and messes with react-bootstrap-typeahead's.
+    const internalQueryTracker = useRef<string>(formik.values.q);
 
-    useEffect(() => {
-        const q = searchParameters.get("q");
-        if (q != null && q.length >= 3) {
-            queryRef.current = q;
-        }
-    }, [searchParameters]);
-
-    async function handleSearch() {
+    async function handleSearch(query: string) {
         setIsLoading(true);
-        if (formRef.current == null) {
-            console.error("formRef.current is null at search bar");
-            return;
-        }
-
-        const formData = new FormData(formRef.current);
-        const searchObject = buildSearchObjectFromForm(
-            formData,
-            topicContext,
-            0,
-            5
-        );
+        console.log("handleSearch", query);
+        const searchObject = buildSearchObject(formik.values, 0, 5);
 
         const response = await getAutocomplete(searchObject);
         if (response != null) {
@@ -101,39 +89,45 @@ export default function SearchBar({
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
             <div className="searchfield">
                 <AsyncTypeahead
-                    id="searchbar"
+                    /*
+                    Very important: Do not put anything async-related inside this component's
+                    onInput. It will cause the component to break.
+                     */
+                    id="search-bar"
                     renderInput={(inputProps) => {
                         return (
                             <SearchBarInput
                                 inputProps={inputProps}
-                                queryRef={queryRef}
                                 setOptionsHidden={setOptionsHidden}
+                                formik={formik}
                             />
                         );
                     }}
                     renderMenuItemChildren={(option, props, index) => {
                         const book = option as Book;
-                        const timeout = index === 0 ? 500 : index * 500;
-                        return (
-                            <SearchBarFigure
-                                text={props.text}
-                                book={book}
-                                timeout={timeout}
-                            />
-                        );
+                        if (width < 768) {
+                            return <SearchBarItemExpanded book={book} />;
+                        } else {
+                            const timeout = index === 0 ? 500 : index * 500;
+                            return (
+                                <SearchBarFigure
+                                    book={book}
+                                    timeout={timeout}
+                                />
+                            );
+                        }
                     }}
                     isLoading={isLoading}
                     onSearch={handleSearch}
                     onChange={(selected) => {
                         if (selected.length > 0) {
                             const book = selected[0] as Book;
-                            queryRef.current = book.title;
+                            formik.setFieldValue("q", book.title);
                             const bookHref = getBookInfoPath(
                                 book.topic,
                                 book.md5
                             );
-                            console.log("Selected!");
-                            if (bookHref) {
+                            if (bookHref != null) {
                                 navigate(bookHref);
                             }
                         }
@@ -155,7 +149,7 @@ export default function SearchBar({
                     labelKey="title"
                     useCache={false}
                     maxResults={5}
-                ></AsyncTypeahead>
+                />
             </div>
 
             <button type="submit" className="btn btn-primary search-button">

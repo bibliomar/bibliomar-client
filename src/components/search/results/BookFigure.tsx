@@ -13,6 +13,7 @@ import {
     SearchRequestType,
 } from "../helpers/searchTypes";
 import { useTranslation } from "react-i18next";
+import { formatBytes } from "../../general/helpers/generalFunctions";
 
 interface Props {
     book: Book;
@@ -22,6 +23,12 @@ interface Props {
 export default function BookFigure({ book, timeout }: Props) {
     const { t } = useTranslation();
     const [cover, coverDone] = useCover(book, timeout);
+    const extension = book.extension
+        ? book.extension.toUpperCase()
+        : t("search:formatoIndefinido");
+    const size = book.fileSize
+        ? formatBytes(book.fileSize)
+        : t("search:tamanhoIndefinido");
 
     const href = `/book/${book.topic}/${book.md5}`;
 
@@ -59,9 +66,7 @@ export default function BookFigure({ book, timeout }: Props) {
                     <Break />
                     <p className="mx-2 mb-2">
                         <strong>{t("figure:file")}</strong>
-                        {book.extension
-                            ? book.extension.toUpperCase()
-                            : null}, {book.formattedSize}
+                        {extension}, {size}
                     </p>
                     <Break />
                 </div>

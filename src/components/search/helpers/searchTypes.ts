@@ -1,4 +1,14 @@
 import { Book } from "../../general/helpers/generalTypes";
+import { UseFormReturn } from "react-hook-form";
+
+interface SearchFormFields {
+    q: string;
+    type: string;
+    format: string;
+    language: string;
+    topic: string;
+    fulltext: boolean;
+}
 
 enum SearchRequestType {
     SEARCH,
@@ -37,6 +47,7 @@ interface SearchRequestStatus {
 export { SearchRequestType, SearchRequestStatusOptions };
 
 export type {
+    SearchFormFields,
     SearchRequestStatus,
     ManticoreSearchResponse,
     ManticoreSearchHits,

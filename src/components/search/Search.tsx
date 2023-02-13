@@ -11,6 +11,7 @@ import RecommendationScreen from "./recommendations/RecommendationScreen";
 import Footer from "../general/Footer";
 import {
     ManticoreSearchResponse,
+    SearchFormFields,
     SearchRequestStatus,
     SearchRequestStatusOptions,
     SearchRequestType,
@@ -21,13 +22,14 @@ import SearchMessageScreen from "./loading/SearchMessageScreen";
 import SearchPagination from "./SearchPagination";
 import Break from "../general/Break";
 import SearchStatistics from "./SearchStatistics";
-import { buildSearchObjectFromForm } from "../general/helpers/generalFunctions";
+import { buildSearchObject } from "../general/helpers/generalFunctions";
+import { useFormik } from "formik";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const buildURLParams = (formData: FormData) => {
+const buildURLParams = (values: SearchFormFields) => {
     const URLParameters = new URLSearchParams();
-    for (const [key, value] of formData) {
+    for (const [key, value] of Object.entries(values)) {
         const valueStr = value.toString();
         if (key !== "page") {
             URLParameters.append(key, valueStr);
@@ -36,112 +38,14 @@ const buildURLParams = (formData: FormData) => {
     return URLParameters;
 };
 
-function oldbuildSearchObject(
-    formData: FormData,
-    topicContext: string,
-    offset?: number,
-    limit?: number
-): Promise<object> {
-    const type = formData.get("type");
-    const query = formData.get("q");
-    const format = formData.get("format");
-    const language = formData.get("language");
-    const fulltext = formData.get("fulltext");
-
-    // PS: Field order is VERY important here.
-    // The user query should be at the start of the string, and everything else at the end.
-    let finalQueryString = "";
-
-    if (type != null) {
-        switch (type) {
-            case "title":
-                if (finalQueryString.includes("@title")) {
-                    finalQueryString.replace("@title", `@title ${query}`);
-                } else {
-                    finalQueryString += `@title ${query} `;
-                }
-                break;
-            case "author":
-                if (finalQueryString.includes("@author")) {
-                    finalQueryString.replace("@author", `@author ${query}`);
-                } else {
-                    finalQueryString += `@author ${query} `;
-                }
-                break;
-            case "any":
-                finalQueryString += `${query} `;
-                break;
-        }
-    }
-
-    if (format != null && format !== "any") {
-        if (finalQueryString.includes("@extension")) {
-            finalQueryString.replace("@extension", `@extension ${format} `);
-        } else {
-            finalQueryString += `@extension ${format} `;
-        }
-    }
-    if (language != null && language !== "any") {
-        if (finalQueryString.includes("@language")) {
-            finalQueryString.replace("@language", `@language ${language} `);
-        } else {
-            finalQueryString += `@language ${language} `;
-        }
-    }
-
-    if (topicContext === "fiction") {
-        finalQueryString += "@topic fiction ";
-    } else if (topicContext === "scitech") {
-        finalQueryString += "@topic scitech ";
-    }
-
-    if (fulltext != null && query) {
-        if (typeof query === "string") {
-            finalQueryString = query;
-        }
-    }
-
-    finalQueryString = finalQueryString.trim();
-
-    const searchObject: any = {
-        index: "libgen",
-        query: {
-            query_string: finalQueryString,
-        },
-    };
-
-    if (offset != null) {
-        searchObject.offset = offset;
-    } else {
-        searchObject.offset = 0;
-    }
-
-    if (limit != null) {
-        searchObject.limit = limit;
-    } else {
-        searchObject.limit = 500;
-    }
-
-    if (limit != null && offset != null) {
-        const maxMatches = offset + limit > 1000 ? 1000 : offset + limit;
-        searchObject.max_matches = maxMatches;
-    }
-
-    return searchObject;
-}
-
 async function getSearchResults(
-    formData: FormData,
+    values: SearchFormFields,
     topicContext: string,
     offset?: number,
     limit?: number
 ): Promise<ManticoreSearchResponse | SearchRequestStatusOptions> {
-    const requestObject = buildSearchObjectFromForm(
-        formData,
-        topicContext,
-        offset,
-        limit
-    );
+    const requestObject = buildSearchObject(values, offset, limit);
+
     try {
         const response = await makeSearch(requestObject);
         if (response == null || response.hits == null) {
@@ -175,7 +79,6 @@ function Search() {
     const [topicContext, setTopicContext] = useState("any");
     const formRef = useRef<HTMLFormElement>(null);
     const [searchParams, setSearchParameters] = useSearchParams();
-    const query = searchParams.get("q");
 
     // Paging related states and functions
     const itemsPerPage = 20;
@@ -195,6 +98,57 @@ function Search() {
 
     const [pageCount, setPageCount] = useState<number>(0);
 
+    // Formik
+    const formik = useFormik<SearchFormFields>({
+        initialValues: {
+            q: "",
+            topic: "any",
+            type: "any",
+            format: "any",
+            language: "any",
+            fulltext: false,
+        },
+        validate: (values) => {
+            const errors: Partial<typeof values> = {};
+            if (!values.q) {
+                errors.q = "Required";
+            } else if (values.q.length > 100) {
+                errors.q = "Must be 100 characters or less";
+            } else if (values.q.length < 3) {
+                errors.q = "Must be 3 characters or more";
+            }
+            return errors;
+        },
+
+        onSubmit: async (values) => {
+            await makeSearchRequest(values);
+        },
+    });
+
+    useEffect(() => {
+        const queryOnParams = searchParams.get("q");
+
+        if (initialRequestMade.current) {
+            return;
+        }
+
+        const submit = setTimeout(async () => {
+            if (
+                queryOnParams != null &&
+                queryOnParams !== "" &&
+                queryOnParams.length > 3
+            ) {
+                await formik.setFieldValue("q", queryOnParams);
+                formRef.current?.dispatchEvent(
+                    new Event("submit", { bubbles: true, cancelable: true })
+                );
+            }
+            // 500ms gives enough time for everything to render.
+        }, 1500);
+
+        return () => clearTimeout(submit);
+    }, [searchParams]);
+
     const handlePaginationClick = async (evt: any) => {
         // Current page in index format (starts at 0)
         const currentPageIndex = evt.selected;
@@ -205,25 +159,8 @@ function Search() {
 
         currentOffset.current = newOffset;
 
-        await makePaginationRequest();
+        await makePaginationRequest(formik.values);
     };
-
-    useEffect(() => {
-        if (initialRequestMade.current) {
-            return;
-        }
-
-        const submit = setTimeout(async () => {
-            if (query != null && query !== "") {
-                formRef.current!.dispatchEvent(
-                    new Event("submit", { bubbles: true, cancelable: true })
-                );
-            }
-            // 500ms gives enough time for everything to render.
-        }, 1500);
-
-        return () => clearTimeout(submit);
-    }, [searchParams]);
 
     const resetSearchState = (pagination: boolean) => {
         // Resets relevant values to their initial values
@@ -240,20 +177,18 @@ function Search() {
     // Organizes the API request, setups and retrieves results from cache.
     // This will use the currentOffset and itemsPerPage variables to determine the offset to use.
     const requestOrganizer = async (
-        formData: FormData
+        values: SearchFormFields
     ): Promise<SearchRequestStatusOptions | undefined> => {
         // Appends the current page to the formData object.
         let resultsList: Book[] = [];
-        const q = formData.get("q");
+        const q = values.q;
 
-        if (q == null) {
-            return SearchRequestStatusOptions.BAD_QUERY;
-        } else if (typeof q === "string" && q.trim().length < 3) {
+        if (q == null || q.trim().length < 3) {
             return SearchRequestStatusOptions.BAD_QUERY;
         }
 
         const request = await getSearchResults(
-            formData,
+            values,
             topicContext,
             currentOffset.current,
             currentOffset.current + itemsPerPage
@@ -297,12 +232,11 @@ function Search() {
         }
     };
 
-    const makeSearchRequest = async () => {
+    const makeSearchRequest = async (values: SearchFormFields) => {
         resetSearchState(false);
         initialRequestMade.current = true;
         const requestType = SearchRequestType.SEARCH;
-        const formData = new FormData(formRef.current!);
-        const URLParameters = buildURLParams(formData);
+        const URLParameters = buildURLParams(values);
         setSearchParameters(URLParameters, { replace: false });
 
         setRequestStatus({
@@ -312,7 +246,7 @@ function Search() {
 
         // The function responsible for setting states and making the actual request.
         // Returns enum value (number) if the request fails.
-        const searchRequest = await requestOrganizer(formData);
+        const searchRequest = await requestOrganizer(values);
         if (searchRequest != null && typeof searchRequest === "number") {
             setRequestStatus({
                 type: requestType,
@@ -376,17 +310,16 @@ function Search() {
         });
     };
 
-    const makePaginationRequest = async () => {
+    const makePaginationRequest = async (values: SearchFormFields) => {
         resetSearchState(true);
         const requestType = SearchRequestType.PAGINATION;
-        const formData = new FormData(formRef.current!);
-        const URLParameters = buildURLParams(formData);
+        const URLParameters = buildURLParams(values);
         setSearchParameters(URLParameters, { replace: false });
         setRequestStatus({
             type: requestType,
             status: SearchRequestStatusOptions.SENDING,
         });
-        const searchRequest = await requestOrganizer(formData);
+        const searchRequest = await requestOrganizer(values);
 
         if (Array.isArray(searchRequest)) {
             setSearchResults(searchRequest);
@@ -412,23 +345,18 @@ function Search() {
 
                 <Bibliologo />
                 <Greeting />
-                <form
-                    ref={formRef}
-                    onSubmit={async (evt) => {
-                        evt.preventDefault();
-                        await makeSearchRequest();
-                    }}
-                >
+                <form ref={formRef} onSubmit={formik.handleSubmit}>
                     <SearchOptions
                         hidden={optionsHidden}
                         topicContext={topicContext}
                         setTopicContext={setTopicContext}
                         setPageNumber={setPageCount}
+                        formik={formik}
                     />
                     <SearchBar
                         setOptionsHidden={setOptionsHidden}
                         topicContext={topicContext}
-                        formRef={formRef!}
+                        formik={formik}
                     />
                 </form>
 

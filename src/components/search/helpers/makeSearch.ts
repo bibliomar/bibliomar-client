@@ -40,18 +40,6 @@ function getBooksFromHits(hits: Book[]) {
                 coverUrl: hitSource.coverurl,
                 fileSize: hitSource.filesize,
             };
-
-            if (book.coverURL != null && book.coverURL.trim() === "") {
-                book.coverURL = null;
-            }
-
-            if (book.fileSize != null) {
-                try {
-                    book.formattedSize = formatBytes(book.fileSize);
-                } catch (e: unknown) {
-                    console.log(e);
-                }
-            }
             books.push(book);
         }
     });

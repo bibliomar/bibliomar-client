@@ -9,11 +9,14 @@ import {
     MDBTooltip,
 } from "mdb-react-ui-kit";
 import { Trans, useTranslation } from "react-i18next";
+import { FormikConfig, FormikProps } from "formik";
+import { SearchFormFields } from "./helpers/searchTypes";
 
 interface SearchOptionsProps {
     topicContext: string;
     setTopicContext: Dispatch<SetStateAction<string>>;
     setPageNumber: Dispatch<SetStateAction<number>>;
+    formik: FormikProps<SearchFormFields>;
     hidden: boolean;
 }
 
@@ -24,6 +27,7 @@ function SearchOptions({
     setTopicContext,
     setPageNumber,
     hidden,
+    formik,
 }: SearchOptionsProps) {
     const { t } = useTranslation();
     let [searchParams, setSearchParams] = useSearchParams();
@@ -88,14 +92,12 @@ function SearchOptions({
                                 value="any"
                                 className="form-check-input"
                                 name="topic"
-                                id="searchcatany"
-                                checked={topicContext === "any"}
-                                onChange={() => {
-                                    setTopicContext("any");
-                                }}
-                                disabled={fulltextOn}
+                                id="topicAny"
+                                checked={formik.values.topic === "any"}
+                                onChange={formik.handleChange}
+                                disabled={formik.values.fulltext}
                             />
-                            <label htmlFor="searchcatany" className="mb-1">
+                            <label htmlFor="topicAny" className="mb-1">
                                 <Trans
                                     ns="search"
                                     i18nKey="todas"
@@ -111,17 +113,12 @@ function SearchOptions({
                                 value="scitech"
                                 className="form-check-input"
                                 name="topic"
-                                id="searchcatnonfiction"
-                                checked={topicContext === "scitech"}
-                                onChange={() => {
-                                    setTopicContext("scitech");
-                                }}
+                                id="topicAny"
+                                checked={formik.values.topic === "scitech"}
+                                onChange={formik.handleChange}
                                 disabled={fulltextOn}
                             />
-                            <label
-                                htmlFor="searchcatnonfiction"
-                                className="mb-1"
-                            >
+                            <label htmlFor="topicAny" className="mb-1">
                                 {t("search:nonfiction")}
                             </label>
                         </div>
@@ -131,14 +128,12 @@ function SearchOptions({
                                 value="fiction"
                                 className="form-check-input"
                                 name="topic"
-                                id="searchcatfiction"
-                                checked={topicContext === "fiction"}
-                                onChange={() => {
-                                    setTopicContext("fiction");
-                                }}
+                                id="topicFiction"
+                                checked={formik.values.topic === "fiction"}
+                                onChange={formik.handleChange}
                                 disabled={fulltextOn}
                             />
-                            <label htmlFor="searchcatfiction " className="mb-1">
+                            <label htmlFor="topicFiction " className="mb-1">
                                 {t("search:fiction")}
                             </label>
                         </div>
@@ -157,11 +152,9 @@ function SearchOptions({
                                 className="form-check-input"
                                 name="type"
                                 id="searchbyany"
-                                checked={type === "any"}
-                                onChange={() => {
-                                    setType("any");
-                                }}
-                                disabled={fulltextOn}
+                                checked={formik.values.type === "any"}
+                                onChange={formik.handleChange}
+                                disabled={formik.values.fulltext}
                             />
                             <label htmlFor="searchbytitle" className="mb-1">
                                 {t("search:todos2")}
@@ -174,11 +167,9 @@ function SearchOptions({
                                 className="form-check-input"
                                 name="type"
                                 id="searchbytitle"
-                                checked={type === "title"}
-                                onChange={() => {
-                                    setType("title");
-                                }}
-                                disabled={fulltextOn}
+                                checked={formik.values.type === "title"}
+                                onChange={formik.handleChange}
+                                disabled={formik.values.fulltext}
                             />
                             <label htmlFor="searchbytitle" className="mb-1">
                                 {t("search:title")}
@@ -191,11 +182,9 @@ function SearchOptions({
                                 className="form-check-input"
                                 name="type"
                                 id="searchbyauthorinput"
-                                checked={type === "author"}
-                                onChange={() => {
-                                    setType("author");
-                                }}
-                                disabled={fulltextOn}
+                                checked={formik.values.type === "author"}
+                                onChange={formik.handleChange}
+                                disabled={formik.values.fulltext}
                             />
                             <label
                                 id="searchbyauthorlabel"
@@ -212,12 +201,12 @@ function SearchOptions({
                 <div className="col-lg-2 col-5">
                     <label htmlFor="format">{t("search:formato")}</label>
                     <select
-                        value={formatSelect}
-                        onChange={(e) => setFormatSelect(e.target.value)}
+                        value={formik.values.format}
+                        onChange={formik.handleChange}
                         className="form-control form-select"
                         name="format"
                         id="format"
-                        disabled={fulltextOn}
+                        disabled={formik.values.fulltext}
                     >
                         <option className="text-dark" value="any">
                             {t("search:todos2")}
@@ -240,12 +229,12 @@ function SearchOptions({
                     </label>
 
                     <select
-                        value={languageSelect}
-                        onChange={(e) => setLanguageSelect(e.target.value)}
+                        value={formik.values.language}
+                        onChange={formik.handleChange}
                         className="form-control form-select"
                         name="language"
                         id="searchlang"
-                        disabled={fulltextOn}
+                        disabled={formik.values.fulltext}
                     >
                         <option value="any">{t("search:qualquer")}</option>
                         <option value="portuguese">
@@ -259,10 +248,8 @@ function SearchOptions({
                 <div className="mt-1 d-flex justify-content-center">
                     <MDBSwitch
                         name="fulltext"
-                        checked={fulltextOn}
-                        onChange={() => {
-                            setFulltextOn(!fulltextOn);
-                        }}
+                        checked={formik.values.fulltext}
+                        onChange={formik.handleChange}
                         label={t("search:enableFulltext")}
                     />
                 </div>

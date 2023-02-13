@@ -4,15 +4,17 @@ import { Book } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
 import Break from "../../general/Break";
-import { getBookInfoPath } from "../../general/helpers/generalFunctions";
+import {
+    formatBytes,
+    getBookInfoPath,
+} from "../../general/helpers/generalFunctions";
 
 interface Props {
-    text: string;
     book: Book;
     timeout?: number;
 }
 
-export default function SearchBarFigure({ text, book, timeout }: Props) {
+export default function SearchBarFigure({ book, timeout }: Props) {
     const [cover, coverDone] = useCover(book, timeout);
     const bookHref = getBookInfoPath(book.topic, book.md5);
     let uppercaseAuthor = "";
@@ -22,6 +24,10 @@ export default function SearchBarFigure({ text, book, timeout }: Props) {
             book.author.length
         )}`;
     }
+    const extension = book.extension ? book.extension.toUpperCase() : null;
+    const size = book.fileSize ? formatBytes(book.fileSize) : null;
+    const extensionAndFormat =
+        extension && size ? `${extension}, ${size}` : null;
     return (
         <div className="d-flex flex-nowrap">
             <div
@@ -48,7 +54,7 @@ export default function SearchBarFigure({ text, book, timeout }: Props) {
                     <span style={{ fontSize: "0.9em" }}>{uppercaseAuthor}</span>
                     <Break />
                     <span style={{ fontSize: "0.9em" }}>
-                        {book.extension?.toUpperCase()}
+                        {extensionAndFormat}
                     </span>
                 </div>
             </div>

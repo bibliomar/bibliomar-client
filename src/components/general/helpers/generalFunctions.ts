@@ -3,6 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import axios from "axios";
 import localforage from "localforage";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
+import { SearchFormFields } from "../../search/helpers/searchTypes";
 
 export const hasStorage = (storage: Storage): boolean => {
     const testItem = "_bibliomar_storage_test";
@@ -222,17 +223,17 @@ export function getBookInfoPath(topic: string, md5: string) {
     return undefined;
 }
 
-export function buildSearchObjectFromForm(
-    formData: FormData,
-    topicContext: string,
+export function buildSearchObject(
+    values: SearchFormFields,
     offset?: number | undefined,
     limit?: number | undefined
 ): object {
-    const type = formData.get("type");
-    const query = formData.get("q");
-    const format = formData.get("format");
-    const language = formData.get("language");
-    const fulltext = formData.get("fulltext");
+    const topic = values.topic;
+    const type = values.type;
+    const query = values.q;
+    const format = values.format;
+    const language = values.language;
+    const fulltext = values.fulltext;
 
     // PS: Field order is VERY important here.
     // The user query should be at the start of the string, and everything else at the end.
@@ -275,16 +276,14 @@ export function buildSearchObjectFromForm(
         }
     }
 
-    if (topicContext === "fiction") {
+    if (topic === "fiction") {
         finalQueryString += "@topic fiction ";
-    } else if (topicContext === "scitech") {
+    } else if (topic === "scitech") {
         finalQueryString += "@topic scitech ";
     }
 
     if (fulltext != null && query) {
-        if (typeof query === "string") {
-            finalQueryString = query;
-        }
+        finalQueryString = query;
     }
 
     finalQueryString = finalQueryString.trim();

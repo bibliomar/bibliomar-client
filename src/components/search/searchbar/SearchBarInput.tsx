@@ -1,58 +1,79 @@
 import { MDBInput } from "mdb-react-ui-kit";
 import { Hint } from "react-bootstrap-typeahead";
-import React, { SetStateAction } from "react";
+import React, {
+    MutableRefObject,
+    RefObject,
+    SetStateAction,
+    useRef,
+} from "react";
 import { TypeaheadInputProps } from "react-bootstrap-typeahead/types/types";
 import { useTranslation } from "react-i18next";
+import { FormikProps } from "formik";
+import { SearchFormFields } from "../helpers/searchTypes";
 
 interface SearchBarInputProps {
     inputProps: TypeaheadInputProps;
-    queryRef: React.MutableRefObject<string>;
+    formik: FormikProps<SearchFormFields>;
     setOptionsHidden: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export default function SearchBarInput({
     inputProps,
-    queryRef,
     setOptionsHidden,
+    formik,
 }: SearchBarInputProps) {
     const { t } = useTranslation();
+    const c = async (v: string) => {
+        formik.setFieldValue("q", v, false);
+    };
+
     return (
         <Hint className="">
-            <MDBInput
-                {...inputProps}
-                id="searchbar-input"
-                // Very important!
-                name="q"
-                label={"Search"}
-                className="search-input"
-                placeholder={t("search:placeholder") as string}
-                onInput={(e) => {
-                    queryRef.current = e.currentTarget.value;
-                }}
-                wrapperClass="w-100 d-flex"
-                /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-                // @ts-ignore
-                inputRef={(ref) => {
-                    inputProps.inputRef(ref);
+            <div
+                className="w-100"
+                ref={(ref) => {
                     inputProps.referenceElementRef(ref);
                 }}
-                value={queryRef.current}
             >
-                <div className="d-flex flex-column justify-content-center me-4">
-                    <i
-                        className="fas fa-bars fa-lg"
-                        onClick={() => {
-                            setOptionsHidden((prev) => {
-                                localStorage.setItem(
-                                    "options-hidden",
-                                    !prev ? "true" : "false"
-                                );
-                                return !prev;
-                            });
-                        }}
-                    />
-                </div>
-            </MDBInput>
+                <MDBInput
+                    {...inputProps}
+                    id="q"
+                    name="q"
+                    label={t("search:pesquisar")}
+                    className="search-input"
+                    placeholder={t("search:placeholder") as string}
+                    wrapperClass="w-100 d-flex"
+                    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                    // @ts-ignore
+
+                    inputRef={(ref) => {
+                        inputProps.inputRef(ref);
+                    }}
+                    onInput={async (e) => {
+                        // Setting the formik value directly (synchroneously) is not recommended.
+                        // However, this is the only way to make the input work properly.
+                        // See the note on <AsyncTypeahead /> component on <SearchBar />.
+                        // This also implies that functions like 'formik.isValid' will not work properly.
+                        formik.values.q = e.currentTarget.value;
+                    }}
+                    value={formik.values.q}
+                >
+                    <div className="d-flex flex-column justify-content-center me-4">
+                        <i
+                            className="fas fa-bars fa-lg"
+                            onClick={() => {
+                                setOptionsHidden((prev) => {
+                                    localStorage.setItem(
+                                        "options-hidden",
+                                        !prev ? "true" : "false"
+                                    );
+                                    return !prev;
+                                });
+                            }}
+                        />
+                    </div>
+                </MDBInput>
+            </div>
         </Hint>
     );
 }
