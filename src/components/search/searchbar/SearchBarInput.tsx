@@ -1,15 +1,12 @@
 import { MDBInput } from "mdb-react-ui-kit";
 import { Hint } from "react-bootstrap-typeahead";
-import React, {
-    MutableRefObject,
-    RefObject,
-    SetStateAction,
-    useRef,
-} from "react";
+import React, { SetStateAction, useContext } from "react";
 import { TypeaheadInputProps } from "react-bootstrap-typeahead/types/types";
 import { useTranslation } from "react-i18next";
 import { FormikProps } from "formik";
 import { SearchFormFields } from "../helpers/searchTypes";
+import { Theme } from "../../general/helpers/generalContext";
+import { ThemeOptions } from "../../general/helpers/generalTypes";
 
 interface SearchBarInputProps {
     inputProps: TypeaheadInputProps;
@@ -23,6 +20,7 @@ export default function SearchBarInput({
     formik,
 }: SearchBarInputProps) {
     const { t } = useTranslation();
+    const theme = useContext(Theme);
     const c = async (v: string) => {
         formik.setFieldValue("q", v, false);
     };
@@ -36,6 +34,7 @@ export default function SearchBarInput({
                 }}
             >
                 <MDBInput
+                    contrast={theme.theme === ThemeOptions.dark}
                     {...inputProps}
                     id="q"
                     name="q"

@@ -10,55 +10,55 @@ $accent-color: #7663F2;
 // bg for light theme is the default one
 
 
-
-.form-control{
+.form-control {
   color: $text-color;
 }
 
-.btn-primary{
+.btn-primary {
   color: #FFFFFF;
   background-color: $accent-color !important;
 }
 
-.btn-outline-primary{
+.btn-outline-primary {
   color: $accent-color !important;
   border-color: $accent-color !important;
 }
 
-.recommendation-title{
+.recommendation-title {
   font-family: 'Nunito Sans', sans-serif;
   font-style: normal;
   font-weight: 600;
   line-height: 27px;
+  font-size: 1.1rem;
 
   color: #585858;
 }
 
-.basic-container{
+.basic-container {
   background-color: #FAFAFA;
   box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
   border-radius: 0 5px 5px 0;
 }
 
-.basic-container-alt{
+.basic-container-alt {
   background-color: #F0F0F0;
   box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.04);
   border-radius: 0 5px 5px 0;
 }
 
-.navbar-badge{
+.navbar-badge {
   background-color: #7663F2 !important;
 }
 
-.navbar-bg{
+.navbar-bg {
   background-color: #FAFAFA;
 }
 
 
-.reader-navbar-title{
+.reader-navbar-title {
 
 }
 
-.text-color{
+.text-color {
   color: $dark
 }

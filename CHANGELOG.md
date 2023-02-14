@@ -53,3 +53,6 @@ O Bibliomar nunca esteve tão bonito.
 - Remoção da biblioteca de capas @readshape/covers (responsável pelas capas com padrões no caso de livros sem capa)
   Motivo: a geração de capas é pesada, além de ocupar um espaço muito grande no limitado armazenamento de sessão do
   navegador.
+- As capas agora ficam em um container de tamanho fixo (em px), notamos que basear o tamanho da capa no tamanho do
+  viewport
+  causava muitas inconsistências no layout.

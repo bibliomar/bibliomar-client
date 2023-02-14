@@ -23,7 +23,7 @@ import SearchPagination from "./SearchPagination";
 import Break from "../general/Break";
 import SearchStatistics from "./SearchStatistics";
 import { buildSearchObject } from "../general/helpers/generalFunctions";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -37,6 +37,20 @@ const buildURLParams = (values: SearchFormFields) => {
     }
     return URLParameters;
 };
+
+async function populateSearchParams(
+    formik: FormikProps<SearchFormFields>,
+    searchParams: URLSearchParams
+) {
+    const queryOnParams = searchParams.get("q");
+    if (
+        queryOnParams != null &&
+        queryOnParams !== "" &&
+        queryOnParams.length > 3
+    ) {
+        await formik.setFieldValue("q", queryOnParams, false);
+    }
+}
 
 async function getSearchResults(
     values: SearchFormFields,
@@ -82,18 +96,10 @@ function Search() {
 
     // Paging related states and functions
     const itemsPerPage = 20;
-    const pageableResults = useRef<number>(0);
+    const paginableResults = useRef<number>(0);
     const totalItems = useRef<number>(0);
     const currentOffset = useRef<number>(0);
-    const visibleOffset =
-        currentOffset.current === 0 ? 1 : currentOffset.current;
 
-    let visibleLimit = 0;
-    if (currentOffset.current + itemsPerPage > pageableResults.current) {
-        visibleLimit = pageableResults.current;
-    } else {
-        visibleLimit = currentOffset.current + itemsPerPage;
-    }
     const [tookTime, setTookTime] = useState<number>(0);
 
     const [pageCount, setPageCount] = useState<number>(0);
@@ -126,25 +132,19 @@ function Search() {
     });
 
     useEffect(() => {
-        const queryOnParams = searchParams.get("q");
-
         if (initialRequestMade.current) {
             return;
         }
 
-        const submit = setTimeout(async () => {
-            if (
-                queryOnParams != null &&
-                queryOnParams !== "" &&
-                queryOnParams.length > 3
-            ) {
-                await formik.setFieldValue("q", queryOnParams);
-                formRef.current?.dispatchEvent(
-                    new Event("submit", { bubbles: true, cancelable: true })
-                );
-            }
-            // 500ms gives enough time for everything to render.
-        }, 1500);
+        let submit: number | undefined = undefined;
+
+        populateSearchParams(formik, searchParams).then(() => {
+            submit = window.setTimeout(async () => {
+                await formik.submitForm();
+
+                // 500ms gives enough time for everything to render.
+            }, 500);
+        });
 
         return () => clearTimeout(submit);
     }, [searchParams]);
@@ -155,7 +155,7 @@ function Search() {
         const currentPageNum = currentPageIndex + 1;
 
         const newOffset =
-            (currentPageIndex * itemsPerPage) % pageableResults.current;
+            (currentPageIndex * itemsPerPage) % paginableResults.current;
 
         currentOffset.current = newOffset;
 
@@ -217,10 +217,10 @@ function Search() {
             totalItems.current = request.hits.total;
         }
 
-        pageableResults.current =
+        paginableResults.current =
             totalItems.current > 1000 ? 1000 : totalItems.current;
 
-        setPageCount(Math.ceil(pageableResults.current / itemsPerPage));
+        setPageCount(Math.ceil(paginableResults.current / itemsPerPage));
 
         resultsList = request.hits.hits;
 
@@ -336,7 +336,7 @@ function Search() {
 
     return (
         <div className="like-body bg-alt">
-            <div className="container-fluid">
+            <div className="container-fluid min-vh-100 d-flex flex-column">
                 <div className="row ">
                     <div className="col mt-3">
                         <Navbar activeItem="home" />
@@ -368,9 +368,9 @@ function Search() {
                             disabled={searchResults.length === 0}
                             totalResults={totalItems.current}
                             tookTime={tookTime}
-                            paginableResults={pageableResults.current}
-                            offset={visibleOffset}
-                            limit={visibleLimit}
+                            paginableResults={paginableResults.current}
+                            offset={currentOffset.current}
+                            itemsPerPage={itemsPerPage}
                         />
                         <Break />
                         <SearchResultScreen visibleResults={searchResults} />
@@ -382,7 +382,7 @@ function Search() {
                     </div>
                 </div>
 
-                <RecommendationScreen disabled={initialRequestMade.current} />
+                <RecommendationScreen disabled={searchResults.length > 0} />
                 <Footer />
             </div>
         </div>

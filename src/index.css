@@ -115,9 +115,6 @@ abbr[title]:after {
     width: 95%;
 }
 
-.searchfield {
-    width: 75%;
-}
 
 .search-input {
     min-height: 60px !important;
@@ -144,15 +141,6 @@ abbr[title]:after {
     width: 90vw;
 }
 
-.recommendation-div {
-    min-width: 75%;
-    width: fit-content;
-}
-
-
-.recommendation-figure {
-    width: 45%;
-}
 
 .library-section-container {
     width: 90vw;
@@ -288,9 +276,6 @@ abbr[title]:after {
         content: "";
     }
 
-    .searchfield {
-        width: 50%;
-    }
 
     .about-icon-img {
         height: 12vh;
@@ -305,9 +290,6 @@ abbr[title]:after {
         width: 50%;
     }
 
-    .recommendation-figure {
-        width: 20%;
-    }
 
     .login-form-container {
         width: 75%;

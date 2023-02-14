@@ -61,21 +61,12 @@ export default function RecommendationScreen(props: Props) {
                         <div className="d-flex flex-wrap justify-content-center w-100">
                             {recommendations.map((el, i) => {
                                 let timeout;
-                                i === 0
-                                    ? (timeout = 1000)
-                                    : (timeout = i * 1000);
+                                i === 0 ? (timeout = 750) : (timeout = i * 750);
                                 return (
-                                    <>
-                                        {i % 4 === 0 ? (
-                                            <Break desktop />
-                                        ) : i % 2 === 0 ? (
-                                            <Break mobile />
-                                        ) : null}
-                                        <RecommendationBookFigure
-                                            book={el}
-                                            timeout={timeout}
-                                        />
-                                    </>
+                                    <RecommendationBookFigure
+                                        book={el}
+                                        timeout={timeout}
+                                    />
                                 );
                             })}
                         </div>

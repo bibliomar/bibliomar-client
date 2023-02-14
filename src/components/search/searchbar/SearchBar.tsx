@@ -87,7 +87,7 @@ export default function SearchBar({
 
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
-            <div className="searchfield">
+            <div className="search-field">
                 <AsyncTypeahead
                     /*
                     Very important: Do not put anything async-related inside this component's
@@ -152,7 +152,11 @@ export default function SearchBar({
                 />
             </div>
 
-            <button type="submit" className="btn btn-primary search-button">
+            <button
+                type="submit"
+                className="btn btn-primary search-button"
+                disabled={formik.isSubmitting}
+            >
                 <i className="fas fa-search fa-lg"></i>
             </button>
         </div>
