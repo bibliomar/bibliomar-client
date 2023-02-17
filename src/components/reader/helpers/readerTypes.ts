@@ -1,18 +1,18 @@
 // This file exports common types used by /reader components.
 
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import React, { MouseEventHandler } from "react";
 
 // State to be passed to ReaderMain component, making it usable.
 export interface PossibleReaderScreenState {
     arrayBuffer: ArrayBuffer;
-    onlineFile: Book | undefined;
+    onlineFile: Metadata | undefined;
     localFile: File | undefined;
 }
 
 // State to be passed to ReaderLanding component, depending on its value, the component will render different subcomponents.
 export interface PossibleReaderLandingState {
-    bookInfo: Book;
+    bookInfo: Metadata;
 }
 
 /* Describes a user savedBooks schema.
@@ -27,7 +27,7 @@ Be sure to not save values as undefined, but as null.
 // Describes a given entry in SavedBooks, this entry is an object containing these properties.
 export interface SavedBookEntry {
     arrayBuffer: ArrayBuffer;
-    bookInfo: Book;
+    bookInfo: Metadata;
 }
 
 // Describes a SavedBooks object, which will be used to save up to 3 books in localForage.

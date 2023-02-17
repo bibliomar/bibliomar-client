@@ -1,19 +1,19 @@
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import Break from "../../general/Break";
 import SmallLine from "../../general/SmallLine";
 
 interface Props {
-    book: Book;
+    metadata: Metadata;
 }
 
-export default function BookInfoTitle({ book }: Props) {
+export default function BookInfoTitle({ metadata }: Props) {
     return (
         <>
             <span
                 className="book-info-title"
                 style={{ fontSize: "1.7rem", overflowWrap: "anywhere" }}
             >
-                {book.title}
+                {metadata.title}
             </span>
         </>
     );

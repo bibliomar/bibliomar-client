@@ -13,7 +13,7 @@ export default function BookInfoError() {
                     note
                     noteColor="info"
                 >
-                    <span>{t("bookinfo:errorText1")}</span>
+                    <span>{t("metadatainfo:errorText1")}</span>
                 </MDBTypography>
                 <Break />
                 <MDBTypography
@@ -22,7 +22,7 @@ export default function BookInfoError() {
                     note
                     noteColor="info"
                 >
-                    <span>{t("bookinfo:errorText2")}</span>
+                    <span>{t("metadatainfo:errorText2")}</span>
                 </MDBTypography>
             </div>
         </>

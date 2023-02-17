@@ -13,10 +13,10 @@ import Fuse from "fuse.js";
 import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
 import {
     backendUrl,
-    getBookInfoPath,
+    getMetadataInfoPath,
 } from "../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import makeSearch from "../helpers/makeSearch";
 import {
     ManticoreSearchResponse,
@@ -28,10 +28,10 @@ import { useToggle } from "../../general/helpers/useToggle";
 import { Option } from "react-bootstrap-typeahead/types/types";
 import SearchBarInput from "./SearchBarInput";
 import SearchBarFigure from "./SearchBarFigure";
-import { buildSearchObject } from "../../general/helpers/generalFunctions";
 import SearchBarItemExpanded from "./SearchBarItemExpanded";
 import SearchBarItemSimple from "./SearchBarItemSimple";
 import { FormikConfig, FormikProps, useField } from "formik";
+import { buildSearchObject } from "../helpers/searchFunctions";
 
 interface Props {
     topicContext: string;
@@ -104,14 +104,14 @@ export default function SearchBar({
                         );
                     }}
                     renderMenuItemChildren={(option, props, index) => {
-                        const book = option as Book;
+                        const book = option as Metadata;
                         if (width < 768) {
-                            return <SearchBarItemExpanded book={book} />;
+                            return <SearchBarItemExpanded metadata={book} />;
                         } else {
                             const timeout = index === 0 ? 500 : index * 500;
                             return (
                                 <SearchBarFigure
-                                    book={book}
+                                    metadata={book}
                                     timeout={timeout}
                                 />
                             );
@@ -121,9 +121,9 @@ export default function SearchBar({
                     onSearch={handleSearch}
                     onChange={(selected) => {
                         if (selected.length > 0) {
-                            const book = selected[0] as Book;
+                            const book = selected[0] as Metadata;
                             formik.setFieldValue("q", book.title);
-                            const bookHref = getBookInfoPath(
+                            const bookHref = getMetadataInfoPath(
                                 book.topic,
                                 book.md5
                             );

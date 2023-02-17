@@ -1,10 +1,9 @@
 import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
 import React, { useContext, useState } from "react";
-import { EditMode, SelectedBooks } from "../helpers/libraryContext";
+import { EditModeContext } from "../helpers/libraryContext";
 
 export default function EditModeToggle() {
-    const editModeContext = useContext(EditMode);
-    const selectedBooksContext = useContext(SelectedBooks);
+    const editModeContext = useContext(EditModeContext);
 
     return (
         <MDBBtn
@@ -16,10 +15,10 @@ export default function EditModeToggle() {
             }`}
             onClick={() => {
                 if (
-                    selectedBooksContext.selectedBooks &&
-                    selectedBooksContext.selectedBooks.length > 0
+                    editModeContext.selectedBooksRef.current &&
+                    editModeContext.selectedBooksRef.current.length > 0
                 ) {
-                    selectedBooksContext.setSelectedBooks([]);
+                    editModeContext.selectedBooksRef.current = [];
                 }
                 editModeContext.setEditMode((prevEditMode) => !prevEditMode);
             }}

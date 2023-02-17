@@ -1,10 +1,10 @@
-import { Theme } from "./helpers/generalContext";
+import { ThemeContext } from "./helpers/generalContext";
 import { useContext } from "react";
 import { ThemeOptions } from "./helpers/generalTypes";
 import { Link } from "react-router-dom";
 
 function Bibliologo() {
-    const theme = useContext(Theme).theme;
+    const theme = useContext(ThemeContext).theme;
     return (
         <div className="row">
             <div className="col d-flex flex-wrap justify-content-center mt-5">

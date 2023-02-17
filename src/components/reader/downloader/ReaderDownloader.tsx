@@ -11,12 +11,12 @@ import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInSeconds from "date-fns/differenceInSeconds";
 import { PossibleReaderScreenState } from "../helpers/readerTypes";
 import { backendUrl } from "../../general/helpers/generalFunctions";
-import { Auth } from "../../general/helpers/generalContext";
-import { Book } from "../../general/helpers/generalTypes";
+import { AuthContext } from "../../general/helpers/generalContext";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
 
 interface ReaderDownloaderProps {
-    bookInfo: Book;
+    bookInfo: Metadata;
 }
 
 export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
@@ -24,7 +24,7 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
     console.log("Rest assured, your books are not saved in our servers.");
 
     const navigate = useNavigate();
-    const authContext = useContext(Auth);
+    const authContext = useContext(AuthContext);
     const userLoggedIn = authContext.userLogged;
     const { t } = useTranslation();
 
@@ -49,7 +49,7 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
                 // Be sure to transform to kb before setting the state.
                 // bytes (original value) / 1000 = value in kb
                 console.log(evt);
-                let loadedSize: number = 0;
+                let loadedSize = 0;
 
                 if (evt.lengthComputable) {
                     const maxSize = evt.total / 1000;
@@ -72,11 +72,11 @@ export default function ReaderDownloader({ bookInfo }: ReaderDownloaderProps) {
 
         try {
             setDownloadStatus(103);
-            let req: AxiosResponse = await axios.request(config);
+            const req: AxiosResponse = await axios.request(config);
             console.log(req);
 
             const blobData: Blob = req.data;
-            // If the download book is neither an epub nor text/plain
+            // If the download metadataList is neither an epub nor text/plain
             if (
                 !blobData.type.includes("epub") &&
                 !blobData.type.includes("text")

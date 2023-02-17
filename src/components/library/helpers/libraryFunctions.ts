@@ -1,7 +1,12 @@
-import { Book, LibraryCategories } from "../../general/helpers/generalTypes";
-import { PossibleFilters } from "./libraryTypes";
+import {
+    Metadata,
+    LibraryCategories,
+    UserLibrary,
+} from "../../general/helpers/generalTypes";
+import { PossibleFilters, UserLibraryContextParams } from "./libraryTypes";
 import Fuse from "fuse.js";
 import equal from "fast-deep-equal/es6";
+import React from "react";
 
 export const defaultFilters: PossibleFilters = {
     format: "any",
@@ -12,13 +17,16 @@ export const defaultFilters: PossibleFilters = {
 /* This function is responsible for filtering the books based on the filterContext.
  *
  *
- * It should be run everytime a list of book is to be show to a user in the library. */
-export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
+ * It should be run everytime a list of metadataList is to be show to a user in the library. */
+export function bookFiltering(
+    books: Metadata[],
+    filters: PossibleFilters
+): Metadata[] {
     if (equal(filters, defaultFilters)) {
         return books;
     }
 
-    let resultSet: Book[] = [];
+    let resultSet: Metadata[] = [];
 
     if (filters.title !== "" || filters.authors !== "") {
         const fuseKey = filters.title !== "" ? ["title"] : ["authors"];
@@ -26,7 +34,7 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
         let searchResults: any[] = [];
         if (filters.title !== "") {
             const fuseSearch = fuse.search(filters.title);
-            let fuseResults: any[] = [];
+            const fuseResults: any[] = [];
             fuseSearch.forEach((el) => {
                 fuseResults.push(el.item);
             });
@@ -36,7 +44,7 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
 
         if (filters.author !== "") {
             const fuseSearch = fuse.search(filters.author);
-            let fuseResults: any[] = [];
+            const fuseResults: any[] = [];
             fuseSearch.forEach((el) => {
                 fuseResults.push(el.item);
             });
@@ -47,27 +55,26 @@ export function bookFiltering(books: Book[], filters: PossibleFilters): Book[] {
         resultSet = searchResults;
     }
 
-    if (filters.format !== "any") {
-        resultSet = [
-            ...resultSet,
-            ...books.filter(
-                (book) =>
-                    book.extension &&
-                    book.extension.toLowerCase() ===
-                        filters.format?.toLowerCase()
-            ),
-        ];
+    if (filters.format != null && filters.format !== "any") {
+        if (resultSet.length === 0) {
+            resultSet = [...books];
+        }
+        resultSet = resultSet.filter(
+            (book) =>
+                book.extension &&
+                book.extension.toLowerCase() === filters.format.toLowerCase()
+        );
     }
 
     return resultSet;
 }
 
-/* This function is responsible for adding the relevant category property on the books in a book list.
+/* This function is responsible for adding the relevant category property on the books in a metadataList list.
  *
  *
- * It should be run everytime a list of book is to be show to a user in the library. */
+ * It should be run everytime a list of metadataList is to be show to a user in the library. */
 export function bookCategorySetter(
-    books: Book[],
+    books: Metadata[],
     bookCategory: LibraryCategories
 ) {
     return books.map((book) => {
@@ -75,3 +82,19 @@ export function bookCategorySetter(
         return book;
     });
 }
+
+const placeholderUserLibrary: UserLibrary = {
+    backlog: {},
+    dropped: {},
+    finished: {},
+    reading: {},
+    toRead: {},
+    username: "",
+};
+export const UserLibraryContext = React.createContext<UserLibraryContextParams>(
+    {
+        userLibrary: placeholderUserLibrary,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        updateUserLibrary: () => {},
+    }
+);

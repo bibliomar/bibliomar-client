@@ -6,13 +6,13 @@ import Message from "../../general/Message";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 import { useContext, useState } from "react";
-import { Auth } from "../../general/helpers/generalContext";
-import { backendUrl } from "../../general/helpers/generalFunctions";
+import { AuthContext } from "../../general/helpers/generalContext";
+import { backendUrl, serverUrl } from "../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
 
 export default function Register() {
     const { t } = useTranslation();
-    const authContext = useContext(Auth);
+    const authContext = useContext(AuthContext);
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
     const navigate = useNavigate();
@@ -54,29 +54,30 @@ export default function Register() {
             return errors;
         },
         onSubmit: async (values) => {
-            let formData = new FormData();
-            for (const [key, value] of Object.entries(values)) {
-                formData.append(key, value);
-            }
+            const registerForm = {
+                username: values.username,
+                email: values.email,
+                password: values.password,
+            };
             const config = {
-                url: `${backendUrl}/v1/user/signup`,
+                url: `${serverUrl}/user/register`,
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/json",
                 },
-                data: formData,
+                data: registerForm,
             };
             try {
                 setRegisterStatus(103);
-                let req = await axios.request(config);
+                const req = await axios.request(config);
                 setRegisterStatus(200);
-                localStorage.setItem("jwt-token", req.data["access_token"]);
-                authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
                 setTimeout(() => {
                     if (redirect) {
-                        navigate(redirect);
+                        navigate("/user/login?redirect=" + redirect, {
+                            replace: true,
+                        });
                     } else {
-                        navigate("/library");
+                        navigate("/user/login", { replace: true });
                     }
                 }, 5000);
             } catch (e: any) {
@@ -183,7 +184,7 @@ export default function Register() {
                             className="book-info-description"
                             name="password"
                             id="password"
-                            type="text"
+                            type="password"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}

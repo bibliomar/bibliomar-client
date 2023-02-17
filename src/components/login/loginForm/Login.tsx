@@ -8,15 +8,20 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AutoLoginMessage from "./AutoLoginMessage";
 import LoginMessage from "./LoginMessage";
-import { Auth } from "../../general/helpers/generalContext";
-import { backendUrl } from "../../general/helpers/generalFunctions";
+import { AuthContext } from "../../general/helpers/generalContext";
+import { backendUrl, serverUrl } from "../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
+import { JWTTokenResponse } from "../helpers/loginTypes";
+
+type LoginFormType = {
+    username: string;
+    password: string;
+};
 
 export default function Login() {
-    const authContext = useContext(Auth);
+    const authContext = useContext(AuthContext);
     const [searchParameters, _] = useSearchParams();
     const redirect = searchParameters.get("redirect") as string;
-    const md5 = searchParameters.get("md5") as string;
     const navigate = useNavigate();
     const [loginStatus, setLoginStatus] = useState<number>(0);
     const [autoLoginStatus, setAutoLoginStatus] = useState<number>(0);
@@ -26,17 +31,19 @@ export default function Login() {
         try {
             // noinspection AllyPlainJsInspection
             const config = {
-                url: `${backendUrl}/v1/user/validate`,
+                // Auth endpoint is to be implemented
+                // Not to be confused with the /user/login endpoint!
+                url: `${serverUrl}/user/auth`,
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
             };
             setAutoLoginStatus(103);
-            let req = await axios.request(config);
+            const req = await axios.request(config);
+            const tokenResponse: JWTTokenResponse = req.data;
             setAutoLoginStatus(200);
-            localStorage.setItem("jwt-token", req.data["access_token"]);
-            authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
+            authContext.setJwtToken(tokenResponse.access_token);
 
             if (redirect) {
                 navigate(`${redirect}`, { replace: true });
@@ -46,15 +53,12 @@ export default function Login() {
         } catch (e: any) {
             if (e.request) {
                 if (e.request.status === 401) {
-                    localStorage.removeItem("jwt-token");
-                    authContext.setUserLogged(
-                        !!localStorage.getItem("jwt-token")
-                    );
+                    authContext.setJwtToken(null);
                 }
                 setAutoLoginStatus(e.request.status);
                 setTimeout(() => {
                     setAutoLoginStatus(0);
-                }, 4000);
+                }, 2000);
             }
         }
     };
@@ -62,18 +66,21 @@ export default function Login() {
     useEffect(() => {
         const jwt = localStorage.getItem("jwt-token");
         let ignore = false;
+        /*
         if (jwt && !ignore) {
             autoLogin(jwt).then((r) => {});
         }
+
+         */
         return () => {
             ignore = true;
         };
     }, []);
 
-    const formik = useFormik({
+    const formik = useFormik<LoginFormType>({
         initialValues: { username: "", password: "" },
         validate: (values) => {
-            const errors: any = {};
+            const errors: Partial<LoginFormType> = {};
             if (!values.username) {
                 errors.username = "Obrigatório";
             }
@@ -83,32 +90,28 @@ export default function Login() {
             return errors;
         },
         onSubmit: async (values) => {
-            let formData = new FormData();
-            for (const [key, value] of Object.entries(values)) {
-                formData.append(key, value);
-            }
+            const loginForm = {
+                username: values.username,
+                password: values.password,
+            };
             const config = {
-                url: `${backendUrl}/v1/user/login`,
+                url: `${serverUrl}/user/login`,
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/json",
                 },
-                data: formData,
+                data: loginForm,
             };
             try {
                 setLoginStatus(103);
-                let req = await axios.request(config);
+                const req = await axios.request<JWTTokenResponse>(config);
                 setLoginStatus(200);
-                localStorage.setItem("jwt-token", req.data["access_token"]);
-                authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
+                const response = req.data;
+                const token = response.access_token;
+                authContext.setJwtToken(token);
 
                 if (redirect) {
                     navigate(`${redirect}`, { replace: true });
-                    return;
-                }
-
-                if (md5) {
-                    navigate(`/library?md5=${md5}`, { replace: true });
                     return;
                 }
 
@@ -117,8 +120,11 @@ export default function Login() {
             } catch (e: any) {
                 if (e.request) {
                     switch (e.request.status) {
-                        case 400:
-                            setLoginStatus(400);
+                        case 403:
+                            setLoginStatus(403);
+                            return;
+                        case 401:
+                            setLoginStatus(401);
                             return;
                     }
                     setLoginStatus(500);

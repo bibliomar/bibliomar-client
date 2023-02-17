@@ -8,17 +8,16 @@ import {
     MDBNavbarItem,
 } from "mdb-react-ui-kit";
 import { useLocation } from "react-router-dom";
-import { Auth } from "../helpers/generalContext";
+import { AuthContext } from "../helpers/generalContext";
 import { useTranslation } from "react-i18next";
 
 export default function NavbarUser() {
     const { t } = useTranslation();
-    const authContext = useContext(Auth);
+    const authContext = useContext(AuthContext);
     const location = useLocation();
     const logout = (evt: any) => {
         evt.preventDefault();
-        localStorage.removeItem("jwt-token");
-        authContext.setUserLogged(!!localStorage.getItem("jwt-token"));
+        authContext.setJwtToken(null);
     };
 
     return (

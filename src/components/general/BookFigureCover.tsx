@@ -1,6 +1,6 @@
 // noinspection AllyJsxHardcodedStringInspection
 
-import { Book } from "./helpers/generalTypes";
+import { Metadata } from "./helpers/generalTypes";
 import Skeleton from "react-loading-skeleton";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
 import { getEmptyCover, resolveCoverUrl } from "./helpers/generalFunctions";
 
 interface Props {
-    book: Book;
+    metadata: Metadata;
     cover: string | undefined;
     coverDone: boolean;
     loadingClassName?: string | undefined;
@@ -34,11 +34,11 @@ const chooseCurrentCoverComponent = (props: Props) => {
                 alt="Cover"
                 className="h-100 w-100"
                 onError={(e) => {
-                    const coverUrlParameter = props.book.coverUrl;
+                    const coverUrlParameter = props.metadata.coverUrl;
                     if (coverUrlParameter) {
                         const alternativeCover = resolveCoverUrl(
                             true,
-                            props.book.topic,
+                            props.metadata.topic,
                             coverUrlParameter
                         );
                         if (

@@ -1,16 +1,21 @@
 // This file is for context used in all the routes.
 
 import { createContext } from "react";
-import { AuthContext, ThemeContext, ThemeOptions } from "./generalTypes";
+import {
+    AuthContextParams,
+    ThemeContextParams,
+    ThemeOptions,
+} from "./generalTypes";
 
-export const Theme = createContext<ThemeContext>({
+export const ThemeContext = createContext<ThemeContextParams>({
     theme: ThemeOptions.light,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     setTheme: () => {},
 });
 
-export const Auth = createContext<AuthContext>({
+export const AuthContext = createContext<AuthContextParams>({
     userLogged: false,
+    jwtToken: null,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    setUserLogged: () => {},
+    setJwtToken: () => {},
 });

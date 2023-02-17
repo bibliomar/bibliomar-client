@@ -1,20 +1,16 @@
 import { useContext } from "react";
-import { Theme } from "../helpers/generalContext";
+import { ThemeContext } from "../helpers/generalContext";
 import { MDBIcon, MDBNavbarItem, MDBNavbarLink } from "mdb-react-ui-kit";
 import { ThemeOptions } from "../helpers/generalTypes";
 
 export default function ThemeChooser() {
-    const themeContext = useContext(Theme);
+    const themeContext = useContext(ThemeContext);
     const changeTheme = () => {
-        themeContext.setTheme((prevState) => {
-            if (prevState === ThemeOptions.light) {
-                localStorage.setItem("theme", ThemeOptions.dark);
-                return ThemeOptions.dark;
-            } else {
-                localStorage.setItem("theme", ThemeOptions.light);
-                return ThemeOptions.light;
-            }
-        });
+        themeContext.setTheme(
+            themeContext.theme === ThemeOptions.light
+                ? ThemeOptions.dark
+                : ThemeOptions.light
+        );
     };
     return (
         <MDBNavbarItem className="ms-auto ms-lg-0 mt-3 mt-lg-0 me-2">

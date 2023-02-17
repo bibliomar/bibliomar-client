@@ -1,22 +1,22 @@
 import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 
 interface Props {
-    book: Book;
+    metadata: Metadata;
     timeout: number;
 }
 
-export default function RecommendationBookFigure({ book, timeout }: Props) {
-    const [cover, coverDone] = useCover(book, timeout);
+export default function RecommendationBookFigure({ metadata, timeout }: Props) {
+    const [cover, coverDone] = useCover(metadata, timeout);
 
-    const href = `/search?category=${book.topic}&q=${book.title}`;
+    const href = `/search?category=${metadata.topic}&q=${metadata.title}`;
 
     return (
         <div className="recommendation-figure me-2 mb-3">
             <SimpleBookFigure
                 loadingClassName="loading-skeleton-recommendation"
-                book={book}
+                metadata={metadata}
                 cover={cover}
                 coverDone={coverDone}
                 href={href}

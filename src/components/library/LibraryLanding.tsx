@@ -1,51 +1,71 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Break from "../general/Break";
 import LibraryNavbar from "./LibraryNavbar";
 import {
-    Book,
+    Metadata,
     LibraryCategories,
     UserLibrary,
 } from "../general/helpers/generalTypes";
-import LibraryRow from "./LibraryRow";
+import LibraryCategory from "./LibraryCategory";
 import { useTranslation } from "react-i18next";
+import { UserLibraryContext } from "./helpers/libraryFunctions";
+import { libraryCategoryToLocaleText } from "../metadatainfo/helpers/bookinfoFunctions";
 
 export default function LibraryLanding() {
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const [selectedBooks, setSelectedBooks] = useState<Book[]>([]);
-    const selectedContextValue = {
-        selectedBooks: selectedBooks,
-        setFunction: setSelectedBooks,
-    };
+    const userLibraryContext = useContext(UserLibraryContext);
+    const userLibrary = userLibraryContext.userLibrary;
     const { t } = useTranslation();
-    const context: any = useOutletContext();
-    const user: UserLibrary = context["userInfo"];
-    const username: string = context["username"];
+
     return (
-        <div className="d-flex flex-wrap justify-content-start justify-content-md-center mt-5 w-100">
-            {username ? (
-                <LibraryNavbar userLibrary={user} username={username} />
-            ) : null}
+        <div className="d-flex flex-wrap mt-5 w-100">
+            <LibraryNavbar />
             <Break />
-            <LibraryRow
-                title={t("library:reading")}
+            <LibraryCategory
+                title={libraryCategoryToLocaleText(
+                    t,
+                    LibraryCategories.reading
+                )}
                 message={t("library:readingExplanation")}
-                bookCategory={LibraryCategories.reading}
-                booksInfo={user["reading"]}
+                metadataCategory={LibraryCategories.reading}
+                metadata={Object.values(userLibrary.reading)}
             />
             <Break />
-            <LibraryRow
-                title={t("library:planToRead")}
+            <LibraryCategory
+                title={libraryCategoryToLocaleText(t, LibraryCategories.toRead)}
                 message={t("library:planToReadExplanation")}
-                bookCategory={LibraryCategories.toRead}
-                booksInfo={user["to-read"]}
+                metadataCategory={LibraryCategories.toRead}
+                metadata={Object.values(userLibrary.toRead)}
             />
             <Break />
-            <LibraryRow
-                title={t("library:backlog")}
+            <LibraryCategory
+                title={libraryCategoryToLocaleText(
+                    t,
+                    LibraryCategories.finished
+                )}
+                message={t("library:livrosQueVocFinalizou")}
+                metadataCategory={LibraryCategories.finished}
+                metadata={Object.values(userLibrary.finished)}
+            />
+            <Break />
+            <LibraryCategory
+                title={libraryCategoryToLocaleText(
+                    t,
+                    LibraryCategories.backlog
+                )}
                 message={t("library:backlogExplanation")}
-                bookCategory={LibraryCategories.backlog}
-                booksInfo={user["backlog"]}
+                metadataCategory={LibraryCategories.backlog}
+                metadata={Object.values(userLibrary.backlog)}
+            />
+            <Break />
+            <LibraryCategory
+                title={libraryCategoryToLocaleText(
+                    t,
+                    LibraryCategories.dropped
+                )}
+                message={t("library:livrosQueVocAbandonou")}
+                metadataCategory={LibraryCategories.dropped}
+                metadata={Object.values(userLibrary.dropped)}
             />
             <Break />
         </div>

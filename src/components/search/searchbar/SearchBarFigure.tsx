@@ -1,31 +1,33 @@
 import { Highlighter } from "react-bootstrap-typeahead";
 import React from "react";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
 import Break from "../../general/Break";
 import {
     formatBytes,
-    getBookInfoPath,
+    getMetadataInfoPath,
 } from "../../general/helpers/generalFunctions";
 
 interface Props {
-    book: Book;
+    metadata: Metadata;
     timeout?: number;
 }
 
-export default function SearchBarFigure({ book, timeout }: Props) {
-    const [cover, coverDone] = useCover(book, timeout);
-    const bookHref = getBookInfoPath(book.topic, book.md5);
+export default function SearchBarFigure({ metadata, timeout }: Props) {
+    const [cover, coverDone] = useCover(metadata, timeout);
+    const bookHref = getMetadataInfoPath(metadata.topic, metadata.md5);
     let uppercaseAuthor = "";
-    if (book.author) {
-        uppercaseAuthor = `${book.author[0].toUpperCase()}${book.author.slice(
+    if (metadata.author) {
+        uppercaseAuthor = `${metadata.author[0].toUpperCase()}${metadata.author.slice(
             1,
-            book.author.length
+            metadata.author.length
         )}`;
     }
-    const extension = book.extension ? book.extension.toUpperCase() : null;
-    const size = book.fileSize ? formatBytes(book.fileSize) : null;
+    const extension = metadata.extension
+        ? metadata.extension.toUpperCase()
+        : null;
+    const size = metadata.fileSize ? formatBytes(metadata.fileSize) : null;
     const extensionAndFormat =
         extension && size ? `${extension}, ${size}` : null;
     return (
@@ -36,7 +38,7 @@ export default function SearchBarFigure({ book, timeout }: Props) {
             >
                 <div className="d-flex w-100">
                     <BookFigureCover
-                        book={book}
+                        metadata={metadata}
                         cover={cover}
                         coverDone={coverDone}
                     />
@@ -48,7 +50,7 @@ export default function SearchBarFigure({ book, timeout }: Props) {
             >
                 <div className="d-flex flex-wrap">
                     <span style={{ fontSize: "1.0em" }} className="fw-bold">
-                        {book.title}
+                        {metadata.title}
                     </span>
                     <Break />
                     <span style={{ fontSize: "0.9em" }}>{uppercaseAuthor}</span>

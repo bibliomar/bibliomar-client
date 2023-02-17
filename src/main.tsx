@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import Bibliomar from "./Bibliomar";
 import { registerSW } from "virtual:pwa-register";
@@ -19,4 +19,8 @@ const updateSW = registerSW({
         }
     },
 });
-ReactDOM.createRoot(document.getElementById("root")!).render(<Bibliomar />);
+ReactDOM.createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+        <Bibliomar />
+    </StrictMode>
+);

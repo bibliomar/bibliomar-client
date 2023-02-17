@@ -15,7 +15,7 @@ import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import NavbarUser from "./NavbarUser";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Theme } from "../helpers/generalContext";
+import { ThemeContext } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
 import ThemeChooser from "./ThemeChooser";
@@ -30,7 +30,7 @@ interface Props {
 
 export default function Navbar({ activeItem, badgeText }: Props) {
     const { t } = useTranslation();
-    const themeContext = useContext(Theme);
+    const themeContext = useContext(ThemeContext);
     const theme = themeContext.theme;
     const width = useWindowSize().width;
     const [showNav, setShowNav] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                 expand="lg"
                 light={theme === ThemeOptions.light}
                 dark={theme === ThemeOptions.dark}
-                className="p-2 pt-4 pb-4"
+                className={`p-2 pt-4 pb-4`}
             >
                 <MDBContainer fluid>
                     <MDBNavbarBrand
@@ -65,7 +65,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                         }}
                         style={{ maxWidth: "50%" }}
                     >
-                        <BibliomarBrand badgeText={badgeText} />
+                        <BibliomarBrand badgeContent={badgeText} />
                     </MDBNavbarBrand>
                     <MDBNavbarToggler
                         aria-controls="navbarSupportedContent"
@@ -77,7 +77,13 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                     </MDBNavbarToggler>
 
                     <MDBCollapse navbar show={showNav}>
-                        <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
+                        <MDBNavbarNav
+                            className={`mr-auto mb-2 mb-lg-0 ${
+                                theme === ThemeOptions.light
+                                    ? "text-dark"
+                                    : "text-light"
+                            }`}
+                        >
                             <MDBNavbarItem className="mt-2 mt-md-0">
                                 <MDBNavbarLink
                                     name="/about"

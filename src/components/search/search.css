@@ -25,9 +25,8 @@
 
 .recommendation-figure {
     width: 45%;
-    height: 50vh;
+    height: 220px;
     min-height: fit-content;
-    max-height: 220px;
 }
 
 .search-field {
@@ -55,8 +54,7 @@
 
     .recommendation-figure {
         width: 40%;
-        height: 18vh;
-        max-height: 240px;
+        height: 240px;
     }
 
 }
@@ -82,8 +80,7 @@
 
     .recommendation-figure {
         width: 18%;
-        height: 40vh;
-        max-height: 265px;
+        height: 275px;
     }
 
     .search-field {

@@ -1,6 +1,6 @@
 // Deprecated. Here for reference. Please use createReactReaderStyle instead.
 
-let reactReaderStyles = {
+const reactReaderStyles = {
     tocButtonBarBottom: {},
     container: {
         overflow: "hidden",

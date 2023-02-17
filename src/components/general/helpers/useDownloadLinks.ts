@@ -6,9 +6,12 @@ import { useToggle } from "./useToggle";
 import { useNavigate } from "react-router-dom";
 
 async function getDownloadLinksOnline(md5: string, topic: string) {
-    let reqUrl = `${backendUrl}/v1/downloads/${topic}/${md5}`;
+    if (topic === "scitech") {
+        topic = "sci-tech";
+    }
+    const reqUrl = `${backendUrl}/v1/downloads/${topic}/${md5}`;
     try {
-        let req = await axios.get(reqUrl);
+        const req = await axios.get(reqUrl);
         return req.data;
     } catch (e) {
         console.error(e);
@@ -17,12 +20,12 @@ async function getDownloadLinksOnline(md5: string, topic: string) {
 }
 
 function getLibgenURL(md5: string, topic: string) {
-    const baseURL = "https://library.lol"
+    const baseURL = "https://library.lol";
     let topicURL = "";
-    if (topic === "fiction"){
+    if (topic === "fiction") {
         topicURL = "fiction";
     } else {
-        topicURL = "main"
+        topicURL = "main";
     }
 
     return `${baseURL}/${topicURL}/${md5}`;
@@ -30,7 +33,6 @@ function getLibgenURL(md5: string, topic: string) {
 
 function getLibrocksURL(md5: string) {
     const contentURL = `https://libgen.rocks/ads.php?md5=${md5}`;
-    
 
     return contentURL;
 }
@@ -39,7 +41,7 @@ export default function useDownloadLinks(
     md5: string | undefined,
     topic: string | undefined
 ): [DownloadLinks | undefined, boolean] {
-    // Retrieves download links of a specific book
+    // Retrieves download links of a specific metadataList
     // Download links are not cached.
     const [downloadLinks, setDownloadLinks] = useState<
         DownloadLinks | undefined
@@ -49,7 +51,7 @@ export default function useDownloadLinks(
 
     const getDownloadLinks = async () => {
         if (md5 == null || topic == null) {
-            navigate("/book/error", { replace: true });
+            navigate("/metadataList/error", { replace: true });
             return;
         }
         const dlinks = await getDownloadLinksOnline(md5, topic);

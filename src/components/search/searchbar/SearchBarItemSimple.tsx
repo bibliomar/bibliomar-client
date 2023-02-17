@@ -1,30 +1,34 @@
 import { Highlighter } from "react-bootstrap-typeahead";
 import React from "react";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
 import Break from "../../general/Break";
-import { getBookInfoPath } from "../../general/helpers/generalFunctions";
+import { getMetadataInfoPath } from "../../general/helpers/generalFunctions";
 
 interface Props {
     text: string;
-    book: Book;
+    metadata: Metadata;
     timeout?: number;
 }
 
-export default function SearchBarItemSimple({ text, book, timeout }: Props) {
-    const [cover, coverDone] = useCover(book, timeout);
-    const bookHref = getBookInfoPath(book.topic, book.md5);
+export default function SearchBarItemSimple({
+    text,
+    metadata,
+    timeout,
+}: Props) {
+    const [cover, coverDone] = useCover(metadata, timeout);
+    const bookHref = getMetadataInfoPath(metadata.topic, metadata.md5);
     let uppercaseAuthor = "";
-    if (book.author) {
-        uppercaseAuthor = `${book.author[0].toUpperCase()}${book.author.slice(
+    if (metadata.author) {
+        uppercaseAuthor = `${metadata.author[0].toUpperCase()}${metadata.author.slice(
             1,
-            book.author.length
+            metadata.author.length
         )}`;
     }
     return (
         <div className="d-flex flex-wrap">
-            <Highlighter search={text}>{book.title}</Highlighter>
+            <Highlighter search={text}>{metadata.title}</Highlighter>
         </div>
     );
 }

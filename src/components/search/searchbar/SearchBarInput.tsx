@@ -5,7 +5,7 @@ import { TypeaheadInputProps } from "react-bootstrap-typeahead/types/types";
 import { useTranslation } from "react-i18next";
 import { FormikProps } from "formik";
 import { SearchFormFields } from "../helpers/searchTypes";
-import { Theme } from "../../general/helpers/generalContext";
+import { ThemeContext } from "../../general/helpers/generalContext";
 import { ThemeOptions } from "../../general/helpers/generalTypes";
 
 interface SearchBarInputProps {
@@ -20,7 +20,7 @@ export default function SearchBarInput({
     formik,
 }: SearchBarInputProps) {
     const { t } = useTranslation();
-    const theme = useContext(Theme);
+    const theme = useContext(ThemeContext);
     const c = async (v: string) => {
         formik.setFieldValue("q", v, false);
     };

@@ -8,16 +8,14 @@ import BookInfoTitle from "./bookInfoSub/BookInfoTitle";
 import BookInfoBadges from "./bookInfoSub/BookInfoBadges";
 import BookInfoDescription from "./bookInfoSub/BookInfoDescription";
 import BookInfoFile from "./bookInfoSub/BookInfoFile";
-import BookInfoReadOnline from "./bookInfoSub/BookInfoReadOnline";
 import BookInfoAuthors from "./bookInfoSub/BookInfoAuthors";
-import BookInfoLibraryButtons from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryButtons";
+import BookInfoLibraryAdd from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryAdd";
 
 export default function BookInfoMobile({
-    bookInfo,
-    setBookInfo,
+    metadata,
     downloadLinks,
     downloadLinksError,
-    savedBook,
+    updateMetadata,
 }: BookInfoSubProps) {
     return (
         <div className="d-flex flex-wrap justify-content-center bg-opacity-10">
@@ -27,7 +25,7 @@ export default function BookInfoMobile({
                     className="mt-4 mb-4 book-info-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
-                        <BookInfoCover book={bookInfo} />
+                        <BookInfoCover metadata={metadata} />
                     </div>
                 </div>
 
@@ -36,23 +34,25 @@ export default function BookInfoMobile({
                     className="ms-3 mt-4 mb-4 me-3 book-info-section"
                 >
                     <div className="d-flex flex-wrap justify-content-start">
-                        <BookInfoTitle book={bookInfo} />
+                        <BookInfoTitle metadata={metadata} />
                         <Break />
-                        <BookInfoAuthors book={bookInfo} />
+                        <BookInfoAuthors metadata={metadata} />
                         <Break className="mb-1" />
                         <SmallLine flexGrow />
                         <Break className="mb-2" />
-                        <BookInfoLibraryButtons
-                            book={bookInfo}
-                            setBookInfo={setBookInfo}
-                        />
+
                         <Break className="mb-2" />
-                        <BookInfoFile book={bookInfo} />
+                        <BookInfoFile metadata={metadata} />
                         <Break className="mb-3" />
-                        <BookInfoBadges savedBook={savedBook} book={bookInfo} />
+                        <BookInfoBadges metadata={metadata} />
+                        <Break />
+                        <BookInfoLibraryAdd
+                            metadata={metadata}
+                            updateMetadata={updateMetadata}
+                        />
                         <Break className="mb-4" />
                         <BookInfoDescription
-                            description={bookInfo.description!}
+                            description={metadata.description}
                         />
                         <Break className="mb-5" />
                         <BookInfoDownload
@@ -65,11 +65,6 @@ export default function BookInfoMobile({
             <Break />
             <SmallLine flexGrow className="me-4 ms-4" />
             <Break className="mt-2" />
-            <BookInfoReadOnline
-                savedBook={savedBook}
-                book={bookInfo}
-                downloadLinks={downloadLinks}
-            />
         </div>
     );
 }

@@ -20,7 +20,7 @@ import {
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
 
 export default function ReaderMain() {
@@ -32,7 +32,7 @@ export default function ReaderMain() {
         location.state;
 
     let arrayBuffer: ArrayBuffer | undefined;
-    let onlineFile: Book | undefined;
+    let onlineFile: Metadata | undefined;
     let localFile: File | undefined;
 
     if (locationState != null) {
@@ -98,7 +98,7 @@ export default function ReaderMain() {
         if (cachedPage != null) {
             return cachedPage;
         }
-        // If there's no valid local cache, fallback to using a book's progress property.
+        // If there's no valid local cache, fallback to using a metadataList's progress property.
         if (onlineFile && onlineFile.progress) {
             return onlineFile.progress;
         }

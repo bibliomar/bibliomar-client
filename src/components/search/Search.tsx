@@ -6,7 +6,7 @@ import SearchBar from "./searchbar/SearchBar";
 import Greeting from "./Greeting";
 import SearchResultScreen from "./results/SearchResultScreen";
 import Navbar from "../general/navbar/Navbar";
-import { Book } from "../general/helpers/generalTypes";
+import { Metadata } from "../general/helpers/generalTypes";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
 import Footer from "../general/Footer";
 import {
@@ -22,8 +22,8 @@ import SearchMessageScreen from "./loading/SearchMessageScreen";
 import SearchPagination from "./SearchPagination";
 import Break from "../general/Break";
 import SearchStatistics from "./SearchStatistics";
-import { buildSearchObject } from "../general/helpers/generalFunctions";
 import { FormikProps, useFormik } from "formik";
+import { buildSearchObject } from "./helpers/searchFunctions";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -86,7 +86,7 @@ function Search() {
 
     // Query related states
     const initialRequestMade = useRef<boolean>(false);
-    const [searchResults, setSearchResults] = useState<Book[]>([]);
+    const [searchResults, setSearchResults] = useState<Metadata[]>([]);
     const [requestStatus, setRequestStatus] = useState<
         SearchRequestStatus | undefined
     >(undefined);
@@ -180,7 +180,7 @@ function Search() {
         values: SearchFormFields
     ): Promise<SearchRequestStatusOptions | undefined> => {
         // Appends the current page to the formData object.
-        let resultsList: Book[] = [];
+        let resultsList: Metadata[] = [];
         const q = values.q;
 
         if (q == null || q.trim().length < 3) {

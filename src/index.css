@@ -34,13 +34,6 @@ abbr[title]:after {
     pointer-events: none;
 }
 
-.library-add-button {
-    /*noinspection CssUnknownTarget*/
-    background: url("/assets/img/button-ellipse.svg") no-repeat;
-    background-size: contain;
-    width: 15%;
-    height: auto;
-}
 
 .simple-figure-bg {
     cursor: text;
@@ -54,13 +47,6 @@ abbr[title]:after {
     text-overflow: ellipsis;
 }
 
-.library-checkbox-container {
-    position: absolute;
-    right: 2%;
-    top: 2%;
-    z-index: 5;
-    font-size: 1.6rem;
-}
 
 .about-first-text-container {
     width: 80%;
@@ -70,9 +56,6 @@ abbr[title]:after {
     width: 80%;
 }
 
-.library-checkbox-input {
-    transform: scale(1.8);
-}
 
 .simple-text {
     font-family: 'Nunito Sans', sans-serif;
@@ -142,18 +125,6 @@ abbr[title]:after {
 }
 
 
-.library-section-container {
-    width: 90vw;
-}
-
-.library-figure-img {
-    width: 32%;
-}
-
-.library-figure-row-img {
-    width: 90%;
-}
-
 .reader-spotlight-figure-img {
     min-width: 50%;
 }
@@ -188,9 +159,6 @@ abbr[title]:after {
     width: fit-content;
 }
 
-.library-actions-button {
-    width: 40vw;
-}
 
 .reader-modal-light-bg {
     background: #FAFAFA !important;
@@ -295,28 +263,6 @@ abbr[title]:after {
         width: 75%;
     }
 
-    .library-checkbox-container {
-        top: 1%;
-        right: 1%;
-    }
-
-    .library-checkbox-input {
-        transform: scale(1.2);
-    }
-
-    .library-section-container {
-        width: 70vw;
-    }
-
-    .library-figure-img {
-        width: 30%;
-        height: auto;
-    }
-
-    .library-figure-row-img {
-        width: 19%;
-
-    }
 
     .reader-spotlight-figure-img {
         min-width: 30%;
@@ -341,10 +287,6 @@ abbr[title]:after {
     .dbutton {
         width: 20vw;
         max-width: 70%;
-    }
-
-    .library-actions-button {
-        width: 15vw;
     }
 
     .saved-list-div {

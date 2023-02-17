@@ -1,45 +1,46 @@
 import { useEffect, useState } from "react";
 import {
-    AuthContext,
-    ThemeContext,
+    AuthContextParams,
+    ThemeContextParams,
     ThemeOptions,
 } from "./components/general/helpers/generalTypes";
-import { Theme, Auth } from "./components/general/helpers/generalContext";
+import {
+    AuthContext,
+    ThemeContext,
+} from "./components/general/helpers/generalContext";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import Themeing from "./Themeing";
 import { hasStorage } from "./components/general/helpers/generalFunctions";
+import useLocalStorage from "./components/general/helpers/useLocalStorage";
+import { toast, ToastContainer } from "react-toastify";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
 export default function Bibliomar() {
-    const savedThemeStr: string | null = localStorage.getItem("theme")
-        ? localStorage.getItem("theme")
-        : null;
-
-    const savedTheme = savedThemeStr
-        ? savedThemeStr === ThemeOptions.light
-            ? ThemeOptions.light
-            : ThemeOptions.dark
-        : null;
-
-    const [theme, setTheme] = useState<ThemeOptions>(
-        savedTheme ? savedTheme : ThemeOptions.light
+    const [theme, setTheme] = useLocalStorage<ThemeOptions>(
+        "theme",
+        ThemeOptions.light
     );
+    const [jwtToken, setJwtToken] = useLocalStorage<string | null>(
+        "jwt-token",
+        null
+    );
+
     const [themeing, setThemeing] = useState<boolean>(true);
-    const themeContext: ThemeContext = {
+    const themeContext: ThemeContextParams = {
         theme: theme,
         setTheme: setTheme,
     };
 
-    const [userLogged, setUserLogged] = useState<boolean>(
-        !!localStorage.getItem("jwt-token")
-    );
-    const authContext: AuthContext = {
+    const [userLogged, setUserLogged] = useState<boolean>(jwtToken != null);
+    const authContext: AuthContextParams = {
         userLogged: userLogged,
-        setUserLogged: setUserLogged,
+        jwtToken: jwtToken,
+        setJwtToken: setJwtToken,
     };
 
     useEffect(() => {
@@ -93,13 +94,18 @@ export default function Bibliomar() {
         }
     }, []);
 
+    useEffect(() => {
+        // Set userLogged state to true if jwtToken is not null.
+        setUserLogged(!!jwtToken);
+    }, [jwtToken]);
+
     return (
         <BrowserRouter>
-            <Auth.Provider value={authContext}>
-                <Theme.Provider value={themeContext}>
+            <AuthContext.Provider value={authContext}>
+                <ThemeContext.Provider value={themeContext}>
                     {themeing ? <Themeing /> : <App />}
-                </Theme.Provider>
-            </Auth.Provider>
+                </ThemeContext.Provider>
+            </AuthContext.Provider>
         </BrowserRouter>
     );
 }

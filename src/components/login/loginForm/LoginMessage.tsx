@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function LoginMessage(props: Props) {
-    let loginStatus = props.loginStatus;
+    const loginStatus = props.loginStatus;
     const { t } = useTranslation();
     return (
         <div>
@@ -27,6 +27,13 @@ export default function LoginMessage(props: Props) {
                         </div>
                     ) : null}
                     {loginStatus === 400 ? (
+                        <div className="d-flex justify-content-center">
+                            <span className="text-danger text-center">
+                                {t("user:informaesDeLoginIncorretas")}
+                            </span>
+                        </div>
+                    ) : null}
+                    {loginStatus === 401 ? (
                         <div className="d-flex justify-content-center">
                             <span className="text-danger text-center">
                                 {t("user:informaesDeLoginIncorretas")}

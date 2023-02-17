@@ -1,26 +1,20 @@
 import { createContext } from "react";
 import {
-    EditModeContext,
-    FiltersContext,
+    EditModeContextParams,
+    FiltersContextParams,
     PossibleFilters,
-    SelectedBooksContext,
 } from "./libraryTypes";
 import { defaultFilters } from "./libraryFunctions";
 
-const EditMode = createContext<EditModeContext>({
+const EditModeContext = createContext<EditModeContextParams>({
     editMode: false,
     setEditMode: () => {},
+    selectedBooksRef: { current: [] },
 });
 
-// Must only be used when EditMode is enabled.
-const SelectedBooks = createContext<SelectedBooksContext>({
-    selectedBooks: [],
-    setSelectedBooks: () => {},
-});
-
-const Filters = createContext<FiltersContext>({
+const Filters = createContext<FiltersContextParams>({
     filters: defaultFilters,
     setFilters: () => {},
 });
 
-export { EditMode, SelectedBooks, Filters };
+export { EditModeContext, Filters };

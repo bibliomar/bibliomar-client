@@ -2,7 +2,7 @@ import Break from "../../general/Break";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-    description: string | null;
+    description: string | null | undefined;
 }
 
 export default function BookInfoDescription({ description }: Props) {
@@ -13,11 +13,13 @@ export default function BookInfoDescription({ description }: Props) {
                 className="book-info-title-bold mb-4"
                 style={{ fontWeight: "700" }}
             >
-                {t("bookinfo:description")}
+                {t("metadatainfo:description")}
             </h4>
             <Break />
             <p className="book-info-description">
-                {description ? description : t("bookinfo:undefinedDescription")}
+                {description
+                    ? description
+                    : t("metadatainfo:undefinedDescription")}
             </p>
         </div>
     );

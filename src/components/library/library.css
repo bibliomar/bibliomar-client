@@ -1,0 +1,67 @@
+.library-figure-img {
+    width: 100%;
+    height: 235px;
+
+}
+
+.library-add-button {
+    /*noinspection CssUnknownTarget*/
+    background: url("/assets/img/button-ellipse.svg") no-repeat;
+    background-size: contain;
+    width: 15%;
+    height: auto;
+}
+
+.library-checkbox-container {
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    z-index: 5;
+    font-size: 1.6rem;
+}
+
+.library-checkbox-input {
+    transform: scale(1.8);
+}
+
+.library-section-container {
+    width: 90vw;
+}
+
+
+.library-actions-button {
+    width: 40vw;
+}
+
+@media screen and (min-width: 768px) {
+    .library-checkbox-container {
+        top: 1%;
+        right: 1%;
+    }
+
+    .library-checkbox-input {
+        transform: scale(1.2);
+    }
+
+    .library-section-container {
+        width: 70vw;
+    }
+
+    .library-figure-img {
+        height: 290px;
+    }
+
+    .library-actions-button {
+        width: 15vw;
+    }
+
+
+}
+
+@media screen and (min-width: 1024px) {
+    .library-figure-img {
+        height: 290px;
+    }
+
+}
+

@@ -49,11 +49,11 @@ export default function BookInfoDownload({ downloadLinks, error }: Props) {
                     <Break />
                     {!error ? (
                         <span className="text-muted mt-1 text-center w-75">
-                            {t("bookinfo:downloadWaitInfo")}
+                            {t("metadatainfo:downloadWaitInfo")}
                         </span>
                     ) : (
                         <span className="text-danger mt-1 text-center w-75">
-                            {t("bookinfo:downloadErrorInfo")}
+                            {t("metadatainfo:downloadErrorInfo")}
                         </span>
                     )}
                 </>

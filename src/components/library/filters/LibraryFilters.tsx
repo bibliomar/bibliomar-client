@@ -76,7 +76,7 @@ export default function LibraryFilters() {
                         <LibraryFiltersIconWrapper>
                             <MDBIcon
                                 fas
-                                icon="book"
+                                icon="metadataList"
                                 size={"lg"}
                                 className="me-2"
                             />

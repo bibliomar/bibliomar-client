@@ -1,7 +1,7 @@
 import Break from "../../general/Break";
-import LibraryBookFigure from "../../library/LibraryBookFigure";
+import LibraryBookFigure from "../../library/figure/LibraryBookFigure";
 import { useEffect, useState } from "react";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import axios from "axios";
 import RecommendationBookFigure from "./RecommendationBookFigure";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ interface Props {
 // TODO: Improve this and use actual statistics to generate recommendations.
 
 // noinspection AllyPlainJsInspection
-const recommendations: Book[] = [
+const recommendations: Metadata[] = [
     {
         author: "Daniel, Keyes",
         title: "Flores Para Algernon",
@@ -64,7 +64,7 @@ export default function RecommendationScreen(props: Props) {
                                 i === 0 ? (timeout = 750) : (timeout = i * 750);
                                 return (
                                     <RecommendationBookFigure
-                                        book={el}
+                                        metadata={el}
                                         timeout={timeout}
                                     />
                                 );

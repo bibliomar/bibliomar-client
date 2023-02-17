@@ -13,8 +13,8 @@ export default function BookInfoTopicParent() {
         ) {
             navigate("/error", { replace: true });
         }
-        if (topic === "scitech") {
-            topic = "sci-tech";
+        if (topic === "sci-tech") {
+            topic = "scitech";
         }
     }, []);
 

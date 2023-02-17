@@ -1,11 +1,11 @@
 import BookFigure from "./BookFigure";
 import Break from "../../general/Break";
 import React, { SetStateAction, useState } from "react";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { SearchRequestStatus } from "../helpers/searchTypes";
 
 interface Props {
-    visibleResults: Book[];
+    visibleResults: Metadata[];
 }
 
 export default function SearchResultsContent(props: Props) {
@@ -20,7 +20,7 @@ export default function SearchResultsContent(props: Props) {
                 } else {
                     timeout = i * 750;
                 }
-                return <BookFigure book={ele} timeout={timeout} key={i} />;
+                return <BookFigure metadata={ele} timeout={timeout} key={i} />;
             })}
         </>
     );

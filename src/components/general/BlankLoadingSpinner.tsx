@@ -1,6 +1,6 @@
 import { MDBSpinner } from "mdb-react-ui-kit";
 import { useContext } from "react";
-import { Theme } from "./helpers/generalContext";
+import { ThemeContext } from "./helpers/generalContext";
 import { ThemeOptions } from "./helpers/generalTypes";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ({ color, size }: Props) {
-    const theme = useContext(Theme).theme;
+    const theme = useContext(ThemeContext).theme;
     return (
         <div className="d-flex justify-content-center mt-5">
             <MDBSpinner

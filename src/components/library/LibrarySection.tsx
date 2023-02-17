@@ -1,7 +1,7 @@
 import Break from "../general/Break";
-import LibraryBookFigure from "./LibraryBookFigure";
+import LibraryBookFigure from "./figure/LibraryBookFigure";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Book, LibraryCategories } from "../general/helpers/generalTypes";
+import { Metadata, LibraryCategories } from "../general/helpers/generalTypes";
 import { Filters } from "./helpers/libraryContext";
 import equal from "fast-deep-equal/es6";
 import {
@@ -9,59 +9,91 @@ import {
     bookFiltering,
     defaultFilters,
 } from "./helpers/libraryFunctions";
-import { MDBIcon, MDBTooltip } from "mdb-react-ui-kit";
+import {
+    MDBCol,
+    MDBContainer,
+    MDBIcon,
+    MDBRow,
+    MDBTooltip,
+} from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import Paginator from "../general/Paginator";
 import LibraryPagination from "./pagination/LibraryPagination";
 import { Trans, useTranslation } from "react-i18next";
+import { useWindowSize } from "../general/helpers/useWindowSize";
 
 interface Props {
-    message: string;
-    bookCategory: LibraryCategories;
-    booksInfo: Book[];
+    title: string;
+    metadataCategory: LibraryCategories;
+    metadatas: Metadata[];
 }
 
 export default function LibrarySection({
-    message,
-    bookCategory,
-    booksInfo,
+    title,
+    metadataCategory,
+    metadatas,
 }: Props) {
     const filtersContext = useContext(Filters);
     const { t } = useTranslation();
+    const { width } = useWindowSize();
 
     const onDefaultFilters = useMemo(() => {
         return equal(filtersContext.filters, defaultFilters);
-    }, [filtersContext.filters]);
+    }, [metadatas, filtersContext.filters]);
 
     const filteredBooks = useMemo(() => {
-        return bookFiltering(
-            bookCategorySetter(booksInfo, bookCategory),
-            filtersContext.filters
-        );
-    }, [filtersContext.filters]);
+        return bookFiltering(metadatas, filtersContext.filters);
+    }, [metadatas, filtersContext.filters]);
 
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
     const [itemOffset, setItemOffset] = useState(0);
-    const [books, setBooks] = useState<Book[]>([]);
+    const [visibleMetadata, setVisibleMetadata] = useState<Metadata[]>([]);
     const [pageCount, setPageCount] = useState(0);
+
+    // The number of items per row will be different depending on the screen size.
+    let itemsPerRow = 6;
+    if (width < 768) {
+        itemsPerRow = 2;
+    } else if (width < 1024) {
+        itemsPerRow = 3;
+    }
+
+    // The list of slices to be rendered.
+    // They will be rendered using MDBootstrap grid system.
+    const slicedMetadataList = useMemo(() => {
+        const listOfSlices: Metadata[][] = [];
+        for (
+            let start = 0;
+            start < visibleMetadata.length;
+            start += itemsPerRow
+        ) {
+            const end = start + itemsPerRow;
+            const sliced = visibleMetadata.slice(start, end);
+            listOfSlices.push(sliced);
+        }
+
+        return listOfSlices;
+    }, [visibleMetadata]);
 
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
         setPageCount(Math.ceil(filteredBooks.length / itemsPerPage));
-        setBooks(filteredBooks.slice(itemOffset, endOffset));
+        setVisibleMetadata(filteredBooks.slice(itemOffset, endOffset));
     }, [filteredBooks, itemOffset]);
 
     const pageChangeHandler = (evt: any) => {
         const newOffset = (evt.selected * itemsPerPage) % filteredBooks.length;
         setItemOffset(newOffset);
-        setBooks(filteredBooks.slice(newOffset, newOffset + itemsPerPage));
+        setVisibleMetadata(
+            filteredBooks.slice(newOffset, newOffset + itemsPerPage)
+        );
     };
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
             <div className="d-flex flex-wrap justify-content-md-start justify-content-center w-100 mb-3">
                 <div className="d-flex flex-wrap w-100">
-                    <span className="fw-bold lead">{message}</span>
+                    <span className="fw-bold lead">{title}</span>
                     <Link to={"/library"} className="ms-auto">
                         <MDBIcon
                             fas
@@ -89,19 +121,30 @@ export default function LibrarySection({
             </div>
             <Break />
             <div className="d-flex flex-wrap justify-content-center justify-content-md-start  w-100">
-                {books.length > 0 ? (
-                    books.map((el, i) => {
-                        let timeout;
-                        i === 0 ? (timeout = 1000) : (timeout = i * 1500);
+                <MDBContainer fluid>
+                    {slicedMetadataList.map((metadataSlice, sliceIndex) => {
                         return (
-                            <LibraryBookFigure
-                                key={i * Math.random() * 100}
-                                book={el}
-                                timeout={timeout}
-                            />
+                            <MDBRow key={sliceIndex}>
+                                {metadataSlice.map((metadata, entryIndex) => {
+                                    return (
+                                        <MDBCol
+                                            key={entryIndex}
+                                            size={`${12 / itemsPerRow}`}
+                                            className="gx-2"
+                                        >
+                                            <LibraryBookFigure
+                                                metadata={metadata}
+                                                timeout={entryIndex * 1000}
+                                                expanded
+                                            />
+                                        </MDBCol>
+                                    );
+                                })}
+                            </MDBRow>
                         );
-                    })
-                ) : (
+                    })}
+                </MDBContainer>
+                {metadatas.length === 0 && (
                     <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
                             <span>
@@ -116,8 +159,9 @@ export default function LibrarySection({
                         )}
                     </div>
                 )}
+
                 <Break />
-                {books.length > 0 ? (
+                {visibleMetadata.length > 0 ? (
                     <LibraryPagination
                         pageChangeHandler={pageChangeHandler}
                         pageCount={pageCount}

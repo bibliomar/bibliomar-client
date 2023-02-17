@@ -4,7 +4,7 @@ import React, { SetStateAction, useEffect } from "react";
 
 import { MDBRipple } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 import BookFigureCover from "../../general/BookFigureCover";
 import {
@@ -13,24 +13,27 @@ import {
     SearchRequestType,
 } from "../helpers/searchTypes";
 import { useTranslation } from "react-i18next";
-import { formatBytes } from "../../general/helpers/generalFunctions";
+import {
+    formatBytes,
+    getMetadataInfoPath,
+} from "../../general/helpers/generalFunctions";
 
 interface Props {
-    book: Book;
+    metadata: Metadata;
     timeout: number;
 }
 
-export default function BookFigure({ book, timeout }: Props) {
+export default function BookFigure({ metadata, timeout }: Props) {
     const { t } = useTranslation();
-    const [cover, coverDone] = useCover(book, timeout);
-    const extension = book.extension
-        ? book.extension.toUpperCase()
+    const [cover, coverDone] = useCover(metadata, timeout);
+    const extension = metadata.extension
+        ? metadata.extension.toUpperCase()
         : t("search:formatoIndefinido");
-    const size = book.fileSize
-        ? formatBytes(book.fileSize)
+    const size = metadata.fileSize
+        ? formatBytes(metadata.fileSize)
         : t("search:tamanhoIndefinido");
 
-    const href = `/book/${book.topic}/${book.md5}`;
+    const href = getMetadataInfoPath(metadata.topic, metadata.md5);
 
     return (
         <figure className="figure d-flex flex-column result-div me-lg me-md-3">
@@ -40,7 +43,7 @@ export default function BookFigure({ book, timeout }: Props) {
                 rippleColor="light"
             >
                 <BookFigureCover
-                    book={book}
+                    metadata={metadata}
                     cover={cover}
                     loadingClassName="loading-skeleton-search"
                     coverDone={coverDone}
@@ -56,12 +59,12 @@ export default function BookFigure({ book, timeout }: Props) {
                 <div className="d-flex flex-wrap">
                     <span className="mx-2 mb-1">
                         <strong>{t("figure:title")} </strong>
-                        {book.title}
+                        {metadata.title}
                     </span>
                     <Break />
                     <span className="mx-2 mb-1">
                         <strong>{t("figure:author")}</strong>
-                        {book["author"]}
+                        {metadata["author"]}
                     </span>
                     <Break />
                     <p className="mx-2 mb-2">

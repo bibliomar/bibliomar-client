@@ -1,0 +1,145 @@
+import { Metadata, LibraryCategories } from "../general/helpers/generalTypes";
+import React, { useContext, useMemo } from "react";
+import LibraryBookFigure from "./figure/LibraryBookFigure";
+import Break from "../general/Break";
+import {
+    MDBCol,
+    MDBContainer,
+    MDBIcon,
+    MDBRow,
+    MDBTooltip,
+} from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
+import { Filters } from "./helpers/libraryContext";
+import {
+    bookCategorySetter,
+    bookFiltering,
+    defaultFilters,
+} from "./helpers/libraryFunctions";
+import equal from "fast-deep-equal/es6";
+import { useTranslation } from "react-i18next";
+import { useWindowSize } from "../general/helpers/useWindowSize";
+
+interface Props {
+    title: string;
+    message: string;
+    metadataCategory: LibraryCategories;
+    metadata: Metadata[];
+}
+
+export default function LibraryCategory({
+    title,
+    message,
+    metadataCategory,
+    metadata,
+}: Props) {
+    const filtersContext = useContext(Filters);
+    const { t } = useTranslation();
+    const { width } = useWindowSize();
+
+    const onDefaultFilters = useMemo(() => {
+        return equal(filtersContext.filters, defaultFilters);
+    }, [metadata, filtersContext.filters]);
+
+    const metadatas = useMemo(() => {
+        return bookFiltering(metadata, filtersContext.filters);
+    }, [metadata, filtersContext.filters]);
+
+    // The number of items per row will be different depending on the screen size.
+    let itemsPerRow = 6;
+    if (width < 768) {
+        itemsPerRow = 2;
+    } else if (width < 1024) {
+        itemsPerRow = 3;
+    }
+    const maxVisibleRows = 3;
+    const maxVisibleItems = itemsPerRow * maxVisibleRows;
+
+    // The list of slices to be rendered.
+    // They will be rendered using MDBootstrap grid system.
+    const slicedMetadataList = useMemo(() => {
+        const listOfSlices: Metadata[][] = [];
+        for (let start = 0; start < metadatas.length; start += itemsPerRow) {
+            const end = start + itemsPerRow;
+            const sliced = metadatas.slice(start, end);
+            listOfSlices.push(sliced);
+        }
+
+        return listOfSlices;
+    }, [metadatas]);
+
+    return (
+        <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
+            <div className="d-flex flex-wrap justify-content-md-start w-100 mb-3">
+                <div className="d-flex flex-wrap">
+                    <MDBTooltip title={message} tag={"span"} placement={"auto"}>
+                        <span className="fw-bold lead">{title}</span>
+                    </MDBTooltip>
+                </div>
+
+                <Link to={metadataCategory} className="ms-auto">
+                    <MDBIcon
+                        fas
+                        icon="plus-square"
+                        className="text-accent"
+                        size={"2x"}
+                    />
+                </Link>
+
+                <Break />
+                {metadatas.length > maxVisibleItems && (
+                    <span className="text-muted">
+                        Mostrando <strong>{maxVisibleItems}</strong> livros de{" "}
+                        {metadatas.length}
+                    </span>
+                )}
+            </div>
+            <Break />
+            <div className="d-flex flex-wrap w-100">
+                <MDBContainer fluid>
+                    {slicedMetadataList.map((metadataSlice, sliceIndex) => {
+                        if (sliceIndex > maxVisibleRows - 1) {
+                            return null;
+                        }
+                        return (
+                            <MDBRow key={sliceIndex}>
+                                {metadataSlice.map((metadata, entryIndex) => {
+                                    return (
+                                        <MDBCol
+                                            key={entryIndex}
+                                            size={`${12 / itemsPerRow}`}
+                                            className="gx-2"
+                                        >
+                                            <LibraryBookFigure
+                                                metadata={metadata}
+                                                timeout={entryIndex * 1000}
+                                                expanded
+                                            />
+                                        </MDBCol>
+                                    );
+                                })}
+                            </MDBRow>
+                        );
+                    })}
+                </MDBContainer>
+
+                <Break />
+                {metadatas.length === 0 ? (
+                    <div className="d-flex justify-content-center w-100 mb-3">
+                        {onDefaultFilters ? (
+                            <span>
+                                {t("library:vazioQueTalAdicionarAlgumLivro")}
+                            </span>
+                        ) : (
+                            <span>
+                                {t(
+                                    "library:nenhumLivroCorrespondeAosFiltrosSelecionados"
+                                )}
+                            </span>
+                        )}
+                    </div>
+                ) : null}
+            </div>
+        </div>
+    );
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
     backendUrl,
@@ -6,12 +6,13 @@ import {
     getEmptyCover,
     resolveCoverUrl,
 } from "./generalFunctions";
-import { Book } from "./generalTypes";
+import { Metadata } from "./generalTypes";
+import useSessionStorage from "./useSessionStorage";
 
-// Async handles book cover recovery.
+// Async handles metadataList cover recovery.
 // Returns a tuple with a possible cover and if the process of retrieving the cover is done.
 export default function useCover(
-    book: Book,
+    book: Metadata,
     timeout?: number
 ): [string | undefined, boolean] {
     const noCoverUrl: string = getEmptyCover();
@@ -20,20 +21,28 @@ export default function useCover(
 
     useEffect(() => {
         let coverTimeout: number | undefined = undefined;
+        // Retrieves a possible cached cover from sessionStorage
+        const cachedCover = window.sessionStorage.getItem(`${book.md5}-cover`);
+        if (cachedCover != undefined) {
+            setCover(cachedCover);
+            setCoverDone(true);
+            return;
+        }
 
         coverTimeout = window.setTimeout(
             async () => {
-                let cover: string | undefined = undefined;
+                let cover: string | undefined;
                 if (coverProviderUrl != null && book.coverUrl != null) {
                     cover = resolveCoverUrl(false, book.topic, book.coverUrl);
-                }
-
-                if (cover != undefined && cover !== noCoverUrl) {
-                    setCover(cover);
                 } else {
-                    setCover(noCoverUrl);
+                    cover = noCoverUrl;
                 }
 
+                if (cover != undefined) {
+                    // Persist cover url to sessionStorage
+                    window.sessionStorage.setItem(`${book.md5}-cover`, cover);
+                    setCover(cover);
+                }
                 setCoverDone(true);
             },
             timeout ? timeout : 1000
@@ -44,7 +53,7 @@ export default function useCover(
                 window.clearTimeout(coverTimeout);
             }
         };
-    }, [book]);
+    }, []);
 
     return [cover, coverDone];
 }

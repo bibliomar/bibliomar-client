@@ -1,8 +1,8 @@
 // noinspection AllyJsxHardcodedStringInspection
 
 import { MDBBadge } from "mdb-react-ui-kit";
-import { useContext } from "react";
-import { Theme } from "../helpers/generalContext";
+import React, { useContext } from "react";
+import { ThemeContext } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import {
     ReaderSettings,
@@ -10,12 +10,12 @@ import {
 } from "../../reader/helpers/readerTypes";
 
 interface Props {
-    badgeText?: string;
+    badgeContent?: string | JSX.Element;
     readerAccent?: ReaderThemeAccentOptions;
 }
 
-export default function BibliomarBrand({ badgeText, readerAccent }: Props) {
-    const theme = useContext(Theme).theme;
+export default function BibliomarBrand({ badgeContent, readerAccent }: Props) {
+    const theme = useContext(ThemeContext).theme;
     return (
         <div className="">
             <img
@@ -31,10 +31,8 @@ export default function BibliomarBrand({ badgeText, readerAccent }: Props) {
                 alt="Bibliomar"
                 className="brand-img"
             />
-            {badgeText ? (
-                <MDBBadge className="navbar-badge">
-                    {badgeText.toUpperCase()}
-                </MDBBadge>
+            {badgeContent ? (
+                <MDBBadge className="navbar-badge">{badgeContent}</MDBBadge>
             ) : null}
         </div>
     );

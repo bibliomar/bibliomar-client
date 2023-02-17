@@ -1,83 +1,114 @@
-import { Book } from "../helpers/generalTypes";
+import { Metadata } from "../helpers/generalTypes";
 import { MDBCheckbox, MDBRipple } from "mdb-react-ui-kit";
 import React, { useContext, useEffect, useState } from "react";
-import { EditMode, SelectedBooks } from "../../library/helpers/libraryContext";
+import { EditModeContext } from "../../library/helpers/libraryContext";
 import { useNavigate } from "react-router-dom";
 import BookFigureCover from "../BookFigureCover";
+import { formatBytes } from "../helpers/generalFunctions";
+import { useTranslation } from "react-i18next";
 
 interface SimpleBookFigureProps {
-    book: Book;
+    metadata: Metadata;
     cover: string | undefined;
     coverDone: boolean;
     loadingClassName?: string;
-    href: string;
+    href?: string;
+    expanded?: boolean;
 }
 
-// A reusable book figure which shows the book info on top of its cover.
+// A reusable metadata figure which shows the metadata info on top of its cover.
 export default function SimpleBookFigure({
-    book,
+    metadata,
     cover,
     loadingClassName,
     coverDone,
     href,
+    expanded,
 }: SimpleBookFigureProps) {
-    const editModeContext = useContext(EditMode);
-    const selectedBooksContext = useContext(SelectedBooks);
+    const editModeContext = useContext(EditModeContext);
     const [onSelectedBooks, setOnSelectedBooks] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
 
     const handleCheckboxChange = () => {
         if (!onSelectedBooks) {
+            const previouslySelected = editModeContext.selectedBooksRef.current;
+            editModeContext.selectedBooksRef.current = [
+                ...previouslySelected,
+                metadata,
+            ];
             setOnSelectedBooks(true);
-            selectedBooksContext.setSelectedBooks((prevSelected) => {
-                return [...prevSelected, book];
-            });
         } else {
-            setOnSelectedBooks(false);
-            selectedBooksContext.setSelectedBooks((prevSelected) => {
-                const newSelectedBooks = prevSelected;
-                newSelectedBooks.forEach((selectedBook, index) => {
-                    if (book.md5 === selectedBook.md5) {
-                        newSelectedBooks.splice(index);
-                    }
+            const previouslySelected = editModeContext.selectedBooksRef.current;
+            editModeContext.selectedBooksRef.current =
+                previouslySelected.filter((selectedBook) => {
+                    return selectedBook.md5 !== metadata.md5;
                 });
-                return newSelectedBooks;
-            });
+            setOnSelectedBooks(false);
         }
     };
 
     useEffect(() => {
-        let onList = false;
-        selectedBooksContext.selectedBooks.forEach((selectedBook) => {
-            if (selectedBook.md5 === book.md5) {
-                onList = true;
-                if (!onSelectedBooks) {
-                    setOnSelectedBooks(true);
-                }
-            }
-        });
-        if (!onList && onSelectedBooks) {
+        if (
+            !editModeContext.editMode ||
+            editModeContext.selectedBooksRef.current.length === 0
+        ) {
             setOnSelectedBooks(false);
+            return;
         }
-    }, [selectedBooksContext]);
+        const bookOnList = editModeContext.selectedBooksRef.current.find(
+            (selectedBook) => {
+                return selectedBook.md5 === metadata.md5;
+            }
+        );
+
+        if (bookOnList && !onSelectedBooks) {
+            setOnSelectedBooks(true);
+            return;
+        }
+
+        if (!bookOnList && onSelectedBooks) {
+            setOnSelectedBooks(false);
+            return;
+        }
+    }, [editModeContext.editMode]);
+
+    const formatAndSize = `${
+        metadata.extension
+            ? metadata.extension.toUpperCase()
+            : t("metadatainfo:undefinedField")
+    }, ${
+        metadata.fileSize
+            ? formatBytes(metadata.fileSize)
+            : t("metadatainfo:undefinedField")
+    }`;
 
     return (
         <div className="position-relative w-100 h-100">
             <div className="simple-figure-bg text-light">
                 <span
                     className="ms-2 text-nowrap simple-text fw-bolder"
-                    style={{ fontSize: "1.15em" }}
+                    style={{ fontSize: "1.05em" }}
                 >
-                    {book.title}
+                    {metadata.title}
                 </span>
                 <br />
                 <span
                     className="ms-2 text-nowrap simple-text"
                     style={{ fontSize: "0.9em" }}
                 >
-                    {book.author}
+                    {metadata.author}
                 </span>
+                <br />
+                {expanded && (
+                    <span
+                        className="ms-2 text-nowrap simple-text"
+                        style={{ fontSize: "0.9em" }}
+                    >
+                        {formatAndSize}
+                    </span>
+                )}
             </div>
             <MDBRipple
                 className={`bg-image hover-overlay shadow-1-strong rounded w-100 h-100`}
@@ -95,7 +126,7 @@ export default function SimpleBookFigure({
                 )}
 
                 <BookFigureCover
-                    book={book}
+                    metadata={metadata}
                     cover={cover}
                     coverDone={coverDone}
                     loadingClassName={loadingClassName}
@@ -104,7 +135,7 @@ export default function SimpleBookFigure({
                         evt.preventDefault();
                         if (editModeContext && editModeContext.editMode) {
                             handleCheckboxChange();
-                        } else {
+                        } else if (href) {
                             navigate(href);
                         }
                     }}

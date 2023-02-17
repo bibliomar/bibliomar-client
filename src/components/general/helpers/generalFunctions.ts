@@ -1,9 +1,8 @@
-import { Book, LibraryCategories } from "./generalTypes";
+import { AuthContextParams, Metadata, LibraryCategories } from "./generalTypes";
 import { NavigateFunction } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import localforage from "localforage";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
-import { SearchFormFields } from "../../search/helpers/searchTypes";
 
 export const hasStorage = (storage: Storage): boolean => {
     const testItem = "_bibliomar_storage_test";
@@ -61,13 +60,13 @@ export const getUserInfo = async (
             }
         }
         if (navigate) {
-            navigate("/book/error");
+            navigate("/metadataList/error");
         }
         return null;
     }
 };
 
-// Tries to find a book in the browser's saved books based on md5.
+// Tries to find a metadataList in the browser's saved books based on md5.
 export const findBookInSavedBooks = async (
     md5: string
 ): Promise<SavedBookEntry | null> => {
@@ -95,83 +94,79 @@ export const findBookInSavedBooks = async (
     }
 };
 
-// Tries to find a book on a user's library based on md5.
-// Automatically uses stored jwt-token, if it exists.
-export const findBookInLibrary = async (md5: string) => {
-    const jwtToken = localStorage.getItem("jwt-token");
-    if (jwtToken == null) {
-        return null;
-    }
-
-    try {
-        const req = await axios.get(`${backendUrl}/v1/library/get/${md5}`, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        });
-        const data: {
-            result: Book;
-        } = req.data;
-        return data.result;
-    } catch (err: any) {
-        console.error(err);
-        return null;
-    }
-};
-
-export async function removeBookFromLibrary(
-    bookToRemove: Book | Book[],
-    jwtToken: string
+/**
+ * Retrieves a metadataList from the user's library.
+ * <br>
+ * IMPORTANT: Exceptions throw by this function are propagated to the caller!
+ * @param authContext - the authorization context
+ * @param md5 - the md5 of the metadataList to retrieve
+ */
+export async function findBookInLibrary(
+    authContext: AuthContextParams,
+    md5: string
 ) {
-    const md5List = [];
-
-    if (Array.isArray(bookToRemove)) {
-        bookToRemove.forEach((book) => md5List.push(book.md5));
-    } else {
-        md5List.push(bookToRemove.md5);
-    }
-
-    const config = {
-        url: `${backendUrl}/v1/library/remove`,
-        method: "POST",
+    const config: AxiosRequestConfig = {
+        method: "GET",
+        url: `${serverUrl}/library/${md5}`,
         headers: {
-            Authorization: `Bearer ${jwtToken}`,
+            Authorization: `Bearer ${authContext.jwtToken}`,
         },
-        data: md5List,
     };
-    const req = await axios.request(config);
-    console.log(req);
+
+    return await axios.request(config);
 }
 
-export async function addBookToLibrary(
-    bookToAdd: Book | Book[],
-    jwtToken: string,
-    category: LibraryCategories
+/**
+ * Removes a metadataList from the user's library.
+ * <br>
+ * IMPORTANT: Exceptions throw by this function are propagated to the caller!
+ * @param authContext - the authorization context
+ * @param md5ToRemove - the md5 of the metadataList to remove
+ */
+export async function removeBookFromLibrary(
+    authContext: AuthContextParams,
+    md5ToRemove: string
 ) {
-    if (Array.isArray(bookToAdd)) {
-        bookToAdd = bookToAdd.map((book) => {
-            if (Object.hasOwn(book, "category")) {
-                book.category = category;
-            }
-            return book;
-        });
-    } else {
-        if (Object.hasOwn(bookToAdd, "category")) {
-            bookToAdd.category = category;
-        }
-    }
-
-    const req_body = Array.isArray(bookToAdd) ? bookToAdd : [bookToAdd];
-    const config = {
-        url: `${backendUrl}/v1/library/add/${category}`,
-        method: "POST",
+    const config: AxiosRequestConfig = {
+        method: "DELETE",
+        url: `${serverUrl}/library/${md5ToRemove}`,
         headers: {
-            Authorization: `Bearer ${jwtToken}`,
+            Authorization: `Bearer ${authContext.jwtToken}`,
         },
-        data: req_body,
     };
-    const req = await axios.request(config);
-    console.log(req);
+
+    return await axios.request(config);
+}
+
+/**
+ * Adds a metadataList to the user's library.
+ * <br>
+ * IMPORTANT: Exceptions throw by this function are propagated to the caller!
+ * @param authContext - the authorization context
+ * @param bookToAdd - the metadataList to add
+ * @param targetCategory - the target category
+ */
+export async function addBookToLibrary(
+    authContext: AuthContextParams,
+    bookToAdd: Metadata,
+    targetCategory: LibraryCategories
+): Promise<AxiosResponse> {
+    const addBookRequest = {
+        md5: bookToAdd.md5,
+        topic: bookToAdd.topic,
+        targetCategory: targetCategory,
+    };
+
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: `${serverUrl}/library`,
+        data: addBookRequest,
+        headers: {
+            Authorization: `Bearer ${authContext.jwtToken}`,
+        },
+    };
+
+    return await axios.request(config);
 }
 
 export function getEmptyCover() {
@@ -207,7 +202,7 @@ export function resolveCoverUrl(
     }
 }
 
-export function getBookInfoPath(topic: string, md5: string) {
+export function getMetadataInfoPath(topic: string, md5: string) {
     if (topic == undefined || md5 == undefined) {
         return undefined;
     }
@@ -217,107 +212,15 @@ export function getBookInfoPath(topic: string, md5: string) {
         if (topic === "sci-tech") {
             topic = "scitech";
         }
-        return `/book/${topic}/${md5}`;
+        return `/metadata/${topic}/${md5}`;
     }
 
     return undefined;
 }
 
-export function buildSearchObject(
-    values: SearchFormFields,
-    offset?: number | undefined,
-    limit?: number | undefined
-): object {
-    const topic = values.topic;
-    const type = values.type;
-    const query = values.q;
-    const format = values.format;
-    const language = values.language;
-    const fulltext = values.fulltext;
-
-    // PS: Field order is VERY important here.
-    // The user query should be at the start of the string, and everything else at the end.
-    let finalQueryString = "";
-
-    if (type != null) {
-        switch (type) {
-            case "title":
-                if (finalQueryString.includes("@title")) {
-                    finalQueryString.replace("@title", `@title ${query}`);
-                } else {
-                    finalQueryString += `@title ${query} `;
-                }
-                break;
-            case "author":
-                if (finalQueryString.includes("@author")) {
-                    finalQueryString.replace("@author", `@author ${query}`);
-                } else {
-                    finalQueryString += `@author ${query} `;
-                }
-                break;
-            case "any":
-                finalQueryString += `${query} `;
-                break;
-        }
-    }
-
-    if (format != null && format !== "any") {
-        if (finalQueryString.includes("@extension")) {
-            finalQueryString.replace("@extension", `@extension ${format} `);
-        } else {
-            finalQueryString += `@extension ${format} `;
-        }
-    }
-    if (language != null && language !== "any") {
-        if (finalQueryString.includes("@language")) {
-            finalQueryString.replace("@language", `@language ${language} `);
-        } else {
-            finalQueryString += `@language ${language} `;
-        }
-    }
-
-    if (topic === "fiction") {
-        finalQueryString += "@topic fiction ";
-    } else if (topic === "scitech") {
-        finalQueryString += "@topic scitech ";
-    }
-
-    if (fulltext != null && query) {
-        finalQueryString = query;
-    }
-
-    finalQueryString = finalQueryString.trim();
-
-    const searchObject: any = {
-        index: "libgen",
-        query: {
-            query_string: finalQueryString,
-        },
-    };
-
-    if (offset != null) {
-        searchObject.offset = offset;
-    } else {
-        searchObject.offset = 0;
-    }
-
-    if (limit != null) {
-        searchObject.limit = limit;
-    } else {
-        searchObject.limit = 500;
-    }
-
-    if (limit != null && offset != null) {
-        const maxMatches = offset + limit > 1000 ? 1000 : offset + limit;
-        searchObject.max_matches = maxMatches;
-    }
-
-    console.log(searchObject);
-
-    return searchObject;
-}
-
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+
+export const serverUrl = import.meta.env.VITE_SERVER_URL as string;
 
 export const manticoreUrl = import.meta.env.VITE_MANTICORE_URL as string;
 

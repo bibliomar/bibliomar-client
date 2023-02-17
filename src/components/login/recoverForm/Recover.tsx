@@ -9,10 +9,11 @@ import Recovering from "./Recovering";
 
 export default function Recover() {
     const [recoverable, setRecoverable] = useState<boolean>(false);
+
     const [token, setToken] = useState<string>("");
     const [searchParams, _] = useSearchParams();
     useEffect(() => {
-        let recoverToken = searchParams.get("token") as string;
+        const recoverToken = searchParams.get("token") as string;
         if (recoverToken) {
             setToken(recoverToken);
             setRecoverable(true);

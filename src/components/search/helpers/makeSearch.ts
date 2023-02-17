@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import {
     ManticoreSearchHits,
     ManticoreSearchResponse,
@@ -25,12 +25,12 @@ function getManticoreSearchApi() {
     return new manticore.SearchApi(client);
 }
 
-function getBooksFromHits(hits: Book[]) {
-    const books: Book[] = [];
+function getBooksFromHits(hits: Metadata[]) {
+    const books: Metadata[] = [];
     hits.forEach((hit: any) => {
         const hitSource = hit._source;
         if (hit && hitSource) {
-            const book: Book = {
+            const book: Metadata = {
                 title: hitSource.title,
                 author: hitSource.author,
                 md5: hitSource.md5,

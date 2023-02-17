@@ -29,3 +29,4 @@ dev-dist
 .env
 locales
 /locales/
+/requests.http

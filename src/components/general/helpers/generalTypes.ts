@@ -1,6 +1,7 @@
 // This file is to be used for storing types and interfaces common to the whole application.
 
 import React from "react";
+import { AxiosError } from "axios";
 
 type DownloadLinks = {
     GET: string;
@@ -10,20 +11,21 @@ type DownloadLinks = {
     Pinata: string;
 };
 
-interface AnyProperties {
-    // Makes so that the Book type actually accepts any property with any value.
-    [key: string]: any;
+interface FailedLibraryRequest {
+    // This is the type of a failed request to add or remove a metadataList from a user's library.
+    book: Metadata;
+    error: AxiosError;
 }
 
 interface LibraryProperties {
-    // All properties here are only valid for library entries. (e.g. book you get from a user's library.)
+    // All properties here are only valid for library entries. (e.g. metadataList you get from a user's library.)
     // Make sure to check if they exist before using them.
-
     // The value is an epubcifi string.
     progress?: string | null;
-    // The value is a string with the book's category on the user's library.
+
+    // The value is a string with the metadataList's category on the user's library.
     // Not to be confused with "topic"
-    category?: string | null;
+    category?: LibraryCategories | null;
 }
 
 interface DownloadMirrors {
@@ -32,10 +34,11 @@ interface DownloadMirrors {
 }
 
 interface MetadataProperties {
-    // Describes properties which are exclusive to metadata results.
+    // Describes properties which are exclusive to metadataList results.
     // Make sure to check if they exist before using them.
     // These extra infos are mostly used in the BookInfo component.
-
+    asin?: string | null;
+    volumeInfo?: string | null;
     edition?: string | null;
     year?: string | null;
     publisher?: string | null;
@@ -46,10 +49,11 @@ interface MetadataProperties {
     downloadMirrors?: DownloadMirrors;
 }
 
-interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
-    // This is the basic schema of a book. It may include extra properties if it has metadata or if it's from a user's library.
-    // Be sure to check if a property exists before using it.
-
+/**
+ * This is the basic schema of a metadataList. It may include extra properties if it has metadataList or if it's from a user's library.
+ * Be sure to check if a property exists before using it.
+ */
+interface Metadata extends LibraryProperties, MetadataProperties {
     title: string;
     author: string;
     md5: string;
@@ -61,16 +65,31 @@ interface Book extends LibraryProperties, MetadataProperties, AnyProperties {
     coverUrl?: string | null;
 }
 
+/**
+ * The category schema for a user's library.
+ * Each category is composed of a object with the metadataList's md5 as the key and the metadataList as the value.
+ */
+interface UserLibraryCategory {
+    [md5: string]: Metadata;
+}
+
 interface UserLibrary {
-    reading: Book[];
-    "to-read": Book[];
-    backlog: Book[];
+    reading: UserLibraryCategory;
+    toRead: UserLibraryCategory;
+    backlog: UserLibraryCategory;
+
+    finished: UserLibraryCategory;
+
+    dropped: UserLibraryCategory;
+    username: string;
 }
 
 enum LibraryCategories {
     reading = "reading",
-    toRead = "to-read",
+    toRead = "toRead",
+    finished = "finished",
     backlog = "backlog",
+    dropped = "dropped",
 }
 
 enum ThemeOptions {
@@ -78,15 +97,27 @@ enum ThemeOptions {
     "dark" = "dark",
 }
 
-interface ThemeContext {
+interface ThemeContextParams {
     theme: ThemeOptions;
-    setTheme: React.Dispatch<React.SetStateAction<ThemeOptions>>;
+    setTheme: (
+        value: ThemeOptions | ((val: ThemeOptions) => ThemeOptions)
+    ) => void;
 }
 
-interface AuthContext {
+interface AuthContextParams {
     userLogged: boolean;
-    setUserLogged: React.Dispatch<React.SetStateAction<boolean>>;
+    jwtToken: string | null;
+    setJwtToken: (
+        value: string | ((val: string | null) => string | null) | null
+    ) => void;
 }
 
 export { ThemeOptions, LibraryCategories };
-export type { Book, DownloadLinks, ThemeContext, UserLibrary, AuthContext };
+export type {
+    Metadata,
+    DownloadLinks,
+    ThemeContextParams,
+    UserLibrary,
+    AuthContextParams,
+    FailedLibraryRequest,
+};

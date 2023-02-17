@@ -1,6 +1,6 @@
 // This file exports common functions used by components in /reader or related to its functionality.
 
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import localforage from "localforage";
 import {
     FlowOptions,
@@ -20,7 +20,7 @@ import { backendUrl } from "../../general/helpers/generalFunctions";
 // It will then be used in everything associated with /reader.
 export const saveBookLocally = async (
     arrayBuffer: ArrayBuffer,
-    bookInfo: Book
+    bookInfo: Metadata
 ) => {
     const ls = localforage.createInstance({
         driver: localforage.INDEXEDDB,
@@ -30,7 +30,7 @@ export const saveBookLocally = async (
 
     const savedBooksCache: SavedBooks | null = await ls.getItem("saved-books");
     if (savedBooksCache) {
-        /* The first book is going to be deleted, so we are removing it's pagination info to save space.
+        /* The first metadataList is going to be deleted, so we are removing it's pagination info to save space.
         This should only be uncommented after #12 is resolved.
         if (savedBooksCache.firstBookInfo) {
             localStorage.removeItem(
@@ -60,12 +60,12 @@ export const saveBookLocally = async (
     await ls.setItem("saved-books", newSavedBooks);
 };
 
-// Updates a book in localForage, this is mainly used to keep track of a book's progress when it wasn't
+// Updates a metadataList in localForage, this is mainly used to keep track of a metadataList's progress when it wasn't
 // being tracked before.
 // Can also be used to update a arrayBuffer, if the need ever arises.
-// Should only be used if savedBooks exists and the index of the book you want to update is know.
+// Should only be used if savedBooks exists and the index of the metadataList you want to update is know.
 export const updateBookLocally = async (
-    bookInfo: Book,
+    bookInfo: Metadata,
     toUpdateIndex: number,
     arrayBuffer?: ArrayBuffer | undefined
 ) => {
@@ -110,13 +110,13 @@ export const updateBookLocally = async (
     }
 };
 
-//Removes both a book's info and it's ArrayBuffer from the savedBooks on localforage.
+//Removes both a metadataList's info and it's ArrayBuffer from the savedBooks on localforage.
 export const removeBookLocally = async (toRemoveIndex: number) => {
     /*
     There's probably a better way to do this.
     Basically, you just need to find the index which you want to remove, and this function set both info and ArrayBuffer to null.
     e.g.:
-    If we want to remove the lastBook (in this case, the last saved book), we just need to pass 0 as the toRemoveIndex.
+    If we want to remove the lastBook (in this case, the last saved metadataList), we just need to pass 0 as the toRemoveIndex.
     */
     const ls = localforage.createInstance({
         driver: localforage.INDEXEDDB,
@@ -164,17 +164,17 @@ export const findBookLocally = async (md5: string): Promise<number | null> => {
 };
 
 /**
-This function will remove any book with the same md5 as the specified one
-(preferably there should be only one at maximum.) and then re-add it
-in the new category.
-We are basically re-adding a book with new progress info. It's a simple request,
-so it shouldn't be costly network-wise.
+ This function will remove any metadataList with the same md5 as the specified one
+ (preferably there should be only one at maximum.) and then re-add it
+ in the new category.
+ We are basically re-adding a metadataList with new progress info. It's a simple request,
+ so it shouldn't be costly network-wise.
  Check Biblioterra docs.
-@return null if not logged / book has invalid category.
+ @return null if not logged / metadataList has invalid category.
  */
 export const saveProgressOnDatabase = async (
     currentProgress: string,
-    book: Book
+    book: Metadata
 ) => {
     const jwtToken = localStorage.getItem("jwt-token");
     if (jwtToken == null || book.category == null) {

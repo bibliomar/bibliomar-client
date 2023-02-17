@@ -1,4 +1,4 @@
-import { Book } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { UseFormReturn } from "react-hook-form";
 
 interface SearchFormFields {
@@ -29,7 +29,7 @@ interface ManticoreSearchHits {
     maxScore?: number;
     total?: number;
     totalRelation?: string;
-    hits?: Book[];
+    hits?: Metadata[];
 }
 
 interface ManticoreSearchResponse {
