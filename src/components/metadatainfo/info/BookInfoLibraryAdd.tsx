@@ -3,7 +3,7 @@ import {
     Metadata,
     LibraryCategories,
     ThemeOptions,
-} from "../../../general/helpers/generalTypes";
+} from "../../general/helpers/generalTypes";
 import React, { SetStateAction, useContext, useEffect, useState } from "react";
 import {
     MDBDropdown,
@@ -13,17 +13,17 @@ import {
     MDBDropdownMenu,
     MDBDropdownToggle,
 } from "mdb-react-ui-kit";
-import { libraryCategoryToLocaleText } from "../../helpers/bookinfoFunctions";
+import { libraryCategoryToLocaleText } from "../helpers/bookinfoFunctions";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
     addBookToLibrary,
     serverUrl,
-} from "../../../general/helpers/generalFunctions";
+} from "../../general/helpers/generalFunctions";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     AuthContext,
     ThemeContext,
-} from "../../../general/helpers/generalContext";
+} from "../../general/helpers/generalContext";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
@@ -75,6 +75,9 @@ export default function BookInfoLibraryAdd({
                         toastProps.draggable = true;
                         toastProps.draggablePercent = 60;
                         toastProps.closeOnClick = true;
+                        if (metadata.category != null) {
+                            return "Livro movido com sucesso!";
+                        }
                         return "Livro adicionado com sucesso!";
                     },
                 },

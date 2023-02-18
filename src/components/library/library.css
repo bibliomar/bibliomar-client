@@ -1,16 +1,8 @@
 .library-figure-img {
     width: 100%;
     height: 235px;
-
 }
 
-.library-add-button {
-    /*noinspection CssUnknownTarget*/
-    background: url("/assets/img/button-ellipse.svg") no-repeat;
-    background-size: contain;
-    width: 15%;
-    height: auto;
-}
 
 .library-checkbox-container {
     position: absolute;

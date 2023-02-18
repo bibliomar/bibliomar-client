@@ -10,6 +10,7 @@ import {
 } from "../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
 import { UserLibraryContext } from "./helpers/libraryFunctions";
+import Break from "../general/Break";
 
 function calculateNumOfBooks(userLibrary: UserLibrary) {
     let numOfBooks = 0;
@@ -40,11 +41,19 @@ export default function () {
                             {t("library:suaBiblioteca")}
                         </span>
                         <br />
+
                         {numOfBooks > 0 && (
-                            <span className="text-muted">
-                                Uma coleção de <strong>{numOfBooks}</strong>{" "}
-                                livros.
-                            </span>
+                            <div className="d-flex flex-wrap">
+                                <span className="text-muted">
+                                    Uma coleção de <strong>{numOfBooks}</strong>{" "}
+                                    livros.
+                                </span>
+                                <Break mobile tablet className="mb-3" />
+                                <span className="text-muted fst-italic">
+                                    Dica: toque e segure em um livro para ativar
+                                    o modo de edição.
+                                </span>
+                            </div>
                         )}
                     </div>
                 </div>

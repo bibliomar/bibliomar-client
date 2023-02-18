@@ -26,7 +26,6 @@ export default function EditModeMove() {
     const navigate = useNavigate();
     const editModeContext = useContext(EditModeContext);
     const userLibraryContext = useContext(UserLibraryContext);
-    console.log(editModeContext.selectedBooksRef.current);
 
     const handleClick = async (targetCategory: LibraryCategories) => {
         if (
@@ -39,11 +38,14 @@ export default function EditModeMove() {
             }
             return;
         }
-        toast.info("Movendo livros...");
+        const infoToast = toast.info("Movendo livros...");
 
         let movedBooksNum = 0;
         for (const book of editModeContext.selectedBooksRef.current) {
             try {
+                toast.update(infoToast, {
+                    render: `Movendo ${book.title}...`,
+                });
                 const req = await addBookToLibrary(
                     authContext,
                     book,
@@ -70,13 +72,13 @@ export default function EditModeMove() {
                 }
             }
         }
-
+        toast.dismiss(infoToast);
         if (movedBooksNum > 0) {
             toast.success(`${movedBooksNum} livros movidos com sucesso.`);
             editModeContext.selectedBooksRef.current = [];
-            userLibraryContext.updateUserLibrary();
+            // PS: The update request is async.
+            await userLibraryContext.updateUserLibrary();
         }
-        // PS: The update request is async.
     };
 
     const renderDropdownItem = (category: LibraryCategories, key: number) => {

@@ -72,7 +72,10 @@ const showCoverMaskUrl = (props: Props) => {
                             backgroundColor: props.coverDone
                                 ? "rgba(0,0,0,0.1)"
                                 : undefined,
-                            zIndex: "100",
+
+                            // Show above everything in this component,
+                            // but below anything with a zIndex bigger than 1.
+                            zIndex: "1",
                         }}
                     />
                 ) : null}

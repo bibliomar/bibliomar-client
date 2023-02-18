@@ -9,10 +9,7 @@ export default function BookInfoDescription({ description }: Props) {
     const { t } = useTranslation();
     return (
         <div className="d-flex flex-wrap mt-5">
-            <h4
-                className="book-info-title-bold mb-4"
-                style={{ fontWeight: "700" }}
-            >
+            <h4 className="book-info-title mb-4" style={{ fontWeight: "700" }}>
                 {t("metadatainfo:description")}
             </h4>
             <Break />

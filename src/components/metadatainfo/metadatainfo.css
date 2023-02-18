@@ -1,0 +1,17 @@
+.similar-figure-img {
+    width: 100%;
+    
+    height: 235px;
+}
+
+@media screen and (min-width: 768px) {
+    .similar-figure-img {
+        height: 290px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .similar-figure-img {
+        height: 240px;
+    }
+}

@@ -21,6 +21,7 @@ import Paginator from "../general/Paginator";
 import LibraryPagination from "./pagination/LibraryPagination";
 import { Trans, useTranslation } from "react-i18next";
 import { useWindowSize } from "../general/helpers/useWindowSize";
+import useSlicedMetadatas from "../general/helpers/useSlicedMetadatas";
 
 interface Props {
     title: string;
@@ -41,7 +42,7 @@ export default function LibrarySection({
         return equal(filtersContext.filters, defaultFilters);
     }, [metadatas, filtersContext.filters]);
 
-    const filteredBooks = useMemo(() => {
+    const filteredMetadatadas = useMemo(() => {
         return bookFiltering(metadatas, filtersContext.filters);
     }, [metadatas, filtersContext.filters]);
 
@@ -60,32 +61,23 @@ export default function LibrarySection({
 
     // The list of slices to be rendered.
     // They will be rendered using MDBootstrap grid system.
-    const slicedMetadataList = useMemo(() => {
-        const listOfSlices: Metadata[][] = [];
-        for (
-            let start = 0;
-            start < visibleMetadata.length;
-            start += itemsPerRow
-        ) {
-            const end = start + itemsPerRow;
-            const sliced = visibleMetadata.slice(start, end);
-            listOfSlices.push(sliced);
-        }
-
-        return listOfSlices;
-    }, [visibleMetadata]);
+    const slicedMetadataList = useSlicedMetadatas(
+        filteredMetadatadas,
+        itemsPerRow
+    );
 
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
-        setPageCount(Math.ceil(filteredBooks.length / itemsPerPage));
-        setVisibleMetadata(filteredBooks.slice(itemOffset, endOffset));
-    }, [filteredBooks, itemOffset]);
+        setPageCount(Math.ceil(filteredMetadatadas.length / itemsPerPage));
+        setVisibleMetadata(filteredMetadatadas.slice(itemOffset, endOffset));
+    }, [filteredMetadatadas, itemOffset]);
 
     const pageChangeHandler = (evt: any) => {
-        const newOffset = (evt.selected * itemsPerPage) % filteredBooks.length;
+        const newOffset =
+            (evt.selected * itemsPerPage) % filteredMetadatadas.length;
         setItemOffset(newOffset);
         setVisibleMetadata(
-            filteredBooks.slice(newOffset, newOffset + itemsPerPage)
+            filteredMetadatadas.slice(newOffset, newOffset + itemsPerPage)
         );
     };
 
@@ -108,7 +100,7 @@ export default function LibrarySection({
                             ns={"library"}
                             i18nKey="livrosNessaCategoria"
                             values={{
-                                length: filteredBooks.length,
+                                length: filteredMetadatadas.length,
                             }}
                             components={{
                                 s: <strong />,
@@ -134,8 +126,7 @@ export default function LibrarySection({
                                         >
                                             <LibraryBookFigure
                                                 metadata={metadata}
-                                                timeout={entryIndex * 1000}
-                                                expanded
+                                                timeout={entryIndex * 750}
                                             />
                                         </MDBCol>
                                     );

@@ -1,17 +1,18 @@
 import { MDBCol, MDBContainer } from "mdb-react-ui-kit";
-import BookInfoCover from "./bookInfoSub/BookInfoCover";
+import BookInfoCover from "./info/BookInfoCover";
 import { Metadata } from "../general/helpers/generalTypes";
-import BookInfoDownload from "./bookInfoSub/BookInfoDownload";
+import BookInfoDownload from "./info/BookInfoDownload";
 import { BookInfoSubProps } from "./BookInfoScreen";
 import React, { useRef } from "react";
 import Break from "../general/Break";
 import SmallLine from "../general/SmallLine";
-import BookInfoTitle from "./bookInfoSub/BookInfoTitle";
-import BookInfoBadges from "./bookInfoSub/BookInfoBadges";
-import BookInfoDescription from "./bookInfoSub/BookInfoDescription";
-import BookInfoFile from "./bookInfoSub/BookInfoFile";
-import BookInfoAuthors from "./bookInfoSub/BookInfoAuthors";
-import BookInfoLibraryAdd from "./bookInfoSub/BookInfoLibraryActions/BookInfoLibraryAdd";
+import BookInfoTitle from "./info/BookInfoTitle";
+import BookInfoBadges from "./info/BookInfoBadges";
+import BookInfoDescription from "./info/BookInfoDescription";
+import BookInfoFile from "./info/BookInfoFile";
+import BookInfoAuthors from "./info/BookInfoAuthors";
+import BookInfoLibraryAdd from "./info/BookInfoLibraryAdd";
+import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 
 export default function BookInfoDesktop({
     metadata,
@@ -67,16 +68,18 @@ export default function BookInfoDesktop({
                         <BookInfoFile metadata={metadata} />
                         <Break className="mb-3" />
                         <BookInfoBadges metadata={metadata} />
-                        <Break className="mb-4" />
+                        <Break className="mb-1" />
                         <BookInfoDescription
                             description={metadata.description}
                         />
+                        <Break />
                     </div>
                 </div>
             </div>
-            <Break />
-            <SmallLine flexGrow className="me-4 ms-4" />
-            <Break className="mt-2" />
+            <Break className="mb-4" />
+            <div className="p-3 w-100">
+                <MetadataInfoSimilarScreen metadata={metadata} />
+            </div>
         </div>
     );
 }

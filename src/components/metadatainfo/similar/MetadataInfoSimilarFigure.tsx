@@ -1,22 +1,24 @@
-import React from "react";
-import { Metadata } from "../../general/helpers/generalTypes";
-import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
 import useCover from "../../general/helpers/useCover";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { getMetadataInfoPath } from "../../general/helpers/generalFunctions";
+import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
+import React from "react";
 
 interface Props {
     metadata: Metadata;
     timeout: number;
 }
 
-export default function LibraryBookFigure(props: Props) {
-    const metadata = props.metadata;
-    const [cover, coverDone] = useCover(metadata, props.timeout);
+export default function MetadataInfoSimilarFigure({
+    metadata,
+    timeout,
+}: Props) {
+    const [cover, coverDone] = useCover(metadata, timeout);
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
     return (
-        <div id="library-book-div" className="library-figure-img me-2 mb-3">
+        <div id="similar-metadata-div" className="similar-figure-img me-2 mb-3">
             <SimpleBookFigure
-                metadata={props.metadata}
+                metadata={metadata}
                 cover={cover}
                 coverDone={coverDone}
                 href={href}

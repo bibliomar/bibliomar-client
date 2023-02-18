@@ -19,6 +19,7 @@ import {
 import equal from "fast-deep-equal/es6";
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "../general/helpers/useWindowSize";
+import useSlicedMetadatas from "../general/helpers/useSlicedMetadatas";
 
 interface Props {
     title: string;
@@ -41,7 +42,7 @@ export default function LibraryCategory({
         return equal(filtersContext.filters, defaultFilters);
     }, [metadata, filtersContext.filters]);
 
-    const metadatas = useMemo(() => {
+    const filteredMetadatas = useMemo(() => {
         return bookFiltering(metadata, filtersContext.filters);
     }, [metadata, filtersContext.filters]);
 
@@ -57,16 +58,10 @@ export default function LibraryCategory({
 
     // The list of slices to be rendered.
     // They will be rendered using MDBootstrap grid system.
-    const slicedMetadataList = useMemo(() => {
-        const listOfSlices: Metadata[][] = [];
-        for (let start = 0; start < metadatas.length; start += itemsPerRow) {
-            const end = start + itemsPerRow;
-            const sliced = metadatas.slice(start, end);
-            listOfSlices.push(sliced);
-        }
-
-        return listOfSlices;
-    }, [metadatas]);
+    const slicedMetadataList = useSlicedMetadatas(
+        filteredMetadatas,
+        itemsPerRow
+    );
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
@@ -87,10 +82,10 @@ export default function LibraryCategory({
                 </Link>
 
                 <Break />
-                {metadatas.length > maxVisibleItems && (
+                {filteredMetadatas.length > maxVisibleItems && (
                     <span className="text-muted">
                         Mostrando <strong>{maxVisibleItems}</strong> livros de{" "}
-                        {metadatas.length}
+                        {filteredMetadatas.length}
                     </span>
                 )}
             </div>
@@ -113,7 +108,6 @@ export default function LibraryCategory({
                                             <LibraryBookFigure
                                                 metadata={metadata}
                                                 timeout={entryIndex * 1000}
-                                                expanded
                                             />
                                         </MDBCol>
                                     );
@@ -124,7 +118,7 @@ export default function LibraryCategory({
                 </MDBContainer>
 
                 <Break />
-                {metadatas.length === 0 ? (
+                {filteredMetadatas.length === 0 ? (
                     <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
                             <span>

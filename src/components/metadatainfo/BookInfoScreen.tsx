@@ -24,6 +24,7 @@ import useDownloadLinks from "../general/helpers/useDownloadLinks";
 import useMetadata from "../general/helpers/useMetadata";
 import { AuthContext } from "../general/helpers/generalContext";
 import { toast, ToastContainer, useToastContainer } from "react-toastify";
+import "./metadatainfo.css";
 
 export interface BookInfoSubProps {
     metadata: Metadata;
@@ -66,7 +67,7 @@ export default function BookInfoScreen() {
             <div className="d-flex flex-column align-items-center">
                 {metadata ? (
                     <div className="basic-container book-info-container mb-5">
-                        {size.width > 768 ? (
+                        {size.width > 992 ? (
                             <BookInfoDesktop
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}

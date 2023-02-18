@@ -1,15 +1,20 @@
 import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
 import React, { useContext, useState } from "react";
 import { EditModeContext } from "../helpers/libraryContext";
-import { removeBookFromLibrary } from "../../general/helpers/generalFunctions";
+import {
+    addBookToLibrary,
+    removeBookFromLibrary,
+} from "../../general/helpers/generalFunctions";
 import { Portal } from "react-portal";
 import { useNavigate } from "react-router-dom";
 import { EditModeRemoveModal } from "./EditModeRemoveModal";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../general/helpers/generalContext";
+import { UserLibraryContext } from "../helpers/libraryFunctions";
 
 export default function EditModeRemove() {
     const navigate = useNavigate();
+    const userLibraryContext = useContext(UserLibraryContext);
     const authContext = useContext(AuthContext);
     const editModeContext = useContext(EditModeContext);
 
@@ -27,6 +32,54 @@ export default function EditModeRemove() {
                 toast.error("Nenhum livro selecionado.");
             }
             return;
+        }
+
+        const infoToast = toast.info("Removendo livros...");
+
+        let removedBooksNum = 0;
+        for (const book of editModeContext.selectedBooksRef.current) {
+            try {
+                toast.update(infoToast, {
+                    render: `Removendo ${book.title}...`,
+                });
+                const req = await removeBookFromLibrary(authContext, book.md5);
+                console.log(req);
+                if ([200, 201].includes(req.request.status)) {
+                    removedBooksNum++;
+                }
+            } catch (e: any) {
+                console.error(e);
+                if (e.request) {
+                    if (e.request.status === 400) {
+                        toast.error(
+                            <div>
+                                <span>
+                                    Erro ao remover{" "}
+                                    <strong>{book.title}</strong>. Livro não se
+                                    encontra na categoria de destino.
+                                </span>
+                            </div>
+                        );
+                    } else {
+                        toast.error(
+                            <div>
+                                <span>
+                                    Erro ao remover{" "}
+                                    <strong>{book.title}</strong>.
+                                </span>
+                            </div>
+                        );
+                    }
+                }
+            }
+        }
+        toast.dismiss(infoToast);
+
+        if (removedBooksNum > 0) {
+            toast.success(`${removedBooksNum} livros removidos com sucesso.`);
+            editModeContext.selectedBooksRef.current = [];
+            // PS: The update request is async.
+            userLibraryContext.updateUserLibrary();
         }
     };
 

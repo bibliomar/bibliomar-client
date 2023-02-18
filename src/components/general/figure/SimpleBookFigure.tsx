@@ -6,27 +6,59 @@ import { useNavigate } from "react-router-dom";
 import BookFigureCover from "../BookFigureCover";
 import { formatBytes } from "../helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
+import { LongPressDetectEvents, useLongPress } from "use-long-press";
 
 interface SimpleBookFigureProps {
     metadata: Metadata;
     cover: string | undefined;
     coverDone: boolean;
     loadingClassName?: string;
+    selectable?: boolean;
     href?: string;
     expanded?: boolean;
 }
 
-// A reusable metadata figure which shows the metadata info on top of its cover.
+/** A reusable metadata figure which shows the metadata info on top of its cover.
+ * If a editModeContext is available, it will enable long press and selections to select the book.
+ * @param metadata
+ * @param cover
+ * @param loadingClassName
+ * @param coverDone
+ * @param href
+ * @param selectable
+ * @param expanded
+ * @constructor
+ */
 export default function SimpleBookFigure({
     metadata,
     cover,
     loadingClassName,
     coverDone,
     href,
+    selectable,
     expanded,
 }: SimpleBookFigureProps) {
     const editModeContext = useContext(EditModeContext);
     const [onSelectedBooks, setOnSelectedBooks] = useState<boolean>(false);
+    // Long press hooks that enables edit mode when long pressed.
+    // A editModeContext must be available for this to be activated.
+    const bindLongpress = useLongPress(
+        () => {
+            if (selectable && editModeContext && !editModeContext.editMode) {
+                editModeContext.setEditMode(true);
+            }
+        },
+        {
+            detect: LongPressDetectEvents.BOTH,
+            filterEvents: (event) => {
+                if (!selectable) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+        }
+    );
     const { t } = useTranslation();
 
     const navigate = useNavigate();
@@ -89,33 +121,39 @@ export default function SimpleBookFigure({
             <div className="simple-figure-bg text-light">
                 <span
                     className="ms-2 text-nowrap simple-text fw-bolder"
-                    style={{ fontSize: "1.05em" }}
+                    style={{ fontSize: "1.1em" }}
                 >
                     {metadata.title}
                 </span>
                 <br />
-                <span
-                    className="ms-2 text-nowrap simple-text"
-                    style={{ fontSize: "0.9em" }}
-                >
-                    {metadata.author}
-                </span>
-                <br />
-                {expanded && (
+
+                {metadata.author ? (
+                    <>
+                        <span
+                            className="ms-2 text-nowrap simple-text"
+                            style={{ fontSize: "1em" }}
+                        >
+                            {metadata.author}
+                        </span>
+                        <br />
+                    </>
+                ) : null}
+                {expanded ? (
                     <span
                         className="ms-2 text-nowrap simple-text"
                         style={{ fontSize: "0.9em" }}
                     >
                         {formatAndSize}
                     </span>
-                )}
+                ) : null}
             </div>
             <MDBRipple
-                className={`bg-image hover-overlay shadow-1-strong rounded w-100 h-100`}
+                {...bindLongpress()}
+                className="bg-image hover-overlay rounded w-100 h-100 shadow-3-strong"
                 rippleTag="div"
                 rippleColor="light"
             >
-                {editModeContext.editMode && (
+                {selectable && editModeContext.editMode && (
                     <div className="library-checkbox-container">
                         <MDBCheckbox
                             checked={onSelectedBooks}
@@ -133,7 +171,11 @@ export default function SimpleBookFigure({
                     href={href}
                     onClick={(evt) => {
                         evt.preventDefault();
-                        if (editModeContext && editModeContext.editMode) {
+                        if (
+                            selectable &&
+                            editModeContext &&
+                            editModeContext.editMode
+                        ) {
                             handleCheckboxChange();
                         } else if (href) {
                             navigate(href);

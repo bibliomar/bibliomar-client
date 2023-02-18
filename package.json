@@ -33,7 +33,8 @@
     "react-portal": "^4.2.2",
     "react-reader": "^0.21.2",
     "react-router-dom": "^6.3.0",
-    "react-toastify": "^9.1.1"
+    "react-toastify": "^9.1.1",
+    "use-long-press": "^2.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

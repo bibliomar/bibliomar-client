@@ -17,7 +17,7 @@ export default function BookInfoBadges({ metadata }: Props) {
                     : t("metadatainfo:nonfiction")}
             </div>
             <div className="badge book-info-badge me-1 mb-1">
-                {metadata.category ? t("metadatainfo:undefinedField") : null}
+                {metadata.category ? t("metadatainfo:onLibrary") : null}
             </div>
             <div className="badge book-info-badge me-1 mb-1">
                 {metadata.category

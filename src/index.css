@@ -41,7 +41,7 @@ abbr[title]:after {
     bottom: 0;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.71) 17%, rgba(0, 0, 0, 0.63) 85%);;
     width: 100%;
-    z-index: 5;
+    z-index: 200;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
