@@ -11,7 +11,7 @@ interface Props {
 export default function ({ color, size }: Props) {
     const theme = useContext(ThemeContext).theme;
     return (
-        <div className="d-flex justify-content-center mt-5">
+        <div className="d-flex justify-content-center">
             <MDBSpinner
                 color={
                     color

@@ -14,7 +14,7 @@ export default function BookInfoCover({ metadata }: Props) {
 
     return (
         <div className="d-flex flex-column mb-3 w-100">
-            <div className="bg-image">
+            <div className="metadata-cover-img">
                 <BookFigureCover
                     metadata={metadata}
                     cover={cover}

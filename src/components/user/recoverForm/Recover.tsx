@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Recoverable from "./Recoverable";
 import Recovering from "./Recovering";
+import { MDBCol, MDBContainer, MDBNavbar, MDBRow } from "mdb-react-ui-kit";
+import Navbar from "../../general/navbar/Navbar";
 
 export default function Recover() {
     const [recoverable, setRecoverable] = useState<boolean>(false);
@@ -22,22 +24,21 @@ export default function Recover() {
 
     return (
         <div className="like-body bg-alt">
-            <div className="d-flex flex-wrap justify-content-center text-white">
-                <Bibliologo />
-                <Break />
-                <Message
-                    color="text-secondary"
-                    message="Recuperação de Conta"
-                />
-                <Break />
-                <div className="bg-black p-3 rounded-3 bg-opacity-25 login-form-container">
-                    {recoverable && token !== "" ? (
-                        <Recoverable token={token} />
-                    ) : (
-                        <Recovering />
-                    )}
+            <MDBContainer fluid>
+                <div className="d-flex flex-wrap justify-content-center w-100 h-100">
+                    <div className="w-100">
+                        <Navbar />
+                    </div>
+                    <Break className="mb-4" />
+                    <div className="d-flex flex-wrap justify-content-center mt-4 w-100">
+                        {recoverable ? (
+                            <Recoverable token={token} />
+                        ) : (
+                            <Recovering />
+                        )}
+                    </div>
                 </div>
-            </div>
+            </MDBContainer>
         </div>
     );
 }

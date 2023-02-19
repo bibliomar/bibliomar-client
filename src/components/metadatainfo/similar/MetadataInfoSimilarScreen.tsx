@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import { useWindowSize } from "../../general/helpers/useWindowSize";
 import MetadataInfoSimilarResults from "./MetadataInfoSimilarResults";
+import { useTranslation } from "react-i18next";
 
 interface MetadataInfoSimilarScreenProps {
     metadata: Metadata;
@@ -65,6 +66,7 @@ function buildSimilarSearchObject(metadata: Metadata) {
 export default function MetadataInfoSimilarScreen({
     metadata,
 }: MetadataInfoSimilarScreenProps) {
+    const { t } = useTranslation();
     // Make sure to use useMemo to avoid infinite looping on the useSearch hook.
     const searchObject = useMemo(
         () => buildSimilarSearchObject(metadata),
@@ -78,7 +80,11 @@ export default function MetadataInfoSimilarScreen({
         }
 
         if (search.searchLoading) {
-            return <BlankLoadingSpinner />;
+            return (
+                <div className="mb-3">
+                    <BlankLoadingSpinner />
+                </div>
+            );
         } else if (search.searchError) {
             return <p>Erro na busca por arquivos semelhantes.</p>;
         } else if (search.searchResults) {
@@ -93,14 +99,15 @@ export default function MetadataInfoSimilarScreen({
 
     return (
         <MDBContainer fluid>
-            <div className="d-flex flex-wrap w-100 simple-text">
+            <div className="d-flex flex-wrap w-100 justify-content-start simple-text">
                 <h4
-                    className="book-info-description mb-2"
+                    className="book-info-description mb-3 ms-2 ms-lg-0"
                     style={{ fontWeight: 700 }}
                 >
-                    Livros semelhantes
+                    {t("metadatainfo:livrosSemelhantes")}
                 </h4>
-                <div className="d-flex w-100">{renderResults()}</div>
+                <Break />
+                {renderResults()}
             </div>
         </MDBContainer>
     );

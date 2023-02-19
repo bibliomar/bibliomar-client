@@ -3,6 +3,17 @@
 import React from "react";
 import { AxiosError } from "axios";
 
+type Topic = "fiction" | "scitech";
+
+interface StatisticsGetResponse {
+    topic: Topic;
+    numOfViews: number;
+    numOfDownloads: number;
+    metadata: Metadata;
+}
+
+interface StatisticsTopResponse {}
+
 type DownloadLinks = {
     GET: string;
     Cloudflare: string;
@@ -10,12 +21,6 @@ type DownloadLinks = {
     Infura: string;
     Pinata: string;
 };
-
-interface FailedLibraryRequest {
-    // This is the type of a failed request to add or remove a metadataList from a user's library.
-    book: Metadata;
-    error: AxiosError;
-}
 
 interface LibraryProperties {
     // All properties here are only valid for library entries. (e.g. metadataList you get from a user's library.)
@@ -57,7 +62,7 @@ interface Metadata extends LibraryProperties, MetadataProperties {
     title: string;
     author: string;
     md5: string;
-    topic: string;
+    topic: Topic;
     language?: string | null;
     extension?: string | null;
     fileSize?: number | null;
@@ -119,5 +124,4 @@ export type {
     ThemeContextParams,
     UserLibrary,
     AuthContextParams,
-    FailedLibraryRequest,
 };

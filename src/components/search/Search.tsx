@@ -182,7 +182,7 @@ function Search() {
         // Appends the current page to the formData object.
         let resultsList: Metadata[] = [];
         const q = values.q;
-
+        console.log(q.trim().length);
         if (q == null || q.trim().length < 3) {
             return SearchRequestStatusOptions.BAD_QUERY;
         }

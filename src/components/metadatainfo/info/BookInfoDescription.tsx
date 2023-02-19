@@ -1,5 +1,6 @@
 import Break from "../../general/Break";
 import { useTranslation } from "react-i18next";
+import parse from "html-react-parser";
 
 interface Props {
     description: string | null | undefined;
@@ -15,7 +16,7 @@ export default function BookInfoDescription({ description }: Props) {
             <Break />
             <p className="book-info-description">
                 {description
-                    ? description
+                    ? parse(description)
                     : t("metadatainfo:undefinedDescription")}
             </p>
         </div>

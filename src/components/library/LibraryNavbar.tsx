@@ -48,11 +48,6 @@ export default function () {
                                     Uma coleção de <strong>{numOfBooks}</strong>{" "}
                                     livros.
                                 </span>
-                                <Break mobile tablet className="mb-3" />
-                                <span className="text-muted fst-italic">
-                                    Dica: toque e segure em um livro para ativar
-                                    o modo de edição.
-                                </span>
                             </div>
                         )}
                     </div>

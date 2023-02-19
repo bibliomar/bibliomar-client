@@ -25,7 +25,7 @@ import {
     ThemeContext,
 } from "../../general/helpers/generalContext";
 import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 interface BookInfoLibraryAddProps {
     metadata: Metadata;
@@ -62,9 +62,15 @@ export default function BookInfoLibraryAdd({
     };
 
     const handleAddToLibrary = async (targetCategory: LibraryCategories) => {
+        if (!authContext.userLogged) {
+            const loginFailedMessage = t(
+                "metadatainfo:vocPrecisaEstarLogadoParaAdicionarLivros"
+            );
+            toast.error(loginFailedMessage);
+        }
         const pendingText = metadata.category
-            ? "Movendo livro..."
-            : "Adicionando livro...";
+            ? t("metadatainfo:movendoLivro")
+            : t("metadatainfo:adicionandoLivro");
 
         const addBookRequest = await toast.promise(
             addBookToLibrary(authContext, metadata, targetCategory),
@@ -76,9 +82,9 @@ export default function BookInfoLibraryAdd({
                         toastProps.draggablePercent = 60;
                         toastProps.closeOnClick = true;
                         if (metadata.category != null) {
-                            return "Livro movido com sucesso!";
+                            return t("metadatainfo:Livromovidocomsucesso");
                         }
-                        return "Livro adicionado com sucesso!";
+                        return t("metadatainfo:Livroadicionadocomsucesso");
                     },
                 },
                 error: {
@@ -97,7 +103,10 @@ export default function BookInfoLibraryAdd({
                                     );
                                 return (
                                     <span>
-                                        O livro já se encontra na categoria{" "}
+                                        <Trans
+                                            i18nKey="oLivroJSeEncontraNaCategoria"
+                                            ns="metadatainfo"
+                                        />{" "}
                                         <strong>{categoryName}</strong>
                                     </span>
                                 );
@@ -107,12 +116,14 @@ export default function BookInfoLibraryAdd({
                         return (
                             <div>
                                 <p>
-                                    Erro ao adicionar livro. Por favor, tente
-                                    novamente.
+                                    {t(
+                                        "metadatainfo:erroAoAdicionarLivroPorFavorTenteNovamente"
+                                    )}
                                 </p>
                                 <p>
-                                    Se o erro persistir, entre em contato no
-                                    nosso Discord.
+                                    {t(
+                                        "metadatainfo:seOErroPersistirEntreEmContatoNoNossoDiscord"
+                                    )}
                                 </p>
                             </div>
                         );
@@ -135,6 +146,13 @@ export default function BookInfoLibraryAdd({
                 <MDBDropdownLink
                     onClick={async (evt) => {
                         evt.preventDefault();
+                        if (
+                            !authContext.userLogged ||
+                            authContext.jwtToken == null
+                        ) {
+                            navigate(`/user/login?redirect=${currentLocation}`);
+                            return;
+                        }
                         await handleAddToLibrary(category);
                     }}
                     className={metadata.category === category ? "active" : ""}

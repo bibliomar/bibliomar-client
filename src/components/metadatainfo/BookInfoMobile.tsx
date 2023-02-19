@@ -10,6 +10,7 @@ import BookInfoDescription from "./info/BookInfoDescription";
 import BookInfoFile from "./info/BookInfoFile";
 import BookInfoAuthors from "./info/BookInfoAuthors";
 import BookInfoLibraryAdd from "./info/BookInfoLibraryAdd";
+import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 
 export default function BookInfoMobile({
     metadata,
@@ -22,7 +23,7 @@ export default function BookInfoMobile({
             <div className="d-flex flex-wrap justify-content-center">
                 <div
                     id="cover-download-section"
-                    className="mt-4 mb-4 book-info-cover-section"
+                    className="mt-4 mb-4 metadata-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
                         <BookInfoCover metadata={metadata} />
@@ -31,7 +32,7 @@ export default function BookInfoMobile({
 
                 <div
                     id="info-section"
-                    className="ms-3 mt-4 mb-4 me-3 book-info-section"
+                    className="mt-4 mb-4 p-3 metadata-info-section"
                 >
                     <div className="d-flex flex-wrap justify-content-start">
                         <BookInfoTitle metadata={metadata} />
@@ -62,9 +63,10 @@ export default function BookInfoMobile({
                     </div>
                 </div>
             </div>
-            <Break />
-            <SmallLine flexGrow className="me-4 ms-4" />
-            <Break className="mt-2" />
+            <Break className="mb-4" />
+            <div className="similar-results-container">
+                <MetadataInfoSimilarScreen metadata={metadata} />
+            </div>
         </div>
     );
 }

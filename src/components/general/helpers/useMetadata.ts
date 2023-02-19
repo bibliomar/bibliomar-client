@@ -1,4 +1,10 @@
-import React, { SetStateAction, useContext, useEffect, useState } from "react";
+import React, {
+    SetStateAction,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { Metadata } from "./generalTypes";
 import { backendUrl, findBookInLibrary, serverUrl } from "./generalFunctions";
 import axios from "axios";
@@ -107,18 +113,23 @@ export default function useMetadata(
             .then((res) => {
                 if (res.status === 200 && !ignore) {
                     const metadataOnLibrary = res.data as Metadata;
+                    if (metadataOnLibrary.category == null) {
+                        return;
+                    }
                     setMetadata({
                         ...metadata,
                         category: metadataOnLibrary.category,
                     });
                 }
             })
-            .catch((e) => console.error(e));
+            .catch((e) => {
+                console.error(e);
+            });
 
         return () => {
             ignore = true;
         };
-    }, [metadata]);
+    }, [metadata, authContext.userLogged]);
 
     return [metadata, updateMetadata];
 }

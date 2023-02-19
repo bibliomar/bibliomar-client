@@ -173,32 +173,20 @@ export function getEmptyCover() {
     return "https://libgen.rocks/img/blank.png";
 }
 
-export function resolveCoverUrl(
-    alternative: boolean,
-    topic: string,
-    coverUrl: string
-) {
+export function resolveCoverUrl(topic: string, coverUrl: string) {
     if (topic == undefined || coverUrl == undefined) {
         return undefined;
     }
 
-    let coverProvider = "";
-    if (alternative) {
-        if (alternativeCoverProviderUrl == undefined) {
-            return undefined;
-        }
-        coverProvider = alternativeCoverProviderUrl;
-    } else {
-        if (coverProviderUrl == undefined) {
-            return undefined;
-        }
-        coverProvider = coverProviderUrl;
+    if (coverProviderUrl == undefined) {
+        console.error("WARNING: Cover provider ENV variable is undefined!");
+        return undefined;
     }
 
     if (topic === "fiction") {
-        return `${coverProvider}/fictioncovers/${coverUrl}`;
+        return `${coverProviderUrl}/fictioncovers/${coverUrl}`;
     } else {
-        return `${coverProvider}/covers/${coverUrl}`;
+        return `${coverProviderUrl}/covers/${coverUrl}`;
     }
 }
 

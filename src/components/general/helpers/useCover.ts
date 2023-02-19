@@ -23,7 +23,7 @@ export default function useCover(
         let coverTimeout: number | undefined = undefined;
         let cover: string | undefined;
         if (coverProviderUrl != null && metadata.coverUrl != null) {
-            cover = resolveCoverUrl(false, metadata.topic, metadata.coverUrl);
+            cover = resolveCoverUrl(metadata.topic, metadata.coverUrl);
         } else {
             cover = noCoverUrl;
         }

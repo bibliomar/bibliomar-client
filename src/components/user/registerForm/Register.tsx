@@ -24,31 +24,31 @@ export default function Register() {
             const errors: any = {};
 
             if (!values.username) {
-                errors.username = "Campo obrigatorio";
+                errors.username = t("user:campoobrigatorio");
             } else if (values.username.length < 5) {
-                errors.username =
-                    "Nome de usuario deve conter pelo menos 5 caracteres.";
+                errors.username = t(
+                    "user:Nomedeusuariodeveconterpelomenos5caracteres"
+                );
             } else if (/[\s@$!%*#?&]/.test(values.username)) {
-                errors.username =
-                    "Nome de usuario não pode conter espaços ou caracteres especiais.";
+                errors.username = t(
+                    "user:Nomedeusuariodeveconternomáximo16caracteres"
+                );
             }
             if (!values.password) {
-                errors.password = "Campo obrigatorio";
+                errors.password = t("user:campoobrigatorio");
             } else if (
                 !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,16}$/.test(
                     values.password
                 )
             ) {
-                errors.password =
-                    "Senha deve conter pelo menos uma letra maiuscula, uma minuscula, um número e um caractere " +
-                    "especial. Entre 6 e 16 caracteres.";
+                errors.password = t("user:senhadeveconter");
             }
             if (!values.email) {
-                errors.email = "Campo obrigatorio";
+                errors.email = t("user:campoobrigatorio");
             } else if (
                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
             ) {
-                errors.email = "Email inválido.";
+                errors.email = t("user:emailinvalido");
             }
 
             return errors;

@@ -16,9 +16,9 @@ export default function MetadataInfoSimilarResults({ metadatas }: Props) {
     const gridSize = 12;
     let itemsPerRow = 6;
     if (width < 768) {
-        itemsPerRow = 3;
+        itemsPerRow = 2;
     } else if (width < 1024) {
-        itemsPerRow = 4;
+        itemsPerRow = 3;
     }
 
     const maxVisibleRows = 3;
@@ -28,10 +28,10 @@ export default function MetadataInfoSimilarResults({ metadatas }: Props) {
     // They will be rendered using MDBootstrap grid system.
     const slicedMetadataList = useSlicedMetadatas(metadatas, itemsPerRow);
     return (
-        <MDBContainer fluid>
+        <MDBContainer fluid className="m-0 p-0">
             {slicedMetadataList.map((slice, rowIndex) => {
                 return (
-                    <MDBRow key={rowIndex} className="d-flex flex-nowrap w-100">
+                    <MDBRow key={rowIndex} className="w-100 m-0">
                         {slice.map((metadata, itemIndex) => {
                             const timeout =
                                 itemIndex === 0 ? 750 : itemIndex * 750;

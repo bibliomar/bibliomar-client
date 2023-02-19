@@ -1,17 +1,72 @@
+.metadata-cover-img {
+    width: 100%;
+    min-height: 360px;
+    height: fit-content;
+}
+
 .similar-figure-img {
     width: 100%;
-    
-    height: 235px;
+    height: 230px;
+}
+
+.metadata-container {
+    min-width: 85%;
+}
+
+.metadata-cover-section {
+    width: 80%;
+}
+
+.metadata-info-section {
+    width: 90%;
+}
+
+.similar-results-container {
+    width: 95%
 }
 
 @media screen and (min-width: 768px) {
+
+    .metadata-cover-img {
+        min-height: 480px;
+    }
+
     .similar-figure-img {
         height: 290px;
+    }
+
+    .metadata-cover-section {
+        width: 65%;
+    }
+
+    .metadata-info-section {
+        width: 85%;
+    }
+
+    .similar-results-container {
+        width: 90%
     }
 }
 
 @media screen and (min-width: 1024px) {
+
+    .metadata-cover-img {
+        min-height: 330px;
+    }
+
     .similar-figure-img {
         height: 240px;
+    }
+
+    .metadata-cover-section {
+        width: 25%;
+    }
+
+    .metadata-info-section {
+        width: 75%;
+    }
+
+    .similar-results-container {
+        width: 85%
     }
 }

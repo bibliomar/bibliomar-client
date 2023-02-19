@@ -96,8 +96,8 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink
-                                    href="/user/login"
-                                    name="/user/login"
+                                    href="/library"
+                                    name="/library"
                                     active={activeItem === "library"}
                                     onClick={handleNavigate}
                                 >

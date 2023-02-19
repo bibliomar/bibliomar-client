@@ -28,32 +28,7 @@ const chooseCurrentCoverComponent = (props: Props) => {
             usableCover = props.cover;
         }
 
-        return (
-            <img
-                src={usableCover}
-                alt="Cover"
-                className="h-100 w-100"
-                onError={(e) => {
-                    const coverUrlParameter = props.metadata.coverUrl;
-                    if (coverUrlParameter) {
-                        const alternativeCover = resolveCoverUrl(
-                            true,
-                            props.metadata.topic,
-                            coverUrlParameter
-                        );
-                        if (
-                            alternativeCover != undefined &&
-                            e.currentTarget.src !== alternativeCover
-                        ) {
-                            e.currentTarget.src = alternativeCover;
-                            return;
-                        }
-                    }
-
-                    e.currentTarget.src = noCoverUrl;
-                }}
-            />
-        );
+        return <img src={usableCover} alt="Cover" className="h-100 w-100" />;
     } else {
         return (
             <SimpleFigureSkeleton loadingClassName={props.loadingClassName} />

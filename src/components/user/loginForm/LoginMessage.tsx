@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import Break from "../../general/Break";
 
 interface Props {
     loginStatus: number;
@@ -41,15 +43,16 @@ export default function LoginMessage(props: Props) {
                         </div>
                     ) : null}
                     {loginStatus === 403 ? (
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex flex-wrap justify-content-center">
                             <span className="text-danger text-center">
                                 {t(
                                     "user:nsFizemosUmaMigraoInternaDeServidorEComIssoSuaSenh"
                                 )}
                             </span>
-                            <a href="https://bibliomar.site/user/recover">
+                            <Break />
+                            <Link to={"/user/recover"}>
                                 {t("user:solicitarNovaSenha")}
-                            </a>
+                            </Link>
                         </div>
                     ) : null}
                     {loginStatus === 500 ? (

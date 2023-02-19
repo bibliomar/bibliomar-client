@@ -79,7 +79,7 @@ export default function useUserLibrary(): [
         return () => {
             ignore = true;
         };
-    }, []);
+    }, [authContext]);
 
     return [userLibrary, updateUserLibrary];
 }

@@ -26,7 +26,7 @@ export default function BookInfoDesktop({
             <div className="d-flex">
                 <div
                     id="cover-download-section"
-                    className="ms-3 mt-4 mb-4 book-info-cover-section"
+                    className="ms-3 mt-4 mb-4 metadata-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
                         <BookInfoCover metadata={metadata} />
@@ -40,7 +40,7 @@ export default function BookInfoDesktop({
 
                 <div
                     id="info-section"
-                    className="ms-3 mt-4 mb-4 me-3 book-info-section"
+                    className="ms-3 mt-4 mb-4 me-3 metadata-info-section"
                 >
                     <div className="d-flex flex-wrap justify-content-start">
                         <div className="d-flex w-100">

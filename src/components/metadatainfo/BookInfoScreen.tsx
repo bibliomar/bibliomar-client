@@ -67,7 +67,7 @@ export default function BookInfoScreen() {
             <div className="d-flex flex-column align-items-center">
                 {metadata ? (
                     <div className="basic-container book-info-container mb-5">
-                        {size.width > 992 ? (
+                        {size.width > 1024 ? (
                             <BookInfoDesktop
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}

@@ -16,7 +16,10 @@ export default function MetadataInfoSimilarFigure({
     const [cover, coverDone] = useCover(metadata, timeout);
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
     return (
-        <div id="similar-metadata-div" className="similar-figure-img me-2 mb-3">
+        <div
+            id="similar-metadata-div"
+            className="similar-figure-img me-0 me-lg-2 mb-3"
+        >
             <SimpleBookFigure
                 metadata={metadata}
                 cover={cover}

@@ -2,9 +2,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Search from "./components/search/Search";
 import BookInfoError from "./components/metadatainfo/BookInfoError";
-import Login from "./components/login/loginForm/Login";
-import Register from "./components/login/registerForm/Register";
-import Recover from "./components/login/recoverForm/Recover";
+import Login from "./components/user/loginForm/Login";
+import Register from "./components/user/registerForm/Register";
+import Recover from "./components/user/recoverForm/Recover";
 import Error404 from "./components/general/Error404";
 import LibraryScreen from "./components/library/LibraryScreen";
 import LibraryLanding from "./components/library/LibraryLanding";
