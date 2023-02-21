@@ -1,17 +1,22 @@
 import { Metadata } from "../../general/helpers/generalTypes";
 import Break from "../../general/Break";
 import { MDBContainer } from "mdb-react-ui-kit";
-import useSearch from "../../general/helpers/useSearch";
 import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
 import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import { useWindowSize } from "../../general/helpers/useWindowSize";
 import MetadataInfoSimilarResults from "./MetadataInfoSimilarResults";
 import { useTranslation } from "react-i18next";
+import { ManticoreSearchResponse } from "../../search/helpers/searchTypes";
+import makeSearch from "../../search/helpers/makeSearch";
 
 interface MetadataInfoSimilarScreenProps {
     metadata: Metadata;
+}
+
+function removeTargetMd5(targetMd5: string, metadatas: Metadata[]) {
+    return metadatas.filter((metadata) => metadata.md5 !== targetMd5);
 }
 
 function sanitizeSeriesParameter(series: string) {
@@ -67,33 +72,59 @@ export default function MetadataInfoSimilarScreen({
     metadata,
 }: MetadataInfoSimilarScreenProps) {
     const { t } = useTranslation();
-    // Make sure to use useMemo to avoid infinite looping on the useSearch hook.
-    const searchObject = useMemo(
-        () => buildSimilarSearchObject(metadata),
-        [metadata]
-    );
-    const search = useSearch(searchObject);
+
+    const [searchResults, setSearchResults] = useState<
+        ManticoreSearchResponse | undefined
+    >(undefined);
+    const [searchDone, setSearchDone] = useState(false);
+
+    useEffect(() => {
+        const searchObject = buildSimilarSearchObject(metadata);
+        if (searchObject == undefined) {
+            return;
+        }
+        setSearchDone(false);
+        setSearchResults(undefined);
+        const search = makeSearch(searchObject);
+        search
+            .then((results) => {
+                if (results == undefined) {
+                    setSearchResults(undefined);
+                    setSearchDone(true);
+                    return;
+                }
+
+                setSearchResults(results);
+                setSearchDone(true);
+            })
+            .catch((err) => {
+                console.error(err);
+                setSearchResults(undefined);
+                setSearchDone(true);
+            });
+    }, [metadata]);
 
     const renderResults = () => {
-        if (metadata.author == undefined) {
+        if (metadata.author == undefined && metadata.series == undefined) {
             return null;
         }
 
-        if (search.searchLoading) {
+        if (!searchDone) {
             return (
                 <div className="mb-3">
                     <BlankLoadingSpinner />
                 </div>
             );
-        } else if (search.searchError) {
+        } else if (searchResults == undefined) {
             return <p>Erro na busca por arquivos semelhantes.</p>;
-        } else if (search.searchResults) {
-            const searchHits = search.searchResults.hits.hits;
+        } else {
+            const searchHits = searchResults.hits.hits;
             if (searchHits == undefined || searchHits.length === 0) {
                 return null;
             }
+            const sanitizedHits = removeTargetMd5(metadata.md5, searchHits);
 
-            return <MetadataInfoSimilarResults metadatas={searchHits} />;
+            return <MetadataInfoSimilarResults metadatas={sanitizedHits} />;
         }
     };
 

@@ -17,6 +17,14 @@ abbr[title]:after {
     color: #7663F2 !important;
 }
 
+.bg-alt {
+    /*noinspection CssUnknownTarget*/
+    position: relative;
+    bottom: 0;
+    /*noinspection CssUnknownTarget*/
+    background-size: cover !important;
+}
+
 .reader-fullscreen-toggle {
     position: absolute;
     top: 12px;
@@ -73,15 +81,6 @@ abbr[title]:after {
 /* Mainly used in old Bibliomar, here because reasons. */
 .bg {
     background: linear-gradient(#231b40, #5948c6) no-repeat fixed center center;
-    background-size: cover;
-}
-
-.bg-alt {
-    /*noinspection CssUnknownTarget*/
-    position: relative;
-    bottom: 0;
-    /*noinspection CssUnknownTarget*/
-    background: url("/assets/img/newBGLight.png") no-repeat fixed center center;
     background-size: cover;
 }
 

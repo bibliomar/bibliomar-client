@@ -36,9 +36,9 @@ export default function BookFigure({ metadata, timeout }: Props) {
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
 
     return (
-        <figure className="figure d-flex flex-column result-div me-lg me-md-3">
+        <figure className="figure d-flex flex-column deprecated-search-result-container me-lg me-md-3">
             <MDBRipple
-                className={`bg-image hover-overlay shadow-1-strong w-100 result-image figure-img mb-1`}
+                className={`bg-image hover-overlay shadow-1-strong w-100 search-result-figure figure-img mb-1`}
                 rippleTag="div"
                 rippleColor="light"
             >
@@ -52,8 +52,9 @@ export default function BookFigure({ metadata, timeout }: Props) {
             </MDBRipple>
 
             <figcaption
-                className={`figure-caption text-wrap border rounded-7 rounded-top border-dark
-            border-top-0 basic-container-alt pt-1 w-100 flex-grow-1 d-flex flex-column text-color`}
+                className={
+                    "figure-caption text-wrap border rounded-7 rounded-top border-dark border-top-0 basic-container-alt pt-1 w-100 flex-grow-1 d-flex flex-column text-color"
+                }
                 style={{ fontSize: "1rem" }}
             >
                 <div className="d-flex flex-wrap">

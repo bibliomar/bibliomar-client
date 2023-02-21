@@ -24,12 +24,14 @@ const recommendations: Metadata[] = [
         title: "Flores Para Algernon",
         md5: "6DC5A0A601B78CECFFC5EDE2538A8127",
         topic: "fiction",
+        coverUrl: "2065000/598f0272a08201bb83f56d6fb512e987.jpg",
     },
     {
         author: "Rothfuss, Patrick",
         title: "O Nome do Vento",
         md5: "7FA001B7F7A4CE3316036D1F6A3CBF47",
         topic: "fiction",
+        coverUrl: "817000/7fa001b7f7a4ce3316036d1f6a3cbf47.jpg",
     },
     {
         author: "Amado, Jorge",
@@ -42,6 +44,14 @@ const recommendations: Metadata[] = [
         title: "O Império Final",
         md5: "C14CDF822286598C7A15032616563673",
         topic: "fiction",
+    },
+    {
+        title: "Capitães da areia",
+        author: "Amado, Jorge",
+        md5: "DB8C472C3261938D7591D7AE30879046",
+        language: "Portuguese",
+        topic: "fiction",
+        coverUrl: "1268000/db8c472c3261938d7591d7ae30879046.jpg",
     },
 ];
 

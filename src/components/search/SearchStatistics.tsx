@@ -28,11 +28,7 @@ export default function SearchStatistics({
             paginableResults == null
         ) {
             return null;
-        } else if (
-            totalResults === 0 ||
-            tookTime === 0 ||
-            paginableResults === 0
-        ) {
+        } else if (totalResults === 0 || paginableResults === 0) {
             return null;
         } else {
             const visibleOffset = offset + 1;

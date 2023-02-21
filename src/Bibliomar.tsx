@@ -17,20 +17,17 @@ import Themeing from "./Themeing";
 import { hasStorage } from "./components/general/helpers/generalFunctions";
 import useLocalStorage from "./components/general/helpers/useLocalStorage";
 import { toast, ToastContainer } from "react-toastify";
+import useThemeLoader from "./components/general/helpers/useThemeLoader";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
 export default function Bibliomar() {
-    const [theme, setTheme] = useLocalStorage<ThemeOptions>(
-        "theme",
-        ThemeOptions.light
-    );
     const [jwtToken, setJwtToken] = useLocalStorage<string | null>(
         "jwt-token",
         null
     );
 
-    const [themeing, setThemeing] = useState<boolean>(true);
+    const [theme, setTheme] = useThemeLoader();
     const themeContext: ThemeContextParams = {
         theme: theme,
         setTheme: setTheme,
@@ -42,45 +39,6 @@ export default function Bibliomar() {
         jwtToken: jwtToken,
         setJwtToken: setJwtToken,
     };
-
-    useEffect(() => {
-        // Loading of themes...
-
-        // If not themeing, set themeing to true.
-        // Just to avoid unnecessary rerenders.
-        !themeing ? setThemeing(true) : null;
-
-        // Tries removing the old styles before anything.
-        const oldStyles = Array.from(
-            document.getElementsByClassName("theme-style")
-        );
-        if (oldStyles && oldStyles.length > 0) {
-            oldStyles.forEach((style) => {
-                document.head.removeChild(style);
-            });
-        }
-
-        import(
-            theme === ThemeOptions.light
-                ? "mdb-ui-kit/css/mdb.min.css?inline"
-                : "mdb-ui-kit/css/mdb.dark.min.css?inline"
-        ).then((mdbCss) => {
-            import(
-                theme === ThemeOptions.light
-                    ? "./scss/light.scss?inline"
-                    : "./scss/dark.scss?inline"
-            ).then((themeCss) => {
-                const mdbStyle = document.createElement("style");
-                const themeStyle = document.createElement("style");
-                mdbStyle.className = "theme-style";
-                mdbStyle.innerHTML = mdbCss.default;
-                themeStyle.className = "theme-style";
-                themeStyle.innerHTML = themeCss.default;
-                document.head.append(mdbStyle, themeStyle);
-                setThemeing(false);
-            });
-        });
-    }, [theme]);
 
     // Tries for localStorage and sessionStorage, and clear them if they are full.
     useEffect(() => {
@@ -103,7 +61,7 @@ export default function Bibliomar() {
         <BrowserRouter>
             <AuthContext.Provider value={authContext}>
                 <ThemeContext.Provider value={themeContext}>
-                    {themeing ? <Themeing /> : <App />}
+                    <App />
                 </ThemeContext.Provider>
             </AuthContext.Provider>
         </BrowserRouter>

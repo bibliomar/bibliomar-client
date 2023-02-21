@@ -9,7 +9,7 @@ export default function BookInfoParent() {
             <div className="container-fluid">
                 <div className="row mb-5">
                     <div className="col mt-3">
-                        <Navbar badgeText="books" />
+                        <Navbar badgeText="BOOKS" />
                     </div>
                 </div>
                 <Break />

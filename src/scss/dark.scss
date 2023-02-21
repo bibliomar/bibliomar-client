@@ -1,13 +1,10 @@
 // Dark theme specific classes are defined here.
-@import "node_modules/mdb-ui-kit/src/scss/free/variables";
+@import "../../node_modules/mdb-ui-kit/css/mdb.dark.min.css";
+@import "../../node_modules/mdb-ui-kit/src/scss/free/variables";
 
 
 $accent-color: #7663F2;
 
-// Fix for white text in selects' options
-.form-select > option {
-  color: $dark
-}
 
 .btn-primary {
   color: #FFFFFF;
@@ -20,8 +17,9 @@ $accent-color: #7663F2;
 }
 
 .bg-alt {
-  //noinspection CssUnknownTarget
-  background-image: url("/assets/img/back-lg-2.svg");
+  /*noinspection CssUnknownTarget*/
+  background: url("/assets/img/back-lg-2.svg") no-repeat fixed center center !important;
+  background-size: cover !important;
 }
 
 .navbar-bg {
@@ -29,12 +27,6 @@ $accent-color: #7663F2;
 }
 
 .recommendation-title {
-  font-family: 'Nunito Sans', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 27px;
-  font-size: 1.1rem;
-
   color: #CACACA;
 }
 

@@ -4,7 +4,15 @@ import makeSearch from "../../search/helpers/makeSearch";
 import { ManticoreSearchResponse } from "../../search/helpers/searchTypes";
 import { AxiosError } from "axios";
 
-export default function useSearch(searchObject: object | undefined) {
+interface UseSearchReturn {
+    searchResults: ManticoreSearchResponse | undefined;
+    searchLoading: boolean;
+    searchError: AxiosError | undefined;
+}
+
+export default function useSearch(
+    searchObject: object | undefined
+): UseSearchReturn {
     const [searchResults, setSearchResults] = useState<
         ManticoreSearchResponse | undefined
     >(undefined);

@@ -105,30 +105,18 @@ export default function SearchBar({
                     }}
                     renderMenuItemChildren={(option, props, index) => {
                         const book = option as Metadata;
-                        if (width < 768) {
-                            return <SearchBarItemExpanded metadata={book} />;
-                        } else {
-                            const timeout = index === 0 ? 500 : index * 500;
-                            return (
-                                <SearchBarFigure
-                                    metadata={book}
-                                    timeout={timeout}
-                                />
-                            );
-                        }
+
+                        return <SearchBarItemExpanded metadata={book} />;
                     }}
                     isLoading={isLoading}
                     onSearch={handleSearch}
                     onChange={(selected) => {
                         if (selected.length > 0) {
                             const book = selected[0] as Metadata;
-                            formik.setFieldValue("q", book.title);
-                            const bookHref = getMetadataInfoPath(
-                                book.topic,
-                                book.md5
-                            );
-                            if (bookHref != null) {
-                                navigate(bookHref);
+                            if (formik.values.type === "author") {
+                                formik.setFieldValue("q", book.author);
+                            } else {
+                                formik.setFieldValue("q", book.title);
                             }
                         }
                         setSelected(selected);

@@ -4,7 +4,7 @@ import Bibliologo from "../general/Bibliologo";
 import SearchOptions from "./SearchOptions";
 import SearchBar from "./searchbar/SearchBar";
 import Greeting from "./Greeting";
-import SearchResultScreen from "./results/SearchResultScreen";
+import SearchResults from "./results/SearchResults";
 import Navbar from "../general/navbar/Navbar";
 import { Metadata } from "../general/helpers/generalTypes";
 import RecommendationScreen from "./recommendations/RecommendationScreen";
@@ -24,6 +24,7 @@ import Break from "../general/Break";
 import SearchStatistics from "./SearchStatistics";
 import { FormikProps, useFormik } from "formik";
 import { buildSearchObject } from "./helpers/searchFunctions";
+import { useWindowSize } from "../general/helpers/useWindowSize";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -43,12 +44,63 @@ async function populateSearchParams(
     searchParams: URLSearchParams
 ) {
     const queryOnParams = searchParams.get("q");
+    const topicOnParams = searchParams.get("topic");
+    const languageOnParams = searchParams.get("language");
+    const formatOnParams = searchParams.get("format");
+    const typeOnParams = searchParams.get("type");
+    const fulltextOnParams = searchParams.get("fulltext");
+
     if (
         queryOnParams != null &&
         queryOnParams !== "" &&
         queryOnParams.length > 3
     ) {
-        await formik.setFieldValue("q", queryOnParams, false);
+        // Due to setFieldValue async nature (it takes way longer than what it should), and also because of
+        // The way the AsyncTypeahead component works on the SearchBar, we need to set the query value directly.
+        // Do keep in mind that this doesn't trigger a re-render, so formik.isValid won't be updated.
+        formik.values.q = queryOnParams;
+    }
+
+    if (
+        topicOnParams != null &&
+        topicOnParams !== formik.values.topic &&
+        ["fiction", "sci-tech"].includes(topicOnParams)
+    ) {
+        await formik.setFieldValue("topic", topicOnParams, false);
+    }
+
+    if (
+        typeOnParams != null &&
+        typeOnParams !== formik.values.type &&
+        ["title", "author", "any"].includes(typeOnParams)
+    ) {
+        await formik.setFieldValue("type", typeOnParams, false);
+    }
+
+    if (
+        formatOnParams != null &&
+        formatOnParams !== formik.values.format &&
+        ["any", "epub", "pdf", "mobi"].includes(formatOnParams)
+    ) {
+        await formik.setFieldValue("format", formatOnParams, false);
+    }
+
+    if (
+        languageOnParams != null &&
+        languageOnParams !== formik.values.language &&
+        ["any", "english", "portuguese"].includes(languageOnParams)
+    ) {
+        await formik.setFieldValue("language", languageOnParams, false);
+    }
+    if (
+        fulltextOnParams != null &&
+        ["true", "false"].includes(fulltextOnParams)
+    ) {
+        await formik.setFieldValue(
+            "fulltext",
+            fulltextOnParams === "true",
+            false
+        );
     }
 }
 
@@ -79,6 +131,7 @@ async function getSearchResults(
 }
 
 function Search() {
+    const { width } = useWindowSize();
     const optionsHiddenSetting = localStorage.getItem("options-hidden");
     const [optionsHidden, setOptionsHidden] = useState<boolean>(
         optionsHiddenSetting ? optionsHiddenSetting === "true" : true
@@ -95,7 +148,13 @@ function Search() {
     const [searchParams, setSearchParameters] = useSearchParams();
 
     // Paging related states and functions
-    const itemsPerPage = 20;
+    const itemsPerPage = 24;
+    let itemsPerRow = 6;
+    if (width < 768) {
+        itemsPerRow = 3;
+    } else if (width < 992) {
+        itemsPerRow = 4;
+    }
     const paginableResults = useRef<number>(0);
     const totalItems = useRef<number>(0);
     const currentOffset = useRef<number>(0);
@@ -114,17 +173,6 @@ function Search() {
             language: "any",
             fulltext: false,
         },
-        validate: (values) => {
-            const errors: Partial<typeof values> = {};
-            if (!values.q) {
-                errors.q = "Required";
-            } else if (values.q.length > 100) {
-                errors.q = "Must be 100 characters or less";
-            } else if (values.q.length < 3) {
-                errors.q = "Must be 3 characters or more";
-            }
-            return errors;
-        },
 
         onSubmit: async (values) => {
             await makeSearchRequest(values);
@@ -137,8 +185,10 @@ function Search() {
         }
 
         let submit: number | undefined = undefined;
-
         populateSearchParams(formik, searchParams).then(() => {
+            if (formik.values.q.length < 3) {
+                return;
+            }
             submit = window.setTimeout(async () => {
                 await formik.submitForm();
 
@@ -238,7 +288,6 @@ function Search() {
         const requestType = SearchRequestType.SEARCH;
         const URLParameters = buildURLParams(values);
         setSearchParameters(URLParameters, { replace: false });
-
         setRequestStatus({
             type: requestType,
             status: SearchRequestStatusOptions.SENDING,
@@ -330,7 +379,6 @@ function Search() {
             });
             return;
         }
-
         setRequestStatus(undefined);
     };
 
@@ -339,7 +387,7 @@ function Search() {
             <div className="container-fluid min-vh-100 d-flex flex-column">
                 <div className="row ">
                     <div className="col mt-3">
-                        <Navbar activeItem="home" />
+                        <Navbar activeItem="home" badgeText="3.0-BETA" />
                     </div>
                 </div>
 
@@ -361,7 +409,7 @@ function Search() {
                 </form>
 
                 <div className="d-flex justify-content-center w-100">
-                    <div className="d-flex flex-wrap justify-content-center search-results-div">
+                    <div className="d-flex flex-wrap justify-content-center search-results-container">
                         <SearchMessageScreen requestStatus={requestStatus} />
                         <Break />
                         <SearchStatistics
@@ -373,7 +421,10 @@ function Search() {
                             itemsPerPage={itemsPerPage}
                         />
                         <Break />
-                        <SearchResultScreen visibleResults={searchResults} />
+                        <SearchResults
+                            visibleResults={searchResults}
+                            itemsPerRow={itemsPerRow}
+                        />
                         <Break />
                         <SearchPagination
                             pageChangeHandler={handlePaginationClick}
@@ -382,7 +433,7 @@ function Search() {
                     </div>
                 </div>
 
-                <RecommendationScreen disabled={searchResults.length > 0} />
+                <RecommendationScreen disabled={pageCount > 0} />
                 <Footer />
             </div>
         </div>

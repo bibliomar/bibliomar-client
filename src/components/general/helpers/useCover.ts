@@ -7,7 +7,6 @@ import {
     resolveCoverUrl,
 } from "./generalFunctions";
 import { Metadata } from "./generalTypes";
-import useSessionStorage from "./useSessionStorage";
 
 // Async handles metadataList cover recovery.
 // Returns a tuple with a possible cover and if the process of retrieving the cover is done.
@@ -22,15 +21,12 @@ export default function useCover(
     useEffect(() => {
         let coverTimeout: number | undefined = undefined;
         let cover: string | undefined;
-        if (coverProviderUrl != null && metadata.coverUrl != null) {
-            cover = resolveCoverUrl(metadata.topic, metadata.coverUrl);
-        } else {
+        cover = resolveCoverUrl(metadata.topic, metadata.coverUrl);
+        if (cover == undefined) {
             cover = noCoverUrl;
         }
 
-        if (cover != undefined) {
-            setCover(cover);
-        }
+        setCover(cover);
 
         coverTimeout = window.setTimeout(
             async () => {

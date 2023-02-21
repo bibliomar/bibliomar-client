@@ -66,7 +66,7 @@ export default function LibraryScreen() {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <Navbar activeItem="library" badgeText="library" />
+                        <Navbar activeItem="library" badgeText="LIBRARY" />
                     </div>
                 </div>
                 <div className="row">

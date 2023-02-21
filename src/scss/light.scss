@@ -1,14 +1,19 @@
 // Light theme specific classes are defined here.
+@import "../../node_modules/mdb-ui-kit/css/mdb.min.css";
+@import "../../node_modules/mdb-ui-kit/src/scss/free/variables";
 
-@import "node_modules/mdb-ui-kit/src/scss/free/variables";
 
 $text-color: #000000;
 $text-color-accent: #30333A;
 $bg-color: #EBECF8;
 $accent-color: #7663F2;
 
-// bg for light theme is the default one
+.bg-alt {
+  /*noinspection CssUnknownTarget*/
+  background: url("/assets/img/newBGLight.png") no-repeat fixed center center !important;
+  background-size: cover !important;
 
+}
 
 .form-control {
   color: $text-color;
@@ -25,12 +30,6 @@ $accent-color: #7663F2;
 }
 
 .recommendation-title {
-  font-family: 'Nunito Sans', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 27px;
-  font-size: 1.1rem;
-
   color: #585858;
 }
 
@@ -62,3 +61,4 @@ $accent-color: #7663F2;
 .text-color {
   color: $dark
 }
+

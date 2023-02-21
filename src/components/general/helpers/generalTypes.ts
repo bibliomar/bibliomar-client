@@ -67,7 +67,7 @@ interface Metadata extends LibraryProperties, MetadataProperties {
     extension?: string | null;
     fileSize?: number | null;
     formattedSize?: string | null;
-    coverUrl?: string | null;
+    coverUrl?: string | undefined;
 }
 
 /**

@@ -173,8 +173,8 @@ export function getEmptyCover() {
     return "https://libgen.rocks/img/blank.png";
 }
 
-export function resolveCoverUrl(topic: string, coverUrl: string) {
-    if (topic == undefined || coverUrl == undefined) {
+export function resolveCoverUrl(topic: string, coverUrl: string | undefined) {
+    if (topic == undefined || coverUrl == undefined || coverUrl === "") {
         return undefined;
     }
 
