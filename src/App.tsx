@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 
 const Search = lazy(() => import("./components/search/Search"));
 const BookInfoError = lazy(
@@ -39,12 +39,13 @@ import { useContext } from "react";
 import { ThemeContext } from "./components/general/helpers/generalContext";
 import { useTranslation } from "react-i18next";
 import { libraryCategoryToLocaleText } from "./components/general/helpers/generalFunctions";
+import SuspenseLoadingSpinner from "./components/general/SuspenseLoadingSpinner";
 
 function App() {
     const { theme } = useContext(ThemeContext);
     const { t } = useTranslation();
     return (
-        <>
+        <Suspense fallback={<SuspenseLoadingSpinner />}>
             <Routes>
                 <Route path="*" element={<Error404 />} />
                 <Route path="error" element={<Error404 />} />
@@ -117,7 +118,7 @@ function App() {
                     <Route path=":bookidentifier" element={<ReaderMain />} />
                 </Route>
             </Routes>
-        </>
+        </Suspense>
     );
 }
 

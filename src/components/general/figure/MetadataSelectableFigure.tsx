@@ -15,6 +15,7 @@ interface MetadataSelectableFigureProps {
     timeout?: number;
     selectable?: boolean;
     href?: string;
+    minimal?: boolean;
 }
 
 /** A reusable metadata figure which shows the metadata info on top of its cover.
@@ -30,6 +31,7 @@ export default function MetadataSelectableFigure({
     timeout,
     href,
     selectable,
+    minimal,
 }: MetadataSelectableFigureProps) {
     const [cover, coverDone] = useCover(metadata, timeout);
     const editModeContext = useContext(EditModeContext);
@@ -133,12 +135,14 @@ export default function MetadataSelectableFigure({
                     </>
                 ) : null}
 
-                <span
-                    className="ms-2 text-nowrap simple-text"
-                    style={{ fontSize: "0.9em" }}
-                >
-                    {formatAndSize}
-                </span>
+                {!minimal ? (
+                    <span
+                        className="ms-2 text-nowrap simple-text"
+                        style={{ fontSize: "0.9em" }}
+                    >
+                        {formatAndSize}
+                    </span>
+                ) : null}
             </div>
             <MDBRipple
                 {...bindLongpress()}

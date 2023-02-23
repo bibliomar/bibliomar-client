@@ -4,6 +4,10 @@ import useCover from "../helpers/useCover";
 import Break from "../Break";
 import "./figure.scss";
 import { MDBRipple } from "mdb-react-ui-kit";
+import { getEmptyCover } from "../helpers/generalFunctions";
+import useSwipe from "../helpers/useSwipe";
+import { useState } from "react";
+import { LongPressDetectEvents, useLongPress } from "use-long-press";
 
 interface Props {
     metadata: Metadata;
@@ -16,7 +20,12 @@ export default function MetadataHoverableFigure({
     timeout,
     href,
 }: Props) {
+    const emptyCover = getEmptyCover();
+
     const [cover, coverDone] = useCover(metadata, timeout);
+    const [shouldForceMask, setShouldForceMask] = useState<boolean>(
+        cover === undefined || cover === emptyCover
+    );
 
     const renderMaskElement = () => {
         const { title } = metadata;
@@ -40,7 +49,11 @@ export default function MetadataHoverableFigure({
 
     return (
         <div className="w-100 h-100">
-            <MDBRipple className="bg-image hover-overlay rounded w-100 h-100 shadow-3-strong">
+            <MDBRipple
+                className={`bg-image ${
+                    shouldForceMask ? "" : "hover-overlay"
+                } rounded w-100 h-100 shadow-3-strong`}
+            >
                 <MetadataCover
                     coverUrl={cover}
                     coverDone={coverDone}

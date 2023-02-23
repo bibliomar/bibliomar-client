@@ -10,7 +10,15 @@ export default function useCover(
     timeout?: number
 ): [string | undefined, boolean] {
     const noCoverUrl: string = getEmptyCover();
-    const [cover, setCover] = useState<string | undefined>(undefined);
+    const [cover, setCover] = useState<string | undefined>(() => {
+        // This function makes sure cover is available when the component is mounted.
+        let cover: string | undefined;
+        cover = resolveCoverUrl(metadata.topic, metadata.coverUrl);
+        if (cover == undefined) {
+            cover = noCoverUrl;
+        }
+        return cover;
+    });
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
     useEffect(() => {

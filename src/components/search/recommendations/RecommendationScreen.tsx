@@ -38,12 +38,7 @@ const recommendations: Metadata[] = [
         title: "Seara vermelha",
         md5: "7061F3E26D53E300FD64A77EE1865F23",
         topic: "fiction",
-    },
-    {
-        author: "Sanderson, Brandon",
-        title: "O Império Final",
-        md5: "C14CDF822286598C7A15032616563673",
-        topic: "fiction",
+        coverUrl: "2342000/1aeabb5c7a0485584111ca5450882192-g.jpg",
     },
     {
         title: "Capitães da areia",

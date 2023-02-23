@@ -1,6 +1,7 @@
 import MetadataSelectableFigure from "../../general/figure/MetadataSelectableFigure";
 import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
+import MetadataHoverableFigure from "../../general/figure/MetadataHoverableFigure";
 
 interface Props {
     metadata: Metadata;
@@ -10,11 +11,11 @@ interface Props {
 export default function RecommendationBookFigure({ metadata, timeout }: Props) {
     const [cover, coverDone] = useCover(metadata, timeout);
 
-    const href = `/search?category=${metadata.topic}&q=${metadata.title}`;
+    const href = `/search?topic=${metadata.topic}&q=${metadata.title}`;
 
     return (
         <div className="recommendation-figure me-2 mb-3">
-            <MetadataSelectableFigure metadata={metadata} href={href} />
+            <MetadataHoverableFigure metadata={metadata} href={href} />
         </div>
     );
 }
