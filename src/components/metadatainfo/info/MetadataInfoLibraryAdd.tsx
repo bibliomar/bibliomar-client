@@ -13,9 +13,9 @@ import {
     MDBDropdownMenu,
     MDBDropdownToggle,
 } from "mdb-react-ui-kit";
-import { libraryCategoryToLocaleText } from "../helpers/bookinfoFunctions";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
+    libraryCategoryToLocaleText,
     addBookToLibrary,
     serverUrl,
 } from "../../general/helpers/generalFunctions";
@@ -33,7 +33,7 @@ interface BookInfoLibraryAddProps {
     className?: string | undefined;
 }
 
-export default function BookInfoLibraryAdd({
+export default function MetadataInfoLibraryAdd({
     metadata,
     updateMetadata,
     className,

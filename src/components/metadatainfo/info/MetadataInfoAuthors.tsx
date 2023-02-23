@@ -7,7 +7,7 @@ interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoAuthors({ metadata }: Props) {
+export default function MetadataInfoAuthors({ metadata }: Props) {
     const authorSearchUrl = `/search?type=author&q=${metadata.author}`;
     return (
         <>

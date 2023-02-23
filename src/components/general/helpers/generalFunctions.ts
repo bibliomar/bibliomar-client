@@ -1,8 +1,9 @@
-import { AuthContextParams, Metadata, LibraryCategories } from "./generalTypes";
+import { AuthContextParams, LibraryCategories, Metadata } from "./generalTypes";
 import { NavigateFunction } from "react-router-dom";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import localforage from "localforage";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
+import { TFunction } from "i18next";
 
 export const hasStorage = (storage: Storage): boolean => {
     const testItem = "_bibliomar_storage_test";
@@ -29,42 +30,6 @@ export function formatBytes(bytes: number, decimals = 2) {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
-
-// Retrieves the books in a user's library.
-export const getUserInfo = async (
-    jwtToken: string,
-    navigate?: NavigateFunction
-) => {
-    const config = {
-        url: `${backendUrl}/v1/library/get`,
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-        },
-    };
-    try {
-        const req = await axios.request(config);
-        const data = req.data;
-        return {
-            reading: data["reading"].reverse(),
-            "to-read": data["to-read"].reverse(),
-            backlog: data["backlog"].reverse(),
-        };
-    } catch (e: any) {
-        if (e.request) {
-            if (e.request.status === 401) {
-                localStorage.removeItem("jwt-token");
-                if (navigate) {
-                    navigate("/user/login");
-                }
-            }
-        }
-        if (navigate) {
-            navigate("/metadataList/error");
-        }
-        return null;
-    }
-};
 
 // Tries to find a metadataList in the browser's saved books based on md5.
 export const findBookInSavedBooks = async (
@@ -206,6 +171,29 @@ export function getMetadataInfoPath(topic: string, md5: string) {
     return undefined;
 }
 
+export function libraryCategoryToLocaleText(
+    transFunc: TFunction,
+    category: LibraryCategories
+) {
+    const t = transFunc;
+    switch (category) {
+        case LibraryCategories.reading:
+            return t("library:lendo");
+        case LibraryCategories.toRead:
+            return t("library:planejandoLer");
+        case LibraryCategories.finished:
+            return t("library:finalizado");
+        case LibraryCategories.dropped:
+            return t("library:abandonado");
+        case LibraryCategories.backlog:
+            return t("library:backlog");
+
+        default:
+            return category;
+    }
+}
+
+// The URL to the older backend
 export const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
 
 export const serverUrl = import.meta.env.VITE_SERVER_URL as string;
@@ -214,6 +202,3 @@ export const manticoreUrl = import.meta.env.VITE_MANTICORE_URL as string;
 
 export const coverProviderUrl = import.meta.env
     .VITE_COVER_PROVIDER_URL as string;
-
-export const alternativeCoverProviderUrl = import.meta.env
-    .VITE_ALTERNATIVE_COVER_PROVIDER_URL as string;

@@ -6,7 +6,7 @@ interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoDownload({ metadata }: Props) {
+export default function MetadataInfoDownload({ metadata }: Props) {
     const { t } = useTranslation();
     // noinspection AllyJsxHardcodedStringInspection
     return (
@@ -16,11 +16,12 @@ export default function BookInfoDownload({ metadata }: Props) {
             <a
                 target={"_blank"}
                 className="d-flex justify-content-center"
-                href={metadata.downloadMirrors.libgenMirror}
+                href={metadata.downloadMirrors?.libgenMirror}
             >
                 <button
                     className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
                     disabled={
+                        metadata.downloadMirrors == undefined ||
                         metadata.downloadMirrors.libgenMirror == undefined
                     }
                 >
@@ -31,11 +32,12 @@ export default function BookInfoDownload({ metadata }: Props) {
             <a
                 target={"_blank"}
                 className="d-flex justify-content-center"
-                href={metadata.downloadMirrors.librocksMirror}
+                href={metadata.downloadMirrors?.librocksMirror}
             >
                 <button
                     className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
                     disabled={
+                        metadata.downloadMirrors == undefined ||
                         metadata.downloadMirrors.librocksMirror == undefined
                     }
                 >

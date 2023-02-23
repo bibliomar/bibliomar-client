@@ -1,13 +1,13 @@
 import { Metadata } from "../../general/helpers/generalTypes";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
 import { useTranslation } from "react-i18next";
-import { libraryCategoryToLocaleText } from "../helpers/bookinfoFunctions";
+import { libraryCategoryToLocaleText } from "../../general/helpers/generalFunctions";
 
 interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoBadges({ metadata }: Props) {
+export default function MetadataInfoBadges({ metadata }: Props) {
     const { t } = useTranslation();
     return (
         <>

@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import {
-    backendUrl,
-    coverProviderUrl,
-    getEmptyCover,
-    resolveCoverUrl,
-} from "./generalFunctions";
+import { getEmptyCover, resolveCoverUrl } from "./generalFunctions";
 import { Metadata } from "./generalTypes";
 
 // Async handles metadataList cover recovery.

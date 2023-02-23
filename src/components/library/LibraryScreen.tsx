@@ -4,7 +4,6 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
-import { getUserInfo } from "../general/helpers/generalFunctions";
 import { Filters, EditModeContext } from "./helpers/libraryContext";
 import {
     EditModeContextParams,

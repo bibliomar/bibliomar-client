@@ -3,7 +3,7 @@ import Break from "../general/Break";
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 
-export default function BookInfoParent() {
+export default function MetadataInfoParent() {
     return (
         <div className="like-body bg-alt">
             <div className="container-fluid">

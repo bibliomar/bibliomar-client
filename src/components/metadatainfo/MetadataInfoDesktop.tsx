@@ -1,20 +1,20 @@
 import { MDBCol, MDBContainer } from "mdb-react-ui-kit";
-import BookInfoCover from "./info/BookInfoCover";
+import MetadataInfoCover from "./info/MetadataInfoCover";
 import { Metadata } from "../general/helpers/generalTypes";
-import BookInfoDownload from "./info/BookInfoDownload";
+import MetadataInfoDownload from "./info/MetadataInfoDownload";
 import { BookInfoSubProps } from "./MetadataInfoScreen";
 import React, { useRef } from "react";
 import Break from "../general/Break";
 import SmallLine from "../general/SmallLine";
-import BookInfoTitle from "./info/BookInfoTitle";
-import BookInfoBadges from "./info/BookInfoBadges";
-import BookInfoDescription from "./info/BookInfoDescription";
-import BookInfoFile from "./info/BookInfoFile";
-import BookInfoAuthors from "./info/BookInfoAuthors";
-import BookInfoLibraryAdd from "./info/BookInfoLibraryAdd";
+import MetadataInfoTitle from "./info/MetadataInfoTitle";
+import MetadataInfoBadges from "./info/MetadataInfoBadges";
+import MetadataInfoDescription from "./info/MetadataInfoDescription";
+import MetadataInfoFile from "./info/MetadataInfoFile";
+import MetadataInfoAuthors from "./info/MetadataInfoAuthors";
+import MetadataInfoLibraryAdd from "./info/MetadataInfoLibraryAdd";
 import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 
-export default function BookInfoDesktop({
+export default function MetadataInfoDesktop({
     metadata,
     updateMetadata,
 }: BookInfoSubProps) {
@@ -27,9 +27,9 @@ export default function BookInfoDesktop({
                     className="ms-3 mt-4 mb-4 metadata-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
-                        <BookInfoCover metadata={metadata} />
+                        <MetadataInfoCover metadata={metadata} />
                         <Break />
-                        <BookInfoDownload metadata={metadata} />
+                        <MetadataInfoDownload metadata={metadata} />
                     </div>
                 </div>
 
@@ -40,15 +40,15 @@ export default function BookInfoDesktop({
                     <div className="d-flex flex-wrap justify-content-start">
                         <div className="d-flex w-100">
                             <div className="d-flex flex-wrap w-50">
-                                <BookInfoTitle metadata={metadata} />
+                                <MetadataInfoTitle metadata={metadata} />
                                 <Break />
-                                <BookInfoAuthors metadata={metadata} />
+                                <MetadataInfoAuthors metadata={metadata} />
                             </div>
                             <div
                                 className="d-flex flex-wrap ms-auto me-4"
                                 style={{ height: "fit-content" }}
                             >
-                                <BookInfoLibraryAdd
+                                <MetadataInfoLibraryAdd
                                     metadata={metadata}
                                     updateMetadata={updateMetadata}
                                 />
@@ -60,11 +60,11 @@ export default function BookInfoDesktop({
                         <Break />
                         <SmallLine flexGrow />
                         <Break className="mb-2" />
-                        <BookInfoFile metadata={metadata} />
+                        <MetadataInfoFile metadata={metadata} />
                         <Break className="mb-3" />
-                        <BookInfoBadges metadata={metadata} />
+                        <MetadataInfoBadges metadata={metadata} />
                         <Break className="mb-1" />
-                        <BookInfoDescription
+                        <MetadataInfoDescription
                             description={metadata.description}
                         />
                         <Break />

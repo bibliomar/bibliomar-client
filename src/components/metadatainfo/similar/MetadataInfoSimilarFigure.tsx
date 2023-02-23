@@ -22,11 +22,8 @@ export default function MetadataInfoSimilarFigure({
         >
             <MetadataSelectableFigure
                 metadata={metadata}
-                cover={cover}
-                coverDone={coverDone}
                 href={href}
                 selectable
-                expanded
             />
         </div>
     );

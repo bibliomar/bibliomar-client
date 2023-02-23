@@ -6,7 +6,7 @@ interface Props {
     description: string | null | undefined;
 }
 
-export default function BookInfoDescription({ description }: Props) {
+export default function MetadataInfoDescription({ description }: Props) {
     const { t } = useTranslation();
     return (
         <div className="d-flex flex-wrap mt-5">

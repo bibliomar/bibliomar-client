@@ -6,7 +6,7 @@ interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoTitle({ metadata }: Props) {
+export default function MetadataInfoTitle({ metadata }: Props) {
     return (
         <>
             <span

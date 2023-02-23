@@ -50,7 +50,7 @@ interface MetadataProperties {
     series?: string | null;
     timeAdded?: string | null;
     timeLastModified?: string | null;
-    downloadMirrors: DownloadMirrors;
+    downloadMirrors?: DownloadMirrors;
 }
 
 /**

@@ -2,7 +2,7 @@ import { MDBTypography } from "mdb-react-ui-kit";
 import Break from "../general/Break";
 import { useTranslation } from "react-i18next";
 
-export default function BookInfoError() {
+export default function MetadataInfoError() {
     const { t } = useTranslation();
     return (
         <>

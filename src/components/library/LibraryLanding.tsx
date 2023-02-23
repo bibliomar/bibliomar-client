@@ -10,7 +10,7 @@ import {
 import LibraryCategory from "./LibraryCategory";
 import { useTranslation } from "react-i18next";
 import { UserLibraryContext } from "./helpers/libraryFunctions";
-import { libraryCategoryToLocaleText } from "../metadatainfo/helpers/bookinfoFunctions";
+import { libraryCategoryToLocaleText } from "../general/helpers/generalFunctions";
 
 export default function LibraryLanding() {
     const userLibraryContext = useContext(UserLibraryContext);

@@ -13,10 +13,12 @@ import React, { MouseEventHandler, useContext, useState } from "react";
 import { EditModeContext } from "../helpers/libraryContext";
 import { LibraryCategories } from "../../general/helpers/generalTypes";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addBookToLibrary } from "../../general/helpers/generalFunctions";
+import {
+    addBookToLibrary,
+    libraryCategoryToLocaleText,
+} from "../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../general/helpers/generalContext";
-import { libraryCategoryToLocaleText } from "../../metadatainfo/helpers/bookinfoFunctions";
 import { toast } from "react-toastify";
 import { UserLibraryContext } from "../helpers/libraryFunctions";
 

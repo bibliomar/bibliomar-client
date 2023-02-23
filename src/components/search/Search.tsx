@@ -383,59 +383,57 @@ function Search() {
     };
 
     return (
-        <div className="like-body bg-alt">
-            <div className="container-fluid min-vh-100 d-flex flex-column">
-                <div className="row ">
-                    <div className="col mt-3">
-                        <Navbar activeItem="home" badgeText="3.0-BETA" />
-                    </div>
+        <div className="container-fluid min-vh-100 d-flex flex-column">
+            <div className="row ">
+                <div className="col mt-3">
+                    <Navbar activeItem="home" badgeText="3.0-BETA" />
                 </div>
-
-                <Bibliologo />
-                <Greeting />
-                <form ref={formRef} onSubmit={formik.handleSubmit}>
-                    <SearchOptions
-                        hidden={optionsHidden}
-                        topicContext={topicContext}
-                        setTopicContext={setTopicContext}
-                        setPageNumber={setPageCount}
-                        formik={formik}
-                    />
-                    <SearchBar
-                        setOptionsHidden={setOptionsHidden}
-                        topicContext={topicContext}
-                        formik={formik}
-                    />
-                </form>
-
-                <div className="d-flex justify-content-center w-100">
-                    <div className="d-flex flex-wrap justify-content-center search-results-container">
-                        <SearchMessageScreen requestStatus={requestStatus} />
-                        <Break />
-                        <SearchStatistics
-                            disabled={searchResults.length === 0}
-                            totalResults={totalItems.current}
-                            tookTime={tookTime}
-                            paginableResults={paginableResults.current}
-                            offset={currentOffset.current}
-                            itemsPerPage={itemsPerPage}
-                        />
-                        <Break />
-                        <SearchResults
-                            visibleResults={searchResults}
-                            itemsPerRow={itemsPerRow}
-                        />
-                        <Break />
-                        <SearchPagination
-                            pageChangeHandler={handlePaginationClick}
-                            pageCount={pageCount}
-                        />
-                    </div>
-                </div>
-
-                <RecommendationScreen disabled={pageCount > 0} />
-                <Footer />
             </div>
+
+            <Bibliologo />
+            <Greeting />
+            <form ref={formRef} onSubmit={formik.handleSubmit}>
+                <SearchOptions
+                    hidden={optionsHidden}
+                    topicContext={topicContext}
+                    setTopicContext={setTopicContext}
+                    setPageNumber={setPageCount}
+                    formik={formik}
+                />
+                <SearchBar
+                    setOptionsHidden={setOptionsHidden}
+                    topicContext={topicContext}
+                    formik={formik}
+                />
+            </form>
+
+            <div className="d-flex justify-content-center w-100">
+                <div className="d-flex flex-wrap justify-content-center search-results-container">
+                    <SearchMessageScreen requestStatus={requestStatus} />
+                    <Break />
+                    <SearchStatistics
+                        disabled={searchResults.length === 0}
+                        totalResults={totalItems.current}
+                        tookTime={tookTime}
+                        paginableResults={paginableResults.current}
+                        offset={currentOffset.current}
+                        itemsPerPage={itemsPerPage}
+                    />
+                    <Break />
+                    <SearchResults
+                        visibleResults={searchResults}
+                        itemsPerRow={itemsPerRow}
+                    />
+                    <Break />
+                    <SearchPagination
+                        pageChangeHandler={handlePaginationClick}
+                        pageCount={pageCount}
+                    />
+                </div>
+            </div>
+
+            <RecommendationScreen disabled={pageCount > 0} />
+            <Footer />
         </div>
     );
 }

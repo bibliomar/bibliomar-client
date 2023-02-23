@@ -9,17 +9,10 @@ interface Props {
 }
 
 export default function SearchFigure({ metadata, timeout }: Props) {
-    const [cover, coverDone] = useCover(metadata, timeout);
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
     return (
         <div className="search-result-figure mb-3">
-            <MetadataSelectableFigure
-                metadata={metadata}
-                cover={cover}
-                coverDone={coverDone}
-                href={href}
-                expanded
-            />
+            <MetadataSelectableFigure metadata={metadata} href={href} />
         </div>
     );
 }

@@ -7,7 +7,7 @@ interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoFile({ metadata }: Props) {
+export default function MetadataInfoFile({ metadata }: Props) {
     const { t } = useTranslation();
 
     return (

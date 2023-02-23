@@ -7,11 +7,11 @@ import React, {
     useState,
 } from "react";
 import { Metadata } from "../general/helpers/generalTypes";
-import BookInfoDesktop from "./BookInfoDesktop";
+import MetadataInfoDesktop from "./MetadataInfoDesktop";
 import axios from "axios";
 import { DownloadLinks } from "../general/helpers/generalTypes";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
-import BookInfoMobile from "./BookInfoMobile";
+import MetadataInfoMobile from "./MetadataInfoMobile";
 import {
     backendUrl,
     findBookInLibrary,
@@ -61,12 +61,12 @@ export default function MetadataInfoScreen() {
                 {metadata ? (
                     <div className="basic-container book-info-container mb-5">
                         {size.width > 1024 ? (
-                            <BookInfoDesktop
+                            <MetadataInfoDesktop
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}
                             />
                         ) : (
-                            <BookInfoMobile
+                            <MetadataInfoMobile
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}
                             />

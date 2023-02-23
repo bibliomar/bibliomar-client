@@ -9,17 +9,13 @@ interface Props {
     metadata: Metadata;
 }
 
-export default function BookInfoCover({ metadata }: Props) {
+export default function MetadataInfoCover({ metadata }: Props) {
     const [cover, coverDone] = useCover(metadata);
 
     return (
         <div className="d-flex flex-column mb-3 w-100">
             <div className="metadata-cover-img">
-                <MetadataCover
-                    metadata={metadata}
-                    coverUrl={cover}
-                    coverDone={coverDone}
-                />
+                <MetadataCover coverUrl={cover} coverDone={coverDone} />
             </div>
         </div>
     );

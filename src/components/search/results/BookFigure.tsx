@@ -43,7 +43,6 @@ export default function BookFigure({ metadata, timeout }: Props) {
                 rippleColor="light"
             >
                 <MetadataCover
-                    metadata={metadata}
                     coverUrl={cover}
                     coverDone={coverDone}
                     href={href}

@@ -37,11 +37,7 @@ export default function SearchBarFigure({ metadata, timeout }: Props) {
                 className="search-bar-figure-cover"
             >
                 <div className="d-flex w-100">
-                    <MetadataCover
-                        metadata={metadata}
-                        coverUrl={cover}
-                        coverDone={coverDone}
-                    />
+                    <MetadataCover coverUrl={cover} coverDone={coverDone} />
                 </div>
             </div>
             <div

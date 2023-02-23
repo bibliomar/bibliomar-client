@@ -1,18 +1,18 @@
-import BookInfoCover from "./info/BookInfoCover";
-import BookInfoDownload from "./info/BookInfoDownload";
+import MetadataInfoCover from "./info/MetadataInfoCover";
+import MetadataInfoDownload from "./info/MetadataInfoDownload";
 import { BookInfoSubProps } from "./MetadataInfoScreen";
 import React from "react";
 import Break from "../general/Break";
 import SmallLine from "../general/SmallLine";
-import BookInfoTitle from "./info/BookInfoTitle";
-import BookInfoBadges from "./info/BookInfoBadges";
-import BookInfoDescription from "./info/BookInfoDescription";
-import BookInfoFile from "./info/BookInfoFile";
-import BookInfoAuthors from "./info/BookInfoAuthors";
-import BookInfoLibraryAdd from "./info/BookInfoLibraryAdd";
+import MetadataInfoTitle from "./info/MetadataInfoTitle";
+import MetadataInfoBadges from "./info/MetadataInfoBadges";
+import MetadataInfoDescription from "./info/MetadataInfoDescription";
+import MetadataInfoFile from "./info/MetadataInfoFile";
+import MetadataInfoAuthors from "./info/MetadataInfoAuthors";
+import MetadataInfoLibraryAdd from "./info/MetadataInfoLibraryAdd";
 import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 
-export default function BookInfoMobile({
+export default function MetadataInfoMobile({
     metadata,
     updateMetadata,
 }: BookInfoSubProps) {
@@ -24,7 +24,7 @@ export default function BookInfoMobile({
                     className="mt-4 mb-4 metadata-cover-section"
                 >
                     <div className="d-flex flex-wrap justify-content-center w-100">
-                        <BookInfoCover metadata={metadata} />
+                        <MetadataInfoCover metadata={metadata} />
                     </div>
                 </div>
 
@@ -33,28 +33,28 @@ export default function BookInfoMobile({
                     className="mt-4 mb-4 p-3 metadata-info-section"
                 >
                     <div className="d-flex flex-wrap justify-content-start">
-                        <BookInfoTitle metadata={metadata} />
+                        <MetadataInfoTitle metadata={metadata} />
                         <Break />
-                        <BookInfoAuthors metadata={metadata} />
+                        <MetadataInfoAuthors metadata={metadata} />
                         <Break className="mb-1" />
                         <SmallLine flexGrow />
                         <Break className="mb-2" />
 
                         <Break className="mb-2" />
-                        <BookInfoFile metadata={metadata} />
+                        <MetadataInfoFile metadata={metadata} />
                         <Break className="mb-3" />
-                        <BookInfoBadges metadata={metadata} />
+                        <MetadataInfoBadges metadata={metadata} />
                         <Break />
-                        <BookInfoLibraryAdd
+                        <MetadataInfoLibraryAdd
                             metadata={metadata}
                             updateMetadata={updateMetadata}
                         />
                         <Break className="mb-4" />
-                        <BookInfoDescription
+                        <MetadataInfoDescription
                             description={metadata.description}
                         />
                         <Break className="mb-5" />
-                        <BookInfoDownload metadata={metadata} />
+                        <MetadataInfoDownload metadata={metadata} />
                     </div>
                 </div>
             </div>

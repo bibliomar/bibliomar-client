@@ -14,13 +14,7 @@ export default function RecommendationBookFigure({ metadata, timeout }: Props) {
 
     return (
         <div className="recommendation-figure me-2 mb-3">
-            <MetadataSelectableFigure
-                loadingClassName="loading-skeleton-recommendation"
-                metadata={metadata}
-                cover={cover}
-                coverDone={coverDone}
-                href={href}
-            />
+            <MetadataSelectableFigure metadata={metadata} href={href} />
         </div>
     );
 }

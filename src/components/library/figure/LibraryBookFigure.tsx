@@ -17,11 +17,8 @@ export default function LibraryBookFigure(props: Props) {
         <div id="library-book-div" className="library-figure-img me-2 mb-3">
             <MetadataSelectableFigure
                 metadata={props.metadata}
-                cover={cover}
-                coverDone={coverDone}
                 href={href}
                 selectable
-                expanded
             />
         </div>
     );

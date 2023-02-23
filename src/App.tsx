@@ -3,7 +3,7 @@ import { lazy } from "react";
 
 const Search = lazy(() => import("./components/search/Search"));
 const BookInfoError = lazy(
-    () => import("./components/metadatainfo/BookInfoError")
+    () => import("./components/metadatainfo/MetadataInfoError")
 );
 const Login = lazy(() => import("./components/user/loginForm/Login"));
 const Register = lazy(() => import("./components/user/registerForm/Register"));
@@ -18,22 +18,27 @@ const LibraryExpandedScreen = lazy(
 );
 const ReaderLanding = lazy(() => import("./components/reader/ReaderLanding"));
 const ReaderMain = lazy(() => import("./components/reader/screen/ReaderMain"));
-
-import BookInfoParent from "./components/metadatainfo/BookInfoParent";
+// lazy load these components
+// use suspense fallbacks if possible
+// TODO: check if react-router's loader implementation is feasible
+import MetadataInfoParent from "./components/metadatainfo/MetadataInfoParent";
 import MetadataInfoScreen from "./components/metadatainfo/MetadataInfoScreen";
 import MetadataInfoTopic from "./components/metadatainfo/MetadataInfoTopic";
+import Explore from "./components/explore/Explore";
+
+import About from "./components/about/About";
+import FAQ from "./components/faq/FAQ";
+
 import {
     LibraryCategories,
     ThemeOptions,
 } from "./components/general/helpers/generalTypes";
-import About from "./components/about/About";
-import FAQ from "./components/faq/FAQ";
+
 import { toast, ToastContainer } from "react-toastify";
 import { useContext } from "react";
 import { ThemeContext } from "./components/general/helpers/generalContext";
 import { useTranslation } from "react-i18next";
-import { libraryCategoryToLocaleText } from "./components/metadatainfo/helpers/bookinfoFunctions";
-import Explore from "./components/explore/Explore";
+import { libraryCategoryToLocaleText } from "./components/general/helpers/generalFunctions";
 
 function App() {
     const { theme } = useContext(ThemeContext);
@@ -48,7 +53,7 @@ function App() {
                 <Route path="/faq" element={<FAQ></FAQ>} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/explore" element={<Explore />} />
-                <Route path="/metadata" element={<BookInfoParent />}>
+                <Route path="/metadata" element={<MetadataInfoParent />}>
                     <Route path=":topic" element={<MetadataInfoTopic />}>
                         <Route path=":md5" element={<MetadataInfoScreen />} />
                     </Route>
