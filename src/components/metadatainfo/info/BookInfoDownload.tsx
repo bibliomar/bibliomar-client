@@ -1,72 +1,51 @@
 import Break from "../../general/Break";
-import { DownloadLinks } from "../../general/helpers/generalTypes";
+import { DownloadLinks, Metadata } from "../../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-    downloadLinks?: DownloadLinks;
-    error: boolean;
+    metadata: Metadata;
 }
 
-export default function BookInfoDownload({ downloadLinks, error }: Props) {
+export default function BookInfoDownload({ metadata }: Props) {
     const { t } = useTranslation();
     // noinspection AllyJsxHardcodedStringInspection
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            {downloadLinks ? (
-                <>
-                    <span className="recommendation-title mb-2">Download</span>
-                    <Break />
-                    {Object.entries(downloadLinks!).map(
-                        ([provider, value], index) => {
-                            if (value == null) {
-                                return null;
-                            }
-                            if (
-                                provider === "libgen" ||
-                                provider === "librocks"
-                            ) {
-                                return (
-                                    <>
-                                        <a
-                                            key={provider}
-                                            target={"_blank"}
-                                            className="d-flex justify-content-center"
-                                            href={value ? value : undefined}
-                                        >
-                                            <button
-                                                className={
-                                                    !error
-                                                        ? "dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
-                                                        : "dbutton btn btn-danger btn-rounded btn-lg mt-1 mb-1 me-1"
-                                                }
-                                                disabled={
-                                                    provider == null || error
-                                                }
-                                            >
-                                                {provider ? provider : "erro"}
-                                            </button>
-                                        </a>
-                                        <Break key={index} />
-                                    </>
-                                );
-                            } else {
-                                return null;
-                            }
-                        }
-                    )}
-
-                    <Break />
-                    {!error ? (
-                        <span className="text-muted mt-1 text-center w-75">
-                            {t("metadatainfo:downloadWaitInfo")}
-                        </span>
-                    ) : (
-                        <span className="text-danger mt-1 text-center w-75">
-                            {t("metadatainfo:downloadErrorInfo")}
-                        </span>
-                    )}
-                </>
-            ) : null}
+            <span className="recommendation-title mb-2">Download</span>
+            <Break />
+            <a
+                target={"_blank"}
+                className="d-flex justify-content-center"
+                href={metadata.downloadMirrors.libgenMirror}
+            >
+                <button
+                    className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
+                    disabled={
+                        metadata.downloadMirrors.libgenMirror == undefined
+                    }
+                >
+                    LIBGEN
+                </button>
+            </a>
+            <Break />
+            <a
+                target={"_blank"}
+                className="d-flex justify-content-center"
+                href={metadata.downloadMirrors.librocksMirror}
+            >
+                <button
+                    className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
+                    disabled={
+                        metadata.downloadMirrors.librocksMirror == undefined
+                    }
+                >
+                    LIBROCKS
+                </button>
+            </a>
+            <Break />
+            <span className="text-muted mt-1 text-center w-75">
+                {t("metadatainfo:downloadWaitInfo")}
+            </span>
         </div>
     );
 }

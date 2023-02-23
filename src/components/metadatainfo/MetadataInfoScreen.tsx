@@ -20,7 +20,6 @@ import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
 import localforage from "localforage";
 import { findBookLocally } from "../reader/helpers/readerFunctions";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
-import useDownloadLinks from "../general/helpers/useDownloadLinks";
 import useMetadata from "../general/helpers/useMetadata";
 import { AuthContext } from "../general/helpers/generalContext";
 import { toast, ToastContainer, useToastContainer } from "react-toastify";
@@ -29,11 +28,9 @@ import "./metadatainfo.css";
 export interface BookInfoSubProps {
     metadata: Metadata;
     updateMetadata: () => Promise<void>;
-    downloadLinks: DownloadLinks | undefined;
-    downloadLinksError: boolean;
 }
 
-export default function BookInfoScreen() {
+export default function MetadataInfoScreen() {
     const params = useParams();
     const md5 = params.md5;
     const navigate = useNavigate();
@@ -45,10 +42,6 @@ export default function BookInfoScreen() {
         topicContext = "scitech";
     }
     const [metadata, updateMetadata] = useMetadata(md5, topicContext);
-    const [downloadLinks, downloadLinksError] = useDownloadLinks(
-        md5,
-        topicContext
-    );
 
     useEffect(() => {
         if (md5 == null) {
@@ -71,15 +64,11 @@ export default function BookInfoScreen() {
                             <BookInfoDesktop
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}
-                                downloadLinks={downloadLinks}
-                                downloadLinksError={downloadLinksError}
                             />
                         ) : (
                             <BookInfoMobile
                                 metadata={metadata}
                                 updateMetadata={updateMetadata}
-                                downloadLinks={downloadLinks}
-                                downloadLinksError={downloadLinksError}
                             />
                         )}
                     </div>

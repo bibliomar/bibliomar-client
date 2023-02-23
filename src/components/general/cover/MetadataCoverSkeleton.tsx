@@ -1,7 +1,7 @@
 import Skeleton from "react-loading-skeleton";
 import React from "react";
 
-export default function SimpleFigureSkeleton({
+export default function MetadataCoverSkeleton({
     loadingClassName,
 }: {
     loadingClassName?: string;

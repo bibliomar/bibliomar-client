@@ -1,4 +1,4 @@
-import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
+import MetadataSelectableFigure from "../../general/figure/MetadataSelectableFigure";
 import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
 
@@ -14,7 +14,7 @@ export default function RecommendationBookFigure({ metadata, timeout }: Props) {
 
     return (
         <div className="recommendation-figure me-2 mb-3">
-            <SimpleBookFigure
+            <MetadataSelectableFigure
                 loadingClassName="loading-skeleton-recommendation"
                 metadata={metadata}
                 cover={cover}

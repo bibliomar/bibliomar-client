@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "../../general/helpers/generalTypes";
-import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
+import MetadataSelectableFigure from "../../general/figure/MetadataSelectableFigure";
 import useCover from "../../general/helpers/useCover";
 import { getMetadataInfoPath } from "../../general/helpers/generalFunctions";
 
@@ -15,7 +15,7 @@ export default function LibraryBookFigure(props: Props) {
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
     return (
         <div id="library-book-div" className="library-figure-img me-2 mb-3">
-            <SimpleBookFigure
+            <MetadataSelectableFigure
                 metadata={props.metadata}
                 cover={cover}
                 coverDone={coverDone}

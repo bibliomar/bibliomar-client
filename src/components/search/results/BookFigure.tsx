@@ -6,7 +6,7 @@ import { MDBRipple } from "mdb-react-ui-kit";
 import Break from "../../general/Break";
 import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
-import BookFigureCover from "../../general/BookFigureCover";
+import MetadataCover from "../../general/cover/MetadataCover";
 import {
     SearchRequestStatus,
     SearchRequestStatusOptions,
@@ -42,10 +42,9 @@ export default function BookFigure({ metadata, timeout }: Props) {
                 rippleTag="div"
                 rippleColor="light"
             >
-                <BookFigureCover
+                <MetadataCover
                     metadata={metadata}
-                    cover={cover}
-                    loadingClassName="loading-skeleton-search"
+                    coverUrl={cover}
                     coverDone={coverDone}
                     href={href}
                 />

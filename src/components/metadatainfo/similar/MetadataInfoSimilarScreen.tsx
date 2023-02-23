@@ -2,7 +2,7 @@ import { Metadata } from "../../general/helpers/generalTypes";
 import Break from "../../general/Break";
 import { MDBContainer } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
-import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
+import MetadataSelectableFigure from "../../general/figure/MetadataSelectableFigure";
 import { useEffect, useMemo, useState } from "react";
 import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import { useWindowSize } from "../../general/helpers/useWindowSize";

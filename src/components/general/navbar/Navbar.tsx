@@ -18,7 +18,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
-import ThemeChooser from "./ThemeChooser";
+import ThemeSelector from "./ThemeSelector";
 import { useWindowSize } from "../helpers/useWindowSize";
 import LanguageSelector from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
@@ -106,6 +106,16 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink
+                                    href="/explore"
+                                    name="/explore"
+                                    active={activeItem === "explore"}
+                                    onClick={handleNavigate}
+                                >
+                                    Explorar
+                                </MDBNavbarLink>
+                            </MDBNavbarItem>
+                            <MDBNavbarItem>
+                                <MDBNavbarLink
                                     active={activeItem === "reader"}
                                     href="/reader"
                                     name="/reader"
@@ -143,7 +153,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 </form>
                             ) : null}
                             <LanguageSelector />
-                            <ThemeChooser />
+                            <ThemeSelector />
                             <NavbarUser />
                         </MDBNavbarNav>
                     </MDBCollapse>

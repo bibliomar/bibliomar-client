@@ -1,19 +1,27 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { lazy } from "react";
 
-import Search from "./components/search/Search";
-import BookInfoError from "./components/metadatainfo/BookInfoError";
-import Login from "./components/user/loginForm/Login";
-import Register from "./components/user/registerForm/Register";
-import Recover from "./components/user/recoverForm/Recover";
-import Error404 from "./components/general/Error404";
-import LibraryScreen from "./components/library/LibraryScreen";
-import LibraryLanding from "./components/library/LibraryLanding";
-import LibraryExpandedScreen from "./components/library/LibraryLandingExpanded";
-import ReaderLanding from "./components/reader/ReaderLanding";
-import ReaderMain from "./components/reader/screen/ReaderMain";
+const Search = lazy(() => import("./components/search/Search"));
+const BookInfoError = lazy(
+    () => import("./components/metadatainfo/BookInfoError")
+);
+const Login = lazy(() => import("./components/user/loginForm/Login"));
+const Register = lazy(() => import("./components/user/registerForm/Register"));
+const Recover = lazy(() => import("./components/user/recoverForm/Recover"));
+const Error404 = lazy(() => import("./components/general/Error404"));
+const LibraryScreen = lazy(() => import("./components/library/LibraryScreen"));
+const LibraryLanding = lazy(
+    () => import("./components/library/LibraryLanding")
+);
+const LibraryExpandedScreen = lazy(
+    () => import("./components/library/LibraryLandingExpanded")
+);
+const ReaderLanding = lazy(() => import("./components/reader/ReaderLanding"));
+const ReaderMain = lazy(() => import("./components/reader/screen/ReaderMain"));
+
 import BookInfoParent from "./components/metadatainfo/BookInfoParent";
-import BookInfoScreen from "./components/metadatainfo/BookInfoScreen";
-import BookInfoTopicParent from "./components/metadatainfo/BookInfoTopicParent";
+import MetadataInfoScreen from "./components/metadatainfo/MetadataInfoScreen";
+import MetadataInfoTopic from "./components/metadatainfo/MetadataInfoTopic";
 import {
     LibraryCategories,
     ThemeOptions,
@@ -25,6 +33,7 @@ import { useContext } from "react";
 import { ThemeContext } from "./components/general/helpers/generalContext";
 import { useTranslation } from "react-i18next";
 import { libraryCategoryToLocaleText } from "./components/metadatainfo/helpers/bookinfoFunctions";
+import Explore from "./components/explore/Explore";
 
 function App() {
     const { theme } = useContext(ThemeContext);
@@ -38,9 +47,10 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/faq" element={<FAQ></FAQ>} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/explore" element={<Explore />} />
                 <Route path="/metadata" element={<BookInfoParent />}>
-                    <Route path=":topic" element={<BookInfoTopicParent />}>
-                        <Route path=":md5" element={<BookInfoScreen />} />
+                    <Route path=":topic" element={<MetadataInfoTopic />}>
+                        <Route path=":md5" element={<MetadataInfoScreen />} />
                     </Route>
                     <Route path="error" element={<BookInfoError />} />
                 </Route>

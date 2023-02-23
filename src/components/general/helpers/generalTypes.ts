@@ -5,14 +5,13 @@ import { AxiosError } from "axios";
 
 type Topic = "fiction" | "scitech";
 
-interface StatisticsGetResponse {
+interface StatisticsTopResponse {
     topic: Topic;
     numOfViews: number;
     numOfDownloads: number;
+    md5: string;
     metadata: Metadata;
 }
-
-interface StatisticsTopResponse {}
 
 type DownloadLinks = {
     GET: string;
@@ -51,7 +50,7 @@ interface MetadataProperties {
     series?: string | null;
     timeAdded?: string | null;
     timeLastModified?: string | null;
-    downloadMirrors?: DownloadMirrors;
+    downloadMirrors: DownloadMirrors;
 }
 
 /**
@@ -124,4 +123,5 @@ export type {
     ThemeContextParams,
     UserLibrary,
     AuthContextParams,
+    StatisticsTopResponse,
 };

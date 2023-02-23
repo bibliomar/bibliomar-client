@@ -2,7 +2,7 @@ import { Highlighter } from "react-bootstrap-typeahead";
 import React from "react";
 import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
-import BookFigureCover from "../../general/BookFigureCover";
+import MetadataCover from "../../general/cover/MetadataCover";
 import Break from "../../general/Break";
 import {
     formatBytes,
@@ -37,9 +37,9 @@ export default function SearchBarFigure({ metadata, timeout }: Props) {
                 className="search-bar-figure-cover"
             >
                 <div className="d-flex w-100">
-                    <BookFigureCover
+                    <MetadataCover
                         metadata={metadata}
-                        cover={cover}
+                        coverUrl={cover}
                         coverDone={coverDone}
                     />
                 </div>

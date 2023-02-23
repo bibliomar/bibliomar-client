@@ -1,7 +1,7 @@
 import Break from "../../general/Break";
 import useCover from "../../general/helpers/useCover";
 import Skeleton from "react-loading-skeleton";
-import BookFigureCover from "../../general/BookFigureCover";
+import MetadataCover from "../../general/cover/MetadataCover";
 import { Metadata } from "../../general/helpers/generalTypes";
 import { useEffect } from "react";
 
@@ -15,9 +15,9 @@ export default function BookInfoCover({ metadata }: Props) {
     return (
         <div className="d-flex flex-column mb-3 w-100">
             <div className="metadata-cover-img">
-                <BookFigureCover
+                <MetadataCover
                     metadata={metadata}
-                    cover={cover}
+                    coverUrl={cover}
                     coverDone={coverDone}
                 />
             </div>

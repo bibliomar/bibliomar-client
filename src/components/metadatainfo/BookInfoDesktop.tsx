@@ -2,7 +2,7 @@ import { MDBCol, MDBContainer } from "mdb-react-ui-kit";
 import BookInfoCover from "./info/BookInfoCover";
 import { Metadata } from "../general/helpers/generalTypes";
 import BookInfoDownload from "./info/BookInfoDownload";
-import { BookInfoSubProps } from "./BookInfoScreen";
+import { BookInfoSubProps } from "./MetadataInfoScreen";
 import React, { useRef } from "react";
 import Break from "../general/Break";
 import SmallLine from "../general/SmallLine";
@@ -17,8 +17,6 @@ import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 export default function BookInfoDesktop({
     metadata,
     updateMetadata,
-    downloadLinks,
-    downloadLinksError,
 }: BookInfoSubProps) {
     return (
         // Two flex containers because we want one to wrap and the other one not to.
@@ -31,10 +29,7 @@ export default function BookInfoDesktop({
                     <div className="d-flex flex-wrap justify-content-center w-100">
                         <BookInfoCover metadata={metadata} />
                         <Break />
-                        <BookInfoDownload
-                            downloadLinks={downloadLinks}
-                            error={downloadLinksError}
-                        />
+                        <BookInfoDownload metadata={metadata} />
                     </div>
                 </div>
 

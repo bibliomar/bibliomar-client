@@ -3,7 +3,7 @@ import { ThemeContext } from "../helpers/generalContext";
 import { MDBIcon, MDBNavbarItem, MDBNavbarLink } from "mdb-react-ui-kit";
 import { ThemeOptions } from "../helpers/generalTypes";
 
-export default function ThemeChooser() {
+export default function ThemeSelector() {
     const themeContext = useContext(ThemeContext);
     const changeTheme = () => {
         themeContext.setTheme(

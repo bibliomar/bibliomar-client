@@ -1,19 +1,20 @@
 // noinspection AllyJsxHardcodedStringInspection
 
-import { Metadata } from "./helpers/generalTypes";
+import { Metadata } from "../helpers/generalTypes";
 import Skeleton from "react-loading-skeleton";
 import React from "react";
 import { Link } from "react-router-dom";
-import SimpleFigureSkeleton from "./figure/SimpleFigureSkeleton";
-import { getEmptyCover, resolveCoverUrl } from "./helpers/generalFunctions";
+import MetadataCoverSkeleton from "./MetadataCoverSkeleton";
+import { getEmptyCover, resolveCoverUrl } from "../helpers/generalFunctions";
 
 interface Props {
-    metadata: Metadata;
-    cover: string | undefined;
+    coverUrl: string | undefined;
     coverDone: boolean;
-    loadingClassName?: string | undefined;
     href?: string;
     mask?: boolean;
+    maskClassname?: string | undefined;
+    maskElement?: JSX.Element;
+
     onClick?: React.MouseEventHandler;
 }
 
@@ -22,17 +23,15 @@ const chooseCurrentCoverComponent = (props: Props) => {
     let usableCover: string;
 
     if (props.coverDone) {
-        if (props.cover == null) {
+        if (props.coverUrl == null) {
             usableCover = noCoverUrl;
         } else {
-            usableCover = props.cover;
+            usableCover = props.coverUrl;
         }
 
         return <img src={usableCover} alt="Cover" className="h-100 w-100" />;
     } else {
-        return (
-            <SimpleFigureSkeleton loadingClassName={props.loadingClassName} />
-        );
+        return <MetadataCoverSkeleton />;
     }
 };
 
@@ -42,17 +41,12 @@ const showCoverMaskUrl = (props: Props) => {
             <Link to={props.href} onClick={props.onClick}>
                 {props.mask || props.mask == undefined ? (
                     <div
-                        className={"mask"}
-                        style={{
-                            backgroundColor: props.coverDone
-                                ? "rgba(0,0,0,0.1)"
-                                : undefined,
-
-                            // Show above everything in this component,
-                            // but below anything with a zIndex bigger than 1.
-                            zIndex: "1",
-                        }}
-                    />
+                        className={`mask ${
+                            props.maskClassname ?? "default-figure-mask"
+                        }`}
+                    >
+                        {props.maskElement ?? null}
+                    </div>
                 ) : null}
             </Link>
         );
@@ -62,7 +56,7 @@ const showCoverMaskUrl = (props: Props) => {
 };
 
 // Default cover implementation for any figure that uses MDBRipple or a div with bg-image class.
-export default function BookFigureCover(props: Props) {
+export default function MetadataCover(props: Props) {
     return (
         <>
             {chooseCurrentCoverComponent(props)}

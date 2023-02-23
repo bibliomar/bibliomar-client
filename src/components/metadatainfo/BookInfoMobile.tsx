@@ -1,6 +1,6 @@
 import BookInfoCover from "./info/BookInfoCover";
 import BookInfoDownload from "./info/BookInfoDownload";
-import { BookInfoSubProps } from "./BookInfoScreen";
+import { BookInfoSubProps } from "./MetadataInfoScreen";
 import React from "react";
 import Break from "../general/Break";
 import SmallLine from "../general/SmallLine";
@@ -14,8 +14,6 @@ import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
 
 export default function BookInfoMobile({
     metadata,
-    downloadLinks,
-    downloadLinksError,
     updateMetadata,
 }: BookInfoSubProps) {
     return (
@@ -56,10 +54,7 @@ export default function BookInfoMobile({
                             description={metadata.description}
                         />
                         <Break className="mb-5" />
-                        <BookInfoDownload
-                            downloadLinks={downloadLinks}
-                            error={downloadLinksError}
-                        />
+                        <BookInfoDownload metadata={metadata} />
                     </div>
                 </div>
             </div>

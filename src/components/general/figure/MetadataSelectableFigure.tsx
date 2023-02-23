@@ -3,41 +3,35 @@ import { MDBCheckbox, MDBRipple } from "mdb-react-ui-kit";
 import React, { useContext, useEffect, useState } from "react";
 import { EditModeContext } from "../../library/helpers/libraryContext";
 import { useNavigate } from "react-router-dom";
-import BookFigureCover from "../BookFigureCover";
+import MetadataCover from "../cover/MetadataCover";
 import { formatBytes } from "../helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
 import { LongPressDetectEvents, useLongPress } from "use-long-press";
+import useCover from "../helpers/useCover";
+import "./figure.scss";
 
-interface SimpleBookFigureProps {
+interface MetadataSelectableFigureProps {
     metadata: Metadata;
-    cover: string | undefined;
-    coverDone: boolean;
-    loadingClassName?: string;
+    timeout?: number;
     selectable?: boolean;
     href?: string;
-    expanded?: boolean;
 }
 
 /** A reusable metadata figure which shows the metadata info on top of its cover.
  * If a editModeContext is available, it will enable long press and selections to select the book.
  * @param metadata
  * @param cover
- * @param loadingClassName
- * @param coverDone
  * @param href
  * @param selectable
- * @param expanded
  * @constructor
  */
-export default function SimpleBookFigure({
+export default function MetadataSelectableFigure({
     metadata,
-    cover,
-    loadingClassName,
-    coverDone,
+    timeout,
     href,
     selectable,
-    expanded,
-}: SimpleBookFigureProps) {
+}: MetadataSelectableFigureProps) {
+    const [cover, coverDone] = useCover(metadata, timeout);
     const editModeContext = useContext(EditModeContext);
     const [onSelectedBooks, setOnSelectedBooks] = useState<boolean>(false);
     // Long press hooks that enables edit mode when long pressed.
@@ -138,14 +132,13 @@ export default function SimpleBookFigure({
                         <br />
                     </>
                 ) : null}
-                {expanded ? (
-                    <span
-                        className="ms-2 text-nowrap simple-text"
-                        style={{ fontSize: "0.9em" }}
-                    >
-                        {formatAndSize}
-                    </span>
-                ) : null}
+
+                <span
+                    className="ms-2 text-nowrap simple-text"
+                    style={{ fontSize: "0.9em" }}
+                >
+                    {formatAndSize}
+                </span>
             </div>
             <MDBRipple
                 {...bindLongpress()}
@@ -163,11 +156,9 @@ export default function SimpleBookFigure({
                     </div>
                 )}
 
-                <BookFigureCover
-                    metadata={metadata}
-                    cover={cover}
+                <MetadataCover
+                    coverUrl={cover}
                     coverDone={coverDone}
-                    loadingClassName={loadingClassName}
                     href={href}
                     onClick={(evt) => {
                         evt.preventDefault();

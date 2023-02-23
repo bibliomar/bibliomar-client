@@ -1,7 +1,7 @@
 import useCover from "../../general/helpers/useCover";
 import { Metadata } from "../../general/helpers/generalTypes";
 import { getMetadataInfoPath } from "../../general/helpers/generalFunctions";
-import SimpleBookFigure from "../../general/figure/SimpleBookFigure";
+import MetadataSelectableFigure from "../../general/figure/MetadataSelectableFigure";
 import React from "react";
 
 interface Props {
@@ -20,7 +20,7 @@ export default function MetadataInfoSimilarFigure({
             id="similar-metadata-div"
             className="similar-figure-img me-0 me-lg-2 mb-3"
         >
-            <SimpleBookFigure
+            <MetadataSelectableFigure
                 metadata={metadata}
                 cover={cover}
                 coverDone={coverDone}

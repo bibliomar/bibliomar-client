@@ -2,7 +2,7 @@ import { Highlighter } from "react-bootstrap-typeahead";
 import React from "react";
 import { Metadata } from "../../general/helpers/generalTypes";
 import useCover from "../../general/helpers/useCover";
-import BookFigureCover from "../../general/BookFigureCover";
+import MetadataCover from "../../general/cover/MetadataCover";
 import Break from "../../general/Break";
 import {
     formatBytes,
