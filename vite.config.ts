@@ -54,15 +54,4 @@ export default defineConfig({
             },
         }),
     ],
-    build: {
-        sourcemap: false,
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    vendor: ["react", "react-router-dom", "react-dom"],
-                    ...renderChunks(dependencies),
-                },
-            },
-        },
-    },
 });
