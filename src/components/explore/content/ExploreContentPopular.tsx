@@ -33,7 +33,7 @@ async function getTopContent(by?: "downloads" | "views") {
             requestUrl += "/views";
             break;
     }
-    requestUrl += "?limit=50";
+    requestUrl += "?limit=24";
 
     const config: AxiosRequestConfig<StatisticsTopResponse[] | undefined> = {
         method: "GET",
@@ -42,6 +42,7 @@ async function getTopContent(by?: "downloads" | "views") {
     try {
         const req = await axios.request(config);
         const data: StatisticsTopResponse[] = req.data;
+        console.log(data);
         return data;
     } catch (e: any) {
         console.error(e);

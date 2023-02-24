@@ -22,6 +22,8 @@ export default function useCover(
     const [coverDone, setCoverDone] = useState<boolean>(false);
 
     useEffect(() => {
+        // To re-render the Skeleton component when the metadata changes.
+        setCoverDone(false);
         let coverTimeout: number | undefined = undefined;
         let cover: string | undefined;
         cover = resolveCoverUrl(metadata.topic, metadata.coverUrl);

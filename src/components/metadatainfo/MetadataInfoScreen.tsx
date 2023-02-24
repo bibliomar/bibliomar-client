@@ -24,6 +24,7 @@ import useMetadata from "../general/helpers/useMetadata";
 import { AuthContext } from "../general/helpers/generalContext";
 import { toast, ToastContainer, useToastContainer } from "react-toastify";
 import "./metadatainfo.css";
+import { Helmet } from "react-helmet";
 
 export interface BookInfoSubProps {
     metadata: Metadata;
@@ -59,19 +60,26 @@ export default function MetadataInfoScreen() {
         <>
             <div className="d-flex flex-column align-items-center">
                 {metadata ? (
-                    <div className="basic-container book-info-container mb-5">
-                        {size.width > 1024 ? (
-                            <MetadataInfoDesktop
-                                metadata={metadata}
-                                updateMetadata={updateMetadata}
-                            />
-                        ) : (
-                            <MetadataInfoMobile
-                                metadata={metadata}
-                                updateMetadata={updateMetadata}
-                            />
-                        )}
-                    </div>
+                    <>
+                        <Helmet>
+                            <title>
+                                {metadata.title} - {metadata.author} - Bibliomar
+                            </title>
+                        </Helmet>
+                        <div className="basic-container book-info-container mb-5">
+                            {size.width > 1024 ? (
+                                <MetadataInfoDesktop
+                                    metadata={metadata}
+                                    updateMetadata={updateMetadata}
+                                />
+                            ) : (
+                                <MetadataInfoMobile
+                                    metadata={metadata}
+                                    updateMetadata={updateMetadata}
+                                />
+                            )}
+                        </div>
+                    </>
                 ) : (
                     <BlankLoadingSpinner />
                 )}

@@ -25,6 +25,8 @@ import SearchStatistics from "./SearchStatistics";
 import { FormikProps, useFormik } from "formik";
 import { buildSearchObject } from "./helpers/searchFunctions";
 import { useWindowSize } from "../general/helpers/useWindowSize";
+import { Helmet } from "react-helmet";
+import SearchTips from "./SearchTips";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -132,6 +134,7 @@ async function getSearchResults(
 
 function Search() {
     const { width } = useWindowSize();
+    const [helmetTitle, setHelmetTitle] = useState<string>("Bibliomar");
     const optionsHiddenSetting = localStorage.getItem("options-hidden");
     const [optionsHidden, setOptionsHidden] = useState<boolean>(
         optionsHiddenSetting ? optionsHiddenSetting === "true" : true
@@ -218,6 +221,7 @@ function Search() {
             currentOffset.current = 0;
             totalItems.current = 0;
             setPageCount(0);
+            setHelmetTitle("Bibliomar");
         }
         setSearchResults([]);
         setTookTime(0);
@@ -303,6 +307,8 @@ function Search() {
             });
             return;
         }
+        // Sets window title to current search query.
+        setHelmetTitle(values.q);
         /**
          * The "LOADING" state makes the search experience arbitraty slower.
          * There's no real file loading progress being tracked, or even a "file loading" process at all.
@@ -384,6 +390,9 @@ function Search() {
 
     return (
         <div className="container-fluid min-vh-100 d-flex flex-column">
+            <Helmet>
+                <title>{helmetTitle} - Bibliomar</title>
+            </Helmet>
             <div className="row ">
                 <div className="col mt-3">
                     <Navbar activeItem="home" badgeText="3.0-BETA" />
@@ -392,6 +401,7 @@ function Search() {
 
             <Bibliologo />
             <Greeting />
+            <SearchTips />
             <form ref={formRef} onSubmit={formik.handleSubmit}>
                 <SearchOptions
                     hidden={optionsHidden}

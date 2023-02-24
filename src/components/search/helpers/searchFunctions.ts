@@ -99,8 +99,8 @@ export function buildSearchObject(
     }
 
     if (limit != null && offset != null) {
-        const maxMatches = offset + limit > 1000 ? 1000 : offset + limit;
-        searchObject.max_matches = maxMatches;
+        const maxMatches = offset + limit;
+        searchObject.maxMatches = maxMatches;
     }
 
     console.log(searchObject);

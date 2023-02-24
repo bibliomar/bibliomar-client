@@ -12,6 +12,7 @@ import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
+import { Helmet } from "react-helmet";
 import { BrowserRouter } from "react-router-dom";
 import { hasStorage } from "./components/general/helpers/generalFunctions";
 import useLocalStorage from "./components/general/helpers/useLocalStorage";
@@ -60,7 +61,12 @@ export default function Bibliomar() {
         <BrowserRouter>
             <AuthContext.Provider value={authContext}>
                 <ThemeContext.Provider value={themeContext}>
-                    <App />
+                    <>
+                        <Helmet>
+                            <title>Bibliomar</title>
+                        </Helmet>
+                        <App />
+                    </>
                 </ThemeContext.Provider>
             </AuthContext.Provider>
         </BrowserRouter>

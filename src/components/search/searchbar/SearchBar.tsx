@@ -22,15 +22,12 @@ import {
     ManticoreSearchResponse,
     SearchFormFields,
 } from "../helpers/searchTypes";
-import { AsyncTypeahead, Highlighter, Hint } from "react-bootstrap-typeahead";
-import Typeahead from "react-bootstrap-typeahead/types/core/Typeahead";
-import { useToggle } from "../../general/helpers/useToggle";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Option } from "react-bootstrap-typeahead/types/types";
 import SearchBarInput from "./SearchBarInput";
-import SearchBarFigure from "./SearchBarFigure";
 import SearchBarItemExpanded from "./SearchBarItemExpanded";
 import SearchBarItemSimple from "./SearchBarItemSimple";
-import { FormikConfig, FormikProps, useField } from "formik";
+import { FormikProps } from "formik";
 import { buildSearchObject } from "../helpers/searchFunctions";
 
 interface Props {
@@ -110,7 +107,7 @@ export default function SearchBar({
                     }}
                     isLoading={isLoading}
                     onSearch={handleSearch}
-                    onChange={(selected) => {
+                    onChange={async (selected) => {
                         if (selected.length > 0) {
                             const book = selected[0] as Metadata;
                             if (formik.values.type === "author") {
@@ -118,6 +115,7 @@ export default function SearchBar({
                             } else {
                                 formik.setFieldValue("q", book.title);
                             }
+                            await formik.submitForm();
                         }
                         setSelected(selected);
                     }}

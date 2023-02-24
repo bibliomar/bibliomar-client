@@ -18,8 +18,11 @@ $accent-color: #7663F2;
 
 .bg-alt {
   /*noinspection CssUnknownTarget*/
-  background: url("/assets/img/back-lg-2.svg") no-repeat fixed center center !important;
+  background-image: url("/assets/img/back-lg-2.svg") !important;
   background-size: cover !important;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
 }
 
 .navbar-bg {
