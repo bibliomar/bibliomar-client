@@ -1,17 +1,21 @@
 import useLocalStorage from "./useLocalStorage";
 import { ThemeOptions } from "./generalTypes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function useThemeLoader(): [
     ThemeOptions,
-    (value: ThemeOptions | ((val: ThemeOptions) => ThemeOptions)) => void
+    (value: ThemeOptions | ((val: ThemeOptions) => ThemeOptions)) => void,
+    string
 ] {
     const [theme, setTheme] = useLocalStorage<ThemeOptions>(
         "theme",
         ThemeOptions.light
     );
+    const themeFile = theme === ThemeOptions.light ? "light" : "dark";
+    const [themeHref, setThemeHref] = useState(`/src/scss/${themeFile}.scss`);
 
     useEffect(() => {
+        let ignoreChange = false;
         // Loading of themes...
 
         /**
@@ -51,19 +55,25 @@ export default function useThemeLoader(): [
         });
          */
 
-        const themeStylesLink = document.getElementById("theme-styles");
-        if (themeStylesLink) {
-            const themeFile = theme === ThemeOptions.light ? "light" : "dark";
-            // The path should be relative to the index.html in the root folder.
-            // The path should also start with a slash.
-            const themePath = `/src/scss/${themeFile}.scss`;
-
-            const olderHref = themeStylesLink.getAttribute("href");
-            if (olderHref !== themePath) {
-                themeStylesLink.setAttribute("href", themePath);
-            }
+        const themeFile = theme === ThemeOptions.light ? "light" : "dark";
+        // The path should be relative to the index.html in the root folder.
+        // The path should also start with a slash.
+        const themePath = `/src/scss/${themeFile}.scss`;
+        if (ignoreChange) {
+            return;
         }
+        setThemeHref((olderHref) => {
+            if (olderHref !== themePath) {
+                console.log("Loading theme as per user request: ", themeFile);
+                return themePath;
+            }
+            return olderHref;
+        });
+
+        return () => {
+            ignoreChange = true;
+        };
     }, [theme]);
 
-    return [theme, setTheme];
+    return [theme, setTheme, themeHref];
 }

@@ -1,9 +1,7 @@
 import {
     MDBBtn,
     MDBDropdown,
-    MDBDropdownHeader,
     MDBDropdownItem,
-    MDBDropdownLink,
     MDBDropdownMenu,
     MDBDropdownToggle,
     MDBIcon,
@@ -83,17 +81,20 @@ export default function EditModeMove() {
         }
     };
 
-    const renderDropdownItem = (category: LibraryCategories, key: number) => {
+    const renderDropdownItem = (
+        category: LibraryCategories,
+        key: number
+    ): JSX.Element => {
         return (
-            <MDBDropdownItem key={key}>
-                <MDBDropdownLink
-                    onClick={async (evt) => {
-                        evt.preventDefault();
-                        await handleClick(category);
-                    }}
-                >
-                    {libraryCategoryToLocaleText(t, category)}
-                </MDBDropdownLink>
+            <MDBDropdownItem
+                link
+                onClick={async (evt) => {
+                    evt.preventDefault();
+                    await handleClick(category);
+                }}
+                key={key}
+            >
+                {libraryCategoryToLocaleText(t, category)}
             </MDBDropdownItem>
         );
     };
@@ -110,10 +111,17 @@ export default function EditModeMove() {
             </MDBDropdownToggle>
 
             <MDBDropdownMenu>
-                <MDBDropdownHeader>{t("library:editMoveTo")}</MDBDropdownHeader>
-                {Object.values(LibraryCategories).map((category, index) => {
-                    return renderDropdownItem(category, index);
-                })}
+                <MDBDropdownItem header>
+                    {t("library:editMoveTo")}
+                </MDBDropdownItem>
+                <>
+                    {Object.keys(LibraryCategories).map((category, index) => {
+                        return renderDropdownItem(
+                            category as LibraryCategories,
+                            index
+                        );
+                    })}
+                </>
             </MDBDropdownMenu>
         </MDBDropdown>
     );

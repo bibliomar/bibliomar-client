@@ -62,6 +62,7 @@ function getMetadatasFromResponse(
 
 export default function ExploreContentPopular() {
     const { width } = useWindowSize();
+    const [requestError, setRequestError] = useState<boolean>(false);
     const [requestDone, setRequestDone] = useState<boolean>(true);
     const topContent = useRef<StatisticsTopResponse[]>([]);
     const [visibleContent, setVisibleContent] = useState<Metadata[]>([]);
@@ -90,7 +91,7 @@ export default function ExploreContentPopular() {
     const renderTopContent = () => {
         if (!requestDone) {
             return <BlankLoadingSpinner />;
-        } else if (topContent.current.length === 0) {
+        } else if (requestError) {
             return <p>Nenhum resultado encontrado.</p>;
         } else if (visibleContent.length > 0 && slicedContent.length > 0) {
             return slicedContent.map((metadatas, rowIndex) => {
@@ -125,22 +126,32 @@ export default function ExploreContentPopular() {
     };
 
     useEffect(() => {
-        getTopContent().then((res) => {
-            if (res) {
-                console.log(res);
-                topContent.current = res;
-                const metadatasFromResponse = getMetadatasFromResponse(
-                    topContent.current
-                );
-                setVisibleContent(metadatasFromResponse.slice(0, itemsPerPage));
+        getTopContent()
+            .then((res) => {
+                if (res) {
+                    console.log(res);
+                    topContent.current = res;
+                    const metadatasFromResponse = getMetadatasFromResponse(
+                        topContent.current
+                    );
+                    setVisibleContent(
+                        metadatasFromResponse.slice(0, itemsPerPage)
+                    );
 
-                const pageCount = Math.ceil(
-                    topContent.current.length / itemsPerPage
-                );
-                setPageCount(pageCount);
-            }
-            setRequestDone(true);
-        });
+                    const pageCount = Math.ceil(
+                        topContent.current.length / itemsPerPage
+                    );
+                    setPageCount(pageCount);
+                } else {
+                    setRequestError(true);
+                }
+                setRequestDone(true);
+            })
+            .catch((e: any) => {
+                console.error(e);
+                setRequestError(true);
+                setRequestDone(true);
+            });
     }, []);
 
     return (

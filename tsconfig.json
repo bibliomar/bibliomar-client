@@ -18,7 +18,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": [],
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./node_modules/@types"]
 
   },
   "include": ["src"],

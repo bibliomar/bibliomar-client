@@ -46,12 +46,12 @@ export default function MetadataInfoScreen() {
 
     useEffect(() => {
         if (md5 == null) {
-            navigate("/metadataList/error", { replace: true });
+            navigate("/metadata/error", { replace: true });
             return;
         }
         const md5Match = md5.match("^[0-9a-fA-F]{32}$");
         if (md5Match == null) {
-            navigate("/metadataList/error", { replace: true });
+            navigate("/metadata/error", { replace: true });
             return;
         }
     }, [md5, topicContext]);

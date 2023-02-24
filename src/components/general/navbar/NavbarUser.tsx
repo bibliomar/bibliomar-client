@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
     MDBDropdown,
     MDBDropdownItem,
-    MDBDropdownLink,
     MDBDropdownMenu,
     MDBDropdownToggle,
     MDBNavbarItem,
@@ -32,27 +31,27 @@ export default function NavbarUser() {
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                     {!authContext.userLogged ? (
-                        <MDBDropdownItem>
-                            <MDBDropdownLink
-                                href={`/user/login?redirect=${location.pathname}`}
-                            >
-                                {t("navbar:user.signin")}
-                            </MDBDropdownLink>
+                        <MDBDropdownItem
+                            link
+                            href={`/user/login?redirect=${location.pathname}`}
+                        >
+                            {t("navbar:user.signin")}
                         </MDBDropdownItem>
                     ) : (
-                        <MDBDropdownItem>
-                            <MDBDropdownLink href={`/user/login`}>
+                        <>
+                            <MDBDropdownItem link href={`/user/login`}>
                                 <i className="fas fa-book me-1"></i>
                                 {t("navbar:user.library")}
-                            </MDBDropdownLink>
-                            <MDBDropdownLink
+                            </MDBDropdownItem>
+                            <MDBDropdownItem
+                                link
                                 href="/user/logout"
                                 onClick={logout}
                             >
                                 <i className="fas fa-power-off me-1"></i>
                                 {t("navbar:user.signoff")}
-                            </MDBDropdownLink>
-                        </MDBDropdownItem>
+                            </MDBDropdownItem>
+                        </>
                     )}
                 </MDBDropdownMenu>
             </MDBDropdown>

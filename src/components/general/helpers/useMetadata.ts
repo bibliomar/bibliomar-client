@@ -62,7 +62,7 @@ async function getMetadataOnline(
          * }
          *
          */
-        // sessionStorage.setItem(`${md5}-metadataList`, JSON.stringify(result));
+        // sessionStorage.setItem(`${md5}-metadata`, JSON.stringify(result));
         return result;
     } catch (e) {
         console.error(e);
@@ -74,7 +74,7 @@ export default function useMetadata(
     md5: string | undefined,
     topic: string | undefined
 ): [Metadata | undefined, () => Promise<void>] {
-    // Retrieves metadataList for a specific metadataList. Also checks if that books is in library and updates accordingly.
+    // Retrieves metadata for a specific metadataList. Also checks if that books is in library and updates accordingly.
     // Metadata is equivalent to a metadataList's info.
     const authContext = useContext(AuthContext);
     const [metadata, setMetadata] = useState<Metadata | undefined>(undefined);
@@ -82,7 +82,7 @@ export default function useMetadata(
 
     const updateMetadata = async () => {
         if (md5 == null || topic == null) {
-            navigate("/metadataList/error", { replace: true });
+            navigate("/metadata/error", { replace: true });
             return;
         }
 
@@ -90,7 +90,7 @@ export default function useMetadata(
         if (metadata != null) {
             setMetadata(metadata);
         } else {
-            navigate("/metadataList/error", { replace: true });
+            navigate("/metadata/error", { replace: true });
             return;
         }
     };
@@ -104,6 +104,9 @@ export default function useMetadata(
     }, [md5, topic]);
 
     useEffect(() => {
+        if (!authContext.userLogged) {
+            return;
+        }
         let ignore = false;
         if (metadata == null || metadata.category != null) {
             return;

@@ -8,13 +8,16 @@ import {
     MDBNavbarItem,
 } from "mdb-react-ui-kit";
 import { Simulate } from "react-dom/test-utils";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ThemeContext } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 
 const flagCodeForLanguage = (language: string) => {
-    switch (language) {
+    const langCode = language.toLowerCase();
+    switch (langCode) {
         case "pt":
+            return "br";
+        case "pt-br":
             return "br";
         case "en":
             return "us";
@@ -34,9 +37,15 @@ export default function LanguageSelector() {
         i18n.changeLanguage(lng).then();
     };
 
-    if (currentLanguage === "en-us") {
-        changeLanguage("en");
-    }
+    useEffect(() => {
+        if (currentLanguage === "pt-BR") {
+            changeLanguage("pt-br");
+        } else if (currentLanguage === "en-US") {
+            changeLanguage("en-us");
+        }
+        console.log("runs");
+        console.log("currentLanguage: " + currentLanguage);
+    }, []);
 
     // noinspection AllyJsxHardcodedStringInspection
     return (
@@ -59,13 +68,19 @@ export default function LanguageSelector() {
                     </span>
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
-                    <MDBDropdownItem onClick={() => changeLanguage("pt")}>
+                    <MDBDropdownItem
+                        link
+                        onClick={() => changeLanguage("pt-br")}
+                    >
                         <span className={`fi fi-br mt-2 me-1`}></span>
-                        <span>PT</span>
+                        <span>PT-BR</span>
                     </MDBDropdownItem>
-                    <MDBDropdownItem onClick={() => changeLanguage("en")}>
+                    <MDBDropdownItem
+                        link
+                        onClick={() => changeLanguage("en-us")}
+                    >
                         <span className={`fi fi-us mt-2 me-1`}></span>
-                        <span>EN</span>
+                        <span>EN-US</span>
                     </MDBDropdownItem>
                 </MDBDropdownMenu>
             </MDBDropdown>

@@ -85,15 +85,15 @@ export default function MetadataInfoSimilarScreen({
         }
         setSearchDone(false);
         setSearchResults(undefined);
-        const search = makeSearch(searchObject);
-        search
+
+        makeSearch(searchObject)
             .then((results) => {
                 if (results == undefined) {
                     setSearchResults(undefined);
                     setSearchDone(true);
                     return;
                 }
-
+                console.log(results);
                 setSearchResults(results);
                 setSearchDone(true);
             })
@@ -120,7 +120,10 @@ export default function MetadataInfoSimilarScreen({
         } else {
             const searchHits = searchResults.hits.hits;
             if (searchHits == undefined || searchHits.length === 0) {
-                return null;
+                return <p>Nenhum item encontrado.</p>;
+            }
+            if (removeTargetMd5(metadata.md5, searchHits).length === 0) {
+                return <p>Nenhum item encontrado.</p>;
             }
             const sanitizedHits = removeTargetMd5(metadata.md5, searchHits);
 
@@ -130,6 +133,7 @@ export default function MetadataInfoSimilarScreen({
 
     return (
         <MDBContainer fluid>
+            {}
             <div className="d-flex flex-wrap w-100 justify-content-start simple-text">
                 <h4
                     className="book-info-description mb-3 ms-2 ms-lg-0"

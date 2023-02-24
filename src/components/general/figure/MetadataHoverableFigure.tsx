@@ -28,9 +28,11 @@ export default function MetadataHoverableFigure({
     );
 
     const renderMaskElement = () => {
-        const { title } = metadata;
+        const { title, author } = metadata;
         const formattedTitle =
             title.length > 30 ? title.slice(0, 30) + "..." : title;
+        const formattedAuthor =
+            author.length > 30 ? author.slice(0, 30) + "..." : author;
         return (
             <div className="d-flex flex-column justify-content-center align-items-center h-100">
                 <div className="d-flex flex-wrap justify-content-center align-items-center w-100 text-center text-light simple-text">
@@ -41,7 +43,7 @@ export default function MetadataHoverableFigure({
                         {formattedTitle}
                     </span>
                     <Break />
-                    <span className="">{metadata.author}</span>
+                    <span className="">{formattedAuthor}</span>
                 </div>
             </div>
         );

@@ -10,12 +10,11 @@ $accent-color: #7663F2;
 
 .bg-alt {
   /*noinspection CssUnknownTarget*/
-  background-image: url("/assets/img/newBGLight.png") !important;
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-image: url("/assets/img/bg-light.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
   background-size: cover !important;
-  background-attachment: fixed;
-
+  background-attachment: scroll !important;
 }
 
 .form-control {

@@ -27,7 +27,7 @@ export default function Bibliomar() {
         null
     );
 
-    const [theme, setTheme] = useThemeLoader();
+    const [theme, setTheme, themeHref] = useThemeLoader();
     const themeContext: ThemeContextParams = {
         theme: theme,
         setTheme: setTheme,
@@ -64,6 +64,12 @@ export default function Bibliomar() {
                     <>
                         <Helmet>
                             <title>Bibliomar</title>
+                            <link
+                                id="theme-style"
+                                type="text/css"
+                                rel="stylesheet"
+                                href={themeHref}
+                            ></link>
                         </Helmet>
                         <App />
                     </>

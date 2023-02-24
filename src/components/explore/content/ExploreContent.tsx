@@ -1,5 +1,6 @@
 import { MDBTabsContent, MDBTabsPane } from "mdb-react-ui-kit";
 import ExploreContentPopular from "./ExploreContentPopular";
+import ExploreContentRecent from "./ExploreContentRecent";
 
 interface Props {
     activeTab: number;
@@ -12,7 +13,9 @@ export default function ExploreContent({ activeTab, handleTabClick }: Props) {
             <MDBTabsPane show={activeTab === 1}>
                 <ExploreContentPopular />
             </MDBTabsPane>
-            <MDBTabsPane show={activeTab === 2}>Teste 2</MDBTabsPane>
+            <MDBTabsPane show={activeTab === 2}>
+                <ExploreContentRecent />
+            </MDBTabsPane>
         </MDBTabsContent>
     );
 }

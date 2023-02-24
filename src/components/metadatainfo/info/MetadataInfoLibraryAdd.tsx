@@ -7,9 +7,7 @@ import {
 import React, { SetStateAction, useContext, useEffect, useState } from "react";
 import {
     MDBDropdown,
-    MDBDropdownHeader,
     MDBDropdownItem,
-    MDBDropdownLink,
     MDBDropdownMenu,
     MDBDropdownToggle,
 } from "mdb-react-ui-kit";
@@ -142,23 +140,23 @@ export default function MetadataInfoLibraryAdd({
 
     function renderDropdownItem(category: LibraryCategories, key: number) {
         return (
-            <MDBDropdownItem key={key}>
-                <MDBDropdownLink
-                    onClick={async (evt) => {
-                        evt.preventDefault();
-                        if (
-                            !authContext.userLogged ||
-                            authContext.jwtToken == null
-                        ) {
-                            navigate(`/user/login?redirect=${currentLocation}`);
-                            return;
-                        }
-                        await handleAddToLibrary(category);
-                    }}
-                    className={metadata.category === category ? "active" : ""}
-                >
-                    {libraryCategoryToLocaleText(t, category)}
-                </MDBDropdownLink>
+            <MDBDropdownItem
+                link
+                key={key}
+                onClick={async (evt) => {
+                    evt.preventDefault();
+                    if (
+                        !authContext.userLogged ||
+                        authContext.jwtToken == null
+                    ) {
+                        navigate(`/user/login?redirect=${currentLocation}`);
+                        return;
+                    }
+                    await handleAddToLibrary(category);
+                }}
+                className={metadata.category === category ? "active" : ""}
+            >
+                {libraryCategoryToLocaleText(t, category)}
             </MDBDropdownItem>
         );
     }
@@ -176,13 +174,17 @@ export default function MetadataInfoLibraryAdd({
                     {renderButtonText()}
                 </MDBDropdownToggle>
                 <MDBDropdownMenu dark={theme === ThemeOptions.dark}>
-                    <MDBDropdownHeader className="mt-2">
+                    <MDBDropdownItem header className="mt-2">
                         {renderDropdownHeaderText()}
-                    </MDBDropdownHeader>
+                    </MDBDropdownItem>
 
-                    {Object.values(LibraryCategories).map((category, index) => {
-                        return renderDropdownItem(category, index);
-                    })}
+                    <>
+                        {Object.values(LibraryCategories).map(
+                            (category, index) => {
+                                return renderDropdownItem(category, index);
+                            }
+                        )}
+                    </>
                 </MDBDropdownMenu>
             </MDBDropdown>
         </div>
