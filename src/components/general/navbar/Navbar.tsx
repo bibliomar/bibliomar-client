@@ -22,6 +22,8 @@ import ThemeSelector from "./ThemeSelector";
 import { useWindowSize } from "../helpers/useWindowSize";
 import LanguageSelector from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
+import SmoothCollapse from "react-smooth-collapse";
+import NavbarSearchBar from "./NavbarSearchBar";
 
 interface Props {
     activeItem?: string;
@@ -33,7 +35,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
     const themeContext = useContext(ThemeContext);
     const theme = themeContext.theme;
     const width = useWindowSize().width;
-    const [showNav, setShowNav] = useState<boolean>(false);
+    const [showNav, setShowNav] = useState<boolean>(width > 992);
     const navigate = useNavigate();
     const location = useLocation();
     const formik = useFormik({
@@ -75,8 +77,12 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                     >
                         <MDBIcon icon="bars" fas />
                     </MDBNavbarToggler>
-
-                    <MDBCollapse navbar show={showNav}>
+                    <SmoothCollapse
+                        expanded={showNav || width > 992}
+                        allowOverflowWhenOpen={true}
+                        eagerRender
+                        className={width <= 992 ? "w-100" : "w-75"}
+                    >
                         <MDBNavbarNav
                             className={`mr-auto mb-2 mb-lg-0 ${
                                 theme === ThemeOptions.light
@@ -84,7 +90,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     : "text-light"
                             }`}
                         >
-                            <MDBNavbarItem className="mt-2 mt-md-0">
+                            <MDBNavbarItem className="mt-3 mt-lg-0">
                                 <MDBNavbarLink
                                     name="/about"
                                     active={activeItem === "about"}
@@ -125,38 +131,13 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             {location.pathname !== "/search" ? (
-                                <form
-                                    onSubmit={formik.handleSubmit}
-                                    className="d-flex input-group justify-content-center
-                                        justify-content-lg-end me-0 me-lg-5 mt-3 mt-lg-0"
-                                    style={{ maxWidth: "100%" }}
-                                >
-                                    <MDBInput
-                                        name="query"
-                                        id="query"
-                                        type="search"
-                                        wrapperClass={
-                                            width <= 1024 ? "w-75" : undefined
-                                        }
-                                        value={formik.values.query}
-                                        onChange={formik.handleChange}
-                                    />
-                                    <MDBBtn
-                                        className={
-                                            width <= 1024 ? "w-25" : undefined
-                                        }
-                                        color="primary"
-                                        type="submit"
-                                    >
-                                        <i className="fas fa-search"></i>
-                                    </MDBBtn>
-                                </form>
+                                <NavbarSearchBar />
                             ) : null}
                             <LanguageSelector />
                             <ThemeSelector />
                             <NavbarUser />
                         </MDBNavbarNav>
-                    </MDBCollapse>
+                    </SmoothCollapse>
                 </MDBContainer>
             </MDBNavbar>
         </div>

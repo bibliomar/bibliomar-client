@@ -1,6 +1,6 @@
 // noinspection AllyPlainJsInspection
 
-import { defineConfig } from "vite";
+import { build, defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

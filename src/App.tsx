@@ -79,33 +79,6 @@ function App() {
                             />
                         );
                     })}
-                    <Route
-                        path="reading"
-                        element={
-                            <LibraryExpandedScreen
-                                title={"Lendo"}
-                                metadataCategory={LibraryCategories.reading}
-                            />
-                        }
-                    />
-                    <Route
-                        path="to-read"
-                        element={
-                            <LibraryExpandedScreen
-                                title={"Planejando ler"}
-                                metadataCategory={LibraryCategories.toRead}
-                            />
-                        }
-                    />
-                    <Route
-                        path="backlog"
-                        element={
-                            <LibraryExpandedScreen
-                                title={"Backlog"}
-                                metadataCategory={LibraryCategories.backlog}
-                            />
-                        }
-                    />
                 </Route>
                 <Route path="/user">
                     <Route index element={<Navigate to="/error" />} />

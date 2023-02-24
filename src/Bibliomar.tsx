@@ -29,7 +29,7 @@ export default function Bibliomar() {
     );
 
     const [theme, setTheme] = useLocalStorage("theme", ThemeOptions.light);
-    const [themeing, setThemeing] = useState<boolean>(true);
+    const [themeing, setThemeing] = useState<boolean>(false);
     const themeContext: ThemeContextParams = {
         theme: theme,
         setTheme: setTheme,

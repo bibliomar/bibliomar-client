@@ -1,13 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-    MDBCheckbox,
-    MDBCol,
-    MDBCollapse,
-    MDBRadio,
-    MDBSwitch,
-    MDBTooltip,
-} from "mdb-react-ui-kit";
+import SmoothCollapse from "react-smooth-collapse";
+import { MDBSwitch } from "mdb-react-ui-kit";
 import { Trans, useTranslation } from "react-i18next";
 import { FormikConfig, FormikProps } from "formik";
 import { SearchFormFields } from "./helpers/searchTypes";
@@ -25,61 +19,14 @@ interface SearchOptionsProps {
 function SearchOptions({
     topicContext,
     setTopicContext,
-    setPageNumber,
     hidden,
     formik,
 }: SearchOptionsProps) {
     const { t } = useTranslation();
-    let [searchParams, setSearchParams] = useSearchParams();
-    let [type, setType] = useState("any");
-    let [formatSelect, setFormatSelect] = useState("any");
-    let [languageSelect, setLanguageSelect] = useState("any");
-    let [fulltextOn, setFulltextOn] = useState(false);
+    const fulltextOn = formik.values.fulltext;
 
-    const topic = searchParams.get("topic");
-    const searchType = searchParams.get("any");
-    const format = searchParams.get("format");
-    const language = searchParams.get("language");
-    const fulltext = searchParams.get("fulltext");
-
-    // Change based on URL
-    useEffect(() => {
-        if (
-            topic != null &&
-            topic !== topicContext &&
-            ["fiction", "sci-tech"].includes(topic)
-        ) {
-            setTopicContext(topic);
-        }
-        if (
-            searchType != null &&
-            searchType !== type &&
-            ["title", "author", "any"].includes(searchType)
-        ) {
-            setType(searchType);
-        }
-        if (
-            format != null &&
-            format !== formatSelect &&
-            ["any", "epub", "pdf", "mobi"].includes(format)
-        ) {
-            setFormatSelect(format);
-        }
-        if (
-            language != null &&
-            language !== languageSelect &&
-            ["any", "english", "portuguese"].includes(language)
-        ) {
-            setLanguageSelect(language);
-        }
-        if (fulltext != null && fulltext.trim() === "on") {
-            setFulltextOn(true);
-        }
-    }, [searchParams]);
-
-    // noinspection AllyJsxHardcodedStringInspection
     return (
-        <MDBCollapse show={!hidden}>
+        <SmoothCollapse expanded={!hidden} eagerRender>
             <div className="row d-flex flex-row justify-content-center">
                 <div className="col-lg-2 col-5">
                     <div id="searchcat">
@@ -254,7 +201,7 @@ function SearchOptions({
                     />
                 </div>
             </div>
-        </MDBCollapse>
+        </SmoothCollapse>
     );
 }
 

@@ -1,5 +1,4 @@
 // Light theme specific classes are defined here.
-@import "node_modules/mdb-ui-kit/src/scss/free/variables";
 
 
 $text-color: #000000;
@@ -60,6 +59,6 @@ $accent-color: #7663F2;
 }
 
 .text-color {
-  color: $dark
+  color: $text-color
 }
 

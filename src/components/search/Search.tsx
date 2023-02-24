@@ -136,9 +136,7 @@ function Search() {
     const { width } = useWindowSize();
     const [helmetTitle, setHelmetTitle] = useState<string>("Bibliomar");
     const optionsHiddenSetting = localStorage.getItem("options-hidden");
-    const [optionsHidden, setOptionsHidden] = useState<boolean>(
-        optionsHiddenSetting ? optionsHiddenSetting === "true" : true
-    );
+    const [optionsHidden, setOptionsHidden] = useState<boolean>(false);
 
     // Query related states
     const initialRequestMade = useRef<boolean>(false);
@@ -401,7 +399,6 @@ function Search() {
 
             <Bibliologo />
             <Greeting />
-            <SearchTips />
             <form ref={formRef} onSubmit={formik.handleSubmit}>
                 <SearchOptions
                     hidden={optionsHidden}
