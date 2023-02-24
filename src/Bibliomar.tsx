@@ -18,6 +18,7 @@ import { hasStorage } from "./components/general/helpers/generalFunctions";
 import useLocalStorage from "./components/general/helpers/useLocalStorage";
 import { toast, ToastContainer } from "react-toastify";
 import useThemeLoader from "./components/general/helpers/useThemeLoader";
+import Themeing from "./Themeing";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
@@ -27,7 +28,8 @@ export default function Bibliomar() {
         null
     );
 
-    const [theme, setTheme, themeHref] = useThemeLoader();
+    const [theme, setTheme] = useLocalStorage("theme", ThemeOptions.light);
+    const [themeing, setThemeing] = useState<boolean>(true);
     const themeContext: ThemeContextParams = {
         theme: theme,
         setTheme: setTheme,
@@ -57,6 +59,45 @@ export default function Bibliomar() {
         setUserLogged(!!jwtToken);
     }, [jwtToken]);
 
+    useEffect(() => {
+        // Loading of themes...
+
+        // If not themeing, set themeing to true.
+        // Just to avoid unnecessary rerenders.
+        !themeing ? setThemeing(true) : null;
+
+        // Tries removing the old styles before anything.
+        const oldStyles = Array.from(
+            document.getElementsByClassName("theme-style")
+        );
+        if (oldStyles && oldStyles.length > 0) {
+            oldStyles.forEach((style) => {
+                document.head.removeChild(style);
+            });
+        }
+
+        import(
+            theme === ThemeOptions.light
+                ? "mdb-ui-kit/css/mdb.min.css?inline"
+                : "mdb-ui-kit/css/mdb.dark.min.css?inline"
+        ).then((mdbCss) => {
+            import(
+                theme === ThemeOptions.light
+                    ? "./scss/light.scss?inline"
+                    : "./scss/dark.scss?inline"
+            ).then((themeCss) => {
+                const mdbStyle = document.createElement("style");
+                const themeStyle = document.createElement("style");
+                mdbStyle.className = "theme-style";
+                mdbStyle.innerHTML = mdbCss.default;
+                themeStyle.className = "theme-style";
+                themeStyle.innerHTML = themeCss.default;
+                document.head.append(mdbStyle, themeStyle);
+                setThemeing(false);
+            });
+        });
+    }, [theme]);
+
     return (
         <BrowserRouter>
             <AuthContext.Provider value={authContext}>
@@ -64,14 +105,8 @@ export default function Bibliomar() {
                     <>
                         <Helmet>
                             <title>Bibliomar</title>
-                            <link
-                                id="theme-style"
-                                type="text/css"
-                                rel="stylesheet"
-                                href={themeHref}
-                            ></link>
                         </Helmet>
-                        <App />
+                        {themeing ? <Themeing /> : <App />}
                     </>
                 </ThemeContext.Provider>
             </AuthContext.Provider>

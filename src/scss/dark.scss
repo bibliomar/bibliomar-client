@@ -1,6 +1,6 @@
 // Dark theme specific classes are defined here.
-@import "../../node_modules/mdb-ui-kit/css/mdb.dark.min.css";
-@import "../../node_modules/mdb-ui-kit/src/scss/free/variables";
+@import "./mdb/mdb.dark.min.css";
+@import "node_modules/mdb-ui-kit/src/scss/free/variables";
 
 
 $accent-color: #7663F2;
@@ -21,7 +21,7 @@ $accent-color: #7663F2;
   background-image: url("/assets/img/bg-dark.svg") !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  background-size: contain !important;
+  background-size: cover !important;
   background-attachment: scroll !important;
 }
 
