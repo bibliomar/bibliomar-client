@@ -49,11 +49,7 @@ async function getAutocomplete(
     }
 }
 
-export default function SearchBar({
-    topicContext,
-    setOptionsHidden,
-    formik,
-}: Props) {
+export default function SearchBar({ setOptionsHidden, formik }: Props) {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { width } = useWindowSize();

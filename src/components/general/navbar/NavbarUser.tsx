@@ -20,7 +20,7 @@ export default function NavbarUser() {
     };
 
     return (
-        <MDBNavbarItem className="ms-auto ms-lg-0 mt-3 mt-lg-0">
+        <MDBNavbarItem className="ms-0 mt-3 mt-lg-0">
             <MDBDropdown>
                 <MDBDropdownToggle tag="a" className="nav-link">
                     {authContext.userLogged ? (

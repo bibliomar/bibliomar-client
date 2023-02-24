@@ -3,49 +3,40 @@ import localforage from "localforage";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-    PossibleReaderLandingState,
     PossibleReaderScreenState,
     ReaderSettings,
     ReaderThemeAccentOptions,
-    ReaderThemeColors,
-    ReaderThemeOptions,
-    SavedBooks,
 } from "../helpers/readerTypes";
 import {
     chooseThemeAccent,
     createReactReaderStyle,
     defaultReaderSettings,
-    findBookLocally,
-    saveProgressOnDatabase,
 } from "../helpers/readerFunctions";
 import ReaderNavbar from "./ReaderNavbar";
 import ReaderScreen from "./ReaderScreen";
 import { Metadata } from "../../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
 
+/**
+ * This component is... difficult. It used to be way more complex with online downloading functionality.
+ * Now, it's a "simple" ebook reader, but it's still pretty complex.
+ * This single component is responsible for 100kb of Bibliomar's bundle size. It should always be lazy loaded.
+ */
 export default function ReaderMain() {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const location: any = useLocation();
-    const params = useParams();
     const locationState: PossibleReaderScreenState | undefined | null =
         location.state;
 
     let arrayBuffer: ArrayBuffer | undefined;
-    let onlineFile: Metadata | undefined;
     let localFile: File | undefined;
 
     if (locationState != null) {
         arrayBuffer = locationState.arrayBuffer;
-        onlineFile = locationState.onlineFile;
         localFile = locationState.localFile;
     }
 
-    const identifier = localFile
-        ? localFile.name
-        : onlineFile
-        ? onlineFile.md5
-        : undefined;
+    const identifier = localFile ? localFile.name : undefined;
 
     const possibleReaderSettingsStr = localStorage.getItem("reader-theme");
     const possibleReaderSettings: ReaderSettings | undefined =
@@ -79,16 +70,9 @@ export default function ReaderMain() {
         chooseThemeAccent(readerSettings.themeName)
     );
 
-    let showWarningCache = sessionStorage.getItem("reader-navbar-show-warning");
-    const [showWarning, setShowWarning] = useState<boolean>(
-        showWarningCache ? JSON.parse(showWarningCache) : true
-    );
-
     const renditionRef = useRef<any>(null);
     const tocRef = useRef<any>(null);
     const pageInfoRef = useRef<string | null>(null);
-    const notOnLibraryWarned = useRef<boolean>(false);
-    const userNotLoggedInWarned = useRef<boolean>(false);
 
     const locationBasedOnIdentifier = async () => {
         // First, tries for local cache...
@@ -97,10 +81,6 @@ export default function ReaderMain() {
         );
         if (cachedPage != null) {
             return cachedPage;
-        }
-        // If there's no valid local cache, fallback to using a metadataList's progress property.
-        if (onlineFile && onlineFile.progress) {
-            return onlineFile.progress;
         }
     };
 
@@ -134,122 +114,12 @@ export default function ReaderMain() {
     };
 
     const paginationTextHandler = () => {
-        if (showWarning) {
-            return t("reader:casoOAvanoDePginasTraveMudeOCaptuloManualmente");
-        } else if (pageInfoRef.current != null) {
+        if (pageInfoRef.current != null) {
             return pageInfoRef.current;
         } else {
             return t("reader:carregando");
         }
     };
-
-    // Document side effect
-    useEffect(() => {
-        if (onlineFile || localFile) {
-            document.title = t("reader:bibliomarReader", {
-                expr: onlineFile?.title || localFile?.name,
-            });
-        }
-
-        let warningTimeout: number | undefined;
-        warningTimeout = window.setTimeout(() => {
-            sessionStorage.setItem(
-                "reader-navbar-show-warning",
-                JSON.stringify(false)
-            );
-            setShowWarning(false);
-        }, 7000);
-        return () => {
-            if (warningTimeout) {
-                window.clearTimeout(warningTimeout);
-            }
-        };
-    }, []);
-
-    // Functional side effects
-    useEffect(() => {
-        let saveInterval: number | undefined = undefined;
-
-        if (
-            arrayBuffer == null ||
-            identifier == null ||
-            locationState == null
-        ) {
-            const ls = localforage.createInstance({
-                driver: localforage.INDEXEDDB,
-            });
-            if (
-                Object.hasOwn(params, "bookidentifier") &&
-                params.bookidentifier !== "local"
-            ) {
-                findBookLocally(params.bookidentifier!).then(
-                    (savedBookIndex) => {
-                        ls.getItem<SavedBooks | null>("saved-books").then(
-                            (savedBooks) => {
-                                if (
-                                    savedBookIndex == null ||
-                                    savedBooks == null
-                                ) {
-                                    navigate("/reader", { replace: true });
-                                    return;
-                                } else {
-                                    const savedBook =
-                                        Object.values(savedBooks)[
-                                            savedBookIndex
-                                        ];
-                                    if (savedBook == null) {
-                                        navigate("/reader", { replace: true });
-                                        return;
-                                    }
-                                    const newReaderScreenState: PossibleReaderScreenState =
-                                        {
-                                            arrayBuffer: savedBook.arrayBuffer,
-                                            onlineFile: savedBook.bookInfo,
-                                            localFile: undefined,
-                                        };
-                                    navigate(
-                                        `/reader/${params.bookidentifier}`,
-                                        {
-                                            replace: true,
-                                            state: newReaderScreenState,
-                                        }
-                                    );
-                                }
-                            }
-                        );
-                    }
-                );
-            }
-        }
-    }, [arrayBuffer]);
-
-    // Saving side effects
-    useEffect(() => {
-        if (onlineFile && currentPage) {
-            if (onlineFile.category == null && !userNotLoggedInWarned.current) {
-                userNotLoggedInWarned.current = true;
-                alert(
-                    "Você está lendo um livro que não está na sua biblioteca, por isso seu progresso não será salvo online."
-                );
-                return;
-            }
-            if (numOfChangedPages.current === 10) {
-                saveProgressOnDatabase(currentPage, onlineFile).then((r) => {
-                    if (!r && !userNotLoggedInWarned.current) {
-                        userNotLoggedInWarned.current = true;
-                        alert(
-                            "Sua sessão de login expirou. O progresso de leitura não será salvo online."
-                        );
-                        return;
-                    }
-
-                    if (r) {
-                        console.log("Progress saved online.");
-                    }
-                });
-            }
-        }
-    }, [numOfChangedPages.current]);
 
     return (
         <>
@@ -275,11 +145,7 @@ export default function ReaderMain() {
                         readerSettings={readerSettings}
                         setReaderSettings={setReaderSettings}
                         arrayBuffer={arrayBuffer}
-                        title={
-                            onlineFile || localFile
-                                ? onlineFile?.title || localFile?.name
-                                : undefined
-                        }
+                        title={localFile?.name}
                         tocRef={tocRef}
                         renditionRef={renditionRef}
                         currentPage={currentPage}

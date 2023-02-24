@@ -6,7 +6,7 @@ import Navbar from "../general/navbar/Navbar";
 import { Trans, useTranslation } from "react-i18next";
 
 export default function FAQ() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [searchParams, _] = useSearchParams();
     const refParam: string | null = searchParams.get("ref");
     let ref: number | undefined = undefined;
@@ -23,6 +23,12 @@ export default function FAQ() {
                 <div className="mb-5">
                     <Bibliologo />
                     <br />
+                    {i18n.language === "en-us" ? (
+                        <h5 className="text-center">
+                            We are working to translate this resource. Thank
+                            your for your patience!
+                        </h5>
+                    ) : null}
                 </div>
                 <div
                     className="position-relative basic-container fs-5"

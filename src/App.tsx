@@ -21,13 +21,18 @@ const ReaderMain = lazy(() => import("./components/reader/screen/ReaderMain"));
 // lazy load these components
 // use suspense fallbacks if possible
 // TODO: check if react-router's loader implementation is feasible
-import MetadataInfoParent from "./components/metadatainfo/MetadataInfoParent";
-import MetadataInfoScreen from "./components/metadatainfo/MetadataInfoScreen";
-import MetadataInfoTopic from "./components/metadatainfo/MetadataInfoTopic";
-import Explore from "./components/explore/Explore";
-
-import About from "./components/about/About";
-import FAQ from "./components/faq/FAQ";
+const MetadataInfoParent = lazy(
+    () => import("./components/metadatainfo/MetadataInfoParent")
+);
+const MetadataInfoScreen = lazy(
+    () => import("./components/metadatainfo/MetadataInfoScreen")
+);
+const MetadataInfoTopic = lazy(
+    () => import("./components/metadatainfo/MetadataInfoTopic")
+);
+const Explore = lazy(() => import("./components/explore/Explore"));
+const About = lazy(() => import("./components/about/About"));
+const FAQ = lazy(() => import("./components/faq/FAQ"));
 
 import {
     LibraryCategories,

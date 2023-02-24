@@ -10,6 +10,7 @@ import faqPT from "../locales/pt/faq.json";
 import generalPT from "../locales/pt/general.json";
 import userPT from "../locales/pt/user.json";
 import readerPT from "../locales/pt/reader.json";
+import explorePT from "../locales/pt/explore.json";
 
 import searchEN from "../locales/en/search.json";
 import aboutEN from "../locales/en/about.json";
@@ -21,6 +22,7 @@ import faqEN from "../locales/en/faq.json";
 import generalEN from "../locales/en/general.json";
 import userEN from "../locales/en/user.json";
 import readerEN from "../locales/en/reader.json";
+import exploreEN from "../locales/en/explore.json";
 
 const resources: Resource = {
     pt: {
@@ -34,6 +36,7 @@ const resources: Resource = {
         general: generalPT,
         user: userPT,
         reader: readerPT,
+        explore: explorePT,
     },
 
     en: {
@@ -47,6 +50,7 @@ const resources: Resource = {
         general: generalEN,
         user: userEN,
         reader: readerEN,
+        explore: exploreEN,
     },
 };
 

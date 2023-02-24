@@ -33,7 +33,7 @@ async function getTopContent(by?: "downloads" | "views") {
             requestUrl += "/views";
             break;
     }
-    requestUrl += "?limit=24";
+    requestUrl += "?limit=50";
 
     const config: AxiosRequestConfig<StatisticsTopResponse[] | undefined> = {
         method: "GET",
@@ -157,12 +157,14 @@ export default function ExploreContentPopular() {
     return (
         <MDBContainer fluid className="p-1">
             {renderTopContent()}
-            <div className="d-flex w-100">
-                <ExploreContentPagination
-                    pageChangeHandler={handlePageClick}
-                    pageCount={pageCount}
-                />
-            </div>
+            {topContent.current.length > 0 ? (
+                <div className="d-flex w-100">
+                    <ExploreContentPagination
+                        pageChangeHandler={handlePageClick}
+                        pageCount={pageCount}
+                    />
+                </div>
+            ) : null}
         </MDBContainer>
     );
 }

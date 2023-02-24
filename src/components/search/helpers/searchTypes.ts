@@ -1,5 +1,4 @@
 import { Metadata } from "../../general/helpers/generalTypes";
-import { UseFormReturn } from "react-hook-form";
 
 interface SearchFormFields {
     q: string;

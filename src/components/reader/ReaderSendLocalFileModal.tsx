@@ -37,7 +37,6 @@ export default function ReaderSendLocalFileModal({
             const readerState: PossibleReaderScreenState = {
                 arrayBuffer: arrayBuffer,
                 localFile: bookFile,
-                onlineFile: undefined,
             };
             navigate(`/reader/local`, { state: readerState });
         }

@@ -116,14 +116,14 @@ export default function MetadataInfoSimilarScreen({
                 </div>
             );
         } else if (searchResults == undefined) {
-            return <p>Erro na busca por arquivos semelhantes.</p>;
+            return <p>{t("metadatainfo:erroNaBuscaPorArquivosSemelhantes")}</p>;
         } else {
             const searchHits = searchResults.hits.hits;
             if (searchHits == undefined || searchHits.length === 0) {
-                return <p>Nenhum item encontrado.</p>;
+                return <p>{t("metadatainfo:nenhumItemEncontrado")}</p>;
             }
             if (removeTargetMd5(metadata.md5, searchHits).length === 0) {
-                return <p>Nenhum item encontrado.</p>;
+                return <p>{t("metadatainfo:nenhumItemEncontrado2")}</p>;
             }
             const sanitizedHits = removeTargetMd5(metadata.md5, searchHits);
 

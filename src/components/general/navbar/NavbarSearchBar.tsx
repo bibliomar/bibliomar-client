@@ -18,7 +18,7 @@ export default function NavbarSearchBar() {
         <form
             onSubmit={formik.handleSubmit}
             className="d-flex input-group justify-content-center
-                                        justify-content-lg-end me-0 me-lg-5 mt-3 mt-lg-0 w-100"
+                                        justify-content-lg-end ms-0 ms-lg-3 me-0 me-lg-5 mt-3 mt-lg-0"
         >
             <MDBInput
                 name="query"

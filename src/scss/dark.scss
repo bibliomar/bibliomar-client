@@ -1,9 +1,12 @@
 // Dark theme specific classes are defined here.
-@import "node_modules/mdb-ui-kit/src/scss/free/variables";
-
 
 $accent-color: #7663F2;
+$light-text: #fbfbfb;
+$dark-text: #000000;
 
+option {
+  color: $dark-text;
+}
 
 .btn-primary {
   color: #FFFFFF;
@@ -45,5 +48,5 @@ $accent-color: #7663F2;
 }
 
 .text-color {
-  color: $light
+  color: $light-text
 }

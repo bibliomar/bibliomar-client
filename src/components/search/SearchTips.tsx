@@ -2,7 +2,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useMemo } from "react";
 
 export default function SearchTips() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const getSearchTips = () => {
         const tip1 = t(
@@ -35,7 +35,7 @@ export default function SearchTips() {
     // Using useMemo avoids unnecessary "re-renders".
     const shownTip = useMemo(() => {
         return getSearchTips();
-    }, []);
+    }, [i18n.language]);
 
     return (
         <div className="d-flex flex-wrap justify-content-center mb-5">
@@ -43,7 +43,7 @@ export default function SearchTips() {
                 style={{ fontSize: "1rem" }}
                 className="greeting-text text-center text-muted"
             >
-                Dica: {shownTip}
+                {shownTip}
             </span>
             <div className="break" />
         </div>

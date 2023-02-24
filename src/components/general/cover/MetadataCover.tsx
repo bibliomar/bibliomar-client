@@ -29,7 +29,19 @@ const chooseCurrentCoverComponent = (props: Props) => {
             usableCover = props.coverUrl;
         }
 
-        return <img src={usableCover} alt="Cover" className="h-100 w-100" />;
+        return (
+            <img
+                src={usableCover}
+                alt="Cover"
+                className="h-100 w-100"
+                onError={(event) => {
+                    const target = event.currentTarget;
+                    if (target.src !== noCoverUrl) {
+                        target.src = noCoverUrl;
+                    }
+                }}
+            />
+        );
     } else {
         return <MetadataCoverSkeleton />;
     }

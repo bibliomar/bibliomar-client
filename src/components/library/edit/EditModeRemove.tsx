@@ -11,8 +11,10 @@ import { EditModeRemoveModal } from "./EditModeRemoveModal";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../general/helpers/generalContext";
 import { UserLibraryContext } from "../helpers/libraryFunctions";
+import { Trans, useTranslation } from "react-i18next";
 
 export default function EditModeRemove() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const userLibraryContext = useContext(UserLibraryContext);
     const authContext = useContext(AuthContext);
@@ -54,9 +56,14 @@ export default function EditModeRemove() {
                         toast.error(
                             <div>
                                 <span>
-                                    Erro ao remover{" "}
-                                    <strong>{book.title}</strong>. Livro não se
-                                    encontra na categoria de destino.
+                                    <Trans
+                                        i18nKey="erroAoRemover"
+                                        ns="library"
+                                    />{" "}
+                                    <strong>{book.title}</strong>
+                                    {t(
+                                        "library:livroNoSeEncontraNaCategoriaDeDestino"
+                                    )}
                                 </span>
                             </div>
                         );
@@ -64,7 +71,10 @@ export default function EditModeRemove() {
                         toast.error(
                             <div>
                                 <span>
-                                    Erro ao remover{" "}
+                                    <Trans
+                                        i18nKey="erroAoRemover2"
+                                        ns="library"
+                                    />{" "}
                                     <strong>{book.title}</strong>.
                                 </span>
                             </div>

@@ -1,4 +1,5 @@
 import { MDBIcon, MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     activeTab: number;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export default function ExploreTabs({ activeTab, handleTabClick }: Props) {
+    const { t } = useTranslation();
     return (
         <MDBTabs pills>
             <MDBTabsItem>
@@ -13,7 +15,8 @@ export default function ExploreTabs({ activeTab, handleTabClick }: Props) {
                     active={activeTab === 1}
                     onClick={() => handleTabClick(1)}
                 >
-                    <MDBIcon fas icon="fire-alt" className="me-2" /> Populares
+                    <MDBIcon fas icon="fire-alt" className="me-2" />{" "}
+                    {t("explore:populares")}
                 </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
@@ -22,7 +25,7 @@ export default function ExploreTabs({ activeTab, handleTabClick }: Props) {
                     onClick={() => handleTabClick(2)}
                 >
                     <MDBIcon far icon="calendar-plus" className="me-2" />
-                    Recentes
+                    {t("explore:recentes")}
                 </MDBTabsLink>
             </MDBTabsItem>
         </MDBTabs>

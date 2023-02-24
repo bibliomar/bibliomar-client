@@ -18,9 +18,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../helpers/generalContext";
 import { ThemeOptions } from "../helpers/generalTypes";
 import BibliomarBrand from "./BibliomarBrand";
-import ThemeSelector from "./ThemeSelector";
+import NavbarThemeSelector from "./NavbarThemeSelector";
 import { useWindowSize } from "../helpers/useWindowSize";
-import LanguageSelector from "./LanguageSelector";
+import NavbarLanguageSelector from "./NavbarLanguageSelector";
 import { useTranslation } from "react-i18next";
 import SmoothCollapse from "react-smooth-collapse";
 import NavbarSearchBar from "./NavbarSearchBar";
@@ -88,19 +88,9 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                 theme === ThemeOptions.light
                                     ? "text-dark"
                                     : "text-light"
-                            }`}
+                            } d-flex flex-column flex-lg-row justify-content-center align-items-center`}
                         >
-                            <MDBNavbarItem className="mt-3 mt-lg-0">
-                                <MDBNavbarLink
-                                    name="/about"
-                                    active={activeItem === "about"}
-                                    href="/about"
-                                    onClick={handleNavigate}
-                                >
-                                    {t("navbar:about")}
-                                </MDBNavbarLink>
-                            </MDBNavbarItem>
-                            <MDBNavbarItem>
+                            <MDBNavbarItem className="">
                                 <MDBNavbarLink
                                     href="/library"
                                     name="/library"
@@ -117,7 +107,7 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                                     active={activeItem === "explore"}
                                     onClick={handleNavigate}
                                 >
-                                    Explorar
+                                    {t("navbar:explorar")}
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
@@ -133,8 +123,8 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                             {location.pathname !== "/search" ? (
                                 <NavbarSearchBar />
                             ) : null}
-                            <LanguageSelector />
-                            <ThemeSelector />
+                            <NavbarLanguageSelector />
+                            <NavbarThemeSelector />
                             <NavbarUser />
                         </MDBNavbarNav>
                     </SmoothCollapse>

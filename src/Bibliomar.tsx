@@ -16,8 +16,6 @@ import { Helmet } from "react-helmet";
 import { BrowserRouter } from "react-router-dom";
 import { hasStorage } from "./components/general/helpers/generalFunctions";
 import useLocalStorage from "./components/general/helpers/useLocalStorage";
-import { toast, ToastContainer } from "react-toastify";
-import useThemeLoader from "./components/general/helpers/useThemeLoader";
 import Themeing from "./Themeing";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
@@ -97,11 +95,14 @@ export default function Bibliomar() {
                 themeStyle.className = "theme-style";
                 themeStyle.innerHTML = themeCss.default;
                 document.head.append(mdbStyle, themeStyle);
-                setThemeing(false);
+                setTimeout(() => {
+                    setThemeing(false);
+                }, 750);
             });
         });
     }, [theme]);
 
+    // noinspection AllyJsxHardcodedStringInspection
     return (
         <BrowserRouter>
             <AuthContext.Provider value={authContext}>

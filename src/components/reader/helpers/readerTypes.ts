@@ -6,7 +6,6 @@ import React, { MouseEventHandler } from "react";
 // State to be passed to ReaderMain component, making it usable.
 export interface PossibleReaderScreenState {
     arrayBuffer: ArrayBuffer;
-    onlineFile: Metadata | undefined;
     localFile: File | undefined;
 }
 

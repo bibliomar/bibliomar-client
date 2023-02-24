@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "title": "Flowers for Algernon",
+      "author": "Keyes, Daniel",
+      "md5": "681B62B8999B599192D5B8A31DF5644C",
+      "language": "English",
+      "topic": "fiction",
+      "coverUrl": "1939000/681b62b8999b599192d5b8a31df5644c.jpg"
+    },
+    {
+      "title": "The Name of the Wind",
+      "author": "Patrick Rothfuss",
+      "md5": "f25245aff9d370e15035cc844387aac1",
+      "language": "English",
+      "topic": "scitech",
+      "coverUrl": "2382000/f25245aff9d370e15035cc844387aac1-g.jpg"
+    },
+    {
+      "title": "Gabriela, Clove, and Cinnamon",
+      "author": "Jorge Amado",
+      "md5": "C060BA48D6B6C2218CBFE6E446D515EF",
+      "language": "English",
+      "extension": "epub",
+      "topic": "fiction",
+      "coverUrl": "2209000/c060ba48d6b6c2218cbfe6e446d515ef-g.jpg",
+      "fileSize": "401406"
+    },
+    {
+      "title": "Captains of the Sands",
+      "author": "Amado, Jorge; Tóibín, Colm",
+      "md5": "4422CA2E271FE6DB2E88C0AB3E766E5B",
+      "language": "English",
+      "extension": "epub",
+      "topic": "fiction",
+      "coverUrl": "1900000/4422ca2e271fe6db2e88c0ab3e766e5b.jpg",
+      "fileSize": "724249"
+    }
+  ]
+}

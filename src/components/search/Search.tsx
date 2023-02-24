@@ -27,6 +27,7 @@ import { buildSearchObject } from "./helpers/searchFunctions";
 import { useWindowSize } from "../general/helpers/useWindowSize";
 import { Helmet } from "react-helmet";
 import SearchTips from "./SearchTips";
+import useLocalStorage from "../general/helpers/useLocalStorage";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -135,8 +136,10 @@ async function getSearchResults(
 function Search() {
     const { width } = useWindowSize();
     const [helmetTitle, setHelmetTitle] = useState<string>("Bibliomar");
-    const optionsHiddenSetting = localStorage.getItem("options-hidden");
-    const [optionsHidden, setOptionsHidden] = useState<boolean>(false);
+    const [optionsHidden, setOptionsHidden] = useLocalStorage<boolean>(
+        "options-hidden",
+        false
+    );
 
     // Query related states
     const initialRequestMade = useRef<boolean>(false);
@@ -399,6 +402,7 @@ function Search() {
 
             <Bibliologo />
             <Greeting />
+            <SearchTips />
             <form ref={formRef} onSubmit={formik.handleSubmit}>
                 <SearchOptions
                     hidden={optionsHidden}

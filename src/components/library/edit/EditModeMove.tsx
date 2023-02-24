@@ -15,7 +15,7 @@ import {
     addBookToLibrary,
     libraryCategoryToLocaleText,
 } from "../../general/helpers/generalFunctions";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { AuthContext } from "../../general/helpers/generalContext";
 import { toast } from "react-toastify";
 import { UserLibraryContext } from "../helpers/libraryFunctions";
@@ -62,9 +62,16 @@ export default function EditModeMove() {
                         toast.error(
                             <div>
                                 <span>
-                                    Erro ao mover <strong>{book.title}</strong>.
-                                    Livro ja se encontra na categoria de
-                                    destino.
+                                    <Trans
+                                        i18nKey="erroAoMoverLivroJaSeEncontraNaCategoriaDeDestino"
+                                        ns="library"
+                                        values={{
+                                            title: book.title,
+                                        }}
+                                        components={{
+                                            s: <strong />,
+                                        }}
+                                    />
                                 </span>
                             </div>
                         );

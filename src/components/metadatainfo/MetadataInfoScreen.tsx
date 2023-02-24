@@ -1,24 +1,9 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import React, {
-    SetStateAction,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import React, { useContext, useEffect } from "react";
 import { Metadata } from "../general/helpers/generalTypes";
 import MetadataInfoDesktop from "./MetadataInfoDesktop";
-import axios from "axios";
-import { DownloadLinks } from "../general/helpers/generalTypes";
 import { Size, useWindowSize } from "../general/helpers/useWindowSize";
 import MetadataInfoMobile from "./MetadataInfoMobile";
-import {
-    backendUrl,
-    findBookInLibrary,
-} from "../general/helpers/generalFunctions";
-import { SavedBookEntry, SavedBooks } from "../reader/helpers/readerTypes";
-import localforage from "localforage";
-import { findBookLocally } from "../reader/helpers/readerFunctions";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
 import useMetadata from "../general/helpers/useMetadata";
 import { AuthContext } from "../general/helpers/generalContext";

@@ -1,10 +1,18 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { useSearchParams } from "react-router-dom";
 import SmoothCollapse from "react-smooth-collapse";
 import { MDBSwitch } from "mdb-react-ui-kit";
 import { Trans, useTranslation } from "react-i18next";
 import { FormikConfig, FormikProps } from "formik";
 import { SearchFormFields } from "./helpers/searchTypes";
+import { ThemeContext } from "../general/helpers/generalContext";
 
 interface SearchOptionsProps {
     topicContext: string;
@@ -24,6 +32,7 @@ function SearchOptions({
 }: SearchOptionsProps) {
     const { t } = useTranslation();
     const fulltextOn = formik.values.fulltext;
+    const { theme } = useContext(ThemeContext);
 
     return (
         <SmoothCollapse expanded={!hidden} eagerRender>

@@ -1,11 +1,5 @@
-import SearchResultsContent from "./SearchResultsContent";
 import React, { SetStateAction } from "react";
-import SearchPagination from "../SearchPagination";
-import Break from "../../general/Break";
 import { Metadata } from "../../general/helpers/generalTypes";
-import { SearchRequestStatus } from "../helpers/searchTypes";
-import SearchMessageScreen from "../loading/SearchMessageScreen";
-import { el } from "date-fns/locale";
 import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import { useWindowSize } from "../../general/helpers/useWindowSize";
 import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
@@ -27,6 +21,7 @@ export default function SearchResults({
     const shouldFlexCenter = slicedResults.length < 2;
 
     const renderResultFigures = () => {
+        let internalCounter = 0;
         return (
             <MDBContainer
                 fluid
@@ -43,7 +38,11 @@ export default function SearchResults({
                             key={rowIndex}
                         >
                             {row.map((ele, eleIndex) => {
-                                const timeout = (rowIndex + eleIndex + 1) * 500;
+                                // For each element rendered, increase the internal counter and set
+                                // a timeout based on it.
+                                internalCounter++;
+                                const timeout = internalCounter * 750;
+                                console.log(timeout);
                                 return (
                                     <MDBCol
                                         size={bootstrapColSize / itemsPerRow}

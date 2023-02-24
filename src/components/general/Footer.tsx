@@ -21,21 +21,16 @@ export default function Footer() {
                     </Link>
                     <Link
                         to={"/faq"}
-                        className="me-4 me-md-0"
+                        className="me-auto me-md-0"
                         style={{ color: "unset", fontSize: "1.15rem" }}
                     >
                         <span className={"simple-text-bolder"}>FAQ</span>
                     </Link>
                 </div>
-                {width >= 768 && (
-                    <span className="ms-auto me-auto">
-                        <strong>Bibliomar</strong> - {t("general:genuinely")}.
-                    </span>
-                )}
 
                 <a
                     href={"https://discord.gg/J5FBbh8JbS"}
-                    className="ms-auto ms-md-0 me-4"
+                    className="ms-auto me-4"
                     style={{ color: "unset" }}
                 >
                     <img

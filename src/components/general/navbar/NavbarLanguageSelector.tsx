@@ -28,7 +28,7 @@ const flagCodeForLanguage = (language: string) => {
     }
 };
 
-export default function LanguageSelector() {
+export default function NavbarLanguageSelector() {
     const { i18n } = useTranslation();
     const { theme } = useContext(ThemeContext);
 
@@ -43,13 +43,12 @@ export default function LanguageSelector() {
         } else if (currentLanguage === "en-US") {
             changeLanguage("en-us");
         }
-        console.log("runs");
         console.log("currentLanguage: " + currentLanguage);
     }, []);
 
     // noinspection AllyJsxHardcodedStringInspection
     return (
-        <MDBNavbarItem className="ms-auto mt-3 mt-lg-0 me-2">
+        <MDBNavbarItem className="ms-0 ms-lg-auto mt-3 mt-lg-0 me-2">
             <MDBDropdown className="shadow-0 h-100 d-flex flex-column justify-content-center">
                 <MDBDropdownToggle tag="a" className="">
                     <span

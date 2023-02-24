@@ -44,9 +44,6 @@ export function EditModeRemoveModal(props: EditModeRemoveModalProps) {
                         <Break />
                         <p>{t("library:editRemoveWarningText2")}</p>
                         <Break />
-                        <p className="text-muted">
-                            {t("library:editRemoveWarningText3")}
-                        </p>
                     </MDBModalBody>
                     <MDBModalFooter>
                         <MDBBtn

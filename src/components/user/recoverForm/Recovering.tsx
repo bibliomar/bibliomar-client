@@ -59,7 +59,7 @@ export default function Recovering() {
             case 103:
                 return (
                     <span className="text-info text-center">
-                        Enviando email...
+                        {t("user:enviandoEmail")}
                     </span>
                 );
             case 200:
