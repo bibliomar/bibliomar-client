@@ -49,7 +49,7 @@ function App() {
             <Routes>
                 <Route path="*" element={<Error404 />} />
                 <Route path="error" element={<Error404 />} />
-                <Route path="/" element={<Navigate to="/search" />} />
+                <Route path="/" element={<Navigate to="/search" replace />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/faq" element={<FAQ></FAQ>} />
                 <Route path="/search" element={<Search />} />

@@ -62,9 +62,13 @@ export default function Bibliomar() {
     useEffect(() => {
         // Loading of themes...
 
+        // MDBootstrap doesn't offer a native theme switcher,
+        // so we have to do it ourselves.
+
         // If not themeing, set themeing to true.
-        // Just to avoid unnecessary rerenders.
-        !themeing ? setThemeing(true) : null;
+        if (!themeing) {
+            setThemeing(true);
+        }
 
         // Tries removing the old styles before anything.
         const oldStyles = Array.from(

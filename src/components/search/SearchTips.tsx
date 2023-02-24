@@ -1,22 +1,41 @@
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export default function SearchTips() {
     const { t } = useTranslation();
 
     const getSearchTips = () => {
-        const tip1 =
-            "A sugestão de pesquisa mostra resultados com base nos filtros que você selecionou.";
-        const tip2 =
-            "Você pode pesquisar por formatos e linguagens diretamente na caixa de pesquisa.";
-        const tip3 =
-            "Nosso Discord é o melhor local para fazer sugestões. Qualquer feedback é bem vindo!";
-        const tip4 =
-            "Você pode pressionar o icone proximo ao icone de pesquisa para ativar a pesquisa com filtros.";
-        const tip5 = "Experimente o beta do Bibliomar! ";
+        const tip1 = t(
+            "search:aSugestoDePesquisaMostraResultadosComBaseNosFiltro"
+        );
+        const tip2 = t(
+            "search:vocPodePesquisarPorFormatosELinguagensDiretamenteN"
+        );
+        const tip3 = t(
+            "search:nossoDiscordOMelhorLocalParaFazerSugestesQualquerF"
+        );
+        const tip4 = t(
+            "search:vocPodePressionarOIconeProximoAoIconeDePesquisaPar"
+        );
+        const tip5 = (
+            <span>
+                <Trans i18nKey="experimenteO" ns="search" />{" "}
+                <a href="https://beta.bibliomar.site">
+                    {t("search:betaDoBibliomar")}
+                </a>
+                !
+            </span>
+        );
 
-        const tips = [tip1, tip2, tip3, tip4];
-        return <span>{tips[Math.floor(Math.random() * tips.length)]}</span>;
+        const tips = [tip1, tip2, tip3, tip4, tip5];
+        return <>{tips[Math.floor(Math.random() * tips.length)]}</>;
     };
+
+    // The tip should only be generated once per page.
+    // Using useMemo avoids unnecessary "re-renders".
+    const shownTip = useMemo(() => {
+        return getSearchTips();
+    }, []);
 
     return (
         <div className="d-flex flex-wrap justify-content-center mb-5">
@@ -24,7 +43,7 @@ export default function SearchTips() {
                 style={{ fontSize: "1rem" }}
                 className="greeting-text text-center text-muted"
             >
-                Dica: {getSearchTips()}
+                Dica: {shownTip}
             </span>
             <div className="break" />
         </div>
