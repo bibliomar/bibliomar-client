@@ -18,7 +18,7 @@ export default function MetadataInfoSimilarFigure({
     return (
         <div
             id="similar-metadata-div"
-            className="similar-figure-img me-0 me-lg-2 mb-3"
+            className="metadata-figure me-0 me-lg-2 mb-3"
         >
             <MetadataSelectableFigure
                 metadata={metadata}

@@ -182,7 +182,7 @@ function Search() {
     });
 
     useEffect(() => {
-        if (initialRequestMade.current && totalItems > 0) {
+        if (initialRequestMade.current && totalItems.current > 0) {
             return;
         }
 
@@ -394,7 +394,7 @@ function Search() {
             </Helmet>
             <div className="row ">
                 <div className="col mt-3">
-                    <Navbar activeItem="home" badgeText="3.0-BETA" />
+                    <Navbar activeItem="home" badgeText="3.0" />
                 </div>
             </div>
 
