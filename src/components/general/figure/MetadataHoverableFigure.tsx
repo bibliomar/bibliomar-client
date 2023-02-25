@@ -6,8 +6,9 @@ import "./figure.scss";
 import { MDBRipple } from "mdb-react-ui-kit";
 import { getEmptyCover } from "../helpers/generalFunctions";
 import useSwipe from "../helpers/useSwipe";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LongPressDetectEvents, useLongPress } from "use-long-press";
+import MetadataHoverableCover from "../cover/MetadataHoverableCover";
 
 interface Props {
     metadata: Metadata;
@@ -26,6 +27,25 @@ export default function MetadataHoverableFigure({
     const [shouldForceMask, setShouldForceMask] = useState<boolean>(
         cover === undefined || cover === emptyCover
     );
+
+    const handleImageError = (evt: React.SyntheticEvent<HTMLImageElement>) => {
+        const target = evt.currentTarget;
+        if (target.src !== emptyCover) {
+            target.src = emptyCover;
+        }
+        setShouldForceMask(true);
+        // Avoiding loops
+        target.onerror = null;
+    };
+
+    const handleImageLoad = (evt: React.SyntheticEvent<HTMLImageElement>) => {
+        const target = evt.currentTarget;
+        if (target.src === emptyCover) {
+            setShouldForceMask(true);
+        }
+        // Avoiding loops
+        target.onload = null;
+    };
 
     const renderMaskElement = () => {
         const { title, author } = metadata;
@@ -49,6 +69,14 @@ export default function MetadataHoverableFigure({
         );
     };
 
+    useEffect(() => {
+        // Cleanup to avoid setting force mask on new metadatas.
+        // This is very important.
+        return () => {
+            setShouldForceMask(false);
+        };
+    }, [metadata]);
+
     return (
         <div className="w-100 h-100">
             <MDBRipple
@@ -56,13 +84,14 @@ export default function MetadataHoverableFigure({
                     shouldForceMask ? "" : "hover-overlay"
                 } rounded w-100 h-100 shadow-3-strong`}
             >
-                <MetadataCover
+                <MetadataHoverableCover
                     coverUrl={cover}
                     coverDone={coverDone}
                     href={href}
-                    mask
                     maskClassname="hoverable-mask"
                     maskElement={renderMaskElement()}
+                    handleImageLoad={handleImageLoad}
+                    handleImageError={handleImageError}
                 />
             </MDBRipple>
         </div>

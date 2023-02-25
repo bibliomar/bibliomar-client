@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function MetadataInfoFile({ metadata }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     return (
         <div className="book-info-title d-flex flex-wrap">
@@ -60,6 +60,24 @@ export default function MetadataInfoFile({ metadata }: Props) {
                 <strong>{t("metadatainfo:series")}</strong>:{" "}
                 {metadata.series
                     ? metadata.series
+                    : t("metadatainfo:undefinedField")}
+            </span>
+            <Break mobile className="mb-2" />
+            <span className="me-3">
+                <strong>{t("metadatainfo:timeadded")}</strong>:{" "}
+                {metadata.timeAdded
+                    ? new Date(metadata.timeAdded).toLocaleString(
+                          new Intl.Locale(i18n.language)
+                      )
+                    : t("metadatainfo:undefinedField")}
+            </span>
+            <Break mobile className="mb-2" />
+            <span className="me-3">
+                <strong>{t("metadatainfo:timelastmodified")}</strong>:{" "}
+                {metadata.timeLastModified
+                    ? new Date(metadata.timeLastModified).toLocaleString(
+                          new Intl.Locale(i18n.language)
+                      )
                     : t("metadatainfo:undefinedField")}
             </span>
         </div>

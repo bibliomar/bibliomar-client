@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import LibrarySection from "./LibrarySection";
+import LibraryExpandedCategory from "./LibraryExpandedCategory";
 import Break from "../general/Break";
 import LibraryNavbar from "./LibraryNavbar";
 import React, { useContext } from "react";
@@ -22,7 +22,7 @@ export default function ({ title, metadataCategory }: Props) {
         <div className="d-flex flex-wrap justify-content-start justify-content-md-center mt-5 w-100">
             <LibraryNavbar />
             <Break />
-            <LibrarySection
+            <LibraryExpandedCategory
                 title={title}
                 metadataCategory={metadataCategory}
                 metadatas={Object.values(userLibrary[metadataCategory])}

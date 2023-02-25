@@ -45,17 +45,17 @@ export default function MetadataInfoLibraryAdd({
 
     const renderButtonText = () => {
         if (metadata.category != null) {
-            return "MOVER";
+            return t("metadatainfo:MOVE");
         } else {
-            return "ADICIONAR";
+            return t("metadatainfo:ADD");
         }
     };
 
     const renderDropdownHeaderText = () => {
         if (metadata.category != null) {
-            return "Mover para";
+            return t("metadatainfo:moverPara");
         } else {
-            return "Adicionar à";
+            return t("metadatainfo:adicionar");
         }
     };
 

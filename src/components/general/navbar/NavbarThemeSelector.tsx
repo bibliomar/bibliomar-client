@@ -13,7 +13,7 @@ export default function NavbarThemeSelector() {
         );
     };
     return (
-        <MDBNavbarItem className="ms-0 mt-3 mt-lg-0 me-2">
+        <MDBNavbarItem className="ms-4">
             <MDBNavbarLink>
                 <div onClick={changeTheme}>
                     <MDBIcon
@@ -23,7 +23,7 @@ export default function NavbarThemeSelector() {
                                 ? "sun"
                                 : "moon"
                         }
-                        size={"2x"}
+                        style={{ fontSize: "1.5rem" }}
                     />
                 </div>
             </MDBNavbarLink>

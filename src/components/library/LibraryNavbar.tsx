@@ -8,7 +8,7 @@ import {
     LibraryCategories,
     UserLibrary,
 } from "../general/helpers/generalTypes";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { UserLibraryContext } from "./helpers/libraryFunctions";
 import Break from "../general/Break";
 
@@ -41,12 +41,21 @@ export default function () {
                             {t("library:suaBiblioteca")}
                         </span>
                         <br />
+                        <span className="text-muted"></span>
 
                         {numOfBooks > 0 && (
                             <div className="d-flex flex-wrap">
                                 <span className="text-muted">
-                                    Uma coleção de <strong>{numOfBooks}</strong>{" "}
-                                    livros.
+                                    <Trans
+                                        i18nKey="umaColeoDeLivros"
+                                        ns="library"
+                                        values={{
+                                            numOfBooks: numOfBooks,
+                                        }}
+                                        components={{
+                                            s: <strong />,
+                                        }}
+                                    />
                                 </span>
                             </div>
                         )}

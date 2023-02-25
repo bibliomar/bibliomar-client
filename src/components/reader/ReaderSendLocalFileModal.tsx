@@ -51,16 +51,6 @@ export default function ReaderSendLocalFileModal({
                         </MDBModalTitle>
                     </MDBModalHeader>
                     <MDBModalBody className="d-flex flex-wrap justify-content-center">
-                        <span className="text-center mb-2">
-                            <Trans
-                                ns="reader"
-                                i18nKey="casoSeuArquivoSejaMuitoGrandeOuVocTenhaUltrapassad"
-                                components={{
-                                    s: <strong />,
-                                }}
-                            />
-                        </span>
-                        <Break />
                         <span className="mb-3">
                             {t(
                                 "reader:esseArquivoNoTemOProgressoSalvoOnlineApenasNoSeuDi"

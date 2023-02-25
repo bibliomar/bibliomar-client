@@ -44,7 +44,7 @@ export default function EditModeMove() {
         for (const book of editModeContext.selectedBooksRef.current) {
             try {
                 toast.update(infoToast, {
-                    render: `Movendo ${book.title}...`,
+                    render: t("library:movendo", { title: book.title }),
                 });
                 const req = await addBookToLibrary(
                     authContext,
@@ -81,7 +81,10 @@ export default function EditModeMove() {
         }
         toast.dismiss(infoToast);
         if (movedBooksNum > 0) {
-            toast.success(`${movedBooksNum} livros movidos com sucesso.`);
+            const toastSucess = t("library:livrosMovidosComSucesso", {
+                movedBooksNum: movedBooksNum,
+            });
+            toast.success(toastSucess);
             editModeContext.selectedBooksRef.current = [];
             // PS: The update request is async.
             await userLibraryContext.updateUserLibrary();

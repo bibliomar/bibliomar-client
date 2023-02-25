@@ -7,7 +7,7 @@ import {
     LibraryCategories,
     UserLibrary,
 } from "../general/helpers/generalTypes";
-import LibraryCategory from "./LibraryCategory";
+import LibraryMinimalCategory from "./LibraryMinimalCategory";
 import { useTranslation } from "react-i18next";
 import { UserLibraryContext } from "./helpers/libraryFunctions";
 import { libraryCategoryToLocaleText } from "../general/helpers/generalFunctions";
@@ -21,7 +21,7 @@ export default function LibraryLanding() {
         <div className="d-flex flex-wrap mt-5 w-100">
             <LibraryNavbar />
             <Break />
-            <LibraryCategory
+            <LibraryMinimalCategory
                 title={libraryCategoryToLocaleText(
                     t,
                     LibraryCategories.reading
@@ -31,14 +31,14 @@ export default function LibraryLanding() {
                 metadata={Object.values(userLibrary.reading)}
             />
             <Break />
-            <LibraryCategory
+            <LibraryMinimalCategory
                 title={libraryCategoryToLocaleText(t, LibraryCategories.toRead)}
                 message={t("library:planToReadExplanation")}
                 metadataCategory={LibraryCategories.toRead}
                 metadata={Object.values(userLibrary.toRead)}
             />
             <Break />
-            <LibraryCategory
+            <LibraryMinimalCategory
                 title={libraryCategoryToLocaleText(
                     t,
                     LibraryCategories.finished
@@ -48,7 +48,7 @@ export default function LibraryLanding() {
                 metadata={Object.values(userLibrary.finished)}
             />
             <Break />
-            <LibraryCategory
+            <LibraryMinimalCategory
                 title={libraryCategoryToLocaleText(
                     t,
                     LibraryCategories.backlog
@@ -58,7 +58,7 @@ export default function LibraryLanding() {
                 metadata={Object.values(userLibrary.backlog)}
             />
             <Break />
-            <LibraryCategory
+            <LibraryMinimalCategory
                 title={libraryCategoryToLocaleText(
                     t,
                     LibraryCategories.dropped

@@ -42,7 +42,7 @@ export default function EditModeRemove() {
         for (const book of editModeContext.selectedBooksRef.current) {
             try {
                 toast.update(infoToast, {
-                    render: `Removendo ${book.title}...`,
+                    render: t("library:removendo", { title: book.title }),
                 });
                 const req = await removeBookFromLibrary(authContext, book.md5);
                 console.log(req);
@@ -86,7 +86,10 @@ export default function EditModeRemove() {
         toast.dismiss(infoToast);
 
         if (removedBooksNum > 0) {
-            toast.success(`${removedBooksNum} livros removidos com sucesso.`);
+            const successToast = t("library:livrosRemovidosComSucesso", {
+                removedBooksNum: removedBooksNum,
+            });
+            toast.success(successToast);
             editModeContext.selectedBooksRef.current = [];
             // PS: The update request is async.
             userLibraryContext.updateUserLibrary();

@@ -123,9 +123,11 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                             {location.pathname !== "/search" ? (
                                 <NavbarSearchBar />
                             ) : null}
-                            <NavbarLanguageSelector />
-                            <NavbarThemeSelector />
-                            <NavbarUser />
+                            <div className="d-flex flex-nowrap ms-0 ms-lg-auto mt-3 mt-lg-0 me-2">
+                                <NavbarLanguageSelector />
+                                <NavbarThemeSelector />
+                                <NavbarUser />
+                            </div>
                         </MDBNavbarNav>
                     </SmoothCollapse>
                 </MDBContainer>

@@ -8,13 +8,7 @@ import React, {
     useRef,
     useState,
 } from "react";
-import axios from "axios";
-import Fuse from "fuse.js";
-import { Size, useWindowSize } from "../../general/helpers/useWindowSize";
-import {
-    backendUrl,
-    getMetadataInfoPath,
-} from "../../general/helpers/generalFunctions";
+import { useWindowSize } from "../../general/helpers/useWindowSize";
 import { useTranslation } from "react-i18next";
 import { Metadata } from "../../general/helpers/generalTypes";
 import makeSearch from "../helpers/makeSearch";
@@ -56,12 +50,10 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selected, setSelected] = useState<Option[]>([]);
     const [indexes, setIndexes] = useState<Option[]>([]);
-    // Necessary because formik's setFieldValue is async, and messes with react-bootstrap-typeahead's.
-    const internalQueryTracker = useRef<string>(formik.values.q);
 
     async function handleSearch(query: string) {
         setIsLoading(true);
-        console.log("handleSearch", query);
+        const infixQuery = "";
         const searchObject = buildSearchObject(formik.values, 0, 5);
 
         const response = await getAutocomplete(searchObject);

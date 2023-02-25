@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Bibliologo from "../general/Bibliologo";
 import SearchOptions from "./SearchOptions";
 import SearchBar from "./searchbar/SearchBar";
-import Greeting from "./Greeting";
+import SearchGreeting from "./SearchGreeting";
 import SearchResults from "./results/SearchResults";
 import Navbar from "../general/navbar/Navbar";
 import { Metadata } from "../general/helpers/generalTypes";
@@ -135,7 +135,9 @@ async function getSearchResults(
 
 function Search() {
     const { width } = useWindowSize();
-    const [helmetTitle, setHelmetTitle] = useState<string>("Bibliomar");
+    const [helmetTitle, setHelmetTitle] = useState<string | undefined>(
+        undefined
+    );
     const [optionsHidden, setOptionsHidden] = useLocalStorage<boolean>(
         "options-hidden",
         false
@@ -216,13 +218,13 @@ function Search() {
         await makePaginationRequest(formik.values);
     };
 
-    const resetSearchState = (pagination: boolean) => {
+    const resetSearchState = (paginationRequest: boolean) => {
         // Resets relevant values to their initial values
-        if (!pagination) {
+        if (!paginationRequest) {
             currentOffset.current = 0;
             totalItems.current = 0;
             setPageCount(0);
-            setHelmetTitle("Bibliomar");
+            setHelmetTitle(undefined);
         }
         setSearchResults([]);
         setTookTime(0);
@@ -392,7 +394,7 @@ function Search() {
     return (
         <div className="container-fluid min-vh-100 d-flex flex-column">
             <Helmet>
-                <title>{helmetTitle} - Bibliomar</title>
+                {helmetTitle ? <title>{helmetTitle} - Bibliomar</title> : null}
             </Helmet>
             <div className="row ">
                 <div className="col mt-3">
@@ -401,7 +403,7 @@ function Search() {
             </div>
 
             <Bibliologo />
-            <Greeting />
+            <SearchGreeting />
             <SearchTips />
             <form ref={formRef} onSubmit={formik.handleSubmit}>
                 <SearchOptions

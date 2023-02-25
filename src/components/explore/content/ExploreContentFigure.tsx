@@ -4,12 +4,21 @@ import MetadataHoverableFigure from "../../general/figure/MetadataHoverableFigur
 interface Props {
     metadata: Metadata;
     href?: string;
+    timeout: number;
 }
 
-export default function ExploreContentFigure({ metadata, href }: Props) {
+export default function ExploreContentFigure({
+    metadata,
+    href,
+    timeout,
+}: Props) {
     return (
         <div className="w-100 explore-figure mb-2">
-            <MetadataHoverableFigure metadata={metadata} href={href} />
+            <MetadataHoverableFigure
+                metadata={metadata}
+                href={href}
+                timeout={timeout}
+            />
         </div>
     );
 }

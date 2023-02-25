@@ -28,7 +28,7 @@ interface Props {
     metadata: Metadata[];
 }
 
-export default function LibraryCategory({
+export default function LibraryMinimalCategory({
     title,
     message,
     metadataCategory,
@@ -93,12 +93,15 @@ export default function LibraryCategory({
             <div className="d-flex flex-wrap w-100">
                 <MDBContainer fluid>
                     {slicedMetadataList.map((metadataSlice, sliceIndex) => {
+                        let internalCounter = 0;
                         if (sliceIndex > maxVisibleRows - 1) {
                             return null;
                         }
                         return (
                             <MDBRow key={sliceIndex}>
                                 {metadataSlice.map((metadata, entryIndex) => {
+                                    internalCounter++;
+                                    const timeout = internalCounter * 750;
                                     return (
                                         <MDBCol
                                             key={entryIndex}
@@ -107,7 +110,7 @@ export default function LibraryCategory({
                                         >
                                             <LibraryBookFigure
                                                 metadata={metadata}
-                                                timeout={entryIndex * 1000}
+                                                timeout={timeout}
                                             />
                                         </MDBCol>
                                     );

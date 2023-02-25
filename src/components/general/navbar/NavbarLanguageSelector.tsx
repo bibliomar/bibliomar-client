@@ -48,7 +48,7 @@ export default function NavbarLanguageSelector() {
 
     // noinspection AllyJsxHardcodedStringInspection
     return (
-        <MDBNavbarItem className="ms-0 ms-lg-auto mt-3 mt-lg-0 me-2">
+        <MDBNavbarItem className="">
             <MDBDropdown className="shadow-0 h-100 d-flex flex-column justify-content-center">
                 <MDBDropdownToggle tag="a" className="">
                     <span

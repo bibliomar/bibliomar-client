@@ -62,7 +62,7 @@ export default function ReaderNavbar({
                     >
                         <BibliomarBrand
                             readerAccent={readerAccent}
-                            badgeContent={"reader"}
+                            badgeContent={"READER"}
                         />
                     </MDBNavbarBrand>
 

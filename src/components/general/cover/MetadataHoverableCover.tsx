@@ -11,10 +11,12 @@ interface Props {
     coverUrl: string | undefined;
     coverDone: boolean;
     href?: string;
-    mask?: boolean;
-    maskClassname?: string | undefined;
-    maskElement?: JSX.Element;
+    maskClassname: string | undefined;
+    maskElement: JSX.Element;
     onClick?: React.MouseEventHandler;
+
+    handleImageError?: (evt: React.SyntheticEvent<HTMLImageElement>) => void;
+    handleImageLoad?: (evt: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
 const chooseCurrentCoverComponent = (props: Props) => {
@@ -33,10 +35,14 @@ const chooseCurrentCoverComponent = (props: Props) => {
                 src={usableCover}
                 alt="Cover"
                 className="h-100 w-100"
+                onLoad={(event) => {
+                    if (props.handleImageLoad) {
+                        props.handleImageLoad(event);
+                    }
+                }}
                 onError={(event) => {
-                    const target = event.currentTarget;
-                    if (target.src !== noCoverUrl) {
-                        target.src = noCoverUrl;
+                    if (props.handleImageError) {
+                        props.handleImageError(event);
                     }
                 }}
             />
@@ -50,16 +56,24 @@ const showCoverMaskUrl = (props: Props) => {
     if (props.href) {
         return (
             <Link to={props.href} onClick={props.onClick}>
-                {props.mask || props.mask == undefined ? (
-                    <div
-                        className={`mask ${
-                            props.maskClassname ?? "default-figure-mask"
-                        }`}
-                    >
-                        {props.maskElement ?? null}
-                    </div>
-                ) : null}
+                <div
+                    className={`mask ${
+                        props.maskClassname ?? "default-figure-mask"
+                    }`}
+                >
+                    {props.maskElement ?? null}
+                </div>
             </Link>
+        );
+    } else {
+        return (
+            <div
+                className={`mask ${
+                    props.maskClassname ?? "default-figure-mask"
+                }`}
+            >
+                {props.maskElement ?? null}
+            </div>
         );
     }
 
@@ -67,7 +81,7 @@ const showCoverMaskUrl = (props: Props) => {
 };
 
 // Default cover implementation for any figure that uses MDBRipple or a div with bg-image class.
-export default function MetadataCover(props: Props) {
+export default function MetadataHoverableCover(props: Props) {
     return (
         <>
             {chooseCurrentCoverComponent(props)}

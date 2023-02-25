@@ -42,7 +42,6 @@ export default function SearchResults({
                                 // a timeout based on it.
                                 internalCounter++;
                                 const timeout = internalCounter * 750;
-                                console.log(timeout);
                                 return (
                                     <MDBCol
                                         size={bootstrapColSize / itemsPerRow}

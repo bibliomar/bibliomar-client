@@ -29,7 +29,7 @@ interface Props {
     metadatas: Metadata[];
 }
 
-export default function LibrarySection({
+export default function LibraryExpandedCategory({
     title,
     metadataCategory,
     metadatas,
@@ -115,9 +115,12 @@ export default function LibrarySection({
             <div className="d-flex flex-wrap justify-content-center justify-content-md-start  w-100">
                 <MDBContainer fluid>
                     {slicedMetadataList.map((metadataSlice, sliceIndex) => {
+                        let internalCounter = 0;
                         return (
                             <MDBRow key={sliceIndex}>
                                 {metadataSlice.map((metadata, entryIndex) => {
+                                    internalCounter++;
+                                    const timeout = internalCounter * 750;
                                     return (
                                         <MDBCol
                                             key={entryIndex}
@@ -126,7 +129,7 @@ export default function LibrarySection({
                                         >
                                             <LibraryBookFigure
                                                 metadata={metadata}
-                                                timeout={entryIndex * 750}
+                                                timeout={timeout}
                                             />
                                         </MDBCol>
                                     );

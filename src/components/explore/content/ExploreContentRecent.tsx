@@ -22,7 +22,7 @@ function buildRecentSearchObject() {
                 timeadded: "desc",
             },
         ],
-        limit: 100,
+        limit: 500,
     };
     return searchObject;
 }
@@ -72,10 +72,11 @@ export default function ExploreContentRecent() {
     };
 
     const renderRecentContent = () => {
+        let internalCounter = 0;
         if (!requestDone) {
             return <BlankLoadingSpinner />;
         } else if (requestError) {
-            return <p>Nenhum resultado encontrado.</p>;
+            return <p>{t("explore:nenhumResultadoEncontrado")}</p>;
         } else if (visibleContent.length > 0 && slicedContent.length > 0) {
             return slicedContent.map((metadatas, rowIndex) => {
                 return (
@@ -88,6 +89,9 @@ export default function ExploreContentRecent() {
                                 metadata.topic,
                                 metadata.md5
                             );
+                            internalCounter++;
+                            const timeout = internalCounter * 750;
+                            console.log(timeout);
                             return (
                                 <MDBCol
                                     size={Math.ceil(
@@ -98,6 +102,7 @@ export default function ExploreContentRecent() {
                                     <ExploreContentFigure
                                         metadata={metadata}
                                         href={href}
+                                        timeout={timeout}
                                     />
                                 </MDBCol>
                             );

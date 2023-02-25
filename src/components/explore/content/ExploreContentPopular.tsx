@@ -22,6 +22,7 @@ import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
 import MetadataHoverableFigure from "../../general/figure/MetadataHoverableFigure";
 import ExploreContentFigure from "./ExploreContentFigure";
+import { useTranslation } from "react-i18next";
 
 async function getTopContent(by?: "downloads" | "views") {
     let requestUrl = `${serverUrl}/statistics/top`;
@@ -61,6 +62,7 @@ function getMetadatasFromResponse(
 }
 
 export default function ExploreContentPopular() {
+    const { t } = useTranslation();
     const { width } = useWindowSize();
     const [requestError, setRequestError] = useState<boolean>(false);
     const [requestDone, setRequestDone] = useState<boolean>(true);
@@ -89,10 +91,11 @@ export default function ExploreContentPopular() {
     };
 
     const renderTopContent = () => {
+        let internalCounter = 0;
         if (!requestDone) {
             return <BlankLoadingSpinner />;
         } else if (requestError) {
-            return <p>Nenhum resultado encontrado.</p>;
+            return <p>{t("explore:nenhumResultadoEncontrado")}</p>;
         } else if (visibleContent.length > 0 && slicedContent.length > 0) {
             return slicedContent.map((metadatas, rowIndex) => {
                 return (
@@ -105,6 +108,8 @@ export default function ExploreContentPopular() {
                                 metadata.topic,
                                 metadata.md5
                             );
+                            internalCounter++;
+                            const timeout = internalCounter * 1000;
                             return (
                                 <MDBCol
                                     size={Math.ceil(
@@ -115,6 +120,7 @@ export default function ExploreContentPopular() {
                                     <ExploreContentFigure
                                         metadata={metadata}
                                         href={href}
+                                        timeout={timeout}
                                     />
                                 </MDBCol>
                             );
