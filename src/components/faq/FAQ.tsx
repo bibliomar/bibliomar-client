@@ -32,39 +32,78 @@ export default function FAQ() {
                 </div>
                 <div
                     className="basic-container text-color"
-                    style={{ fontSize: "1.1rem" }}
+                    style={{ fontSize: "1.0rem" }}
                 >
                     <MDBAccordion initialActive={ref} className="text-color">
                         <MDBAccordionItem
                             className="text-color"
                             collapseId={1}
-                            headerTitle="Como funciona a pesquisa estruturada?"
+                            headerTitle={t(
+                                "faq:comoFuncionaAPesquisaEstruturada"
+                            )}
                         >
                             <p>
-                                A pesquisa estruturada é uma das adições da
-                                versão 3.0 do Bibliomar.
+                                {t(
+                                    "faq:aPesquisaEstruturadaUmaDasAdiesDaVerso30DoBiblioma"
+                                )}
                             </p>
                             <p>
-                                Ela permite, em termos simples, que você
-                                pesquise em todos os campos ao mesmo tempo.
+                                {t(
+                                    "faq:elaPermiteEmTermosSimplesQueVocPesquiseEmTodosOsCa"
+                                )}
                             </p>
                             <br />
                             <span>
-                                Por exemplo, titulo, autor, linguagem, etc.
+                                {t(
+                                    "faq:porExemploTituloAutorLinguagemEtcOperadoresAndOrMa"
+                                )}
                             </span>
                             <br />
                             <br />
                             <p>
-                                Mesmo com o seletor da pesquisa estruturada
-                                desativada, o Bibliomar ainda usa esse tipo de
-                                pesquisa internamente.
+                                {t(
+                                    "faq:mesmoComOSeletorDaPesquisaEstruturadaDesativadaOBi"
+                                )}
                             </p>
                             <span>
-                                A diferença é que, caso esteja desativada, nós
-                                aplicamos os filtros para você.
+                                {t(
+                                    "faq:aDiferenaQueCasoEstejaDesativadaNsAplicamosOsFiltr"
+                                )}
                             </span>
                             <br />
                             <br />
+                            <p>{t("faq:attributosPesquisaveis")} </p>
+                            <ul>
+                                <li>@title</li>
+                                <title>@author</title>
+                                <li>@language</li>
+                                <li>@topic</li>
+                                <li>@extension</li>
+                                <li>@series</li>
+                            </ul>
+                            <br />
+                            <span>
+                                {t(
+                                    "faq:exemploTitleONomeDoVentoFloresParaAlgernon"
+                                )}
+                            </span>
+                            <br />
+                            <span>
+                                {t(
+                                    "faq:encontraResultadosRelevantesParaONomeDoVentoOuFlor"
+                                )}
+                            </span>
+                            <br />
+                            <br />
+                            <p>
+                                <Trans
+                                    i18nKey="paraEntenderMelhorOsOperadoresDisponveisNaPesquisa"
+                                    ns="faq"
+                                />{" "}
+                                <a href="https://manual.manticoresearch.com/Searching/Full_text_matching/Operators#Full-text-operators">
+                                    {t("faq:acesseEsseLink")}
+                                </a>
+                            </p>
                         </MDBAccordionItem>
                     </MDBAccordion>
                     <MDBAccordion initialActive={ref}>

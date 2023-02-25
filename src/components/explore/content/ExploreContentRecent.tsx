@@ -91,7 +91,6 @@ export default function ExploreContentRecent() {
                             );
                             internalCounter++;
                             const timeout = internalCounter * 750;
-                            console.log(timeout);
                             return (
                                 <MDBCol
                                     size={Math.ceil(
@@ -145,12 +144,14 @@ export default function ExploreContentRecent() {
     return (
         <MDBContainer fluid className="p-1">
             {renderRecentContent()}
-            <div className="d-flex w-100">
-                <ExploreContentPagination
-                    pageChangeHandler={handlePageClick}
-                    pageCount={pageCount}
-                />
-            </div>
+            {slicedContent.length > 0 ? (
+                <div className="d-flex w-100">
+                    <ExploreContentPagination
+                        pageChangeHandler={handlePageClick}
+                        pageCount={pageCount}
+                    />
+                </div>
+            ) : null}
         </MDBContainer>
     );
 }

@@ -13,7 +13,7 @@ export default function ExploreContentFigure({
     timeout,
 }: Props) {
     return (
-        <div className="w-100 explore-figure mb-2">
+        <div className="w-100 metadata-figure mb-2">
             <MetadataHoverableFigure
                 metadata={metadata}
                 href={href}

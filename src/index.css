@@ -43,6 +43,13 @@ abbr[title]:after {
     pointer-events: none;
 }
 
+.metadata-figure {
+    height: auto;
+    width: 100%;
+    aspect-ratio: 330/500;
+    object-fit: cover;
+}
+
 
 .simple-figure-bg {
     cursor: text;

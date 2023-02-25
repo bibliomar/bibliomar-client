@@ -17,7 +17,7 @@ import {
     SearchRequestType,
 } from "./helpers/searchTypes";
 import makeSearch from "./helpers/makeSearch";
-import "./search.css";
+import "./search.scss";
 import SearchMessageScreen from "./loading/SearchMessageScreen";
 import SearchPagination from "./SearchPagination";
 import Break from "../general/Break";
@@ -182,7 +182,7 @@ function Search() {
     });
 
     useEffect(() => {
-        if (initialRequestMade.current) {
+        if (initialRequestMade.current && totalItems > 0) {
             return;
         }
 

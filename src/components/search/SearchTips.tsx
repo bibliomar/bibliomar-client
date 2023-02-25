@@ -26,11 +26,8 @@ export default function SearchTips() {
                 !
             </span>
         );
-        const tip6 = t(
-            "search:aPesquisaEstruturadaFulltextAtivadaPorPadroElaAuto"
-        );
 
-        const tips = [tip1, tip2, tip3, tip4, tip5, tip6];
+        const tips = [tip1, tip2, tip3, tip4, tip5];
         return <>{tips[Math.floor(Math.random() * tips.length)]}</>;
     };
 

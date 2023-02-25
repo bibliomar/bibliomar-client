@@ -7,12 +7,16 @@ import RecommendationBookFigure from "./RecommendationBookFigure";
 import { useTranslation } from "react-i18next";
 import recommendationsPT from "./locale/recommendationsPT.json";
 import recommendationsEN from "./locale/recommendationsEN.json";
+import { useWindowSize } from "../../general/helpers/useWindowSize";
+import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
+import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 
 interface Props {
     disabled: boolean;
 }
 
 export default function RecommendationScreen(props: Props) {
+    const { width } = useWindowSize();
     const { t, i18n } = useTranslation();
     const localizedRecommendations = useMemo(() => {
         const lang = i18n.language;
@@ -20,12 +24,27 @@ export default function RecommendationScreen(props: Props) {
             return recommendationsPT["entries"] as Metadata[];
         } else if (lang === "en" || lang === "en-us") {
             return recommendationsEN["entries"] as Metadata[];
+        } else {
+            return recommendationsPT["entries"] as Metadata[];
         }
     }, [i18n.language]);
+
+    let itemsPerRow = 4;
+    if (width < 768) {
+        itemsPerRow = 2;
+    } else if (width < 992) {
+        itemsPerRow = 3;
+    }
+
+    const slicedRecommendations = useSlicedMetadatas(
+        localizedRecommendations,
+        itemsPerRow
+    );
+
     return (
         <>
             {!props.disabled ? (
-                <div className="d-flex flex-wrap justify-content-center">
+                <div className="d-flex flex-wrap justify-content-center mb-4">
                     <div className="p-2 rounded-3 text-dark recommendation-div">
                         <div className="d-flex flex-wrap justify-content-center mb-2">
                             <span className="recommendation-title">
@@ -33,22 +52,30 @@ export default function RecommendationScreen(props: Props) {
                             </span>
                         </div>
                         <Break />
-                        {localizedRecommendations != undefined ? (
-                            <div className="d-flex flex-wrap justify-content-center w-100">
-                                {localizedRecommendations.map((el, i) => {
-                                    let timeout;
-                                    i === 0
-                                        ? (timeout = 750)
-                                        : (timeout = i * 750);
-                                    return (
-                                        <RecommendationBookFigure
-                                            metadata={el}
-                                            timeout={timeout}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        ) : null}
+                        <MDBContainer fluid className="recommendation-div">
+                            {slicedRecommendations.map((row, rowIndex) => {
+                                return (
+                                    <MDBRow key={rowIndex} className="d-flex">
+                                        {row.map((metadata, eleIndex) => {
+                                            return (
+                                                <MDBCol
+                                                    key={eleIndex}
+                                                    size={Math.ceil(
+                                                        12 / itemsPerRow
+                                                    )}
+                                                    className="gx-1"
+                                                >
+                                                    <RecommendationBookFigure
+                                                        metadata={metadata}
+                                                        timeout={0}
+                                                    />
+                                                </MDBCol>
+                                            );
+                                        })}
+                                    </MDBRow>
+                                );
+                            })}
+                        </MDBContainer>
                     </div>
                 </div>
             ) : null}

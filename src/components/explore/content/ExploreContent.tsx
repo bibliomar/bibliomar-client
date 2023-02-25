@@ -11,10 +11,10 @@ export default function ExploreContent({ activeTab, handleTabClick }: Props) {
     return (
         <MDBTabsContent className="flex-grow-1 d-flex flex-column">
             <MDBTabsPane show={activeTab === 1}>
-                <ExploreContentPopular />
+                {activeTab === 1 ? <ExploreContentPopular /> : null}
             </MDBTabsPane>
             <MDBTabsPane show={activeTab === 2}>
-                <ExploreContentRecent />
+                {activeTab === 2 ? <ExploreContentRecent /> : null}
             </MDBTabsPane>
         </MDBTabsContent>
     );

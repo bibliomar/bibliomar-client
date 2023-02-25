@@ -163,7 +163,7 @@ export default function ExploreContentPopular() {
     return (
         <MDBContainer fluid className="p-1">
             {renderTopContent()}
-            {topContent.current.length > 0 ? (
+            {slicedContent.length > 0 ? (
                 <div className="d-flex w-100">
                     <ExploreContentPagination
                         pageChangeHandler={handlePageClick}

@@ -53,15 +53,15 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
 
     async function handleSearch(query: string) {
         setIsLoading(true);
-        const searchObject = buildSearchObject(
-            {
-                ...formik.values,
-                q: query,
-            },
-            0,
-            5,
-            true
-        );
+        // Sometimes, the onInput of the SearchBarInput component may be slightly delayed.
+        // This means that AsyncTypeahead would try to search for an older value (tipically a character older).
+        // This is a workaround to prevent that from happening.
+        const updatedFormikObject = {
+            ...formik.values,
+            q: query,
+        };
+
+        const searchObject = buildSearchObject(updatedFormikObject, 0, 5, true);
 
         const response = await getAutocomplete(searchObject);
         if (response != null) {
@@ -123,7 +123,7 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
                          */
                         return true;
                     }}
-                    minLength={4}
+                    minLength={6}
                     selected={selected}
                     className="w-100 d-flex"
                     options={indexes}

@@ -21,9 +21,6 @@ export default function SearchBarInput({
 }: SearchBarInputProps) {
     const { t } = useTranslation();
     const theme = useContext(ThemeContext);
-    const c = async (v: string) => {
-        formik.setFieldValue("q", v, false);
-    };
 
     return (
         <Hint className="">

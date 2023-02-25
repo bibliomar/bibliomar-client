@@ -14,7 +14,7 @@ export default function LibraryBookFigure(props: Props) {
     const [cover, coverDone] = useCover(metadata, props.timeout);
     const href = getMetadataInfoPath(metadata.topic, metadata.md5);
     return (
-        <div id="library-book-div" className="library-figure-img me-2 mb-3">
+        <div id="library-book-div" className="metadata-figure me-2 mb-3">
             <MetadataSelectableFigure
                 metadata={props.metadata}
                 href={href}

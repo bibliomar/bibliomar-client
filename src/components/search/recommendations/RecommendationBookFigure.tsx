@@ -14,8 +14,12 @@ export default function RecommendationBookFigure({ metadata, timeout }: Props) {
     const href = `/search?topic=${metadata.topic}&q=${metadata.title}`;
 
     return (
-        <div className="recommendation-figure me-2 mb-3">
-            <MetadataHoverableFigure metadata={metadata} href={href} />
+        <div className="metadata-figure me-2 mb-3">
+            <MetadataHoverableFigure
+                metadata={metadata}
+                href={href}
+                timeout={timeout}
+            />
         </div>
     );
 }
