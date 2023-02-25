@@ -153,7 +153,7 @@ function Search() {
     const itemsPerPage = 24;
     let itemsPerRow = 6;
     if (width < 768) {
-        itemsPerRow = 3;
+        itemsPerRow = 2;
     } else if (width < 992) {
         itemsPerRow = 4;
     }
@@ -394,7 +394,7 @@ function Search() {
             </Helmet>
             <div className="row ">
                 <div className="col mt-3">
-                    <Navbar activeItem="home" badgeText="3.0" />
+                    <Navbar activeItem="home" badgeText="3.0-MAIN" />
                 </div>
             </div>
 
