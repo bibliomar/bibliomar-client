@@ -1,3 +1,8 @@
+.rbt-aux {
+    /* Disables react-bootstrap-typeahead's loading icon */
+    display: none !important;
+}
+
 .search-results-container {
     width: 100vw;
 }
@@ -38,7 +43,7 @@
 
 
 .search-field {
-    width: 75%;
+    width: 95%;
 }
 
 

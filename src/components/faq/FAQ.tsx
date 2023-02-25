@@ -31,12 +31,46 @@ export default function FAQ() {
                     ) : null}
                 </div>
                 <div
-                    className="position-relative basic-container fs-5"
-                    style={{ top: "20%" }}
+                    className="basic-container text-color"
+                    style={{ fontSize: "1.1rem" }}
                 >
+                    <MDBAccordion initialActive={ref} className="text-color">
+                        <MDBAccordionItem
+                            className="text-color"
+                            collapseId={1}
+                            headerTitle="Como funciona a pesquisa estruturada?"
+                        >
+                            <p>
+                                A pesquisa estruturada é uma das adições da
+                                versão 3.0 do Bibliomar.
+                            </p>
+                            <p>
+                                Ela permite, em termos simples, que você
+                                pesquise em todos os campos ao mesmo tempo.
+                            </p>
+                            <br />
+                            <span>
+                                Por exemplo, titulo, autor, linguagem, etc.
+                            </span>
+                            <br />
+                            <br />
+                            <p>
+                                Mesmo com o seletor da pesquisa estruturada
+                                desativada, o Bibliomar ainda usa esse tipo de
+                                pesquisa internamente.
+                            </p>
+                            <span>
+                                A diferença é que, caso esteja desativada, nós
+                                aplicamos os filtros para você.
+                            </span>
+                            <br />
+                            <br />
+                        </MDBAccordionItem>
+                    </MDBAccordion>
                     <MDBAccordion initialActive={ref}>
                         <MDBAccordionItem
-                            collapseId={1}
+                            className="text-color"
+                            collapseId={10}
                             headerTitle={
                                 "Não consigo encontrar meu livro, como proceder?"
                             }
@@ -89,8 +123,9 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
+                            className="text-color"
                             tag={"div"}
-                            collapseId={2}
+                            collapseId={20}
                             headerTitle={"Como funciona o Bibliomar?"}
                         >
                             <p>
@@ -100,7 +135,8 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={3}
+                            className="text-color"
+                            collapseId={30}
                             headerTitle={"Qual formato devo baixar?"}
                         >
                             <span className="fw-bold lead">EPUB: </span>
@@ -153,7 +189,8 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={4}
+                            className="text-color"
+                            collapseId={40}
                             headerTitle={"Baixei meu livro, e agora?"}
                         >
                             <div className="accordion-body">
@@ -264,8 +301,9 @@ export default function FAQ() {
                             </div>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={5}
-                            headerTitle={"Como funciona a leitura online?"}
+                            className="text-color"
+                            collapseId={50}
+                            headerTitle="Como funciona a leitura online?"
                         >
                             <h5>
                                 {t(
@@ -306,7 +344,8 @@ export default function FAQ() {
                             </span>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={6}
+                            className="text-color"
+                            collapseId={60}
                             headerTitle={
                                 "Quero contribuir mas estou meio perdido, o que fazer?"
                             }
@@ -327,7 +366,8 @@ export default function FAQ() {
                             </p>
                         </MDBAccordionItem>
                         <MDBAccordionItem
-                            collapseId={7}
+                            className="text-color"
+                            collapseId={70}
                             headerTitle={"Como faço upload de novos livros?"}
                         >
                             <h5>

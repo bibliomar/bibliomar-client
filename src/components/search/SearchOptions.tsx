@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useSearchParams } from "react-router-dom";
 import SmoothCollapse from "react-smooth-collapse";
-import { MDBSwitch } from "mdb-react-ui-kit";
+import { MDBSwitch, MDBTooltip } from "mdb-react-ui-kit";
 import { Trans, useTranslation } from "react-i18next";
 import { FormikConfig, FormikProps } from "formik";
 import { SearchFormFields } from "./helpers/searchTypes";

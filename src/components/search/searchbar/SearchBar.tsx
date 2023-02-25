@@ -53,8 +53,15 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
 
     async function handleSearch(query: string) {
         setIsLoading(true);
-        const infixQuery = "";
-        const searchObject = buildSearchObject(formik.values, 0, 5);
+        const searchObject = buildSearchObject(
+            {
+                ...formik.values,
+                q: query,
+            },
+            0,
+            5,
+            true
+        );
 
         const response = await getAutocomplete(searchObject);
         if (response != null) {
@@ -72,7 +79,7 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
 
     return (
         <div className="input-group d-flex justify-content-center mt-5 mb-4">
-            <div className="search-field">
+            <div className="search-field d-flex flex-nowrap">
                 <AsyncTypeahead
                     /*
                     Very important: Do not put anything async-related inside this component's
@@ -116,23 +123,22 @@ export default function SearchBar({ setOptionsHidden, formik }: Props) {
                          */
                         return true;
                     }}
-                    minLength={5}
+                    minLength={4}
                     selected={selected}
-                    className="search-input"
+                    className="w-100 d-flex"
                     options={indexes}
                     labelKey="title"
-                    useCache={false}
+                    useCache={true}
                     maxResults={5}
                 />
+                <button
+                    type="submit"
+                    className="btn btn-primary search-button"
+                    disabled={formik.isSubmitting}
+                >
+                    <i className="fas fa-search fa-lg"></i>
+                </button>
             </div>
-
-            <button
-                type="submit"
-                className="btn btn-primary search-button"
-                disabled={formik.isSubmitting}
-            >
-                <i className="fas fa-search fa-lg"></i>
-            </button>
         </div>
     );
 }

@@ -39,9 +39,9 @@ export default function SearchBarInput({
                     id="q"
                     name="q"
                     label={t("search:pesquisar")}
-                    className="search-input"
+                    className="flex-grow-1 search-input"
                     placeholder={t("search:placeholder") as string}
-                    wrapperClass="w-100 d-flex"
+                    wrapperClass="w-100 d-flex flex-grow-1"
                     /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
                     // @ts-ignore
 
@@ -62,10 +62,6 @@ export default function SearchBarInput({
                             className="fas fa-bars fa-lg"
                             onClick={() => {
                                 setOptionsHidden((prev) => {
-                                    localStorage.setItem(
-                                        "options-hidden",
-                                        !prev ? "true" : "false"
-                                    );
                                     return !prev;
                                 });
                             }}

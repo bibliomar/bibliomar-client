@@ -27,7 +27,6 @@ import { buildSearchObject } from "./helpers/searchFunctions";
 import { useWindowSize } from "../general/helpers/useWindowSize";
 import { Helmet } from "react-helmet";
 import SearchTips from "./SearchTips";
-import useLocalStorage from "../general/helpers/useLocalStorage";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -138,10 +137,7 @@ function Search() {
     const [helmetTitle, setHelmetTitle] = useState<string | undefined>(
         undefined
     );
-    const [optionsHidden, setOptionsHidden] = useLocalStorage<boolean>(
-        "options-hidden",
-        false
-    );
+    const [optionsHidden, setOptionsHidden] = useState<boolean>(true);
 
     // Query related states
     const initialRequestMade = useRef<boolean>(false);

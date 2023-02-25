@@ -17,7 +17,8 @@ export { requestErrorAsStatus };
 export function buildSearchObject(
     values: SearchFormFields,
     offset?: number | undefined,
-    limit?: number | undefined
+    limit?: number | undefined,
+    infixed?: boolean
 ): object {
     const topic = values.topic;
     const type = values.type;
@@ -36,47 +37,62 @@ export function buildSearchObject(
                 if (finalQueryString.includes("@title")) {
                     finalQueryString.replace("@title", `@title ${query}`);
                 } else {
-                    finalQueryString += `@title ${query} `;
+                    finalQueryString = `@title ${query}`;
+                }
+                if (infixed) {
+                    finalQueryString += "*";
                 }
                 break;
             case "author":
                 if (finalQueryString.includes("@author")) {
                     finalQueryString.replace("@author", `@author ${query}`);
                 } else {
-                    finalQueryString += `@author ${query} `;
+                    finalQueryString = `@author ${query}`;
+                }
+                if (infixed) {
+                    finalQueryString += "*";
                 }
                 break;
             case "any":
-                finalQueryString += `${query} `;
+                finalQueryString += `${query}`;
+                if (infixed) {
+                    finalQueryString += "*";
+                }
                 break;
         }
     }
 
+    // The spaces at the start are important.
     if (format != null && format !== "any") {
         if (finalQueryString.includes("@extension")) {
             finalQueryString.replace("@extension", `@extension ${format} `);
         } else {
-            finalQueryString += `@extension ${format} `;
+            finalQueryString += ` @extension ${format}`;
         }
     }
+    // The spaces at the start are important.
+
     if (language != null && language !== "any") {
         if (finalQueryString.includes("@language")) {
             finalQueryString.replace("@language", `@language ${language} `);
         } else {
-            finalQueryString += `@language ${language} `;
+            finalQueryString += ` @language ${language}`;
         }
     }
+    // The spaces at the start are important.
 
     if (topic === "fiction") {
-        finalQueryString += "@topic fiction ";
+        finalQueryString += " @topic fiction";
     } else if (topic === "scitech") {
-        finalQueryString += "@topic scitech ";
+        finalQueryString += " @topic scitech";
     }
 
-    if (fulltext != null && query) {
+    // Discards all changes if fulltext is checked.
+    if (fulltext) {
         finalQueryString = query;
     }
 
+    // Remove spaces from both ends of the string.
     finalQueryString = finalQueryString.trim();
 
     const searchObject: any = {
