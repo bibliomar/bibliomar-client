@@ -1,3 +1,5 @@
+import { Trans } from "react-i18next";
+
 export default function MetadataInfoDisclaimer() {
     return (
         <div className="d-flex flex-wrap text-muted">
@@ -8,9 +10,13 @@ export default function MetadataInfoDisclaimer() {
                 Disclaimer
             </h6>
             <p className="text-start text-muted">
-                O Bibliomar <strong>não</strong> hospeda quaisquer arquivos de
-                livros em seus servidores. Todos os direitos são reservados às
-                suas respectivas partes.
+                <Trans
+                    i18nKey="oBibliomarNoHospedaQuaisquerArquivosDeLivrosEmSeus"
+                    ns="metadatainfo"
+                    components={{
+                        s: <strong />,
+                    }}
+                />
             </p>
         </div>
     );

@@ -17,7 +17,9 @@ export default function MetadataInfoSupport({
 
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            <span className="recommendation-title mb-2">Apoie o autor</span>
+            <span className="recommendation-title mb-2">
+                {t("metadatainfo:apoieOAutor")}
+            </span>
             <Break />
             <a
                 target={"_blank"}
