@@ -197,6 +197,8 @@ function SearchOptions({
                             {t("search:portugus")}
                         </option>
                         <option value="english">{t("search:ingls")}</option>
+                        <option value="spanish">{t("search:espanhol")}</option>
+                        <option value="french">{t("search:francs")}</option>
                     </select>
                 </div>
             </div>
