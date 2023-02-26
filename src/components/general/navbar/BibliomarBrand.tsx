@@ -29,7 +29,6 @@ export default function BibliomarBrand({ badgeContent, readerAccent }: Props) {
                         : "/assets/img/BIBLIOMAR-dark-theme.svg"
                 }
                 alt="Bibliomar"
-                className="brand-img"
             />
             {badgeContent ? (
                 <MDBBadge className="navbar-badge">{badgeContent}</MDBBadge>

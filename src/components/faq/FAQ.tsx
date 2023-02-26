@@ -506,6 +506,30 @@ export default function FAQ() {
                                 )}
                             </h5>
                         </MDBAccordionItem>
+                        <MDBAccordionItem
+                            className="text-color"
+                            collapseId={80}
+                            headerTitle="Como tornamos o Bibliomar seguro"
+                        >
+                            <p>
+                                Mais importante do quê adicionar novas funções é
+                                tornar as existentes seguras. Se você está lendo
+                                isso, provavelmente se preocupa com a segurança
+                                dos seus dados, e nós também.
+                            </p>
+                            <br />
+                            <p>
+                                Primeiramente, todas as rotas do Bibliomar,
+                                tanto do cliente quanto do servidor, são
+                                servidas através do protocolo HTTPs.
+                            </p>
+                            <span>
+                                Em resumo, isso significa que os seus dados tem
+                                criptografia de ponta a ponta, desde a sua
+                                conexão do navegador com o cliente, até a
+                                conexão do cliente com o servidor.
+                            </span>
+                        </MDBAccordionItem>
                     </MDBAccordion>
                 </div>
             </div>
