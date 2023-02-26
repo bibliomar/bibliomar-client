@@ -17,15 +17,14 @@ export default function NavbarSearchBar() {
     return (
         <form
             onSubmit={formik.handleSubmit}
-            className="d-flex input-group justify-content-center
-                                        justify-content-lg-end ms-0 ms-lg-3 me-0 me-lg-5 mt-3 mt-lg-0"
+            className="d-flex input-group justify-content-center justify-content-lg-end ms-0 ms-lg-3 me-0 me-lg-5 mt-3 mt-lg-0"
         >
             <MDBInput
                 name="query"
                 id="query"
                 type="search"
                 size={"lg"}
-                wrapperClass={width <= 1024 ? "w-75" : undefined}
+                wrapperClass={width <= 1024 ? "w-75" : "w-50"}
                 value={formik.values.query}
                 onChange={formik.handleChange}
             />

@@ -10,8 +10,13 @@ import ExploreContentFigure from "./ExploreContentFigure";
 import { ManticoreSearchResponse } from "../../search/helpers/searchTypes";
 import useSlicedMetadatas from "../../general/helpers/useSlicedMetadatas";
 import { useWindowSize } from "../../general/helpers/useWindowSize";
+import { useFormik } from "formik";
 
-function buildRecentSearchObject() {
+interface RecentFormValues {
+    language: string;
+}
+
+function buildSearchObject(values: RecentFormValues) {
     const searchObject = {
         index: "libgen",
         query: {
@@ -22,17 +27,55 @@ function buildRecentSearchObject() {
                 timeadded: "desc",
             },
         ],
-        limit: 500,
+        limit: 100,
     };
+
+    if (values.language != undefined && values.language !== "any") {
+        searchObject.query.query_string = `@language ${values.language}`;
+    }
     return searchObject;
 }
 
 export default function ExploreContentRecent() {
-    const recentSearchObject = buildRecentSearchObject();
     const { t } = useTranslation();
     const { width } = useWindowSize();
     const [requestError, setRequestError] = useState<boolean>(false);
     const [requestDone, setRequestDone] = useState<boolean>(false);
+
+    const formik = useFormik<RecentFormValues>({
+        initialValues: {
+            language: "any",
+        },
+        onSubmit: async (values) => {
+            setRequestDone(false);
+            setRequestError(false);
+            const searchObject = buildSearchObject(values);
+            const response = await makeSearch(searchObject);
+            if (response) {
+                setRequestDone(true);
+                console.log(response);
+                recentContent.current = response;
+                if (recentContent.current == null) {
+                    return;
+                }
+
+                const searchHits = recentContent.current.hits.hits;
+                if (searchHits == undefined || searchHits.length === 0) {
+                    setRequestError(true);
+                    setRequestDone(true);
+                    return;
+                }
+
+                const paginableItems = searchHits.length;
+                setVisibleContent(searchHits.slice(0, itemsPerPage));
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                setPageCount(Math.ceil(paginableItems / itemsPerPage));
+            } else {
+                setRequestDone(true);
+                setRequestError(true);
+            }
+        },
+    });
 
     // IMPORTANT: This counts the total items available in the ManticoreIndex.
     // Not to be confused with the length of the search result.
@@ -113,36 +156,51 @@ export default function ExploreContentRecent() {
     };
 
     useEffect(() => {
-        makeSearch(recentSearchObject).then((response) => {
-            if (response) {
-                setRequestDone(true);
-                console.log(response);
-                recentContent.current = response;
-                if (recentContent.current == null) {
-                    return;
-                }
-
-                const searchHits = recentContent.current.hits.hits;
-                if (searchHits == undefined || searchHits.length === 0) {
-                    setRequestError(true);
-                    setRequestDone(true);
-                    return;
-                }
-
-                const itemsOnindex = recentContent.current.hits.total;
-                if (itemsOnindex) {
-                    totalItems.current = itemsOnindex;
-                }
-                const paginableItems = searchHits.length;
-                setVisibleContent(searchHits.slice(0, itemsPerPage));
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                setPageCount(Math.ceil(paginableItems / itemsPerPage));
-            }
-        });
-    }, []);
+        if (formik.isSubmitting) {
+            return;
+        } else {
+            formik.submitForm().then();
+        }
+    }, [formik.values]);
 
     return (
         <MDBContainer fluid className="p-1">
+            {recentContent.current != undefined ? (
+                <form className="w-100">
+                    <div className="d-flex flex-nowrap w-100 ms-2 me-2 mb-3">
+                        <div className="d-flex flex-column justify-content-center">
+                            <label className="me-2" htmlFor="language">
+                                {t("search:linguagem")}
+                            </label>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <select
+                                onChange={formik.handleChange}
+                                value={formik.values.language}
+                                className="form-control form-select"
+                                name="language"
+                                id="language"
+                            >
+                                <option value="any">
+                                    {t("search:qualquer")}
+                                </option>
+                                <option value="portuguese">
+                                    {t("search:portugus")}
+                                </option>
+                                <option value="english">
+                                    {t("search:ingls")}
+                                </option>
+                                <option value="spanish">
+                                    {t("search:espanhol")}
+                                </option>
+                                <option value="french">
+                                    {t("search:francs")}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            ) : null}
             {renderRecentContent()}
             {slicedContent.length > 0 ? (
                 <div className="d-flex w-100">

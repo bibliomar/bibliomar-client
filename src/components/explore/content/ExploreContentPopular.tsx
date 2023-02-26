@@ -11,10 +11,7 @@ import {
     getMetadataInfoPath,
     serverUrl,
 } from "../../general/helpers/generalFunctions";
-import {
-    Metadata,
-    StatisticsTopResponse,
-} from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { useEffect, useRef, useState } from "react";
 import ExploreContentPagination from "./ExploreContentPagination";
 import { useWindowSize } from "../../general/helpers/useWindowSize";
@@ -23,42 +20,36 @@ import BlankLoadingSpinner from "../../general/BlankLoadingSpinner";
 import MetadataHoverableFigure from "../../general/figure/MetadataHoverableFigure";
 import ExploreContentFigure from "./ExploreContentFigure";
 import { useTranslation } from "react-i18next";
+import { ManticoreSearchResponse } from "../../search/helpers/searchTypes";
+import { useFormik } from "formik";
+import makeSearch from "../../search/helpers/makeSearch";
+import search from "../../search/Search";
 
-async function getTopContent(by?: "downloads" | "views") {
-    let requestUrl = `${serverUrl}/statistics/top`;
-    switch (by) {
-        case "downloads":
-            requestUrl += "/downloads";
-            break;
-        case "views":
-            requestUrl += "/views";
-            break;
-    }
-    requestUrl += "?limit=50";
-
-    const config: AxiosRequestConfig<StatisticsTopResponse[] | undefined> = {
-        method: "GET",
-        url: requestUrl,
-    };
-    try {
-        const req = await axios.request(config);
-        const data: StatisticsTopResponse[] = req.data;
-        console.log(data);
-        return data;
-    } catch (e: any) {
-        console.error(e);
-        return undefined;
-    }
+interface PopularFormValues {
+    language: string;
 }
 
-function getMetadatasFromResponse(
-    response: StatisticsTopResponse[]
-): Metadata[] {
-    const metadatas: Metadata[] = [];
-    for (const item of response) {
-        metadatas.push(item.metadata);
+function buildSearchObject(values: PopularFormValues) {
+    const searchObject = {
+        index: "statistics",
+        query: {
+            query_string: "",
+        },
+        sort: [
+            {
+                views: "desc",
+            },
+            {
+                downloads: "desc",
+            },
+        ],
+        limit: 100,
+    };
+
+    if (values.language != undefined && values.language !== "any") {
+        searchObject.query.query_string = `@language ${values.language}`;
     }
-    return metadatas;
+    return searchObject;
 }
 
 export default function ExploreContentPopular() {
@@ -66,8 +57,43 @@ export default function ExploreContentPopular() {
     const { width } = useWindowSize();
     const [requestError, setRequestError] = useState<boolean>(false);
     const [requestDone, setRequestDone] = useState<boolean>(true);
-    const topContent = useRef<StatisticsTopResponse[]>([]);
+    const topContent = useRef<ManticoreSearchResponse | undefined>(undefined);
     const [visibleContent, setVisibleContent] = useState<Metadata[]>([]);
+
+    const formik = useFormik<PopularFormValues>({
+        initialValues: {
+            language: "any",
+        },
+        onSubmit: async (values) => {
+            setRequestDone(false);
+            setRequestError(false);
+            const searchObject = buildSearchObject(values);
+            const response = await makeSearch(searchObject);
+            if (response) {
+                setRequestDone(true);
+                console.log(response);
+                topContent.current = response;
+                if (topContent.current == null) {
+                    return;
+                }
+
+                const searchHits = topContent.current.hits.hits;
+                if (searchHits == undefined || searchHits.length === 0) {
+                    setRequestError(true);
+                    setRequestDone(true);
+                    return;
+                }
+
+                const paginableItems = searchHits.length;
+                setVisibleContent(searchHits.slice(0, itemsPerPage));
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                setPageCount(Math.ceil(paginableItems / itemsPerPage));
+            } else {
+                setRequestDone(true);
+                setRequestError(true);
+            }
+        },
+    });
 
     let itemsPerRow = 6;
     if (width < 768) {
@@ -84,10 +110,17 @@ export default function ExploreContentPopular() {
     const bootstrapColSize = 12;
 
     const handlePageClick = (evt: any) => {
-        const newOffset =
-            (evt.selected * itemsPerPage) % topContent.current.length;
-        const metadatas = getMetadatasFromResponse(topContent.current);
-        setVisibleContent(metadatas.slice(newOffset, newOffset + itemsPerPage));
+        if (topContent.current == undefined) {
+            return;
+        }
+        const searchHits = topContent.current.hits.hits;
+        if (searchHits == undefined || searchHits.length === 0) {
+            return;
+        }
+        const newOffset = (evt.selected * itemsPerPage) % searchHits.length;
+        setVisibleContent(
+            searchHits.slice(newOffset, newOffset + itemsPerPage)
+        );
     };
 
     const renderTopContent = () => {
@@ -132,39 +165,54 @@ export default function ExploreContentPopular() {
     };
 
     useEffect(() => {
-        getTopContent()
-            .then((res) => {
-                if (res) {
-                    console.log(res);
-                    topContent.current = res;
-                    const metadatasFromResponse = getMetadatasFromResponse(
-                        topContent.current
-                    );
-                    setVisibleContent(
-                        metadatasFromResponse.slice(0, itemsPerPage)
-                    );
-
-                    const pageCount = Math.ceil(
-                        topContent.current.length / itemsPerPage
-                    );
-                    setPageCount(pageCount);
-                } else {
-                    setRequestError(true);
-                }
-                setRequestDone(true);
-            })
-            .catch((e: any) => {
-                console.error(e);
-                setRequestError(true);
-                setRequestDone(true);
-            });
-    }, []);
+        if (formik.isSubmitting) {
+            return;
+        } else {
+            formik.submitForm().then();
+        }
+    }, [formik.values]);
 
     return (
         <MDBContainer fluid className="p-1">
+            {topContent.current != undefined ? (
+                <form className="w-100">
+                    <div className="d-flex flex-nowrap w-100 ms-2 me-2 mb-3">
+                        <div className="d-flex flex-column justify-content-center">
+                            <label className="me-2" htmlFor="language">
+                                {t("search:linguagem")}
+                            </label>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <select
+                                onChange={formik.handleChange}
+                                value={formik.values.language}
+                                className="form-control form-select"
+                                name="language"
+                                id="language"
+                            >
+                                <option value="any">
+                                    {t("search:qualquer")}
+                                </option>
+                                <option value="portuguese">
+                                    {t("search:portugus")}
+                                </option>
+                                <option value="english">
+                                    {t("search:ingls")}
+                                </option>
+                                <option value="spanish">
+                                    {t("search:espanhol")}
+                                </option>
+                                <option value="french">
+                                    {t("search:francs")}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            ) : null}
             {renderTopContent()}
-            {slicedContent.length > 0 ? (
-                <div className="d-flex w-100">
+            {requestDone && !requestError && slicedContent.length > 0 ? (
+                <div className="d-flex w-100 mt-auto">
                     <ExploreContentPagination
                         pageChangeHandler={handlePageClick}
                         pageCount={pageCount}

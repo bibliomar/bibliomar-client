@@ -189,7 +189,7 @@ function SearchOptions({
                         onChange={formik.handleChange}
                         className="form-control form-select"
                         name="language"
-                        id="searchlang"
+                        id="language"
                         disabled={formik.values.fulltext}
                     >
                         <option value="any">{t("search:qualquer")}</option>

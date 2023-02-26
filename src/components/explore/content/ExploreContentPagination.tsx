@@ -24,12 +24,5 @@ export default function ExploreContentPagination({
             );
         }
     };
-    return (
-        <div className="ms-auto me-auto mt-4 p-2 rounded-3 basic-container-alt">
-            <Paginator
-                pageChangeHandler={pageChangeHandler}
-                pageCount={pageCount}
-            />
-        </div>
-    );
+    return renderPagination();
 }

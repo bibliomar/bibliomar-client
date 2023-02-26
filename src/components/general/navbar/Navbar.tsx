@@ -81,14 +81,14 @@ export default function Navbar({ activeItem, badgeText }: Props) {
                         expanded={showNav || width > 992}
                         allowOverflowWhenOpen={true}
                         eagerRender
-                        className={width <= 992 ? "w-100" : "w-75"}
+                        className="w-100"
                     >
                         <MDBNavbarNav
                             className={`mr-auto mb-2 mb-lg-0 ${
                                 theme === ThemeOptions.light
                                     ? "text-dark"
                                     : "text-light"
-                            } d-flex flex-column flex-lg-row justify-content-center align-items-center`}
+                            } d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center`}
                         >
                             <MDBNavbarItem className="">
                                 <MDBNavbarLink

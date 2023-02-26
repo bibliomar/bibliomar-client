@@ -5,12 +5,9 @@ import { AxiosError } from "axios";
 
 type Topic = "fiction" | "scitech";
 
-interface StatisticsTopResponse {
-    topic: Topic;
-    numOfViews: number;
-    numOfDownloads: number;
-    md5: string;
-    metadata: Metadata;
+interface MetadataStatistics extends Metadata {
+    views: number;
+    downloads: number;
 }
 
 type DownloadLinks = {
@@ -123,5 +120,4 @@ export type {
     ThemeContextParams,
     UserLibrary,
     AuthContextParams,
-    StatisticsTopResponse,
 };
