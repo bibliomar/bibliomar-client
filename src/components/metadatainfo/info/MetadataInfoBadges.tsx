@@ -11,15 +11,15 @@ export default function MetadataInfoBadges({ metadata }: Props) {
     const { t } = useTranslation();
     return (
         <>
-            <div className="badge book-info-badge me-1 mb-1">
+            <div className="badge badge-secondary book-info-badge me-1 mb-1">
                 {metadata.topic === "fiction"
                     ? t("metadatainfo:fiction")
                     : t("metadatainfo:nonfiction")}
             </div>
-            <div className="badge book-info-badge me-1 mb-1">
+            <div className="badge badge-secondary book-info-badge me-1 mb-1">
                 {metadata.category ? t("metadatainfo:onLibrary") : null}
             </div>
-            <div className="badge book-info-badge me-1 mb-1">
+            <div className="badge badge-secondary book-info-badge me-1 mb-1">
                 {metadata.category
                     ? libraryCategoryToLocaleText(t, metadata.category)
                     : null}

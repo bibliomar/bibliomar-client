@@ -1,22 +1,28 @@
-import Break from "../../general/Break";
-import { DownloadLinks, Metadata } from "../../general/helpers/generalTypes";
+import { Metadata } from "../../general/helpers/generalTypes";
 import { useTranslation } from "react-i18next";
+import Break from "../../general/Break";
+import {
+    getGoogleBooksUrl,
+    getLocalizedAmazonUrl,
+} from "../helpers/metadataFunctions";
 
-interface Props {
+interface MetadataInfoSupportProps {
     metadata: Metadata;
 }
 
-export default function MetadataInfoDownload({ metadata }: Props) {
-    const { t } = useTranslation();
-    // noinspection AllyJsxHardcodedStringInspection
+export default function MetadataInfoSupport({
+    metadata,
+}: MetadataInfoSupportProps) {
+    const { t, i18n } = useTranslation();
+
     return (
         <div className="d-flex flex-wrap justify-content-center">
-            <span className="recommendation-title mb-2">Download</span>
+            <span className="recommendation-title mb-2">Apoie o autor</span>
             <Break />
             <a
                 target={"_blank"}
                 className="d-flex justify-content-center"
-                href={metadata.downloadMirrors?.libgenMirror}
+                href={getLocalizedAmazonUrl(i18n.language, metadata)}
             >
                 <button
                     className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
@@ -25,14 +31,14 @@ export default function MetadataInfoDownload({ metadata }: Props) {
                         metadata.downloadMirrors.libgenMirror == undefined
                     }
                 >
-                    LIBGEN
+                    AMAZON
                 </button>
             </a>
             <Break />
             <a
                 target={"_blank"}
                 className="d-flex justify-content-center"
-                href={metadata.downloadMirrors?.librocksMirror}
+                href={getGoogleBooksUrl(metadata)}
             >
                 <button
                     className="dbutton btn btn-primary btn-rounded btn-lg mt-1 mb-1 me-1"
@@ -41,7 +47,7 @@ export default function MetadataInfoDownload({ metadata }: Props) {
                         metadata.downloadMirrors.librocksMirror == undefined
                     }
                 >
-                    LIBROCKS
+                    GOOGLE BOOKS
                 </button>
             </a>
         </div>

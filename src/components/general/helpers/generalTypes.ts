@@ -38,6 +38,7 @@ interface MetadataProperties {
     // Describes properties which are exclusive to metadataList results.
     // Make sure to check if they exist before using them.
     // These extra infos are mostly used in the BookInfo component.
+    googleBooksId?: string | null;
     asin?: string | null;
     volumeInfo?: string | null;
     edition?: string | null;

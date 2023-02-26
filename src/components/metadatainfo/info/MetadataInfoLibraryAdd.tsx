@@ -170,7 +170,7 @@ export default function MetadataInfoLibraryAdd({
     return (
         <div className={`d-flex ${className ? className : ""} mt-3 mt-lg-0`}>
             <MDBDropdown>
-                <MDBDropdownToggle size="lg">
+                <MDBDropdownToggle size="lg" color="secondary">
                     {renderButtonText()}
                 </MDBDropdownToggle>
                 <MDBDropdownMenu dark={theme === ThemeOptions.dark}>

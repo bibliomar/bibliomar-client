@@ -13,6 +13,8 @@ import MetadataInfoFile from "./info/MetadataInfoFile";
 import MetadataInfoAuthors from "./info/MetadataInfoAuthors";
 import MetadataInfoLibraryAdd from "./info/MetadataInfoLibraryAdd";
 import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
+import MetadataInfoSupport from "./info/MetadataInfoSupport";
+import MetadataInfoDisclaimer from "./info/MetadataInfoDisclaimer";
 
 export default function MetadataInfoDesktop({
     metadata,
@@ -29,6 +31,8 @@ export default function MetadataInfoDesktop({
                     <div className="d-flex flex-wrap justify-content-center w-100">
                         <MetadataInfoCover metadata={metadata} />
                         <Break />
+                        <MetadataInfoSupport metadata={metadata} />
+                        <Break className="mb-4" />
                         <MetadataInfoDownload metadata={metadata} />
                     </div>
                 </div>
@@ -67,7 +71,8 @@ export default function MetadataInfoDesktop({
                         <MetadataInfoDescription
                             description={metadata.description}
                         />
-                        <Break />
+                        <Break className="mb-2" />
+                        <MetadataInfoDisclaimer />
                     </div>
                 </div>
             </div>

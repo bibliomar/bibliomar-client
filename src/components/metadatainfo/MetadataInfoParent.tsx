@@ -6,7 +6,7 @@ import Footer from "../general/Footer";
 
 export default function MetadataInfoParent() {
     return (
-        <div className="container-fluid d-flex flex-column">
+        <div className="container-fluid d-flex flex-column min-vh-100">
             <div className="row mb-5">
                 <div className="col mt-3">
                     <Navbar badgeText="BOOKS" />

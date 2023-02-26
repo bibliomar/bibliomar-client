@@ -21,6 +21,7 @@ import { AuthContext } from "../general/helpers/generalContext";
 import useUserLibrary from "./helpers/useUserLibrary";
 import "./library.css";
 import { ToastContainer } from "react-toastify";
+import Footer from "../general/Footer";
 
 export default function LibraryScreen() {
     const authContext = useContext(AuthContext);
@@ -47,52 +48,38 @@ export default function LibraryScreen() {
         updateUserLibrary: updateUserLibrary,
     };
 
-    const [progress, setProgress] = useState<number>(0);
-    const navigate = useNavigate();
-
     return (
-        <div className="like-body bg-alt">
-            <div className="container-fluid">
-                <div className="">
-                    <MDBProgress height={progress === 0 ? "0" : "2"}>
-                        <MDBProgressBar
-                            style={{ zIndex: "10000" }}
-                            width={progress}
-                            valuemin={0}
-                            valuemax={100}
-                        />
-                    </MDBProgress>
+        <div className="container-fluid d-flex flex-column min-vh-100">
+            <div className="row">
+                <div className="col">
+                    <Navbar activeItem="library" badgeText="LIBRARY" />
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <Navbar activeItem="library" badgeText="LIBRARY" />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        {userLibrary != null ? (
-                            <UserLibraryContext.Provider
-                                value={userLibraryContext}
-                            >
-                                <EditModeContext.Provider
-                                    value={editModeContext}
-                                >
-                                    <Filters.Provider value={filtersContext}>
-                                        <Outlet />
-                                        <ToastContainer
-                                            closeOnClick={true}
-                                            limit={5}
-                                            draggable
-                                            draggablePercent={50}
-                                        />
-                                    </Filters.Provider>
-                                </EditModeContext.Provider>
-                            </UserLibraryContext.Provider>
-                        ) : (
+            </div>
+            <div className="row">
+                <div className="col">
+                    {userLibrary != null ? (
+                        <UserLibraryContext.Provider value={userLibraryContext}>
+                            <EditModeContext.Provider value={editModeContext}>
+                                <Filters.Provider value={filtersContext}>
+                                    <Outlet />
+                                    <ToastContainer
+                                        closeOnClick={true}
+                                        limit={5}
+                                        draggable
+                                        draggablePercent={50}
+                                    />
+                                </Filters.Provider>
+                            </EditModeContext.Provider>
+                        </UserLibraryContext.Provider>
+                    ) : (
+                        <div className="position-relative top-100">
                             <BlankLoadingSpinner />
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
+            </div>
+            <div className="mt-auto">
+                <Footer />
             </div>
         </div>
     );
