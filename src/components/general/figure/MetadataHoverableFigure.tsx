@@ -71,13 +71,13 @@ export default function MetadataHoverableFigure({
             <div className="d-flex flex-column justify-content-center align-items-center h-100">
                 <div className="d-flex flex-wrap justify-content-center align-items-center w-100 text-center text-light simple-text">
                     <span
-                        className="fw-bold text-wrap"
+                        className="fw-bold text-wrap mx-1"
                         style={{ fontSize: "1.05rem" }}
                     >
                         {formattedTitle}
                     </span>
                     <Break />
-                    <span className="">{formattedAuthor}</span>
+                    <span className="mx-1">{formattedAuthor}</span>
                     <Break />
                     {showFileInfo ? (
                         <span style={{ fontSize: "0.9rem" }}>
