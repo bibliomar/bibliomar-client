@@ -41,6 +41,35 @@ export default function RecommendationScreen(props: Props) {
         itemsPerRow
     );
 
+    const renderRecommendations = () => {
+        if (slicedRecommendations.length === 0) {
+            return null;
+        }
+        let internalCounter = 1;
+        return slicedRecommendations.map((row, rowIndex) => {
+            return (
+                <MDBRow key={rowIndex} className="d-flex">
+                    {row.map((metadata, eleIndex) => {
+                        internalCounter++;
+                        const timeout = internalCounter * 1000;
+                        return (
+                            <MDBCol
+                                key={eleIndex}
+                                size={Math.ceil(12 / itemsPerRow)}
+                                className="gx-1"
+                            >
+                                <RecommendationBookFigure
+                                    metadata={metadata}
+                                    timeout={timeout}
+                                />
+                            </MDBCol>
+                        );
+                    })}
+                </MDBRow>
+            );
+        });
+    };
+
     return (
         <>
             {!props.disabled ? (
@@ -53,28 +82,7 @@ export default function RecommendationScreen(props: Props) {
                         </div>
                         <Break />
                         <MDBContainer fluid className="recommendation-div">
-                            {slicedRecommendations.map((row, rowIndex) => {
-                                return (
-                                    <MDBRow key={rowIndex} className="d-flex">
-                                        {row.map((metadata, eleIndex) => {
-                                            return (
-                                                <MDBCol
-                                                    key={eleIndex}
-                                                    size={Math.ceil(
-                                                        12 / itemsPerRow
-                                                    )}
-                                                    className="gx-1"
-                                                >
-                                                    <RecommendationBookFigure
-                                                        metadata={metadata}
-                                                        timeout={0}
-                                                    />
-                                                </MDBCol>
-                                            );
-                                        })}
-                                    </MDBRow>
-                                );
-                            })}
+                            {renderRecommendations()}
                         </MDBContainer>
                     </div>
                 </div>

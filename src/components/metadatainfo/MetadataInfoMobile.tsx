@@ -11,8 +11,7 @@ import MetadataInfoFile from "./info/MetadataInfoFile";
 import MetadataInfoAuthors from "./info/MetadataInfoAuthors";
 import MetadataInfoLibraryAdd from "./info/MetadataInfoLibraryAdd";
 import MetadataInfoSimilarScreen from "./similar/MetadataInfoSimilarScreen";
-import MetadataInfoDisclaimer from "./info/MetadataInfoDisclaimer";
-import MetadataInfoSupport from "./info/MetadataInfoSupport";
+import MetadataInfoSearch from "./info/MetadataInfoSearch";
 
 export default function MetadataInfoMobile({
     metadata,
@@ -40,10 +39,10 @@ export default function MetadataInfoMobile({
                         <MetadataInfoAuthors metadata={metadata} />
                         <Break className="mb-1" />
                         <SmallLine flexGrow />
-                        <Break className="mb-2" />
-
-                        <Break className="mb-2" />
+                        <Break className="mb-4" />
                         <MetadataInfoFile metadata={metadata} />
+                        <Break className="mb-1" />
+                        <MetadataInfoSearch metadata={metadata} />
                         <Break className="mb-3" />
                         <MetadataInfoBadges metadata={metadata} />
                         <Break />
@@ -57,11 +56,8 @@ export default function MetadataInfoMobile({
                         />
                         <Break className="mb-5" />
                         <MetadataInfoDownload metadata={metadata} />
-                        <Break className="mb-4" />
-                        <MetadataInfoSupport metadata={metadata} />
 
                         <Break className="mb-4" />
-                        <MetadataInfoDisclaimer />
                     </div>
                 </div>
             </div>

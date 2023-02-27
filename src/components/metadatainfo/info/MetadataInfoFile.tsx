@@ -9,10 +9,13 @@ interface Props {
 
 export default function MetadataInfoFile({ metadata }: Props) {
     const { t, i18n } = useTranslation();
+    let isbn = undefined;
+    if (metadata.identifier && metadata.identifier.trim() !== "") {
+        isbn = metadata.identifier;
+    }
 
     return (
         <div className="book-info-title d-flex flex-wrap">
-            <Break mobile className="mb-2" />
             <span className="me-3">
                 <strong>{t("metadatainfo:format")}</strong>:{" "}
                 {metadata.extension
@@ -32,6 +35,12 @@ export default function MetadataInfoFile({ metadata }: Props) {
                 {metadata.language
                     ? metadata.language
                     : t("metadatainfo:undefinedField")}
+            </span>
+            <Break mobile className="mb-2" />
+
+            <span className="me-3">
+                <strong>ISBN</strong>:{" "}
+                {isbn ? isbn : t("metadatainfo:undefinedField")}
             </span>
 
             <Break mobile className="mb-2" />
@@ -53,6 +62,13 @@ export default function MetadataInfoFile({ metadata }: Props) {
                 <strong>{t("metadatainfo:edition")}</strong>:{" "}
                 {metadata.edition
                     ? metadata.edition
+                    : t("metadatainfo:undefinedField")}
+            </span>
+            <Break mobile className="mb-2" />
+            <span className="me-3">
+                <strong>{t("metadatainfo:volume")}</strong>:{" "}
+                {metadata.volumeInfo
+                    ? metadata.volumeInfo
                     : t("metadatainfo:undefinedField")}
             </span>
             <Break mobile className="mb-2" />
