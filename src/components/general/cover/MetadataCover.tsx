@@ -30,6 +30,7 @@ const chooseCurrentCoverComponent = (props: Props) => {
 
         return (
             <img
+                loading="lazy"
                 src={usableCover}
                 alt="Cover"
                 className="h-100 w-100"

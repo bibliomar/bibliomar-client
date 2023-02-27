@@ -19,6 +19,17 @@ interface Props {
     showFileInfo?: boolean;
 }
 
+/**
+ * A figure that shows a cover and some metadata info.
+ * Optionally, can also display file info. <br >
+ * Features automatic detection of loading errors, forcing metadata display to not disturb mobile users.
+ *
+ * @param metadata
+ * @param timeout
+ * @param href
+ * @param showFileInfo
+ * @constructor
+ */
 export default function MetadataHoverableFigure({
     metadata,
     timeout,

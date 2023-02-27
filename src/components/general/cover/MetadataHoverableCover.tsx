@@ -32,6 +32,7 @@ const chooseCurrentCoverComponent = (props: Props) => {
 
         return (
             <img
+                loading="lazy"
                 src={usableCover}
                 alt="Cover"
                 className="h-100 w-100"
@@ -80,7 +81,9 @@ const showCoverMaskUrl = (props: Props) => {
     return null;
 };
 
-// Default cover implementation for any figure that uses MDBRipple or a div with bg-image class.
+/**
+ * Modified version of the MetadataCover component that allows for a custom mask element.
+ */
 export default function MetadataHoverableCover(props: Props) {
     return (
         <>
