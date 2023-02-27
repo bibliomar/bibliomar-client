@@ -45,12 +45,16 @@ Some of the main features are:
 - Read your books online, without the need to download an ePub reader.
   Powered by [epub-js](https://github.com/futurepress/epub.js/)
   and [react-reader](https://www.npmjs.com/package/react-reader).
-  We have built a custom reader component that allows the user to customize the font size, font family, background and
-  etc.
-  You are free to use it in your own projects. Just copy the code
-  from [here](https://github.com/bibliomar/bibliomar-client/tree/main/src/components/reader/screen)
+
 - A dark mode, of course.
 - Lots of things that don't fit here. Check for yourself ;)
+
+## Bibliomar Reader
+
+We have built a custom reader component that allows the user to customize the font size, font family, background and
+etc.  
+You are free to use it in your own projects. Just copy the code
+from [here](https://github.com/bibliomar/bibliomar-client/tree/main/src/components/reader/screen).
 
 ## Star History
 
