@@ -18,6 +18,7 @@ export default function ExploreContentFigure({
                 metadata={metadata}
                 href={href}
                 timeout={timeout}
+                showFileInfo
             />
         </div>
     );

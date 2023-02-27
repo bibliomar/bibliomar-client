@@ -182,23 +182,30 @@ function Search() {
     });
 
     useEffect(() => {
-        if (initialRequestMade.current && totalItems.current > 0) {
+        let ignore = false;
+        if (pageCount > 0 || ignore) {
             return;
         }
 
         let submit: number | undefined = undefined;
         populateSearchParams(formik, searchParams).then(() => {
-            if (formik.values.q.length < 3) {
+            if (formik.values.q.length < 3 || ignore) {
                 return;
             }
+
             submit = window.setTimeout(async () => {
-                await formik.submitForm();
+                if (!ignore) {
+                    await formik.submitForm();
+                }
 
                 // 500ms gives enough time for everything to render.
             }, 500);
         });
 
-        return () => clearTimeout(submit);
+        return () => {
+            ignore = true;
+            clearTimeout(submit);
+        };
     }, [searchParams]);
 
     const handlePaginationClick = async (evt: any) => {
@@ -235,7 +242,6 @@ function Search() {
         // Appends the current page to the formData object.
         let resultsList: Metadata[] = [];
         const q = values.q;
-        console.log(q.trim().length);
         if (q == null || q.trim().length < 3) {
             return SearchRequestStatusOptions.BAD_QUERY;
         }
@@ -290,7 +296,10 @@ function Search() {
         initialRequestMade.current = true;
         const requestType = SearchRequestType.SEARCH;
         const URLParameters = buildURLParams(values);
-        setSearchParameters(URLParameters, { replace: false });
+        // The searchParameters on the first search request should be set
+        // to overwrite search history. This keeps the back history clean for some actions.
+        // (e.g. when selecting a recommendation)
+        setSearchParameters(URLParameters, { replace: true });
         setRequestStatus({
             type: requestType,
             status: SearchRequestStatusOptions.SENDING,

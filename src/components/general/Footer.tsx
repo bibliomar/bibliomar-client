@@ -39,7 +39,7 @@ export default function Footer() {
                     />
                 </a>
                 <a
-                    href={"https://github.com/Lamarcke/bibliomar-react"}
+                    href={"https://github.com/bibliomar"}
                     className="me-3"
                     style={{ color: "unset" }}
                 >

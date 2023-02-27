@@ -43,7 +43,6 @@ export default function NavbarLanguageSelector() {
         } else if (currentLanguage === "en-US") {
             changeLanguage("en-us");
         }
-        console.log("currentLanguage: " + currentLanguage);
     }, []);
 
     // noinspection AllyJsxHardcodedStringInspection

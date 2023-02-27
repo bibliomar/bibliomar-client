@@ -1,6 +1,6 @@
 import Break from "../../general/Break";
 import { DownloadLinks, Metadata } from "../../general/helpers/generalTypes";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 interface Props {
     metadata: Metadata;
@@ -44,6 +44,16 @@ export default function MetadataInfoDownload({ metadata }: Props) {
                     LIBROCKS
                 </button>
             </a>
+            <Break />
+            <span className="text-center text-muted mt-4">
+                <Trans
+                    i18nKey="oBibliomarNoHospedaQuaisquerArquivosDeLivrosEmSeus"
+                    ns="metadatainfo"
+                    components={{
+                        s: <strong />,
+                    }}
+                />
+            </span>
         </div>
     );
 }

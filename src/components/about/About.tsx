@@ -17,7 +17,7 @@ export default function About() {
                     </div>
                 </div>
                 <div className="basic-container" style={{ minHeight: "75vh" }}>
-                    <div className="d-flex flex-wrap p-2 p-lg-3 justify-content-start justify-content-lg-between w-100 ms-2">
+                    <div className="d-flex flex-wrap p-2 p-lg-3 justify-content-center mx-2">
                         <h3 className="mt-3 text-start simple-text-bolder">
                             {t("about:title")}
                         </h3>
@@ -44,7 +44,7 @@ export default function About() {
 
                         <div
                             className="d-flex flex-wrap w-100
-                        text-center mt-4 mt-lg-5 simple-text"
+                        justify-content-center mt-4 mt-lg-5 simple-text"
                         >
                             <div
                                 className="about-first-img-container d-flex
@@ -62,15 +62,13 @@ export default function About() {
                             </div>
                             <Break mobile />
                             <div
-                                className={`d-flex justify-content-center 
-                                justify-content-lg-around about-first-text-container ${
-                                    width <= 768 ? "w-100" : undefined
-                                }`}
+                                className="row d-flex flex-column justify-content-center
+                                about-first-text-container "
                             >
-                                <div className="d-flex flex-wrap justify-center items-center w-50 me-4">
+                                <div className="col col-lg-8 d-flex flex-wrap ">
                                     <a
                                         style={{ color: "unset" }}
-                                        className="mt-0 mt-lg-auto"
+                                        className="mt-0 mt-lg-auto mb-3 mb-lg-0"
                                         href="https://github.com/Lamarcke/bibliomar-react"
                                     >
                                         <img
@@ -82,9 +80,9 @@ export default function About() {
 
                                     <span>{t("about:second.p1")}</span>
                                 </div>
-                                <div className="d-flex flex-wrap justify-center items w-50 me-3">
+                                <div className="col col-lg-8 d-flex flex-wrap">
                                     <a
-                                        className="mt-0 mt-lg-auto"
+                                        className="mt-0 mt-lg-auto mb-3 mb-lg-0"
                                         href="https://discord.gg/J5FBbh8JbS"
                                         style={{ color: "unset" }}
                                     >
