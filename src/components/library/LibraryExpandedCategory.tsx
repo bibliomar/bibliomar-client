@@ -1,6 +1,12 @@
 import Break from "../general/Break";
 import LibraryBookFigure from "./figure/LibraryBookFigure";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import { Metadata, LibraryCategories } from "../general/helpers/generalTypes";
 import { Filters } from "./helpers/libraryContext";
 import equal from "fast-deep-equal/es6";
@@ -25,31 +31,25 @@ import useSlicedMetadatas from "../general/helpers/useSlicedMetadatas";
 
 interface Props {
     title: string;
-    metadataCategory: LibraryCategories;
-    metadatas: Metadata[];
+    totalCategoryLength: number;
+    filteredMetadatas: Metadata[];
+    onDefaultFilters: boolean;
 }
 
 export default function LibraryExpandedCategory({
     title,
-    metadataCategory,
-    metadatas,
+    filteredMetadatas,
+    onDefaultFilters,
 }: Props) {
-    const filtersContext = useContext(Filters);
     const { t } = useTranslation();
     const { width } = useWindowSize();
 
-    const onDefaultFilters = useMemo(() => {
-        return equal(filtersContext.filters, defaultFilters);
-    }, [metadatas, filtersContext.filters]);
-
-    const filteredMetadatadas = useMemo(() => {
-        return bookFiltering(metadatas, filtersContext.filters);
-    }, [metadatas, filtersContext.filters]);
-
-    const itemsPerPage = 12;
+    const itemsPerPage = 24;
     const [itemOffset, setItemOffset] = useState(0);
     const [visibleMetadata, setVisibleMetadata] = useState<Metadata[]>([]);
-    const [pageCount, setPageCount] = useState(0);
+    const pageCount = useMemo(() => {
+        return Math.ceil(filteredMetadatas.length / itemsPerPage);
+    }, [filteredMetadatas]);
 
     // The number of items per row will be different depending on the screen size.
     let itemsPerRow = 6;
@@ -61,24 +61,18 @@ export default function LibraryExpandedCategory({
 
     // The list of slices to be rendered.
     // They will be rendered using MDBootstrap grid system.
-    const slicedMetadataList = useSlicedMetadatas(
-        filteredMetadatadas,
-        itemsPerRow
-    );
+    const slicedMetadataList = useSlicedMetadatas(visibleMetadata, itemsPerRow);
 
     useEffect(() => {
-        const endOffset = itemOffset + itemsPerPage;
-        setPageCount(Math.ceil(filteredMetadatadas.length / itemsPerPage));
-        setVisibleMetadata(filteredMetadatadas.slice(itemOffset, endOffset));
-    }, [filteredMetadatadas, itemOffset]);
+        setVisibleMetadata(
+            filteredMetadatas.slice(itemOffset, itemOffset + itemsPerPage)
+        );
+    }, [filteredMetadatas, itemOffset]);
 
     const pageChangeHandler = (evt: any) => {
         const newOffset =
-            (evt.selected * itemsPerPage) % filteredMetadatadas.length;
+            (evt.selected * itemsPerPage) % filteredMetadatas.length;
         setItemOffset(newOffset);
-        setVisibleMetadata(
-            filteredMetadatadas.slice(newOffset, newOffset + itemsPerPage)
-        );
     };
 
     return (
@@ -96,16 +90,23 @@ export default function LibraryExpandedCategory({
                     </Link>
                     <Break className="mb-1" />
                     <span className="text-muted">
-                        <Trans
-                            ns={"library"}
-                            i18nKey="livrosNessaCategoria"
-                            values={{
-                                length: filteredMetadatadas.length,
-                            }}
-                            components={{
-                                s: <strong />,
-                            }}
-                        />
+                        {onDefaultFilters ? (
+                            <Trans
+                                ns="library"
+                                i18nKey="livrosNessaCategoria"
+                                values={{
+                                    length: filteredMetadatas.length,
+                                }}
+                                components={{
+                                    s: <strong />,
+                                }}
+                            />
+                        ) : (
+                            t(
+                                "library:livrosCorrespondemAosFiltrosSelecionados",
+                                { length: filteredMetadatas.length }
+                            )
+                        )}
                     </span>
                 </div>
 
@@ -138,7 +139,7 @@ export default function LibraryExpandedCategory({
                         );
                     })}
                 </MDBContainer>
-                {metadatas.length === 0 && (
+                {filteredMetadatas.length === 0 && (
                     <div className="d-flex justify-content-center w-100 mb-3">
                         {onDefaultFilters ? (
                             <span>

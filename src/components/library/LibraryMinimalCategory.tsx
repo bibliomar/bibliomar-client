@@ -17,7 +17,7 @@ import {
     defaultFilters,
 } from "./helpers/libraryFunctions";
 import equal from "fast-deep-equal/es6";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useWindowSize } from "../general/helpers/useWindowSize";
 import useSlicedMetadatas from "../general/helpers/useSlicedMetadatas";
 
@@ -54,7 +54,7 @@ export default function LibraryMinimalCategory({
         itemsPerRow = 3;
     }
     const maxVisibleRows = 3;
-    const maxVisibleItems = itemsPerRow * maxVisibleRows;
+    const maxVisibleItems = itemsPerRow * maxVisibleRows - 1;
 
     // The list of slices to be rendered.
     // They will be rendered using MDBootstrap grid system.
@@ -62,6 +62,64 @@ export default function LibraryMinimalCategory({
         filteredMetadatas,
         itemsPerRow
     );
+
+    const renderCategorySize = () => {
+        if (filteredMetadatas.length > maxVisibleItems) {
+            if (onDefaultFilters) {
+                return (
+                    <Trans
+                        ns="library"
+                        i18nKey="livrosNessaCategoria"
+                        values={{
+                            length: filteredMetadatas.length,
+                        }}
+                        components={{
+                            s: <strong />,
+                        }}
+                    />
+                );
+            } else {
+                return t("library:livrosCorrespondemAosFiltrosSelecionados", {
+                    length: filteredMetadatas.length,
+                });
+            }
+        }
+
+        return null;
+    };
+
+    const renderItems = () => {
+        if (slicedMetadataList.length === 0) {
+            return null;
+        }
+        let internalCounter = 0;
+        if (internalCounter > maxVisibleItems) {
+            return null;
+        }
+
+        return slicedMetadataList.map((metadataSlice, sliceIndex) => {
+            return (
+                <MDBRow key={sliceIndex}>
+                    {metadataSlice.map((metadata, entryIndex) => {
+                        internalCounter++;
+                        const timeout = internalCounter * 750;
+                        return (
+                            <MDBCol
+                                key={entryIndex}
+                                size={`${12 / itemsPerRow}`}
+                                className="gx-2"
+                            >
+                                <LibraryBookFigure
+                                    metadata={metadata}
+                                    timeout={timeout}
+                                />
+                            </MDBCol>
+                        );
+                    })}
+                </MDBRow>
+            );
+        });
+    };
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-start basic-container w-100 mb-4 p-3">
@@ -91,34 +149,7 @@ export default function LibraryMinimalCategory({
             </div>
             <Break />
             <div className="d-flex flex-wrap w-100">
-                <MDBContainer fluid>
-                    {slicedMetadataList.map((metadataSlice, sliceIndex) => {
-                        let internalCounter = 0;
-                        if (sliceIndex > maxVisibleRows - 1) {
-                            return null;
-                        }
-                        return (
-                            <MDBRow key={sliceIndex}>
-                                {metadataSlice.map((metadata, entryIndex) => {
-                                    internalCounter++;
-                                    const timeout = internalCounter * 750;
-                                    return (
-                                        <MDBCol
-                                            key={entryIndex}
-                                            size={`${12 / itemsPerRow}`}
-                                            className="gx-2"
-                                        >
-                                            <LibraryBookFigure
-                                                metadata={metadata}
-                                                timeout={timeout}
-                                            />
-                                        </MDBCol>
-                                    );
-                                })}
-                            </MDBRow>
-                        );
-                    })}
-                </MDBContainer>
+                <MDBContainer fluid>{renderItems()}</MDBContainer>
 
                 <Break />
                 {filteredMetadatas.length === 0 ? (
