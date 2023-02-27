@@ -19,7 +19,7 @@ export default function MetadataInfoSearch({ metadata }: Props) {
         <div className="d-flex flex-wrap w-100 justify-content-start">
             {amazonSearchUrl ? (
                 <a href={amazonSearchUrl} target="_blank" className="mb-2 me-2">
-                    Pesquisar no Amazon
+                    {t("metadatainfo:pesquisarNoAmazon")}
                 </a>
             ) : null}
 
@@ -29,7 +29,7 @@ export default function MetadataInfoSearch({ metadata }: Props) {
                     target="_blank"
                     className="mb-2 me-2"
                 >
-                    Pesquisar no Google Books
+                    {t("metadatainfo:pesquisarNoGoogleBooks")}
                 </a>
             ) : null}
             {goodReadsSearchUrl ? (
@@ -38,7 +38,7 @@ export default function MetadataInfoSearch({ metadata }: Props) {
                     target="_blank"
                     className="mb-2 me-2"
                 >
-                    Pesquisar no GoodReads
+                    {t("metadatainfo:pesquisarNoGoodreads")}
                 </a>
             ) : null}
         </div>

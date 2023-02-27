@@ -4,29 +4,43 @@ import useCover from "../helpers/useCover";
 import Break from "../Break";
 import "./figure.scss";
 import { MDBRipple } from "mdb-react-ui-kit";
-import { getEmptyCover } from "../helpers/generalFunctions";
+import { formatBytes, getEmptyCover } from "../helpers/generalFunctions";
 import useSwipe from "../helpers/useSwipe";
 import React, { useEffect, useRef, useState } from "react";
 import { LongPressDetectEvents, useLongPress } from "use-long-press";
 import MetadataHoverableCover from "../cover/MetadataHoverableCover";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     metadata: Metadata;
     timeout?: number;
     href?: string;
+
+    showFileInfo?: boolean;
 }
 
 export default function MetadataHoverableFigure({
     metadata,
     timeout,
     href,
+    showFileInfo,
 }: Props) {
     const emptyCover = getEmptyCover();
-
+    const { t } = useTranslation();
     const [cover, coverDone] = useCover(metadata, timeout);
     const [shouldForceMask, setShouldForceMask] = useState<boolean>(
         cover === undefined || cover === emptyCover
     );
+
+    const formatAndSize = `${
+        metadata.extension
+            ? metadata.extension.toUpperCase()
+            : t("metadatainfo:undefinedField")
+    }, ${
+        metadata.fileSize
+            ? formatBytes(metadata.fileSize)
+            : t("metadatainfo:undefinedField")
+    }`;
 
     const handleImageError = (evt: React.SyntheticEvent<HTMLImageElement>) => {
         const target = evt.currentTarget;
@@ -50,9 +64,9 @@ export default function MetadataHoverableFigure({
     const renderMaskElement = () => {
         const { title, author } = metadata;
         const formattedTitle =
-            title.length > 30 ? title.slice(0, 30) + "..." : title;
+            title.length > 25 ? title.slice(0, 25) + "..." : title;
         const formattedAuthor =
-            author.length > 30 ? author.slice(0, 30) + "..." : author;
+            author.length > 25 ? author.slice(0, 25) + "..." : author;
         return (
             <div className="d-flex flex-column justify-content-center align-items-center h-100">
                 <div className="d-flex flex-wrap justify-content-center align-items-center w-100 text-center text-light simple-text">
@@ -64,6 +78,12 @@ export default function MetadataHoverableFigure({
                     </span>
                     <Break />
                     <span className="">{formattedAuthor}</span>
+                    <Break />
+                    {showFileInfo ? (
+                        <span style={{ fontSize: "0.9rem" }}>
+                            {formatAndSize}
+                        </span>
+                    ) : null}
                 </div>
             </div>
         );
