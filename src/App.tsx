@@ -59,7 +59,7 @@ function App() {
                 <Route path="/faq" element={<FAQ></FAQ>} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/explore" element={<Explore />} />
-                <Route path="/metadata" element={<MetadataInfoParent />}>
+                <Route path="/books" element={<MetadataInfoParent />}>
                     <Route path=":topic" element={<MetadataInfoTopic />}>
                         <Route path=":md5" element={<MetadataInfoScreen />} />
                     </Route>

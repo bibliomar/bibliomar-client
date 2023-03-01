@@ -226,6 +226,11 @@ abbr[title]:after {
     border: 1px solid #CACACA;
 }
 
+.small-line-vertical {
+    max-width: 1px;
+    border: 1px solid #CACACA;
+}
+
 .about-icon-img {
     height: 8vh;
     width: 100%;

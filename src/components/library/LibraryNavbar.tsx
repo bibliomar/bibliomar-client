@@ -41,7 +41,6 @@ export default function () {
                             {t("library:suaBiblioteca")}
                         </span>
                         <br />
-                        <span className="text-muted"></span>
 
                         {numOfBooks > 0 && (
                             <div className="d-flex flex-wrap">
