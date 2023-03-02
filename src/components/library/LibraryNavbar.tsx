@@ -11,6 +11,7 @@ import {
 import { Trans, useTranslation } from "react-i18next";
 import { UserLibraryContext } from "./helpers/libraryFunctions";
 import Break from "../general/Break";
+import LibraryStatisticsToggle from "./statistics/LibraryStatisticsToggle";
 
 function calculateNumOfBooks(userLibrary: UserLibrary) {
     let numOfBooks = 0;
@@ -79,8 +80,11 @@ export default function () {
                     >
                         <EditModeToggle />
                     </div>
-                    <div className={"ms-3 me-2"}>
+                    <div className={"ms-2 me-0"}>
                         <LibraryFilterToggle />
+                    </div>
+                    <div className={"ms-2 me-2"}>
+                        <LibraryStatisticsToggle />
                     </div>
                 </div>
             </div>

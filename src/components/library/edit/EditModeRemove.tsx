@@ -30,8 +30,9 @@ export default function EditModeRemove() {
             editModeContext.selectedBooksRef.current.length === 0 ||
             !authContext.userLogged
         ) {
+            const message = t("library:nenhumLivroSelecionado");
             if (editModeContext.selectedBooksRef.current.length === 0) {
-                toast.error("Nenhum livro selecionado.");
+                toast.error(message);
             }
             return;
         }

@@ -1,6 +1,6 @@
 import Navbar from "../general/navbar/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import BlankLoadingSpinner from "../general/BlankLoadingSpinner";
@@ -22,6 +22,8 @@ import useUserLibrary from "./helpers/useUserLibrary";
 import "./library.css";
 import { ToastContainer } from "react-toastify";
 import Footer from "../general/Footer";
+import LibraryNavbar from "./LibraryNavbar";
+import Break from "../general/Break";
 
 export default function LibraryScreen() {
     const authContext = useContext(AuthContext);
