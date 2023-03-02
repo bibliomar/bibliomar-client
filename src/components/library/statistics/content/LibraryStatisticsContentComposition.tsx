@@ -27,26 +27,27 @@ ChartJS.register(
     Legend
 );
 
-const options: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            position: "top" as const,
-        },
-        title: {
-            display: true,
-            text: "Your library composition",
-            font: {
-                size: 20,
-            },
-        },
-    },
-};
-
 export default function LibraryStatisticsContentComposition() {
     const { userLibrary } = useContext(UserLibraryContext);
     const { t } = useTranslation();
+
+    const options: ChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: "top" as const,
+            },
+            title: {
+                display: true,
+                text: t("library:yourLibraryComposition") as string,
+                font: {
+                    size: 20,
+                },
+            },
+        },
+    };
+
     const labels = Object.values(LibraryCategories).map((category) => {
         return libraryCategoryToLocaleText(t, category);
     });
@@ -92,8 +93,8 @@ export default function LibraryStatisticsContentComposition() {
     }, [userLibrary]);
 
     return (
-        <div className="w-100 position-relative library-statistics-canvas">
-            <Bar options={options} data={memoizedData} />
+        <div className="w-100 position-relative library-statistics-canvas text-light">
+            <Bar options={options} data={memoizedData} className="text-light" />
         </div>
     );
 }

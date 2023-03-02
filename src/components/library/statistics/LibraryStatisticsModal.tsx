@@ -15,6 +15,7 @@ const LibraryStatisticsContent = lazy(
     () => import("./content/LibraryStatisticsContent")
 );
 import SuspenseLoadingSpinner from "../../general/SuspenseLoadingSpinner";
+import { useTranslation } from "react-i18next";
 
 interface LibraryStatisticsModalProps {
     active: boolean;
@@ -25,30 +26,31 @@ export default function LibraryStatisticsModal({
     active,
     setActive,
 }: LibraryStatisticsModalProps) {
+    const { t } = useTranslation();
     return (
         <MDBModal backdrop show={active} setShow={setActive}>
             <MDBModalDialog centered style={{ zIndex: "999999" }} size="lg">
                 <MDBModalContent>
-                    <MDBModalHeader>
+                    <MDBModalHeader className="basic-container">
                         <MDBModalTitle
                             tag="h4"
                             className="ms-auto me-auto fw-bold"
                         >
-                            Statistics
+                            {t("library:statistics")}
                         </MDBModalTitle>
                     </MDBModalHeader>
-                    <MDBModalBody className="d-flex flex-column h-100">
+                    <MDBModalBody className="d-flex flex-column h-100 basic-container">
                         <Suspense fallback={<SuspenseLoadingSpinner />}>
                             <LibraryStatisticsContent />
                         </Suspense>
                     </MDBModalBody>
-                    <MDBModalFooter>
+                    <MDBModalFooter className="basic-container">
                         <MDBBtn
                             size={"lg"}
                             className="ms-auto me-auto"
                             onClick={() => setActive(false)}
                         >
-                            Close
+                            {t("library:close")}
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>

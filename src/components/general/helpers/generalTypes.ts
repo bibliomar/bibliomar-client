@@ -46,6 +46,8 @@ interface MetadataProperties {
     timeAdded?: string | null;
     timeLastModified?: string | null;
     downloadMirrors?: DownloadMirrors;
+    // Please check if the returned page is really a number!
+    pages?: string | null;
 }
 
 /**
@@ -81,6 +83,8 @@ interface UserLibrary {
 
     dropped: UserLibraryCategory;
     username: string;
+
+    pagesRead: number;
 }
 
 enum LibraryCategories {

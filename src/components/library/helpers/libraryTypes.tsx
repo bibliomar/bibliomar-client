@@ -1,6 +1,11 @@
 import React, { SetStateAction } from "react";
 import { Metadata, UserLibrary } from "../../general/helpers/generalTypes";
 
+export interface FailedMoveRemoveRequest {
+    failedEntry: Metadata;
+    message: JSX.Element | string;
+}
+
 export interface PossibleFilters {
     [key: string]: string | boolean;
 

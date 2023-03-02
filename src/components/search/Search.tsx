@@ -403,7 +403,7 @@ function Search() {
             </Helmet>
             <div className="row ">
                 <div className="col mt-3">
-                    <Navbar activeItem="home" badgeText="3.0-MAIN" />
+                    <Navbar activeItem="home" badgeText="3.1-MAIN" />
                 </div>
             </div>
 

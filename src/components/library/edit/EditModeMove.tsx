@@ -34,11 +34,13 @@ export default function EditModeMove() {
             !authContext.userLogged
         ) {
             if (editModeContext.selectedBooksRef.current.length === 0) {
-                toast.error("Nenhum livro selecionado.");
+                const message = t("library:nenhumLivroSelecionado");
+                toast.error(message);
             }
             return;
         }
-        const infoToast = toast.info("Movendo livros...");
+        const movingMessage = t("library:movendoLivros");
+        const infoToast = toast.info(movingMessage);
 
         let movedBooksNum = 0;
         for (const book of editModeContext.selectedBooksRef.current) {
@@ -51,7 +53,6 @@ export default function EditModeMove() {
                     book,
                     targetCategory
                 );
-                console.log(req);
                 if ([200, 201].includes(req.request.status)) {
                     movedBooksNum++;
                 }
@@ -59,19 +60,14 @@ export default function EditModeMove() {
                 console.error(e);
                 if (e.request) {
                     if (e.request.status === 400) {
+                        // Ignored, means the book was already in the target category.
+                    } else {
                         toast.error(
                             <div>
                                 <span>
-                                    <Trans
-                                        i18nKey="erroAoMoverLivroJaSeEncontraNaCategoriaDeDestino"
-                                        ns="library"
-                                        values={{
-                                            title: book.title,
-                                        }}
-                                        components={{
-                                            s: <strong />,
-                                        }}
-                                    />
+                                    {t("library:erroAoMoverTenteNovamente", {
+                                        title: book.title,
+                                    })}
                                 </span>
                             </div>
                         );

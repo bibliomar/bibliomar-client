@@ -1,26 +1,24 @@
-import { UserLibraryContext } from "../../helpers/libraryFunctions";
+import {
+    buildMonthsList,
+    UserLibraryContext,
+} from "../../helpers/libraryFunctions";
 import { useContext, useMemo } from "react";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
     BarElement,
-    Title,
-    Tooltip,
-    Legend,
+    CategoryScale,
+    Chart as ChartJS,
     ChartData,
     ChartDataset,
     ChartOptions,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip,
 } from "chart.js";
-import {
-    LibraryCategories,
-    UserLibrary,
-} from "../../../general/helpers/generalTypes";
+import { UserLibrary } from "../../../general/helpers/generalTypes";
 import { Bar } from "react-chartjs-2";
-import { libraryCategoryToLocaleText } from "../../../general/helpers/generalFunctions";
 import { useTranslation } from "react-i18next";
-import Break from "../../../general/Break";
-import { i18n, TFunction } from "i18next";
+import { i18n } from "i18next";
 
 ChartJS.register(
     CategoryScale,
@@ -30,46 +28,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-const options: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    indexAxis: "y" as const,
-    elements: {
-        bar: {
-            borderWidth: 2,
-        },
-    },
-
-    plugins: {
-        legend: {
-            position: "top" as const,
-        },
-        title: {
-            display: true,
-            text: "Your monthly reading",
-            font: {
-                size: 20,
-            },
-        },
-    },
-};
-
-function buildMonthsList(): Date[] {
-    const months = [];
-
-    const currentDate = new Date();
-    const monthsOffset = 11;
-    const startMonth = currentDate.getMonth() - monthsOffset;
-    for (let i = startMonth; i <= currentDate.getMonth(); i++) {
-        if (i === currentDate.getMonth()) {
-            months.push(currentDate);
-        } else {
-            months.push(new Date(currentDate.getFullYear(), i, 1));
-        }
-    }
-    return months;
-}
 
 function buildLabels(i18n: i18n, monthList: Date[]): string[] {
     return monthList.map((date) => {
@@ -119,6 +77,30 @@ export default function LibraryStatisticsContentFinished() {
         };
         return data;
     }, [userLibrary]);
+
+    const options: ChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: "y" as const,
+        elements: {
+            bar: {
+                borderWidth: 2,
+            },
+        },
+
+        plugins: {
+            legend: {
+                position: "top" as const,
+            },
+            title: {
+                display: true,
+                text: t("library:yourMonthlyReading") as string,
+                font: {
+                    size: 20,
+                },
+            },
+        },
+    };
 
     return (
         <div className="w-100 position-relative library-statistics-canvas">
