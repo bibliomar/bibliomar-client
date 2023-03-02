@@ -31,12 +31,14 @@ export default function EditModeRemove() {
             !authContext.userLogged
         ) {
             if (editModeContext.selectedBooksRef.current.length === 0) {
-                toast.error("Nenhum livro selecionado.");
+                const message = t("library:nenhumLivroSelecionado");
+
+                toast.error(message);
             }
             return;
         }
-
-        const infoToast = toast.info("Removendo livros...");
+        const removingMessage = t("library:removendoLivros2");
+        const infoToast = toast.info(removingMessage);
 
         let removedBooksNum = 0;
         for (const book of editModeContext.selectedBooksRef.current) {
@@ -53,20 +55,7 @@ export default function EditModeRemove() {
                 console.error(e);
                 if (e.request) {
                     if (e.request.status === 400) {
-                        toast.error(
-                            <div>
-                                <span>
-                                    <Trans
-                                        i18nKey="erroAoRemover"
-                                        ns="library"
-                                    />{" "}
-                                    <strong>{book.title}</strong>
-                                    {t(
-                                        "library:livroNoSeEncontraNaCategoriaDeDestino"
-                                    )}
-                                </span>
-                            </div>
-                        );
+                        // Ignored, means the book was not in the target category.
                     } else {
                         toast.error(
                             <div>

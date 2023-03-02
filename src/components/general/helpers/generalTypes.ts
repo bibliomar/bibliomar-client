@@ -19,14 +19,10 @@ type DownloadLinks = {
 };
 
 interface LibraryProperties {
-    // All properties here are only valid for library entries. (e.g. metadataList you get from a user's library.)
-    // Make sure to check if they exist before using them.
-    // The value is an epubcifi string.
-    progress?: string | null;
-
     // The value is a string with the metadataList's category on the user's library.
     // Not to be confused with "topic"
     category?: LibraryCategories | null;
+    addedOnLibraryAt?: string | null;
 }
 
 interface DownloadMirrors {
@@ -50,6 +46,8 @@ interface MetadataProperties {
     timeAdded?: string | null;
     timeLastModified?: string | null;
     downloadMirrors?: DownloadMirrors;
+    // Please check if the returned page is really a number!
+    pages?: string | null;
 }
 
 /**
@@ -85,6 +83,8 @@ interface UserLibrary {
 
     dropped: UserLibraryCategory;
     username: string;
+
+    pagesRead: number;
 }
 
 enum LibraryCategories {

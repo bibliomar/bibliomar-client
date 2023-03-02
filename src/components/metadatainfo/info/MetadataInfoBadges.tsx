@@ -1,4 +1,4 @@
-import { Metadata } from "../../general/helpers/generalTypes";
+import { LibraryCategories, Metadata } from "../../general/helpers/generalTypes";
 import { SavedBookEntry, SavedBooks } from "../../reader/helpers/readerTypes";
 import { useTranslation } from "react-i18next";
 import { libraryCategoryToLocaleText } from "../../general/helpers/generalFunctions";
@@ -6,6 +6,7 @@ import {
     getAmazonDirectUrl,
     getGoogleBooksDirectUrl,
 } from "../helpers/metadataFunctions";
+import { TFunction } from "i18next";
 
 interface Props {
     metadata: Metadata;

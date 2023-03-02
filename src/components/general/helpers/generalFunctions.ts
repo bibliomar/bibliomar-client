@@ -165,7 +165,7 @@ export function getMetadataInfoPath(topic: string, md5: string) {
         if (topic === "sci-tech") {
             topic = "scitech";
         }
-        return `/metadata/${topic}/${md5}`;
+        return `/books/${topic}/${md5}`;
     }
 
     return undefined;

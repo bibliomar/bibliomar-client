@@ -1,4 +1,8 @@
-import { Metadata } from "../../general/helpers/generalTypes";
+import {
+    LibraryCategories,
+    Metadata,
+} from "../../general/helpers/generalTypes";
+import { TFuncReturn, TFunction } from "i18next";
 
 function buildAmazonQuery(metadata: Metadata) {}
 

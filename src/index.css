@@ -36,7 +36,7 @@ abbr[title]:after {
 
 
 .reader-navbar-brand {
-    max-width: 40%;
+    max-width: 20%;
 }
 
 .disabled-page {
@@ -223,6 +223,11 @@ abbr[title]:after {
 
 .small-line {
     max-height: 1px;
+    border: 1px solid #CACACA;
+}
+
+.small-line-vertical {
+    max-width: 1px;
     border: 1px solid #CACACA;
 }
 

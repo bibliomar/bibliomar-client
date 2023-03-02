@@ -1,6 +1,6 @@
 import {
-    Metadata,
     LibraryCategories,
+    Metadata,
     UserLibrary,
 } from "../../general/helpers/generalTypes";
 import { PossibleFilters, UserLibraryContextParams } from "./libraryTypes";
@@ -90,6 +90,7 @@ const placeholderUserLibrary: UserLibrary = {
     reading: {},
     toRead: {},
     username: "",
+    pagesRead: 0,
 };
 export const UserLibraryContext = React.createContext<UserLibraryContextParams>(
     {
@@ -98,3 +99,32 @@ export const UserLibraryContext = React.createContext<UserLibraryContextParams>(
         updateUserLibrary: () => {},
     }
 );
+
+export function calculateNumOfBooks(userLibrary: UserLibrary) {
+    let numOfBooks = 0;
+    Object.values(userLibrary).forEach((category) => {
+        if (category === userLibrary.username) return;
+
+        const categoryValues = Object.values(category);
+        if (Array.isArray(categoryValues)) {
+            numOfBooks += categoryValues.length;
+        }
+    });
+    return numOfBooks;
+}
+
+export function buildMonthsList(): Date[] {
+    const months = [];
+
+    const currentDate = new Date();
+    const monthsOffset = 11;
+    const startMonth = currentDate.getMonth() - monthsOffset;
+    for (let i = startMonth; i <= currentDate.getMonth(); i++) {
+        if (i === currentDate.getMonth()) {
+            months.push(currentDate);
+        } else {
+            months.push(new Date(currentDate.getFullYear(), i, 1));
+        }
+    }
+    return months;
+}

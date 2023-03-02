@@ -3,7 +3,6 @@
     height: 235px;
 }
 
-
 .library-checkbox-container {
     position: absolute;
     right: 2%;
@@ -23,6 +22,10 @@
 
 .library-actions-button {
     width: 40vw;
+}
+
+.library-statistics-canvas {
+    min-height: 50vh;
 }
 
 @media screen and (min-width: 768px) {
