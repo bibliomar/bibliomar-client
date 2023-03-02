@@ -81,22 +81,12 @@ function buildLabels(i18n: i18n, monthList: Date[]): string[] {
     });
 }
 
-const fakeMetadataDates = (): Date[] => {
-    const dates: Date[] = [];
-    for (let i = 0; i < 80; i++) {
-        const randomMonth = Math.random() * (12 - 1 + 1) + 1;
-        dates.push(new Date(2022, randomMonth, 1));
-    }
-    return dates;
-};
-
 function buildDataset(monthList: Date[], userLibrary: UserLibrary) {
     const targetCategoryValues = Object.values(userLibrary.finished);
     const mainData: ChartDataset<"bar"> = {
         label: "Finished at this month",
         data: monthList.map((date) => {
-            /**
-             const finishedBooks = targetCategoryValues.filter((metadata) => {
+            const finishedBooks = targetCategoryValues.filter((metadata) => {
                 if (metadata.addedOnLibraryAt == null) {
                     return false;
                 }
@@ -104,12 +94,7 @@ function buildDataset(monthList: Date[], userLibrary: UserLibrary) {
                 return date.getMonth() === finishedAt.getMonth();
             });
 
-             return finishedBooks.length;
-             */
-            const finishedDates = fakeMetadataDates().filter((fakeDate) => {
-                return date.getMonth() === fakeDate.getMonth();
-            });
-            return finishedDates.length;
+            return finishedBooks.length;
         }),
         backgroundColor: "#7663F2",
     };
