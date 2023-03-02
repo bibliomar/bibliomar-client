@@ -45,8 +45,8 @@ function calculateBiggestRead(userLibrary: UserLibrary): Metadata | undefined {
             const parsedPage = parseInt(metadata.pages);
             // Just to be extra safe...
             if (Number.isInteger(parsedPage)) {
-                internalCounter = Math.max(internalCounter, parsedPage);
-                if (internalCounter > parsedPage) {
+                if (parsedPage > internalCounter) {
+                    internalCounter = parsedPage;
                     biggestRead = metadata;
                 }
             }
@@ -69,6 +69,7 @@ export default function LibraryStatisticsContentGeneral() {
         () => calculateBiggestRead(userLibrary),
         [userLibrary]
     );
+    console.log(biggestRead);
 
     return (
         <div className="w-100 d-flex flex-wrap">

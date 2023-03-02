@@ -18,7 +18,7 @@ import {
 import { UserLibrary } from "../../../general/helpers/generalTypes";
 import { Bar } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
-import { i18n } from "i18next";
+import { i18n, TFunction } from "i18next";
 
 ChartJS.register(
     CategoryScale,
@@ -39,10 +39,14 @@ function buildLabels(i18n: i18n, monthList: Date[]): string[] {
     });
 }
 
-function buildDataset(monthList: Date[], userLibrary: UserLibrary) {
+function buildDataset(
+    transFunc: TFunction,
+    monthList: Date[],
+    userLibrary: UserLibrary
+) {
     const targetCategoryValues = Object.values(userLibrary.finished);
     const mainData: ChartDataset<"bar"> = {
-        label: "Finished books",
+        label: transFunc("library:finishedBooks") as string,
         data: monthList.map((date) => {
             const finishedBooks = targetCategoryValues.filter((metadata) => {
                 if (metadata.addedOnLibraryAt == null) {
@@ -73,7 +77,7 @@ export default function LibraryStatisticsContentFinished() {
     const memoizedData = useMemo(() => {
         const data: ChartData<"bar"> = {
             labels,
-            datasets: buildDataset(months, userLibrary),
+            datasets: buildDataset(t, months, userLibrary),
         };
         return data;
     }, [userLibrary]);

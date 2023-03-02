@@ -57,14 +57,14 @@ export default function LibraryStatisticsContentComposition() {
             labels,
             datasets: [
                 {
-                    label: "Total books",
+                    label: t("library:totalBooks") as string,
                     data: Object.values(LibraryCategories).map(
                         (label) => Object.values(userLibrary[label]).length
                     ),
                     backgroundColor: "#7663F2",
                 },
                 {
-                    label: "Fiction",
+                    label: t("library:fiction") as string,
                     data: Object.values(LibraryCategories).map((label) => {
                         const fictionEntries = Object.values(
                             userLibrary[label]
@@ -76,7 +76,7 @@ export default function LibraryStatisticsContentComposition() {
                     backgroundColor: "rgb(53, 162, 235)",
                 },
                 {
-                    label: "Non fiction",
+                    label: t("library:nonFiction") as string,
                     data: Object.values(LibraryCategories).map((label) => {
                         const fictionEntries = Object.values(
                             userLibrary[label]
