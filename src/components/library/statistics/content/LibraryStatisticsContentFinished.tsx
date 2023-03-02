@@ -47,7 +47,7 @@ const options: ChartOptions = {
         },
         title: {
             display: true,
-            text: "Books finished by month",
+            text: "Your monthly reading",
             font: {
                 size: 20,
             },
@@ -84,7 +84,7 @@ function buildLabels(i18n: i18n, monthList: Date[]): string[] {
 function buildDataset(monthList: Date[], userLibrary: UserLibrary) {
     const targetCategoryValues = Object.values(userLibrary.finished);
     const mainData: ChartDataset<"bar"> = {
-        label: "Finished at this month",
+        label: "Finished books",
         data: monthList.map((date) => {
             const finishedBooks = targetCategoryValues.filter((metadata) => {
                 if (metadata.addedOnLibraryAt == null) {
@@ -96,7 +96,7 @@ function buildDataset(monthList: Date[], userLibrary: UserLibrary) {
 
             return finishedBooks.length;
         }),
-        backgroundColor: "#7663F2",
+        backgroundColor: "rgb(255, 99, 132)",
     };
 
     const datasetValues: ChartDataset<"bar">[] = [mainData];

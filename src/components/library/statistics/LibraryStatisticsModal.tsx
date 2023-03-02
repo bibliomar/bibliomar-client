@@ -48,7 +48,7 @@ export default function LibraryStatisticsModal({
                             className="ms-auto me-auto"
                             onClick={() => setActive(false)}
                         >
-                            Fechar
+                            Close
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModalContent>
