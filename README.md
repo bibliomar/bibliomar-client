@@ -43,7 +43,7 @@ Some of the main features are:
 
 - Fast (and i mean it) search results.
 - Search suggestions, autocomplete and highlighting of search terms.
-- Full flexibility on how we build our search queries.
+- Full flexibility on how users build search queries.
 - Fulltext search and boolean queries.
 - Massively improved human language processing (when compared to MySQL's native fulltext search).    
 
