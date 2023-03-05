@@ -28,6 +28,7 @@ export default function BibliomarBrand({ badgeContent, readerAccent }: Props) {
                         ? "/assets/img/BIBLIOMAR-light-theme.svg"
                         : "/assets/img/BIBLIOMAR-dark-theme.svg"
                 }
+                className="w-100"
                 alt="Bibliomar"
             />
             {badgeContent ? (

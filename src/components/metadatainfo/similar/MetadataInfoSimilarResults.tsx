@@ -21,9 +21,6 @@ export default function MetadataInfoSimilarResults({ metadatas }: Props) {
         itemsPerRow = 3;
     }
 
-    const maxVisibleRows = 3;
-    const maxVisibleItems = itemsPerRow * maxVisibleRows;
-
     // The list of slices to be rendered.
     // They will be rendered using MDBootstrap grid system.
     const slicedMetadataList = useSlicedMetadatas(metadatas, itemsPerRow);

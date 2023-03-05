@@ -30,22 +30,33 @@ function buildSimilarSearchObject(metadata: Metadata) {
     if (!series && !author) {
         return undefined;
     }
-    let finalQuery: string;
+    let finalQuery: string | undefined;
 
-    let authorQuery = "";
-    let seriesQuery = "";
+    let authorQuery: string | undefined;
+    let seriesQuery: string | undefined;
 
-    if (series != undefined && series !== "") {
-        seriesQuery = `(${sanitizeSeriesParameter(series)})`;
+    if (series != undefined && series.trim() !== "") {
+        const sanitizedSeries = sanitizeSeriesParameter(series);
+        if (sanitizedSeries !== undefined && sanitizedSeries.trim() !== "") {
+            seriesQuery = `(${sanitizeSeriesParameter(series)})`;
+        }
     }
-    if (author != undefined && author !== "") {
+    if (author != undefined && author.trim() !== "") {
         authorQuery = `(${author})`;
     }
 
-    if (seriesQuery !== "" && authorQuery !== "") {
+    if (seriesQuery != undefined && authorQuery != undefined) {
         finalQuery = `${seriesQuery} | ${authorQuery}`;
+    } else if (seriesQuery != undefined && seriesQuery.trim() !== "") {
+        finalQuery = seriesQuery;
+    } else if (authorQuery != undefined && authorQuery.trim() !== "") {
+        finalQuery = authorQuery;
     } else {
-        finalQuery = seriesQuery !== "" ? seriesQuery : authorQuery;
+        finalQuery = undefined;
+    }
+
+    if (finalQuery == undefined || finalQuery.trim() === "") {
+        return undefined;
     }
 
     if (language != undefined) {
@@ -74,13 +85,15 @@ export default function MetadataInfoSimilarScreen({
     const { t } = useTranslation();
 
     const [searchResults, setSearchResults] = useState<
-        ManticoreSearchResponse | undefined
+        ManticoreSearchResponse | undefined | null
     >(undefined);
     const [searchDone, setSearchDone] = useState(false);
 
     useEffect(() => {
         const searchObject = buildSimilarSearchObject(metadata);
         if (searchObject == undefined) {
+            setSearchResults(undefined);
+            setSearchDone(true);
             return;
         }
         setSearchDone(false);
@@ -88,11 +101,6 @@ export default function MetadataInfoSimilarScreen({
 
         makeSearch(searchObject)
             .then((results) => {
-                if (results == undefined) {
-                    setSearchResults(undefined);
-                    setSearchDone(true);
-                    return;
-                }
                 console.log(results);
                 setSearchResults(results);
                 setSearchDone(true);
@@ -118,6 +126,12 @@ export default function MetadataInfoSimilarScreen({
         } else if (searchResults == undefined) {
             return <p>{t("metadatainfo:erroNaBuscaPorArquivosSemelhantes")}</p>;
         } else {
+            if (
+                searchResults.hits == undefined ||
+                searchResults.hits.hits == undefined
+            ) {
+                return <p>{t("metadatainfo:nenhumItemEncontrado")}</p>;
+            }
             const searchHits = searchResults.hits.hits;
             if (searchHits == undefined || searchHits.length === 0) {
                 return <p>{t("metadatainfo:nenhumItemEncontrado")}</p>;
@@ -133,7 +147,6 @@ export default function MetadataInfoSimilarScreen({
 
     return (
         <MDBContainer fluid>
-            {}
             <div className="d-flex flex-wrap w-100 justify-content-start simple-text">
                 <h4
                     className="book-info-description mb-3 ms-2 ms-lg-0"
