@@ -70,10 +70,12 @@ export default function ExploreContentPopular() {
             const searchObject = buildSearchObject(values);
             const response = await makeSearch(searchObject);
             if (response) {
-                setRequestDone(true);
                 console.log(response);
                 topContent.current = response;
-                if (topContent.current == null) {
+                if (
+                    topContent.current == undefined ||
+                    topContent.current.hits == undefined
+                ) {
                     return;
                 }
 
@@ -88,6 +90,7 @@ export default function ExploreContentPopular() {
                 setVisibleContent(searchHits.slice(0, itemsPerPage));
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 setPageCount(Math.ceil(paginableItems / itemsPerPage));
+                setRequestDone(true);
             } else {
                 setRequestDone(true);
                 setRequestError(true);
@@ -110,7 +113,10 @@ export default function ExploreContentPopular() {
     const bootstrapColSize = 12;
 
     const handlePageClick = (evt: any) => {
-        if (topContent.current == undefined) {
+        if (
+            topContent.current == undefined ||
+            topContent.current.hits == undefined
+        ) {
             return;
         }
         const searchHits = topContent.current.hits.hits;

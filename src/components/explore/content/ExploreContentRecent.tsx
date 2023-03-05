@@ -55,7 +55,10 @@ export default function ExploreContentRecent() {
                 setRequestDone(true);
                 console.log(response);
                 recentContent.current = response;
-                if (recentContent.current == null) {
+                if (
+                    recentContent.current == null ||
+                    recentContent.current?.hits == undefined
+                ) {
                     return;
                 }
 
@@ -101,7 +104,10 @@ export default function ExploreContentRecent() {
     const bootstrapColSize = 12;
 
     const handlePageClick = (evt: any) => {
-        if (recentContent.current == undefined) {
+        if (
+            recentContent.current == undefined ||
+            recentContent.current?.hits == undefined
+        ) {
             return;
         }
         const searchHits = recentContent.current.hits.hits;

@@ -34,7 +34,7 @@ interface ManticoreSearchHits {
 interface ManticoreSearchResponse {
     aggregations?: object;
     took: number;
-    hits: ManticoreSearchHits;
+    hits?: ManticoreSearchHits;
     warning: object;
 }
 
