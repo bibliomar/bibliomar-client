@@ -17,7 +17,7 @@ interface Props {
 export default function BibliomarBrand({ badgeContent, readerAccent }: Props) {
     const theme = useContext(ThemeContext).theme;
     return (
-        <div className="">
+        <div className="w-100">
             <img
                 src={
                     readerAccent
@@ -28,7 +28,7 @@ export default function BibliomarBrand({ badgeContent, readerAccent }: Props) {
                         ? "/assets/img/BIBLIOMAR-light-theme.svg"
                         : "/assets/img/BIBLIOMAR-dark-theme.svg"
                 }
-                className="w-100"
+                className="w-75"
                 alt="Bibliomar"
             />
             {badgeContent ? (
