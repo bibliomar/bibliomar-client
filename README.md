@@ -2,6 +2,8 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bd4c5d37-8033-4b0f-abc4-7f8203e957a5/deploy-status)](https://app.netlify.com/sites/bibliomar/deploys)
 
+Your complete reading suite: search, download and read books for free.
+
 Sua suíte completa de leitura: pesquise, baixe e leia livros gratuitamente.
 
 <div align="center">
@@ -20,6 +22,11 @@ robust catalog.
 However, Bibliomar is fully available in English. And we also plan to support more languages down the road (we are
 looking for volunteers!)
 
+## Disclaimer
+Bibliomar **DOES NOT** host or distribute any of the files visible on the website. We are an alternate catalogue interface, and the only info we have direct access is books' metadata (title, author, etc).
+
+Download files are distributed by LibraryGenesis or any of the available sources.
+
 ## Always evolving
 
 Bibliomar became a big project, and will probably continue to grow.
@@ -33,13 +40,14 @@ Some of the main features are:
 - Search and download books in an intuitive interface.
   And that tied to the use of the huge LibraryGenesis catalog means that you will probably find what you are looking
   for.
-- Our search engine is powered by [manticore-search](https://manticoresearch.com/)
+Our search engine is powered by [manticore-search](https://manticoresearch.com/)
   This gives us:
 - Fast (and i mean it) search results.
 - Search suggestions, autocomplete and highlighting of search terms.
 - Full flexibility on how we build our search queries.
 - Fulltext search and boolean queries.
 - Massively improved human language processing (when compared to MySQL's native fulltext search).
+We also have:  
 - A library with five different categories, where you can save your books.
 - A explore screen where you can find the most popular entires, and also the most recent.
 - Read your books online, without the need to download an ePub reader.
