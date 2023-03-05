@@ -39,15 +39,15 @@ Some of the main features are:
 
 - Search and download books in an intuitive interface.
   And that tied to the use of the huge LibraryGenesis catalog means that you will probably find what you are looking
-  for.
+  for.    
 Our search engine is powered by [manticore-search](https://manticoresearch.com/)
   This gives us:
 - Fast (and i mean it) search results.
 - Search suggestions, autocomplete and highlighting of search terms.
 - Full flexibility on how we build our search queries.
 - Fulltext search and boolean queries.
-- Massively improved human language processing (when compared to MySQL's native fulltext search).
-We also have:  
+- Massively improved human language processing (when compared to MySQL's native fulltext search).    
+We also have:    
 - A library with five different categories, where you can save your books.
 - A explore screen where you can find the most popular entires, and also the most recent.
 - Read your books online, without the need to download an ePub reader.
