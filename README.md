@@ -4,7 +4,7 @@
 
 Your complete reading suite: search, download and read books for free.
 
-Sua suíte completa de leitura: pesquise, baixe e leia livros gratuitamente.
+
 
 <div align="center">
   <img alt="preview" src="./images/bibliomar-search-full.png">
