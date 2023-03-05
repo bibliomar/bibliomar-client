@@ -19,7 +19,7 @@ The target audience is Brazilian, since in our country some books can reach more
 existing alternatives on the internet force the user to wait long download queues, or simply do not have such a
 robust catalog.
 
-However, Bibliomar is fully available in English. And we also plan to support more languages down the road (we are
+However, Bibliomar is fully available in English, and we also plan to support more languages down the road (we are
 looking for volunteers!)
 
 ## Disclaimer
