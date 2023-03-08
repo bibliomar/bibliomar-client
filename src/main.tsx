@@ -6,8 +6,8 @@ import "./i18n";
 
 // Equivalent to 1h in milliseconds
 const timeout = 60 * 60 * 1000;
-const updateSW = registerSW({
-    onRegistered(r) {
+registerSW({
+    onRegisteredSW(str, r) {
         if (r) {
             window.setInterval(() => {
                 try {
@@ -18,7 +18,9 @@ const updateSW = registerSW({
             }, timeout);
         }
     },
+    immediate: true,
 });
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <Bibliomar />
