@@ -17,7 +17,9 @@ export default function Maintanance() {
                             textAlign: "center",
                         }}
                     >
-                        Estamos realizando uma manutenção rápida, voltamos logo!
+                        {t(
+                            "general:estamosRealizandoUmaManutenoRpidaVoltamosLogo"
+                        )}
                     </p>
                 </div>
             </div>

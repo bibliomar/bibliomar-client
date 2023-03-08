@@ -17,7 +17,6 @@ import { BrowserRouter } from "react-router-dom";
 import { hasStorage } from "./components/general/helpers/generalFunctions";
 import useLocalStorage from "./components/general/helpers/useLocalStorage";
 import Themeing from "./Themeing";
-import Maintanance from "./components/general/Maintanance";
 
 // This is just a wrapper on top of <App /> to help us use contexts better.
 // If a context is used application-wise, provide it here.
@@ -98,7 +97,7 @@ export default function Bibliomar() {
                 document.head.append(mdbStyle, themeStyle);
                 setTimeout(() => {
                     setThemeing(false);
-                }, 750);
+                }, 500);
             });
         });
     }, [theme]);
@@ -112,7 +111,7 @@ export default function Bibliomar() {
                         <Helmet>
                             <title>Bibliomar</title>
                         </Helmet>
-                        <Maintanance />
+                        {themeing ? <Themeing /> : <App />}
                     </>
                 </ThemeContext.Provider>
             </AuthContext.Provider>
