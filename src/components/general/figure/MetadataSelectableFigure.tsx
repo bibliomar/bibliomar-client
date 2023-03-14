@@ -48,10 +48,10 @@ export default function MetadataSelectableFigure({
             threshold: 1000,
             detect: LongPressDetectEvents.BOTH,
             filterEvents: (event) => {
-                if (!selectable) {
-                    return false;
-                } else {
+                if (selectable) {
                     return true;
+                } else {
+                    return false;
                 }
             },
             cancelOnMovement: true,
@@ -78,7 +78,8 @@ export default function MetadataSelectableFigure({
             setOnSelectedBooks(false);
         }
     };
-
+    /** Disabled because EditMode now automatically cleans up the selected books on exit.
+     * This useEffect detects if a book is already in the selectedBooks list when the editMode is enabled.
     useEffect(() => {
         if (
             !editModeContext.editMode ||
@@ -103,6 +104,7 @@ export default function MetadataSelectableFigure({
             return;
         }
     }, [editModeContext.editMode]);
+     */
 
     const formatAndSize = `${
         metadata.extension
