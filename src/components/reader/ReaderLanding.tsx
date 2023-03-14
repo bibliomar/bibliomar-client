@@ -1,7 +1,7 @@
 import Navbar from "../general/navbar/Navbar";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MDBBtn } from "mdb-react-ui-kit";
+import { MDBBtn, MDBCol, MDBRow } from "mdb-react-ui-kit";
 import { Portal } from "react-portal";
 import ReaderSendLocalFileModal from "./ReaderSendLocalFileModal";
 import localforage from "localforage";
@@ -31,45 +31,43 @@ export default function ReaderLanding() {
     };
 
     return (
-        <div className="like-body bg-alt">
-            <div className="container">
-                <Portal node={document.getElementById("modal-root")}>
-                    <ReaderSendLocalFileModal
-                        modalToggle={sendModal}
-                        setModalToggle={setSendModal}
-                    />
-                    <ReaderDeleteCacheModal
-                        show={deleteModal}
-                        setShow={setDeleteModal}
-                        onClick={toggleDelete}
-                        agreedOnClick={handleDeleteCache}
-                    />
-                </Portal>
-                <Navbar activeItem="reader" />
-                <div className="d-flex justify-content-end mt-4 mb-5 me-2">
-                    <MDBBtn
-                        className="me-3"
-                        type="button"
-                        color="danger"
-                        onClick={toggleDelete}
-                    >
-                        {t("reader:limparCacheDoLeitor")}
-                    </MDBBtn>
-
-                    <MDBBtn
-                        type="button"
-                        color="secondary"
-                        onClick={toggleSend}
-                    >
-                        {t("reader:enviarArquivo")}
-                    </MDBBtn>
-                </div>
-                <div
-                    className="d-flex flex-wrap justify-content-center w-100"
-                    style={{ minHeight: "30vh" }}
+        <div className="container-fluid min-vh-100 d-flex flex-column">
+            <Portal node={document.getElementById("modal-root")}>
+                <ReaderSendLocalFileModal
+                    modalToggle={sendModal}
+                    setModalToggle={setSendModal}
+                />
+                <ReaderDeleteCacheModal
+                    show={deleteModal}
+                    setShow={setDeleteModal}
+                    onClick={toggleDelete}
+                    agreedOnClick={handleDeleteCache}
+                />
+            </Portal>
+            <MDBRow>
+                <MDBCol>
+                    <Navbar activeItem="reader" />
+                </MDBCol>
+            </MDBRow>
+            <div className="d-flex justify-content-end mt-4 mb-5 me-2">
+                <MDBBtn
+                    className="me-3"
+                    type="button"
+                    color="danger"
+                    onClick={toggleDelete}
                 >
-                    <ReaderGreeting />
-                </div>
+                    {t("reader:limparCacheDoLeitor")}
+                </MDBBtn>
+
+                <MDBBtn type="button" color="secondary" onClick={toggleSend}>
+                    {t("reader:enviarArquivo")}
+                </MDBBtn>
+            </div>
+            <div
+                className="d-flex flex-wrap justify-content-center w-100"
+                style={{ minHeight: "30vh" }}
+            >
+                <ReaderGreeting />
             </div>
         </div>
     );

@@ -109,6 +109,10 @@ export default function MetadataInfoLibraryAdd({
                                     </span>
                                 );
                             }
+                            if (requestError.request.status === 401) {
+                                setRequestStatus(401);
+                                return;
+                            }
                         }
 
                         return (
