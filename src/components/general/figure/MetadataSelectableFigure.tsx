@@ -46,7 +46,7 @@ export default function MetadataSelectableFigure({
         },
         {
             threshold: 1000,
-            detect: LongPressDetectEvents.BOTH,
+            detect: LongPressDetectEvents.TOUCH,
             filterEvents: (event) => {
                 if (selectable) {
                     return true;
