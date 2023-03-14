@@ -10,11 +10,13 @@ import {
     UserLibraryContext,
 } from "./helpers/libraryFunctions";
 import LibraryStatisticsToggle from "./statistics/LibraryStatisticsToggle";
+import Break from "../general/Break";
 
 // This component should have an edit button someday.
 export default function () {
     const userLibraryContext = useContext(UserLibraryContext);
     const editModeContext = useContext(EditModeContext);
+    const editModeActive = editModeContext && editModeContext.editMode;
     const numOfBooks = calculateNumOfBooks(userLibraryContext.userLibrary);
     const { t } = useTranslation();
     return (
@@ -45,31 +47,39 @@ export default function () {
                         )}
                     </div>
                 </div>
-                <div className="d-flex flex-wrap mb-2 w-75 align-items-center">
-                    {editModeContext && editModeContext.editMode ? (
-                        <>
-                            <div className="ms-auto">
+                <div className="d-flex flex-wrap mb-2 w-75 justify-content-end align-items-center">
+                    <div
+                        id="library-navbar-toggle-buttons"
+                        className="d-flex ms-3 me-2"
+                    >
+                        <div className={""}>
+                            <EditModeToggle />
+                        </div>
+
+                        <div className={"ms-2 me-0"}>
+                            <LibraryFilterToggle />
+                        </div>
+
+                        <div className={"ms-2"}>
+                            <LibraryStatisticsToggle />
+                        </div>
+                    </div>
+
+                    <Break />
+
+                    {editModeActive ? (
+                        <div
+                            id="library-navbar-action-buttons"
+                            className="d-flex ms-3 me-2 mt-2"
+                        >
+                            <div className="">
                                 <EditModeMove />
                             </div>
-                            <div className={"ms-3"}>
+                            <div className={"ms-2"}>
                                 <EditModeRemove />
                             </div>
-                        </>
+                        </div>
                     ) : null}
-
-                    <div
-                        className={
-                            !editModeContext.editMode ? "ms-auto" : "ms-3"
-                        }
-                    >
-                        <EditModeToggle />
-                    </div>
-                    <div className={"ms-2 me-0"}>
-                        <LibraryFilterToggle />
-                    </div>
-                    <div className={"ms-2 me-2"}>
-                        <LibraryStatisticsToggle />
-                    </div>
                 </div>
             </div>
         </div>

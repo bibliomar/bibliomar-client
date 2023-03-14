@@ -54,6 +54,7 @@ export default function MetadataSelectableFigure({
                     return true;
                 }
             },
+            cancelOnMovement: true,
         }
     );
     const { t } = useTranslation();
