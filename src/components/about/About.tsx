@@ -65,21 +65,6 @@ export default function About() {
                                 className="row d-flex flex-column justify-content-center
                                 about-first-text-container "
                             >
-                                <div className="col col-lg-8 d-flex flex-wrap ">
-                                    <a
-                                        style={{ color: "unset" }}
-                                        className="mt-0 mt-lg-auto mb-3 mb-lg-0"
-                                        href="https://github.com/Lamarcke/bibliomar-react"
-                                    >
-                                        <img
-                                            alt={"Icone 3"}
-                                            className="mt-0 mt-lg-auto about-icon-img mb-1"
-                                            src="/assets/img/github.svg"
-                                        />
-                                    </a>
-
-                                    <span>{t("about:second.p1")}</span>
-                                </div>
                                 <div className="col col-lg-8 d-flex flex-wrap">
                                     <a
                                         className="mt-0 mt-lg-auto mb-3 mb-lg-0"

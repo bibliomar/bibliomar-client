@@ -30,21 +30,11 @@ export default function Footer() {
 
                 <a
                     href={"https://discord.gg/J5FBbh8JbS"}
-                    className="ms-auto me-4"
+                    className="ms-auto me-3"
                     style={{ color: "unset" }}
                 >
                     <img
                         src={"/assets/img/footer-discord-logo.svg"}
-                        alt={"Discord logo"}
-                    />
-                </a>
-                <a
-                    href={"https://github.com/bibliomar"}
-                    className="me-3"
-                    style={{ color: "unset" }}
-                >
-                    <img
-                        src={"/assets/img/footer-github-logo.svg"}
                         alt={"Discord logo"}
                     />
                 </a>
