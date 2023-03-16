@@ -51,7 +51,7 @@ export default function RecommendationScreen(props: Props) {
                 <MDBRow key={rowIndex} className="d-flex">
                     {row.map((metadata, eleIndex) => {
                         internalCounter++;
-                        const timeout = internalCounter * 1000;
+                        const timeout = internalCounter * 250;
                         return (
                             <MDBCol
                                 key={eleIndex}
