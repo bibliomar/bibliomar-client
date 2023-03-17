@@ -20,7 +20,7 @@ export default function SearchTips() {
         const tip5 = (
             <span>
                 <Trans i18nKey="experimenteO" ns="search" />{" "}
-                <a href="https://beta.bibliomar.site">
+                <a href="https://beta.bibliomar.com">
                     {t("search:betaDoBibliomar")}
                 </a>
                 !
