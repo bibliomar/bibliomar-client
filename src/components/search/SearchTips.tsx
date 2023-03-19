@@ -17,17 +17,8 @@ export default function SearchTips() {
         const tip4 = t(
             "search:vocPodePressionarOIconeProximoAoIconeDePesquisaPar"
         );
-        const tip5 = (
-            <span>
-                <Trans i18nKey="experimenteO" ns="search" />{" "}
-                <a href="https://beta.bibliomar.com">
-                    {t("search:betaDoBibliomar")}
-                </a>
-                !
-            </span>
-        );
 
-        const tips = [tip1, tip2, tip3, tip4, tip5];
+        const tips = [tip1, tip2, tip3, tip4];
         return <>{tips[Math.floor(Math.random() * tips.length)]}</>;
     };
 

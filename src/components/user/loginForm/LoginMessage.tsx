@@ -5,6 +5,7 @@ import Break from "../../general/Break";
 interface Props {
     loginStatus: number;
     disabled: boolean;
+    sendVerificationEmail: () => void;
 }
 
 export default function LoginMessage(props: Props) {

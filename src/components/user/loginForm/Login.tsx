@@ -140,6 +140,22 @@ export default function Login() {
             }
         },
     });
+
+    const sendVerificationEmail = async () => {
+        const config = {
+            url: `${backendUrl}/user/verify`,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: {
+                email: formik.values.username,
+            },
+        };
+        const req = await axios.request(config);
+        return req.data;
+    };
+
     return (
         <div className="like-body bg-alt">
             <MDBContainer fluid>
@@ -162,6 +178,7 @@ export default function Login() {
                             <LoginMessage
                                 loginStatus={loginStatus}
                                 disabled={loginStatus === 0}
+                                sendVerificationEmail={sendVerificationEmail}
                             />
                             <form onSubmit={formik.handleSubmit}>
                                 <label htmlFor="username">
