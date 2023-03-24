@@ -33,10 +33,6 @@ export default function useCover(
 
         setCover(cover);
 
-        if (cover === noCoverUrl) {
-            return;
-        }
-
         coverTimeout = window.setTimeout(
             async () => {
                 setCoverDone(true);
