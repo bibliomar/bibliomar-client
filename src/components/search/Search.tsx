@@ -140,7 +140,7 @@ function Search() {
     const [optionsHidden, setOptionsHidden] = useState<boolean>(true);
 
     // Query related states
-    const initialRequestMade = useRef<boolean>(false);
+    const searchParamsFilled = useRef<boolean>(false);
     const [searchResults, setSearchResults] = useState<Metadata[]>([]);
     const [requestStatus, setRequestStatus] = useState<
         SearchRequestStatus | undefined
@@ -183,20 +183,23 @@ function Search() {
 
     useEffect(() => {
         let ignore = false;
-        if (pageCount > 0 || ignore) {
+        if (ignore) {
             return;
         }
 
         let submit: number | undefined = undefined;
         populateSearchParams(formik, searchParams).then(() => {
-            if (formik.values.q.length < 3 || ignore) {
+            if (
+                formik.values.q.length < 3 ||
+                ignore ||
+                searchParamsFilled.current
+            ) {
                 return;
             }
 
             submit = window.setTimeout(async () => {
-                if (!ignore) {
-                    await formik.submitForm();
-                }
+                console.log("timeout runs");
+                await formik.submitForm();
 
                 // 500ms gives enough time for everything to render.
             }, 500);
@@ -206,6 +209,10 @@ function Search() {
             ignore = true;
             clearTimeout(submit);
         };
+
+        // Usually, searchParams changes on both the recommendation elements' click and on the manual setup done
+        // by the search function. Make sure to keep track of only the manually changed value, otherwise you get
+        // duplicated requests.
     }, [searchParams]);
 
     const handlePaginationClick = async (evt: any) => {
@@ -228,6 +235,7 @@ function Search() {
             totalItems.current = 0;
             setPageCount(0);
             setHelmetTitle(undefined);
+            searchParamsFilled.current = false;
         }
         setSearchResults([]);
         setTookTime(0);
@@ -293,13 +301,13 @@ function Search() {
 
     const makeSearchRequest = async (values: SearchFormFields) => {
         resetSearchState(false);
-        initialRequestMade.current = true;
         const requestType = SearchRequestType.SEARCH;
         const URLParameters = buildURLParams(values);
         // The searchParameters on the first search request should be set
         // to overwrite search history. This keeps the back history clean for some actions.
         // (e.g. when selecting a recommendation)
         setSearchParameters(URLParameters, { replace: true });
+        searchParamsFilled.current = true;
         setRequestStatus({
             type: requestType,
             status: SearchRequestStatusOptions.SENDING,
