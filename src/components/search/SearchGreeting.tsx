@@ -39,35 +39,12 @@ export default function SearchGreeting() {
         }
     };
 
-    const expirationDate = new Date("2023-03-28T23:59:59Z");
-
     return (
         <div className="d-flex flex-wrap justify-content-center">
             <div className="break" />
             <p className="greeting-text text-center mt-2">
-                <Trans
-                    i18nKey="atenoEstamosMigrandoParaUmNovoDominoNossoDomnioSit"
-                    ns="search"
-                    components={{
-                        s: <strong />,
-                        s2: <strong />,
-                        b: <br />,
-                    }}
-                />
-                <span>
-                    <strong>
-                        {expirationDate.toLocaleString(
-                            new Intl.Locale(i18n.language)
-                        )}
-                    </strong>
-                </span>
+                {renderGreetingMessage()}
             </p>
-            <Break />
-            <span className="greeting-text mb-3">
-                {t("search:atualizeSeusFavoritos")}{" "}
-                <a href="https://bibliomar.com">bibliomar.com</a>
-            </span>
-            <div className="break" />
         </div>
     );
 }
