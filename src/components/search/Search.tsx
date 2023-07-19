@@ -258,7 +258,7 @@ function Search() {
             values,
             topicContext,
             currentOffset.current,
-            currentOffset.current + itemsPerPage
+            itemsPerPage
         );
 
         if (typeof request === "number") {
